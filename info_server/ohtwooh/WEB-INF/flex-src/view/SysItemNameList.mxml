@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="432" height="558" xmlns:component="component.*"
+	label="Select the SYSITEM" title="Select the SYSITEM"
+	showCloseButton="true" close="PopUpManager.removePopUp(this)">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import mx.collections.ArrayCollection;
+			import vo.SysItem;
+
+			public var 	_sysItem:SysItem;
+			[Bindable]
+			public function set sysItem(sysItem:SysItem):void{
+				this._sysItem=sysItem;
+			}
+			public function get sysItem():SysItem{
+				return this._sysItem;
+			} 
+			public function selectHandler():void{
+		 		sysItem=sysItemNameDatagrid.selectedItem as SysItem;
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox  height="100%" width="410">
+		
+		<mx:VBox height="435" width="391">
+		<mx:ApplicationControlBar  height="421" width="370">	
+			<component:MyDataGrid id="sysItemNameDatagrid"  itemClick="selectHandler()" 
+				width="351" height="100%" editable="false">
+			</component:MyDataGrid>
+		</mx:ApplicationControlBar>
+		</mx:VBox>
+		<mx:VBox>
+		<mx:ControlBar>
+			<mx:Button id="save" label="保存"/>
+			<mx:Button id="cancel" label="取消"/>
+		</mx:ControlBar>	
+		</mx:VBox>
+		
+	</mx:VBox>
+</mx:TitleWindow>

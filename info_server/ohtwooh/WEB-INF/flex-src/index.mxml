@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:vo="vo.*"
+	xmlns:window="window.*"
+	layout="absolute" creationComplete="init()" width="100%" xmlns:local="*">
+	<mx:Style source="style.css" />
+	<mx:Script>
+		<![CDATA[
+			import mx.events.StateChangeEvent;
+			import event.LogSelectEvent;
+			import mx.events.MenuEvent;
+			import common.MenuEnum;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			
+		/*	public function getPlayerByUserIdHandler(event:ResultEvent):void{
+				var arr:ArrayCollection = event.result as ArrayCollection;
+				playerDG.dataProvider = arr;
+			}
+			*/
+			public function init():void{
+				this.currentState="login";
+				this.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,stateHandler);
+			}
+			public function stateHandler(evt:StateChangeEvent):void{
+				this.currentState="manage";
+			}
+		]]>
+	</mx:Script>
+
+	<!--<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getPlayerByUserId" result="getPlayerByUserIdHandler(event)"/>
+	</mx:RemoteObject>
+	
+	<vo:Player id="player"/>
+	
+	<mx:HBox width="100%" height="100%">	
+		<mx:Button label="Get Player" click="getRo.getPlayerByUserId(1)"/>
+		
+		<mx:DataGrid id="playerDG">
+			<mx:columns>
+				<mx:DataGridColumn dataField="name"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:HBox>	-->
+	
+	<mx:states>
+			<mx:State name="login">
+				<mx:AddChild>
+					<local:Login />
+				</mx:AddChild>
+			</mx:State>
+			<mx:State name="manage">
+				<mx:AddChild>
+					<local:Manage />
+				</mx:AddChild>
+			</mx:State>
+	</mx:states>
+</mx:Application>

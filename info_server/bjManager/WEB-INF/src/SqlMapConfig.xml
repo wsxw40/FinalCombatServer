@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE sqlMapConfig
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings
+		lazyLoadingEnabled="false" 
+		useStatementNamespaces="true"
+		cacheModelsEnabled="true"/>
+	
+	<sqlMap resource="com/pearl/manager/sql/ssql/GmUser.xml" />	
+	<sqlMap resource="com/pearl/manager/sql/ssql/GmReport.xml" />	
+	<sqlMap resource="com/pearl/manager/sql/ssql/GmLog.xml" />	
+	<sqlMap resource="com/pearl/manager/sql/ssql/GmGroup.xml" />	
+	<sqlMap resource="com/pearl/manager/sql/ssql/GmPrivilege.xml" />	
+	<sqlMap resource="com/pearl/manager/sql/ssql/GmGroupPrivilege.xml" />
+	<sqlMap resource="com/pearl/manager/sql/ssql/GmUserGroup.xml" />
+	<sqlMap resource="com/pearl/manager/sql/ssql/ChargeLog.xml" />
+	<sqlMap resource="com/pearl/manager/sql/ssql/DAUAbout.xml" />
+	<sqlMap resource="com/pearl/manager/sql/ssql/PayLog.xml"/>
+</sqlMapConfig>

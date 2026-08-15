@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Player">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="Player" type="com.pearl.o2o.pojo.Player" />
+
+	<resultMap id="selectPlayerResult" class="Player" groupBy="id">
+		<result property="id" 				column="ID" />
+		<result property="userId" 			column="USER_ID" />
+		<result property="sysCharacterId" 	column="SYS_CHARACTER_ID" />
+		<result property="gender" 			column="GENDER" />
+		<result property="name" 			column="NAME" />
+		<result property="teamId" 			column="R_TEAM_ID" />
+		<result property="team" 			column="TEAM" />		
+	
+
+		<result property="gPoint" 			column="G_POINT" />
+		<result property="credit" 			column="CREDIT" />
+		<result property="exp" 				column="EXP" />
+		<result property="rank" 			column="RANK" />
+		<result property="wPackSize" 		column="W_PACK_SIZE" />
+		<result property="cPackSize" 		column="C_PACK_SIZE" />	
+		
+		<result property="gRank" 			column="GENERAL_RANK"/>
+		<result property="gVictoryRate" 	column="GENERAL_VICTORY_RATE"/>
+		<result property="gScore"			column="GENERAL_SCORE" />
+		<result property="gKill"			column="GENERAL_KILL" />
+		<result property="gDead"			column="GENERAL_DEAD" />
+		<result property="gHeadShot"		column="GENERAL_HEAD_SHOT" />		
+		<result property="gGrenadeKill"		column="GENERAL_GRENADE_KILL" />
+		<result property="gKnifeKill"		column="GENERAL_KNIFE_KILL" />
+		<result property="gHitPoint"		column="GENERAL_HIT_POINT" />
+		<result property="gWin"				column="GENERAL_WIN" />
+		<result property="gTotal"			column="GENERAL_TOTAL" />
+		
+		<result property="tRank" 			column="TEAM_RANK"/>
+		<result property="tVictoryRate" 	column="TEAM_VICTORY_RATE"/>
+		<result property="tScore"			column="TEAM_SCORE" />
+		<result property="tKill"			column="TEAM_KILL" />
+		<result property="tDead"			column="TEAM_DEAD" />
+		<result property="tHeadShot"		column="TEAM_HEAD_SHOT" />
+		<result property="tGrenadeKill"		column="TEAM_GRENADE_KILL" />
+		<result property="tKnifeKill"		column="TEAM_KNIFE_KILL" />
+		<result property="tHitPoint"		column="TEAM_HIT_POINT" />
+		<result property="tWin"				column="TEAM_WIN" />
+		<result property="tTotal"			column="TEAM_TOTAL" />
+		
+		<result property="bioRank" 			column="BIO_RANK"/>
+		<result property="bioScore"			column="BIO_SCORE" />
+		<result property="bioInfect"		column="BIO_INFECT" />
+		<result property="bioKill"			column="BIO_KILL" />
+		
+		<result property="flagRank" 		column="FLAG_RANK"/>
+		<result property="flagVictoryRate" 	column="FLAG_VICTORY_RATE"/>
+		<result property="flagScore"		column="FLAG_SCORE" />
+		<result property="flagSucceed"		column="FLAG_SUCCEED" />
+		<result property="flagReturn"		column="FLAG_RETURN" />
+		<result property="flagWin"			column="FLAG_WIN" />
+		<result property="flagTotal"		column="FLAG_TOTAL" />
+		
+		<result property="blastRank" 		column="BLAST_RANK"/>
+		<result property="blastVictoryRate"	column="BLAST_VICTORY_RATE"/>
+		<result property="blastScore"		column="BLAST_SCORE" />
+		<result property="blastSucceed"		column="BLAST_SUCCEED" />
+		<result property="blastDisable"		column="BLAST_DISABLE" />
+		<result property="blastWin"			column="BLAST_WIN" />
+		<result property="blastTotal"		column="BLAST_TOTAL" />
+		
+		<result property="funGpRank" 			column="FUN_GP_RANK"/>
+		<result property="funCrRank" 			column="FUN_CR_RANK"/>
+		<result property="funGrenadeKillRank" 	column="FUN_GRENADE_KILL_RANK"/>
+		<result property="funDropKillRank" 		column="FUN_DROP_KILL_RANK"/>
+		<result property="funWeaponModRank" 	column="FUN_WEAPON_MOD_RANK"/>
+		<result property="funDeadRank" 			column="FUN_DEAD_RANK"/>
+		<result property="funGpTotal"			column="FUN_GP_TOTAL" />
+		<result property="funCrTotal"			column="FUN_CR_TOTAL" />
+		<result property="funGrenadeKill"		column="FUN_GRENADE_KILL" />
+		<result property="funDropKill"			column="FUN_DROP_KILL" />
+		<result property="funWeaponMod"			column="FUN_WEAPON_MOD" />
+		<result property="funDead"				column="FUN_DEAD" />
+		
+		<result property="resourceP" 		column="RESOURCE_P" />
+		<result property="resourceT" 		column="RESOURCE_T" />
+		<result property="lastGameSide" 	column="LAST_GAME_SIDE" />
+		<result property="lastLoginTime" 	column="LAST_LOGIN_TIME_INT" />
+		<result property="lastLoginIp" 		column="LAST_LOGIN_IP" />
+		<result property="flowerTotal" 		column="FLOWER_TOTAL" />
+		<result property="flowerToday" 		column="FLOWER_TODAY" />
+		<result property="flowerLastTime" 	column="FLOWER_LAST_TIME" />
+	
+		
+		<result property="runSpeed" 	column="RUN_SPEED" />
+		<result property="walkSpeed" 	column="WALK_SPEED" />
+		<result property="crouchSpeed" 	column="CROUCH_SPEED" />
+		<result property="accelSpeed" 	column="ACCEL_SPEED" />	
+		<result property="jumpSpeed" 	column="JUMP_SPEED" />
+		<result property="throwSpeed" 	column="THROW_SPEED" />
+		
+		<result property="buffList" 		column="ID"  select="PlayerBuff.select"/>
+	</resultMap>
+
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerResult">
+		select
+		UNIX_TIMESTAMP(p.LAST_LOGIN_TIME) as LAST_LOGIN_TIME_INT,
+			p.*,
+			0						as GENERAL_RANK,
+			0						as TEAM_RANK,
+			0						as FLAG_RANK,
+			0						as BIO_RANK,
+			0						as BLAST_RANK,
+			0						as FUN_GP_RANK,
+			0						as FUN_CR_RANK,
+			0						as FUN_GRENADE_KILL_RANK,
+			0						as FUN_DROP_KILL_RANK,
+			0						as FUN_WEAPON_MOD_RANK,
+			0						as FUN_DEAD_RANK,
+			0						as GENERAL_VICTORY_RATE,
+			0						as TEAM_VICTORY_RATE,
+			0						as FLAG_VICTORY_RATE,
+			0						as BLAST_VICTORY_RATE,
+			sc.RUN_SPEED,
+			sc.WALK_SPEED,
+			sc.CROUCH_SPEED	,
+			sc.ACCEL_SPEED	,
+			sc.JUMP_SPEED	,
+			sc.THROW_SPEED,
+			ifnull(t.NAME,"") 		as TEAM,
+			ifnull(t.ID,0) 		as R_TEAM_ID
+								
+		from PLAYER p 
+			left outer join PLAYER_TEAM pt on p.ID = pt.PLAYER_ID and pt.APPROVED = 'Y'
+			left outer join TEAM t on pt.TEAM_ID = t.ID, SYS_CHARACTER sc
+		where p.IS_DELETED= 'N'
+			<isNotNull prepend="and" property="playerId">
+				p.ID = #playerId#
+			</isNotNull>		
+		
+			<isNotNull prepend="and" property="userId">
+				p.USER_ID = #userId#
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="name">
+				p.NAME = #name#
+			</isNotNull>						
+			<isNotNull property="playerIds">
+				<iterate prepend="AND p.ID in" property="playerIds" open="(" close=")" conjunction=",">
+			  		 #playerIds[]#
+				</iterate>				
+			</isNotNull>
+			and p.SYS_CHARACTER_ID=sc.ID
+			order by p.ID;
+	</select>
+	
+	<select id="selectPlayerById" parameterClass="java.util.Map" resultMap="selectPlayerResult">
+		select
+		UNIX_TIMESTAMP(p.LAST_LOGIN_TIME) as LAST_LOGIN_TIME_INT,
+			p.*,
+			general.gRank													as GENERAL_RANK,
+			team.tRank														as TEAM_RANK,
+			flag.flagRank													as FLAG_RANK,
+			bio.bioRank														as BIO_RANK,
+			blast.blastRank													as BLAST_RANK,
+			funGP.funGpRank													as FUN_GP_RANK,
+			funCR.funCrRank													as FUN_CR_RANK,
+			funGK.funGrenadeKillRank										as FUN_GRENADE_KILL_RANK,
+			funDK.funDropKillRank											as FUN_DROP_KILL_RANK,
+			funWM.funWeaponModRank											as FUN_WEAPON_MOD_RANK,
+			funD.funDeadRank												as FUN_DEAD_RANK,
+			round(ifnull(p.GENERAL_WIN / p.GENERAL_TOTAL, 0), 2)*100		as GENERAL_VICTORY_RATE,
+			round(ifnull(p.TEAM_WIN / p.TEAM_TOTAL, 0), 2)*100				as TEAM_VICTORY_RATE,
+			round(ifnull(p.FLAG_WIN / p.FLAG_TOTAL, 0), 2)*100				as FLAG_VICTORY_RATE,
+			round(ifnull(p.BLAST_WIN / p.BLAST_TOTAL, 0), 2)*100			as BLAST_VICTORY_RATE,
+			sc.RUN_SPEED,
+			sc.WALK_SPEED,
+			sc.CROUCH_SPEED,
+			sc.ACCEL_SPEED	,
+			sc.JUMP_SPEED,
+			sc.THROW_SPEED,
+			ifnull(t.NAME,"") 												as TEAM,
+				ifnull(t.ID,0) 		as R_TEAM_ID
+		from PLAYER p
+			 left outer join PLAYER_TEAM pt on p.ID = pt.PLAYER_ID and pt.APPROVED = 'Y'
+				left outer join TEAM t on pt.TEAM_ID = t.ID, SYS_CHARACTER sc,
+			(select count(*)+1 as gRank from PLAYER where IS_DELETED='N' and GENERAL_SCORE > 
+					(select GENERAL_SCORE from PLAYER where ID = #playerId#)) general,
+			(select count(*)+1 as tRank from PLAYER where IS_DELETED='N' and TEAM_SCORE > 
+					(select TEAM_SCORE from PLAYER where ID = #playerId#)) team,
+			(select count(*)+1 as flagRank from PLAYER where IS_DELETED='N' and FLAG_SCORE > 
+					(select FLAG_SCORE from PLAYER where ID = #playerId#)) flag,
+			(select count(*)+1 as bioRank from PLAYER where IS_DELETED='N' and BIO_SCORE > 
+					(select BIO_SCORE from PLAYER where ID = #playerId#)) bio,
+			(select count(*)+1 as blastRank from PLAYER where IS_DELETED='N' and BLAST_SCORE > 
+					(select BLAST_SCORE from PLAYER where ID = #playerId#)) blast,
+			(select count(*)+1 as funGpRank from PLAYER where IS_DELETED='N' and FUN_GP_TOTAL > 
+					(select FUN_GP_TOTAL from PLAYER where ID = #playerId#)) funGP,
+			(select count(*)+1 as funCrRank from PLAYER where IS_DELETED='N' and FUN_CR_TOTAL > 
+					(select FUN_CR_TOTAL from PLAYER where ID = #playerId#)) funCR,
+			(select count(*)+1 as funGrenadeKillRank from PLAYER where IS_DELETED='N' and FUN_GRENADE_KILL > 
+					(select FUN_GRENADE_KILL from PLAYER where ID = #playerId#)) funGK,
+			(select count(*)+1 as funDropKillRank from PLAYER where IS_DELETED='N' and FUN_DROP_KILL > 
+					(select FUN_DROP_KILL from PLAYER where ID = #playerId#)) funDK,
+			(select count(*)+1 as funWeaponModRank from PLAYER where IS_DELETED='N' and FUN_WEAPON_MOD > 
+					(select FUN_WEAPON_MOD from PLAYER where ID = #playerId#)) funWM,
+			(select count(*)+1 as funDeadRank from PLAYER where IS_DELETED='N' and FUN_DEAD > 
+					(select FUN_DEAD from PLAYER where ID = #playerId#)) funD
+		where p.IS_DELETED='N' and p.ID = #playerId# and p.SYS_CHARACTER_ID=sc.ID;	
+	</select>
+	
+	<select id="fuzzyCountPlayer" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+		select count(*) from PLAYER p 
+		where p.NAME like '%$name$%' and p.IS_DELETED="N"
+	</select>		
+	
+	<select id="fuzzySelectPlayer" parameterClass="java.util.Map" resultMap="selectPlayerResult">
+		select 
+		UNIX_TIMESTAMP(p.LAST_LOGIN_TIME) as LAST_LOGIN_TIME_INT,
+		p.*,
+		sc.RUN_SPEED,
+			sc.WALK_SPEED,
+			sc.CROUCH_SPEED,
+			sc.ACCEL_SPEED	,
+			sc.JUMP_SPEED,
+			sc.THROW_SPEED,
+		ifnull(t.NAME,"") 												as TEAM,
+			ifnull(t.ID,0) 		as R_TEAM_ID,
+			""						as RESOURCE_P,
+			""						as RESOURCE_T,
+			0						as GENERAL_RANK,
+			0						as TEAM_RANK,
+			0						as FLAG_RANK,
+			0						as BIO_RANK,
+			0						as BLAST_RANK,
+			0						as FUN_GP_RANK,
+			0						as FUN_CR_RANK,
+			0						as FUN_GRENADE_KILL_RANK,
+			0						as FUN_DROP_KILL_RANK,
+			0						as FUN_WEAPON_MOD_RANK,
+			0						as FUN_DEAD_RANK,
+			0						as GENERAL_VICTORY_RATE,
+			0						as TEAM_VICTORY_RATE,
+			0						as FLAG_VICTORY_RATE,
+			0						as BLAST_VICTORY_RATE
+		from PLAYER p
+			left outer join PLAYER_TEAM pt on p.ID = pt.PLAYER_ID and pt.APPROVED = 'Y'
+			left outer join TEAM t on pt.TEAM_ID = t.ID
+			left outer join SYS_CHARACTER sc on p.SYS_CHARACTER_ID=sc.ID
+		where p.NAME like '%$name$%' and p.IS_DELETED="N"
+		limit #start#, #step#
+	</select>	
+		
+
+
+	<insert id="insert" parameterClass="Player">
+		insert into PLAYER (
+			ID, 
+			USER_ID, 
+			SYS_CHARACTER_ID, 
+			GENDER, 
+			NAME,
+			TEAM_ID,
+			LABOR_UNION_ID,
+			EXP, 
+			RANK, 
+			W_PACK_SIZE,
+			C_PACK_SIZE,			
+			G_POINT,	 
+			GENERAL_SCORE, 
+			GENERAL_KILL,
+			GENERAL_DEAD,
+			GENERAL_HEAD_SHOT,
+			GENERAL_GRENADE_KILL,
+			GENERAL_KNIFE_KILL,
+			GENERAL_HIT_POINT,
+			GENERAL_WIN,
+			GENERAL_TOTAL,
+			TEAM_SCORE,
+			TEAM_KILL,
+			TEAM_DEAD,
+			TEAM_HEAD_SHOT,
+			TEAM_GRENADE_KILL,
+			TEAM_KNIFE_KILL,
+			TEAM_HIT_POINT,
+			TEAM_WIN,
+			TEAM_TOTAL,
+			BIO_SCORE,
+			BIO_INFECT,
+			BIO_KILL,
+			FLAG_SCORE,
+			FLAG_SUCCEED,
+			FLAG_RETURN,
+			FLAG_WIN,
+			FLAG_TOTAL,
+			BLAST_SCORE,
+			BLAST_SUCCEED,
+			BLAST_DISABLE,
+			BLAST_WIN,
+			BLAST_TOTAL,
+			FUN_GP_TOTAL,
+			FUN_CR_TOTAL,
+			FUN_GRENADE_KILL,
+			FUN_DROP_KILL,
+			FUN_WEAPON_MOD,
+			FUN_DEAD,
+			IS_DELETED,
+			RESOURCE_P,
+			RESOURCE_T,
+			LAST_GAME_SIDE,
+			LAST_LOGIN_TIME,
+			LAST_LOGIN_IP,
+			FLOWER_TOTAL,
+			FLOWER_TODAY,
+			FLOWER_LAST_TIME
+			)
+		values (
+			#id#, 
+			#userId#, 
+			#sysCharacterId#, 
+			#gender#, 
+			#name#,
+			#teamId#,
+			#laborUnionId#,
+			#exp#, 
+			#rank#, 
+			#wPackSize#,
+			#cPackSize#,			
+			#gPoint#, 
+			#gScore#,
+			#gKill#,
+			#gDead#,
+			#gHeadShot#,
+			#gGrenadeKill#,
+			#gKnifeKill#,
+			#gHitPoint#,
+			#gWin#,
+			#gTotal#,
+			#tScore#,
+			#tKill#,
+			#tDead#,
+			#tHeadShot#,
+			#tGrenadeKill#,
+			#tKnifeKill#,
+			#tHitPoint#,
+			#tWin#,
+			#tTotal#,
+			#bioScore#,
+			#bioInfect#,
+			#bioKill#,
+			#flagScore#,
+			#flagSucceed#,
+			#flagReturn#,
+			#flagWin#,
+			#flagTotal#,
+			#blastScore#,
+			#blastSucceed#,
+			#blastDisable#,
+			#blastWin#,
+			#blastTotal#,
+			#funGpTotal#,
+			#funCrTotal#,
+			#funGrenadeKill#,
+			#funDropKill#,
+			#funWeaponMod#,
+			#funDead#,
+			'N',
+			#resourceP#,
+			#resourceT#,
+			#lastGameSide#,
+			now(),
+			#lastLoginIp#,
+			#flowerTotal#,
+			#flowerToday#,
+			#flowerLastTime#
+			)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+
+	<update id="delete" parameterClass="java.lang.Integer">
+		update PLAYER p set p.IS_DELETED = 'Y' where p.id = #value#
+	</update>
+	<update id="update" parameterClass="java.util.Map">
+		update PLAYER p 
+		set $column$ = #value# 
+		where ID = #playerId#
+	</update>
+	<update id="updateWhileOnline" parameterClass="java.util.Map">
+		update PLAYER p 
+		set p.LAST_LOGIN_IP = #ip#,
+			p.LAST_LOGIN_TIME=now()
+		where ID = #playerId#
+	</update>
+	
+	<update id="updateGP" parameterClass="java.util.Map">
+		update PLAYER p 
+		set p.G_POINT = #gPoint# 
+		where p.ID = #playerId#
+	</update>
+	<update id="updateCredit" parameterClass="java.util.Map">
+		update PLAYER p 
+		set p.CREDIT = #credit# 
+		where p.ID = #playerId#
+	</update>
+	<update id="updateFlower" parameterClass="java.util.Map">
+		update PLAYER p 
+		set p.FLOWER_TOTAL = #total#,
+			p.FLOWER_TODAY=#today#,
+			p.FLOWER_LAST_TIME=now()
+		where p.ID = #playerId#
+			and p.USER_ID=#userId#;
+	</update>
+	
+	<update id="updatePlayer" parameterClass="Player">
+		update PLAYER p 
+		set p.G_POINT = #gPoint# ,
+	        p.EXP = #exp#,
+	        p.RANK = #rank#
+		where p.ID = #id#
+	</update>
+	<update id="updatePlayerStageClear" parameterClass="Player">
+		update PLAYER p 
+		set p.G_POINT = #gPoint# ,
+	        p.EXP = #exp#,
+	        p.RANK = #rank#,
+	        p.LAST_GAME_SIDE = #lastGameSide#,
+	        p.GENERAL_SCORE = #gScore#,
+			p.GENERAL_KILL = #gKill#,
+	        p.GENERAL_DEAD = #gDead#,
+			p.GENERAL_HEAD_SHOT = #gHeadShot#,
+			p.GENERAL_GRENADE_KILL = #gGrenadeKill#,
+			p.GENERAL_KNIFE_KILL = #gKnifeKill#,
+			p.GENERAL_HIT_POINT = #gHitPoint#,
+			p.GENERAL_WIN = #gWin#,
+	        p.GENERAL_TOTAL = #gTotal#,
+			p.TEAM_SCORE = #tScore# ,
+			p.TEAM_KILL = #tKill#,
+			p.TEAM_DEAD = #tDead#,
+			p.TEAM_HEAD_SHOT = #tHeadShot#,
+			p.TEAM_GRENADE_KILL = #tGrenadeKill#,
+			p.TEAM_KNIFE_KILL = #tKnifeKill#,
+			p.TEAM_HIT_POINT = #tHitPoint#,
+			p.TEAM_WIN = #tWin#,
+			p.TEAM_TOTAL = #tTotal#,
+			p.BIO_SCORE = #bioScore#,
+			p.BIO_INFECT = #bioInfect#,
+			p.BIO_KILL = #bioKill#,
+			p.FLAG_SCORE = #flagScore#,
+			p.FLAG_SUCCEED = #flagSucceed#,
+			p.FLAG_RETURN = #flagReturn#,
+			p.FLAG_WIN = #flagWin#,
+			p.FLAG_TOTAL = #flagTotal#,
+			p.BLAST_SCORE = #blastScore#,
+			p.BLAST_SUCCEED = #blastSucceed#,
+			p.BLAST_DISABLE = #blastDisable#,
+			p.BLAST_WIN = #blastWin#,
+			p.BLAST_TOTAL = #blastTotal#,
+			p.FUN_GP_TOTAL = #funGpTotal#,
+			p.FUN_CR_TOTAL = #funCrTotal#,
+			p.FUN_GRENADE_KILL = #funGrenadeKill#,
+			p.FUN_DROP_KILL = #funDropKill#,
+			p.FUN_WEAPON_MOD = #funWeaponMod#,
+			p.FUN_DEAD = #funDead#
+	where p.ID = #id#
+	</update>
+	
+</sqlMap>

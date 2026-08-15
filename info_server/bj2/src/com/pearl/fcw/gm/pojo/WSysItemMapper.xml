@@ -1,0 +1,2330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysItemMapper" >
+  <resultMap id="ResultMap" type="com.pearl.fcw.gm.pojo.WSysItem" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DISPLAY_NAME" property="displayName" jdbcType="VARCHAR" />
+    <result column="RESOURCE_STABLE" property="resourceStable" jdbcType="VARCHAR" />
+    <result column="RESOURCE_CHANGEABLE" property="resourceChangeable" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="SUB_TYPE" property="subType" jdbcType="INTEGER" />
+    <result column="LEVEL" property="level" jdbcType="INTEGER" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="CHAR" />
+    <result column="MODIFIED_DESC" property="modifiedDesc" jdbcType="CHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="W_ID" property="wId" jdbcType="INTEGER" />
+    <result column="W_CHANGE_IN_TIME" property="wChangeInTime" jdbcType="REAL" />
+    <result column="W_MOVE_SPEED_OFFSET" property="wMoveSpeedOffset" jdbcType="REAL" />
+    <result column="W_CROSS_OFFSET" property="wCrossOffset" jdbcType="REAL" />
+    <result column="W_CROSS_LENGTH_BASE" property="wCrossLengthBase" jdbcType="REAL" />
+    <result column="W_CROSS_LENGTH_FACTOR" property="wCrossLengthFactor" jdbcType="REAL" />
+    <result column="W_CROSS_DISTANCE_BASE" property="wCrossDistanceBase" jdbcType="REAL" />
+    <result column="W_CROSS_DISTANCE_FACTOR" property="wCrossDistanceFactor" jdbcType="REAL" />
+    <result column="W_ACCURACY_DIVISOR" property="wAccuracyDivisor" jdbcType="INTEGER" />
+    <result column="W_ACCURACY_OFFSET" property="wAccuracyOffset" jdbcType="REAL" />
+    <result column="W_MAX_INACCURACY" property="wMaxInaccuracy" jdbcType="REAL" />
+    <result column="W_PENETRATION" property="wPenetration" jdbcType="INTEGER" />
+    <result column="W_DAMAGE" property="wDamage" jdbcType="INTEGER" />
+    <result column="W_RANGE_MODIFIER" property="wRangeModifier" jdbcType="REAL" />
+    <result column="W_RANGE_START" property="wRangeStart" jdbcType="REAL" />
+    <result column="W_RANGE_END" property="wRangeEnd" jdbcType="REAL" />
+    <result column="W_FIRE_TIME" property="wFireTime" jdbcType="REAL" />
+    <result column="W_RELOAD_TIME" property="wReloadTime" jdbcType="REAL" />
+    <result column="W_ZOOM_TIME" property="wZoomTime" jdbcType="REAL" />
+    <result column="W_ZOOM_VALUE" property="wZoomValue" jdbcType="REAL" />
+    <result column="W_AMMO_ONE_CLIP" property="wAmmoOneClip" jdbcType="INTEGER" />
+    <result column="W_AMMO_COUNT" property="wAmmoCount" jdbcType="INTEGER" />
+    <result column="W_AUTO_FIRE" property="wAutoFire" jdbcType="INTEGER" />
+    <result column="W_TIME_TO_IDLE" property="wTimeToIdle" jdbcType="REAL" />
+    <result column="W_NORMAL_OFFSET" property="wNormalOffset" jdbcType="REAL" />
+    <result column="W_NORMAL_FACTOR" property="wNormalFactor" jdbcType="REAL" />
+    <result column="W_ONAIR_OFFSET" property="wOnairOffset" jdbcType="REAL" />
+    <result column="W_ONAIR_FACTOR" property="wOnairFactor" jdbcType="REAL" />
+    <result column="W_MOVE_OFFSET" property="wMoveOffset" jdbcType="REAL" />
+    <result column="W_MOVE_FACTOR" property="wMoveFactor" jdbcType="REAL" />
+    <result column="W_NORMAL_UP_BASE" property="wNormalUpBase" jdbcType="REAL" />
+    <result column="W_NORMAL_LATERAL_BASE" property="wNormalLateralBase" jdbcType="REAL" />
+    <result column="W_NORMAL_UP_MODIFIER" property="wNormalUpModifier" jdbcType="REAL" />
+    <result column="W_NORMAL_LATERAL_MODIFIER" property="wNormalLateralModifier" jdbcType="REAL" />
+    <result column="W_NORMAL_UP_MAX" property="wNormalUpMax" jdbcType="REAL" />
+    <result column="W_NORMAL_LATERAL_MAX" property="wNormalLateralMax" jdbcType="REAL" />
+    <result column="W_NORMAL_DIR_CHANGE" property="wNormalDirChange" jdbcType="REAL" />
+    <result column="W_MOVE_UP_BASE" property="wMoveUpBase" jdbcType="REAL" />
+    <result column="W_MOVE_LATERAL_BASE" property="wMoveLateralBase" jdbcType="REAL" />
+    <result column="W_MOVE_UP_MODIFIER" property="wMoveUpModifier" jdbcType="REAL" />
+    <result column="W_MOVE_LATERAL_MODIFIER" property="wMoveLateralModifier" jdbcType="REAL" />
+    <result column="W_MOVE_UP_MAX" property="wMoveUpMax" jdbcType="REAL" />
+    <result column="W_MOVE_LATERAL_MAX" property="wMoveLateralMax" jdbcType="REAL" />
+    <result column="W_MOVE_DIR_CHANGE" property="wMoveDirChange" jdbcType="REAL" />
+    <result column="W_ONAIR_UP_BASE" property="wOnairUpBase" jdbcType="REAL" />
+    <result column="W_ONAIR_LATERAL_BASE" property="wOnairLateralBase" jdbcType="REAL" />
+    <result column="W_ONAIR_UP_MODIFIER" property="wOnairUpModifier" jdbcType="REAL" />
+    <result column="W_ONAIR_LATERAL_MODIFIER" property="wOnairLateralModifier" jdbcType="REAL" />
+    <result column="W_ONAIR_UP_MAX" property="wOnairUpMax" jdbcType="REAL" />
+    <result column="W_ONAIR_LATERAL_MAX" property="wOnairLateralMax" jdbcType="REAL" />
+    <result column="W_ONAIR_DIR_CHANGE" property="wOnairDirChange" jdbcType="REAL" />
+    <result column="W_CROUCH_UP_BASE" property="wCrouchUpBase" jdbcType="REAL" />
+    <result column="W_CROUCH_LATERAL_BASE" property="wCrouchLateralBase" jdbcType="REAL" />
+    <result column="W_CROUCH_UP_MODIFIER" property="wCrouchUpModifier" jdbcType="REAL" />
+    <result column="W_CROUCH_LATERAL_MODIFIER" property="wCrouchLateralModifier" jdbcType="REAL" />
+    <result column="W_CROUCH_UP_MAX" property="wCrouchUpMax" jdbcType="REAL" />
+    <result column="W_CROUCH_LATERAL_MAX" property="wCrouchLateralMax" jdbcType="REAL" />
+    <result column="W_CROUCH_DIR_CHANGE" property="wCrouchDirChange" jdbcType="REAL" />
+    <result column="W_UP_MODIFIER" property="wUpModifier" jdbcType="REAL" />
+    <result column="W_ACCURACY_TIME" property="wAccuracyTime" jdbcType="REAL" />
+    <result column="W_ACCURACY_TIME_MODIFIER" property="wAccuracyTimeModifier" jdbcType="REAL" />
+    <result column="W_MAX_ACCURACY" property="wMaxAccuracy" jdbcType="REAL" />
+    <result column="W_MIN_ACCURACY" property="wMinAccuracy" jdbcType="REAL" />
+    <result column="W_SHOOT_BULLET_COUNT" property="wShootBulletCount" jdbcType="INTEGER" />
+    <result column="W_SPREAD" property="wSpread" jdbcType="REAL" />
+    <result column="W_FIRE_MAX_SPEED" property="wFireMaxSpeed" jdbcType="REAL" />
+    <result column="W_FIRE_START_SPEED" property="wFireStartSpeed" jdbcType="REAL" />
+    <result column="W_FIRE_ACELERATION" property="wFireAceleration" jdbcType="REAL" />
+    <result column="W_FIRE_RESISTANCE" property="wFireResistance" jdbcType="REAL" />
+    <result column="W_STAB_TIME" property="wStabTime" jdbcType="REAL" />
+    <result column="W_STAB_LIGHT_TIME" property="wStabLightTime" jdbcType="REAL" />
+    <result column="W_STAB_HURT" property="wStabHurt" jdbcType="REAL" />
+    <result column="W_STAB_LIGHT_HURT" property="wStabLightHurt" jdbcType="REAL" />
+    <result column="W_EXPLODE_TIME" property="wExplodeTime" jdbcType="REAL" />
+    <result column="W_READY_TIME" property="wReadyTime" jdbcType="REAL" />
+    <result column="W_THROW_OUT_TIME" property="wThrowOutTime" jdbcType="REAL" />
+    <result column="W_HURT_RANGE" property="wHurtRange" jdbcType="REAL" />
+    <result column="W_HURT" property="wHurt" jdbcType="REAL" />
+    <result column="C_ID" property="cId" jdbcType="INTEGER" />
+    <result column="I_ID" property="iId" jdbcType="INTEGER" />
+    <result column="I_VALUE" property="iValue" jdbcType="VARCHAR" />
+    <result column="W_X_OFFSET" property="wXOffset" jdbcType="INTEGER" />
+    <result column="W_SIGHT_NORMAL_OFFSET" property="wSightNormalOffset" jdbcType="REAL" />
+    <result column="W_SIGHT_ONAIR_OFFSET" property="wSightOnairOffset" jdbcType="REAL" />
+    <result column="W_SIGHT_MOVE_OFFSET" property="wSightMoveOffset" jdbcType="REAL" />
+    <result column="W_STAB_DISTANCE" property="wStabDistance" jdbcType="REAL" />
+    <result column="W_STAB_LIGHT_DISTANCE" property="wStabLightDistance" jdbcType="REAL" />
+    <result column="W_STAB_WIDTH" property="wStabWidth" jdbcType="REAL" />
+    <result column="W_BACK_FACTOR" property="wBackFactor" jdbcType="REAL" />
+    <result column="W_FLASH_RANGE_START" property="wFlashRangeStart" jdbcType="REAL" />
+    <result column="W_FLASH_RANGE_END" property="wFlashRangeEnd" jdbcType="REAL" />
+    <result column="W_FLASH_BACK_FACTOR" property="wFlashBackFactor" jdbcType="REAL" />
+    <result column="W_TIME_MAX" property="wTimeMax" jdbcType="REAL" />
+    <result column="W_TIME_FADE" property="wTimeFade" jdbcType="REAL" />
+    <result column="W_TIME" property="wTime" jdbcType="REAL" />
+    <result column="W_HIT_SPEED" property="wHitSpeed" jdbcType="REAL" />
+    <result column="W_HIT_ACCELERATION" property="wHitAcceleration" jdbcType="REAL" />
+    <result column="W_HIT_DISTANCE" property="wHitDistance" jdbcType="REAL" />
+    <result column="W_SIGHT_INFO" property="wSightInfo" jdbcType="VARCHAR" />
+    <result column="W_MAX_DISTANCE" property="wMaxDistance" jdbcType="REAL" />
+    <result column="W_ADD_BLOOD" property="wAddBlood" jdbcType="INTEGER" />
+    <result column="W_AMMO_TYPE" property="wAmmoType" jdbcType="INTEGER" />
+    <result column="W_FLY_SPEED" property="wFlySpeed" jdbcType="REAL" />
+    <result column="W_MAXALIVE_TIME" property="wMaxaliveTime" jdbcType="REAL" />
+    <result column="W_GRAVITY" property="wGravity" jdbcType="INTEGER" />
+    <result column="W_LAST_HURT" property="wLastHurt" jdbcType="REAL" />
+    <result column="W_LAST_TIME" property="wLastTime" jdbcType="REAL" />
+    <result column="W_SPECIAL_DISTANCE" property="wSpecialDistance" jdbcType="REAL" />
+    <result column="W_SPECIAL_RANGE" property="wSpecialRange" jdbcType="REAL" />
+    <result column="W_SPECIAL_LASTTIME" property="wSpecialLasttime" jdbcType="REAL" />
+    <result column="W_SPECIAL_HURT" property="wSpecialHurt" jdbcType="REAL" />
+    <result column="W_SPECIAL_LASTHURT" property="wSpecialLasthurt" jdbcType="REAL" />
+    <result column="W_PARTICLEMUN" property="wParticlemun" jdbcType="INTEGER" />
+    <result column="W_SHOW_SPEED" property="wShowSpeed" jdbcType="INTEGER" />
+    <result column="W_AMMOPART_KEY" property="wAmmopartKey" jdbcType="VARCHAR" />
+    <result column="W_CRIT_RATE" property="wCritRate" jdbcType="INTEGER" />
+    <result column="W_CRIT_AVAILABLE" property="wCritAvailable" jdbcType="INTEGER" />
+    <result column="CHARACTER_ID" property="characterId" jdbcType="VARCHAR" />
+    <result column="W_DMG_MODIFY_TIMER_MIN" property="wDmgModifyTimerMin" jdbcType="REAL" />
+    <result column="W_DMG_MODIFY_TIMER_MAX" property="wDmgModifyTimerMax" jdbcType="REAL" />
+    <result column="W_DMG_MODIFY_MIN" property="wDmgModifyMin" jdbcType="REAL" />
+    <result column="W_DMG_MODIFY_MAX" property="wDmgModifyMax" jdbcType="REAL" />
+    <result column="W_CAPSULE_HEIGHT" property="wCapsuleHeight" jdbcType="REAL" />
+    <result column="W_CAPSULE_RADIUS" property="wCapsuleRadius" jdbcType="REAL" />
+    <result column="W_DAMAGE_MODIFER" property="wDamageModifer" jdbcType="INTEGER" />
+    <result column="I_BUFF_ID" property="iBuffId" jdbcType="INTEGER" />
+    <result column="GUN_PROPERTY1" property="gunProperty1" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY2" property="gunProperty2" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY3" property="gunProperty3" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY4" property="gunProperty4" jdbcType="VARCHAR" />
+    <result column="IS_VIP" property="isVip" jdbcType="INTEGER" />
+    <result column="IS_NEW" property="isNew" jdbcType="INTEGER" />
+    <result column="IS_HOT" property="isHot" jdbcType="INTEGER" />
+    <result column="GUN_PROPERTY5" property="gunProperty5" jdbcType="VARCHAR" />
+    <result column="BACK_BOOST_PLUS" property="backBoostPlus" jdbcType="INTEGER" />
+    <result column="W_FIX_PRICE" property="wFixPrice" jdbcType="INTEGER" />
+    <result column="INDEX" property="index" jdbcType="INTEGER" />
+    <result column="GUN_PROPERTY6" property="gunProperty6" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY7" property="gunProperty7" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY8" property="gunProperty8" jdbcType="VARCHAR" />
+    <result column="C_RESISTANCE_FIRE" property="cResistanceFire" jdbcType="REAL" />
+    <result column="C_RESISTANCE_BLAST" property="cResistanceBlast" jdbcType="REAL" />
+    <result column="C_RESISTANCE_BULLET" property="cResistanceBullet" jdbcType="REAL" />
+    <result column="C_RESISTANCE_KNIFE" property="cResistanceKnife" jdbcType="REAL" />
+    <result column="C_BLOOD_ADD" property="cBloodAdd" jdbcType="INTEGER" />
+    <result column="IS_STRENGTHEN" property="isStrengthen" jdbcType="INTEGER" />
+    <result column="M_TYPE" property="mType" jdbcType="INTEGER" />
+    <result column="M_VALUE" property="mValue" jdbcType="INTEGER" />
+    <result column="IS_WEB" property="isWeb" jdbcType="INTEGER" />
+    <result column="FIGHT_NUM" property="fightNum" jdbcType="INTEGER" />
+    <result column="RARE_LEVEL" property="rareLevel" jdbcType="INTEGER" />
+    <result column="IS_POPULAR" property="isPopular" jdbcType="INTEGER" />
+    <result column="IS_EXCHANGE" property="isExchange" jdbcType="INTEGER" />
+    <result column="IS_ASSET" property="isAsset" jdbcType="INTEGER" />
+    <result column="STRENGTH_LEVEL" property="strengthLevel" jdbcType="INTEGER" />
+    <result column="EVALUATE_RMB" property="evaluateRmb" jdbcType="REAL" />
+    <result column="TEAM_LEVEL_OCCUPY_LENGTH" property="teamLevelOccupyLength" jdbcType="REAL" />
+    <result column="TEAM_LEVEL_OCCUPY_WIDTH" property="teamLevelOccupyWidth" jdbcType="REAL" />
+    <result column="NEED_TEAM_PLACE_LEVEL" property="needTeamPlaceLevel" jdbcType="INTEGER" />
+    <result column="TEAM_ITEM_UPGRADE_PRICE" property="teamItemUpgradePrice" jdbcType="REAL" />
+    <result column="TIME_FOR_BUILDING_UP" property="timeForBuildingUp" jdbcType="INTEGER" />
+    <result column="TIME_FOR_CREATE" property="timeForCreate" jdbcType="INTEGER" />
+    <result column="TIME_FOR_BUILD" property="timeForBuild" jdbcType="INTEGER" />
+    <result column="W_STAB_TIME1" property="wStabTime1" jdbcType="REAL" />
+    <result column="ITEMS" property="items" jdbcType="LONGVARCHAR" />
+    <result column="GUN_PROPERTY" property="gunProperty" jdbcType="LONGVARCHAR" />
+    <result column="SHOPPING_TYPE" property="shoppingType" jdbcType="INTEGER" />
+    <result column="SHOPPING_START_TIME" property="shoppingStartTime" jdbcType="TIMESTAMP" />
+    <result column="SHOPPING_END_TIME" property="shoppingEndTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, `NAME`, DISPLAY_NAME, RESOURCE_STABLE, RESOURCE_CHANGEABLE, TYPE, SUB_TYPE, LEVEL, 
+    IS_DELETED, MODIFIED_DESC, DESCRIPTION, W_ID, W_CHANGE_IN_TIME, W_MOVE_SPEED_OFFSET, 
+    W_CROSS_OFFSET, W_CROSS_LENGTH_BASE, W_CROSS_LENGTH_FACTOR, W_CROSS_DISTANCE_BASE, 
+    W_CROSS_DISTANCE_FACTOR, W_ACCURACY_DIVISOR, W_ACCURACY_OFFSET, W_MAX_INACCURACY, 
+    W_PENETRATION, W_DAMAGE, W_RANGE_MODIFIER, W_RANGE_START, W_RANGE_END, W_FIRE_TIME, 
+    W_RELOAD_TIME, W_ZOOM_TIME, W_ZOOM_VALUE, W_AMMO_ONE_CLIP, W_AMMO_COUNT, W_AUTO_FIRE, 
+    W_TIME_TO_IDLE, W_NORMAL_OFFSET, W_NORMAL_FACTOR, W_ONAIR_OFFSET, W_ONAIR_FACTOR, 
+    W_MOVE_OFFSET, W_MOVE_FACTOR, W_NORMAL_UP_BASE, W_NORMAL_LATERAL_BASE, W_NORMAL_UP_MODIFIER, 
+    W_NORMAL_LATERAL_MODIFIER, W_NORMAL_UP_MAX, W_NORMAL_LATERAL_MAX, W_NORMAL_DIR_CHANGE, 
+    W_MOVE_UP_BASE, W_MOVE_LATERAL_BASE, W_MOVE_UP_MODIFIER, W_MOVE_LATERAL_MODIFIER, 
+    W_MOVE_UP_MAX, W_MOVE_LATERAL_MAX, W_MOVE_DIR_CHANGE, W_ONAIR_UP_BASE, W_ONAIR_LATERAL_BASE, 
+    W_ONAIR_UP_MODIFIER, W_ONAIR_LATERAL_MODIFIER, W_ONAIR_UP_MAX, W_ONAIR_LATERAL_MAX, 
+    W_ONAIR_DIR_CHANGE, W_CROUCH_UP_BASE, W_CROUCH_LATERAL_BASE, W_CROUCH_UP_MODIFIER, 
+    W_CROUCH_LATERAL_MODIFIER, W_CROUCH_UP_MAX, W_CROUCH_LATERAL_MAX, W_CROUCH_DIR_CHANGE, 
+    W_UP_MODIFIER, W_ACCURACY_TIME, W_ACCURACY_TIME_MODIFIER, W_MAX_ACCURACY, W_MIN_ACCURACY, 
+    W_SHOOT_BULLET_COUNT, W_SPREAD, W_FIRE_MAX_SPEED, W_FIRE_START_SPEED, W_FIRE_ACELERATION, 
+    W_FIRE_RESISTANCE, W_STAB_TIME, W_STAB_LIGHT_TIME, W_STAB_HURT, W_STAB_LIGHT_HURT, 
+    W_EXPLODE_TIME, W_READY_TIME, W_THROW_OUT_TIME, W_HURT_RANGE, W_HURT, C_ID, I_ID, 
+    I_VALUE, W_X_OFFSET, W_SIGHT_NORMAL_OFFSET, W_SIGHT_ONAIR_OFFSET, W_SIGHT_MOVE_OFFSET, 
+    W_STAB_DISTANCE, W_STAB_LIGHT_DISTANCE, W_STAB_WIDTH, W_BACK_FACTOR, W_FLASH_RANGE_START, 
+    W_FLASH_RANGE_END, W_FLASH_BACK_FACTOR, W_TIME_MAX, W_TIME_FADE, W_TIME, W_HIT_SPEED, 
+    W_HIT_ACCELERATION, W_HIT_DISTANCE, W_SIGHT_INFO, W_MAX_DISTANCE, W_ADD_BLOOD, W_AMMO_TYPE, 
+    W_FLY_SPEED, W_MAXALIVE_TIME, W_GRAVITY, W_LAST_HURT, W_LAST_TIME, W_SPECIAL_DISTANCE, 
+    W_SPECIAL_RANGE, W_SPECIAL_LASTTIME, W_SPECIAL_HURT, W_SPECIAL_LASTHURT, W_PARTICLEMUN, 
+    W_SHOW_SPEED, W_AMMOPART_KEY, W_CRIT_RATE, W_CRIT_AVAILABLE, CHARACTER_ID, W_DMG_MODIFY_TIMER_MIN, 
+    W_DMG_MODIFY_TIMER_MAX, W_DMG_MODIFY_MIN, W_DMG_MODIFY_MAX, W_CAPSULE_HEIGHT, W_CAPSULE_RADIUS, 
+    W_DAMAGE_MODIFER, I_BUFF_ID, GUN_PROPERTY1, GUN_PROPERTY2, GUN_PROPERTY3, GUN_PROPERTY4, 
+    IS_VIP, IS_NEW, IS_HOT, GUN_PROPERTY5, BACK_BOOST_PLUS, W_FIX_PRICE, `INDEX`, GUN_PROPERTY6, 
+    GUN_PROPERTY7, GUN_PROPERTY8, C_RESISTANCE_FIRE, C_RESISTANCE_BLAST, C_RESISTANCE_BULLET, 
+    C_RESISTANCE_KNIFE, C_BLOOD_ADD, IS_STRENGTHEN, M_TYPE, M_VALUE, IS_WEB, FIGHT_NUM, 
+    RARE_LEVEL, IS_POPULAR, IS_EXCHANGE, IS_ASSET, STRENGTH_LEVEL, EVALUATE_RMB, TEAM_LEVEL_OCCUPY_LENGTH, 
+    TEAM_LEVEL_OCCUPY_WIDTH, NEED_TEAM_PLACE_LEVEL, TEAM_ITEM_UPGRADE_PRICE, TIME_FOR_BUILDING_UP, 
+    TIME_FOR_CREATE, TIME_FOR_BUILD, W_STAB_TIME1, SHOPPING_TYPE, SHOPPING_START_TIME, SHOPPING_END_TIME,
+    ITEMS, GUN_PROPERTY
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ITEM
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="ResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysItem" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ITEM where 1=1
+  </select> 
+  <select id="selectPage" resultMap="ResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ITEM where IS_DELETED = 'N'
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or DISPLAY_NAME like '%${searchValue}%' or `NAME` like '%${searchValue}%' )
+    </if>
+    <if test="specialSearch != null">
+    	<if test="specialSearch.type != null and specialSearch.type != 0">
+    	and `TYPE` = ${specialSearch.type}
+    	</if>
+    	<if test="specialSearch.subType != null and specialSearch.subType != 0">
+    	and `SUB_TYPE` = ${specialSearch.subType}
+    	</if>
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_ITEM where IS_DELETED = 'N'
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or DISPLAY_NAME like '%${searchValue}%' or `NAME` like '%${searchValue}%' )
+ 	 </if>
+    <if test="specialSearch != null">
+    	<if test="specialSearch.type != null and specialSearch.type != 0">
+    	and `TYPE` = ${specialSearch.type}
+    	</if>
+    	<if test="specialSearch.subType != null and specialSearch.subType != 0">
+    	and `SUB_TYPE` = ${specialSearch.subType}
+    	</if>
+    </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_ITEM
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysItem" >
+    insert into SYS_ITEM (ID, `NAME`, DISPLAY_NAME, 
+      RESOURCE_STABLE, RESOURCE_CHANGEABLE, TYPE, 
+      SUB_TYPE, LEVEL, IS_DELETED, 
+      MODIFIED_DESC, DESCRIPTION, W_ID, 
+      W_CHANGE_IN_TIME, W_MOVE_SPEED_OFFSET, W_CROSS_OFFSET, 
+      W_CROSS_LENGTH_BASE, W_CROSS_LENGTH_FACTOR, W_CROSS_DISTANCE_BASE, 
+      W_CROSS_DISTANCE_FACTOR, W_ACCURACY_DIVISOR, W_ACCURACY_OFFSET, 
+      W_MAX_INACCURACY, W_PENETRATION, W_DAMAGE, 
+      W_RANGE_MODIFIER, W_RANGE_START, W_RANGE_END, 
+      W_FIRE_TIME, W_RELOAD_TIME, W_ZOOM_TIME, 
+      W_ZOOM_VALUE, W_AMMO_ONE_CLIP, W_AMMO_COUNT, 
+      W_AUTO_FIRE, W_TIME_TO_IDLE, W_NORMAL_OFFSET, 
+      W_NORMAL_FACTOR, W_ONAIR_OFFSET, W_ONAIR_FACTOR, 
+      W_MOVE_OFFSET, W_MOVE_FACTOR, W_NORMAL_UP_BASE, 
+      W_NORMAL_LATERAL_BASE, W_NORMAL_UP_MODIFIER, W_NORMAL_LATERAL_MODIFIER, 
+      W_NORMAL_UP_MAX, W_NORMAL_LATERAL_MAX, W_NORMAL_DIR_CHANGE, 
+      W_MOVE_UP_BASE, W_MOVE_LATERAL_BASE, W_MOVE_UP_MODIFIER, 
+      W_MOVE_LATERAL_MODIFIER, W_MOVE_UP_MAX, W_MOVE_LATERAL_MAX, 
+      W_MOVE_DIR_CHANGE, W_ONAIR_UP_BASE, W_ONAIR_LATERAL_BASE, 
+      W_ONAIR_UP_MODIFIER, W_ONAIR_LATERAL_MODIFIER, W_ONAIR_UP_MAX, 
+      W_ONAIR_LATERAL_MAX, W_ONAIR_DIR_CHANGE, W_CROUCH_UP_BASE, 
+      W_CROUCH_LATERAL_BASE, W_CROUCH_UP_MODIFIER, W_CROUCH_LATERAL_MODIFIER, 
+      W_CROUCH_UP_MAX, W_CROUCH_LATERAL_MAX, W_CROUCH_DIR_CHANGE, 
+      W_UP_MODIFIER, W_ACCURACY_TIME, W_ACCURACY_TIME_MODIFIER, 
+      W_MAX_ACCURACY, W_MIN_ACCURACY, W_SHOOT_BULLET_COUNT, 
+      W_SPREAD, W_FIRE_MAX_SPEED, W_FIRE_START_SPEED, 
+      W_FIRE_ACELERATION, W_FIRE_RESISTANCE, W_STAB_TIME, 
+      W_STAB_LIGHT_TIME, W_STAB_HURT, W_STAB_LIGHT_HURT, 
+      W_EXPLODE_TIME, W_READY_TIME, W_THROW_OUT_TIME, 
+      W_HURT_RANGE, W_HURT, C_ID, I_ID, 
+      I_VALUE, W_X_OFFSET, W_SIGHT_NORMAL_OFFSET, 
+      W_SIGHT_ONAIR_OFFSET, W_SIGHT_MOVE_OFFSET, W_STAB_DISTANCE, 
+      W_STAB_LIGHT_DISTANCE, W_STAB_WIDTH, W_BACK_FACTOR, 
+      W_FLASH_RANGE_START, W_FLASH_RANGE_END, W_FLASH_BACK_FACTOR, 
+      W_TIME_MAX, W_TIME_FADE, W_TIME, 
+      W_HIT_SPEED, W_HIT_ACCELERATION, W_HIT_DISTANCE, 
+      W_SIGHT_INFO, W_MAX_DISTANCE, W_ADD_BLOOD, 
+      W_AMMO_TYPE, W_FLY_SPEED, W_MAXALIVE_TIME, 
+      W_GRAVITY, W_LAST_HURT, W_LAST_TIME, 
+      W_SPECIAL_DISTANCE, W_SPECIAL_RANGE, W_SPECIAL_LASTTIME, 
+      W_SPECIAL_HURT, W_SPECIAL_LASTHURT, W_PARTICLEMUN, 
+      W_SHOW_SPEED, W_AMMOPART_KEY, W_CRIT_RATE, 
+      W_CRIT_AVAILABLE, CHARACTER_ID, W_DMG_MODIFY_TIMER_MIN, 
+      W_DMG_MODIFY_TIMER_MAX, W_DMG_MODIFY_MIN, W_DMG_MODIFY_MAX, 
+      W_CAPSULE_HEIGHT, W_CAPSULE_RADIUS, W_DAMAGE_MODIFER, 
+      I_BUFF_ID, GUN_PROPERTY1, GUN_PROPERTY2, 
+      GUN_PROPERTY3, GUN_PROPERTY4, IS_VIP, 
+      IS_NEW, IS_HOT, GUN_PROPERTY5, 
+      BACK_BOOST_PLUS, W_FIX_PRICE, `INDEX`, 
+      GUN_PROPERTY6, GUN_PROPERTY7, GUN_PROPERTY8, 
+      C_RESISTANCE_FIRE, C_RESISTANCE_BLAST, C_RESISTANCE_BULLET, 
+      C_RESISTANCE_KNIFE, C_BLOOD_ADD, IS_STRENGTHEN, 
+      M_TYPE, M_VALUE, IS_WEB, 
+      FIGHT_NUM, RARE_LEVEL, IS_POPULAR, 
+      IS_EXCHANGE, IS_ASSET, STRENGTH_LEVEL, 
+      EVALUATE_RMB, TEAM_LEVEL_OCCUPY_LENGTH, TEAM_LEVEL_OCCUPY_WIDTH, 
+      NEED_TEAM_PLACE_LEVEL, TEAM_ITEM_UPGRADE_PRICE, 
+      TIME_FOR_BUILDING_UP, TIME_FOR_CREATE, TIME_FOR_BUILD, 
+      W_STAB_TIME1, ITEMS, GUN_PROPERTY, SHOPPING_TYPE, SHOPPING_START_TIME, SHOPPING_END_TIME
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
+      #{resourceStable,jdbcType=VARCHAR}, #{resourceChangeable,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{subType,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{isDeleted,jdbcType=CHAR}, 
+      #{modifiedDesc,jdbcType=CHAR}, #{description,jdbcType=VARCHAR}, #{wId,jdbcType=INTEGER}, 
+      #{wChangeInTime,jdbcType=REAL}, #{wMoveSpeedOffset,jdbcType=REAL}, #{wCrossOffset,jdbcType=REAL}, 
+      #{wCrossLengthBase,jdbcType=REAL}, #{wCrossLengthFactor,jdbcType=REAL}, #{wCrossDistanceBase,jdbcType=REAL}, 
+      #{wCrossDistanceFactor,jdbcType=REAL}, #{wAccuracyDivisor,jdbcType=INTEGER}, #{wAccuracyOffset,jdbcType=REAL}, 
+      #{wMaxInaccuracy,jdbcType=REAL}, #{wPenetration,jdbcType=INTEGER}, #{wDamage,jdbcType=INTEGER}, 
+      #{wRangeModifier,jdbcType=REAL}, #{wRangeStart,jdbcType=REAL}, #{wRangeEnd,jdbcType=REAL}, 
+      #{wFireTime,jdbcType=REAL}, #{wReloadTime,jdbcType=REAL}, #{wZoomTime,jdbcType=REAL}, 
+      #{wZoomValue,jdbcType=REAL}, #{wAmmoOneClip,jdbcType=INTEGER}, #{wAmmoCount,jdbcType=INTEGER}, 
+      #{wAutoFire,jdbcType=INTEGER}, #{wTimeToIdle,jdbcType=REAL}, #{wNormalOffset,jdbcType=REAL}, 
+      #{wNormalFactor,jdbcType=REAL}, #{wOnairOffset,jdbcType=REAL}, #{wOnairFactor,jdbcType=REAL}, 
+      #{wMoveOffset,jdbcType=REAL}, #{wMoveFactor,jdbcType=REAL}, #{wNormalUpBase,jdbcType=REAL}, 
+      #{wNormalLateralBase,jdbcType=REAL}, #{wNormalUpModifier,jdbcType=REAL}, #{wNormalLateralModifier,jdbcType=REAL}, 
+      #{wNormalUpMax,jdbcType=REAL}, #{wNormalLateralMax,jdbcType=REAL}, #{wNormalDirChange,jdbcType=REAL}, 
+      #{wMoveUpBase,jdbcType=REAL}, #{wMoveLateralBase,jdbcType=REAL}, #{wMoveUpModifier,jdbcType=REAL}, 
+      #{wMoveLateralModifier,jdbcType=REAL}, #{wMoveUpMax,jdbcType=REAL}, #{wMoveLateralMax,jdbcType=REAL}, 
+      #{wMoveDirChange,jdbcType=REAL}, #{wOnairUpBase,jdbcType=REAL}, #{wOnairLateralBase,jdbcType=REAL}, 
+      #{wOnairUpModifier,jdbcType=REAL}, #{wOnairLateralModifier,jdbcType=REAL}, #{wOnairUpMax,jdbcType=REAL}, 
+      #{wOnairLateralMax,jdbcType=REAL}, #{wOnairDirChange,jdbcType=REAL}, #{wCrouchUpBase,jdbcType=REAL}, 
+      #{wCrouchLateralBase,jdbcType=REAL}, #{wCrouchUpModifier,jdbcType=REAL}, #{wCrouchLateralModifier,jdbcType=REAL}, 
+      #{wCrouchUpMax,jdbcType=REAL}, #{wCrouchLateralMax,jdbcType=REAL}, #{wCrouchDirChange,jdbcType=REAL}, 
+      #{wUpModifier,jdbcType=REAL}, #{wAccuracyTime,jdbcType=REAL}, #{wAccuracyTimeModifier,jdbcType=REAL}, 
+      #{wMaxAccuracy,jdbcType=REAL}, #{wMinAccuracy,jdbcType=REAL}, #{wShootBulletCount,jdbcType=INTEGER}, 
+      #{wSpread,jdbcType=REAL}, #{wFireMaxSpeed,jdbcType=REAL}, #{wFireStartSpeed,jdbcType=REAL}, 
+      #{wFireAceleration,jdbcType=REAL}, #{wFireResistance,jdbcType=REAL}, #{wStabTime,jdbcType=REAL}, 
+      #{wStabLightTime,jdbcType=REAL}, #{wStabHurt,jdbcType=REAL}, #{wStabLightHurt,jdbcType=REAL}, 
+      #{wExplodeTime,jdbcType=REAL}, #{wReadyTime,jdbcType=REAL}, #{wThrowOutTime,jdbcType=REAL}, 
+      #{wHurtRange,jdbcType=REAL}, #{wHurt,jdbcType=REAL}, #{cId,jdbcType=INTEGER}, #{iId,jdbcType=INTEGER}, 
+      #{iValue,jdbcType=VARCHAR}, #{wXOffset,jdbcType=INTEGER}, #{wSightNormalOffset,jdbcType=REAL}, 
+      #{wSightOnairOffset,jdbcType=REAL}, #{wSightMoveOffset,jdbcType=REAL}, #{wStabDistance,jdbcType=REAL}, 
+      #{wStabLightDistance,jdbcType=REAL}, #{wStabWidth,jdbcType=REAL}, #{wBackFactor,jdbcType=REAL}, 
+      #{wFlashRangeStart,jdbcType=REAL}, #{wFlashRangeEnd,jdbcType=REAL}, #{wFlashBackFactor,jdbcType=REAL}, 
+      #{wTimeMax,jdbcType=REAL}, #{wTimeFade,jdbcType=REAL}, #{wTime,jdbcType=REAL}, 
+      #{wHitSpeed,jdbcType=REAL}, #{wHitAcceleration,jdbcType=REAL}, #{wHitDistance,jdbcType=REAL}, 
+      #{wSightInfo,jdbcType=VARCHAR}, #{wMaxDistance,jdbcType=REAL}, #{wAddBlood,jdbcType=INTEGER}, 
+      #{wAmmoType,jdbcType=INTEGER}, #{wFlySpeed,jdbcType=REAL}, #{wMaxaliveTime,jdbcType=REAL}, 
+      #{wGravity,jdbcType=INTEGER}, #{wLastHurt,jdbcType=REAL}, #{wLastTime,jdbcType=REAL}, 
+      #{wSpecialDistance,jdbcType=REAL}, #{wSpecialRange,jdbcType=REAL}, #{wSpecialLasttime,jdbcType=REAL}, 
+      #{wSpecialHurt,jdbcType=REAL}, #{wSpecialLasthurt,jdbcType=REAL}, #{wParticlemun,jdbcType=INTEGER}, 
+      #{wShowSpeed,jdbcType=INTEGER}, #{wAmmopartKey,jdbcType=VARCHAR}, #{wCritRate,jdbcType=INTEGER}, 
+      #{wCritAvailable,jdbcType=INTEGER}, #{characterId,jdbcType=VARCHAR}, #{wDmgModifyTimerMin,jdbcType=REAL}, 
+      #{wDmgModifyTimerMax,jdbcType=REAL}, #{wDmgModifyMin,jdbcType=REAL}, #{wDmgModifyMax,jdbcType=REAL}, 
+      #{wCapsuleHeight,jdbcType=REAL}, #{wCapsuleRadius,jdbcType=REAL}, #{wDamageModifer,jdbcType=INTEGER}, 
+      #{iBuffId,jdbcType=INTEGER}, #{gunProperty1,jdbcType=VARCHAR}, #{gunProperty2,jdbcType=VARCHAR}, 
+      #{gunProperty3,jdbcType=VARCHAR}, #{gunProperty4,jdbcType=VARCHAR}, #{isVip,jdbcType=INTEGER}, 
+      #{isNew,jdbcType=INTEGER}, #{isHot,jdbcType=INTEGER}, #{gunProperty5,jdbcType=VARCHAR}, 
+      #{backBoostPlus,jdbcType=INTEGER}, #{wFixPrice,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, 
+      #{gunProperty6,jdbcType=VARCHAR}, #{gunProperty7,jdbcType=VARCHAR}, #{gunProperty8,jdbcType=VARCHAR}, 
+      #{cResistanceFire,jdbcType=REAL}, #{cResistanceBlast,jdbcType=REAL}, #{cResistanceBullet,jdbcType=REAL}, 
+      #{cResistanceKnife,jdbcType=REAL}, #{cBloodAdd,jdbcType=INTEGER}, #{isStrengthen,jdbcType=INTEGER}, 
+      #{mType,jdbcType=INTEGER}, #{mValue,jdbcType=INTEGER}, #{isWeb,jdbcType=INTEGER}, 
+      #{fightNum,jdbcType=INTEGER}, #{rareLevel,jdbcType=INTEGER}, #{isPopular,jdbcType=INTEGER}, 
+      #{isExchange,jdbcType=INTEGER}, #{isAsset,jdbcType=INTEGER}, #{strengthLevel,jdbcType=INTEGER}, 
+      #{evaluateRmb,jdbcType=REAL}, #{teamLevelOccupyLength,jdbcType=REAL}, #{teamLevelOccupyWidth,jdbcType=REAL}, 
+      #{needTeamPlaceLevel,jdbcType=INTEGER}, #{teamItemUpgradePrice,jdbcType=REAL}, 
+      #{timeForBuildingUp,jdbcType=INTEGER}, #{timeForCreate,jdbcType=INTEGER}, #{timeForBuild,jdbcType=INTEGER}, 
+      #{wStabTime1,jdbcType=REAL}, #{items,jdbcType=LONGVARCHAR}, #{gunProperty,jdbcType=LONGVARCHAR}, 
+      #{shoppingType,jdbcType=INTEGER}, #{shoppingStartTime,jdbcType=TIMESTAMP}, #{shoppingEndTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="replace" parameterType="com.pearl.fcw.gm.pojo.WSysItem" >
+    replace into SYS_ITEM (ID, `NAME`, DISPLAY_NAME, 
+      RESOURCE_STABLE, RESOURCE_CHANGEABLE, TYPE, 
+      SUB_TYPE, LEVEL, IS_DELETED, 
+      MODIFIED_DESC, DESCRIPTION, W_ID, 
+      W_CHANGE_IN_TIME, W_MOVE_SPEED_OFFSET, W_CROSS_OFFSET, 
+      W_CROSS_LENGTH_BASE, W_CROSS_LENGTH_FACTOR, W_CROSS_DISTANCE_BASE, 
+      W_CROSS_DISTANCE_FACTOR, W_ACCURACY_DIVISOR, W_ACCURACY_OFFSET, 
+      W_MAX_INACCURACY, W_PENETRATION, W_DAMAGE, 
+      W_RANGE_MODIFIER, W_RANGE_START, W_RANGE_END, 
+      W_FIRE_TIME, W_RELOAD_TIME, W_ZOOM_TIME, 
+      W_ZOOM_VALUE, W_AMMO_ONE_CLIP, W_AMMO_COUNT, 
+      W_AUTO_FIRE, W_TIME_TO_IDLE, W_NORMAL_OFFSET, 
+      W_NORMAL_FACTOR, W_ONAIR_OFFSET, W_ONAIR_FACTOR, 
+      W_MOVE_OFFSET, W_MOVE_FACTOR, W_NORMAL_UP_BASE, 
+      W_NORMAL_LATERAL_BASE, W_NORMAL_UP_MODIFIER, W_NORMAL_LATERAL_MODIFIER, 
+      W_NORMAL_UP_MAX, W_NORMAL_LATERAL_MAX, W_NORMAL_DIR_CHANGE, 
+      W_MOVE_UP_BASE, W_MOVE_LATERAL_BASE, W_MOVE_UP_MODIFIER, 
+      W_MOVE_LATERAL_MODIFIER, W_MOVE_UP_MAX, W_MOVE_LATERAL_MAX, 
+      W_MOVE_DIR_CHANGE, W_ONAIR_UP_BASE, W_ONAIR_LATERAL_BASE, 
+      W_ONAIR_UP_MODIFIER, W_ONAIR_LATERAL_MODIFIER, W_ONAIR_UP_MAX, 
+      W_ONAIR_LATERAL_MAX, W_ONAIR_DIR_CHANGE, W_CROUCH_UP_BASE, 
+      W_CROUCH_LATERAL_BASE, W_CROUCH_UP_MODIFIER, W_CROUCH_LATERAL_MODIFIER, 
+      W_CROUCH_UP_MAX, W_CROUCH_LATERAL_MAX, W_CROUCH_DIR_CHANGE, 
+      W_UP_MODIFIER, W_ACCURACY_TIME, W_ACCURACY_TIME_MODIFIER, 
+      W_MAX_ACCURACY, W_MIN_ACCURACY, W_SHOOT_BULLET_COUNT, 
+      W_SPREAD, W_FIRE_MAX_SPEED, W_FIRE_START_SPEED, 
+      W_FIRE_ACELERATION, W_FIRE_RESISTANCE, W_STAB_TIME, 
+      W_STAB_LIGHT_TIME, W_STAB_HURT, W_STAB_LIGHT_HURT, 
+      W_EXPLODE_TIME, W_READY_TIME, W_THROW_OUT_TIME, 
+      W_HURT_RANGE, W_HURT, C_ID, I_ID, 
+      I_VALUE, W_X_OFFSET, W_SIGHT_NORMAL_OFFSET, 
+      W_SIGHT_ONAIR_OFFSET, W_SIGHT_MOVE_OFFSET, W_STAB_DISTANCE, 
+      W_STAB_LIGHT_DISTANCE, W_STAB_WIDTH, W_BACK_FACTOR, 
+      W_FLASH_RANGE_START, W_FLASH_RANGE_END, W_FLASH_BACK_FACTOR, 
+      W_TIME_MAX, W_TIME_FADE, W_TIME, 
+      W_HIT_SPEED, W_HIT_ACCELERATION, W_HIT_DISTANCE, 
+      W_SIGHT_INFO, W_MAX_DISTANCE, W_ADD_BLOOD, 
+      W_AMMO_TYPE, W_FLY_SPEED, W_MAXALIVE_TIME, 
+      W_GRAVITY, W_LAST_HURT, W_LAST_TIME, 
+      W_SPECIAL_DISTANCE, W_SPECIAL_RANGE, W_SPECIAL_LASTTIME, 
+      W_SPECIAL_HURT, W_SPECIAL_LASTHURT, W_PARTICLEMUN, 
+      W_SHOW_SPEED, W_AMMOPART_KEY, W_CRIT_RATE, 
+      W_CRIT_AVAILABLE, CHARACTER_ID, W_DMG_MODIFY_TIMER_MIN, 
+      W_DMG_MODIFY_TIMER_MAX, W_DMG_MODIFY_MIN, W_DMG_MODIFY_MAX, 
+      W_CAPSULE_HEIGHT, W_CAPSULE_RADIUS, W_DAMAGE_MODIFER, 
+      I_BUFF_ID, GUN_PROPERTY1, GUN_PROPERTY2, 
+      GUN_PROPERTY3, GUN_PROPERTY4, IS_VIP, 
+      IS_NEW, IS_HOT, GUN_PROPERTY5, 
+      BACK_BOOST_PLUS, W_FIX_PRICE, `INDEX`, 
+      GUN_PROPERTY6, GUN_PROPERTY7, GUN_PROPERTY8, 
+      C_RESISTANCE_FIRE, C_RESISTANCE_BLAST, C_RESISTANCE_BULLET, 
+      C_RESISTANCE_KNIFE, C_BLOOD_ADD, IS_STRENGTHEN, 
+      M_TYPE, M_VALUE, IS_WEB, 
+      FIGHT_NUM, RARE_LEVEL, IS_POPULAR, 
+      IS_EXCHANGE, IS_ASSET, STRENGTH_LEVEL, 
+      EVALUATE_RMB, TEAM_LEVEL_OCCUPY_LENGTH, TEAM_LEVEL_OCCUPY_WIDTH, 
+      NEED_TEAM_PLACE_LEVEL, TEAM_ITEM_UPGRADE_PRICE, 
+      TIME_FOR_BUILDING_UP, TIME_FOR_CREATE, TIME_FOR_BUILD, 
+      W_STAB_TIME1, ITEMS, GUN_PROPERTY, SHOPPING_TYPE, SHOPPING_START_TIME, SHOPPING_END_TIME
+      )
+      values
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+     (#{item.id,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, #{item.displayName,jdbcType=VARCHAR}, 
+      #{item.resourceStable,jdbcType=VARCHAR}, #{item.resourceChangeable,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+      #{item.subType,jdbcType=INTEGER}, #{item.level,jdbcType=INTEGER}, #{item.isDeleted,jdbcType=CHAR}, 
+      #{item.modifiedDesc,jdbcType=CHAR}, #{item.description,jdbcType=VARCHAR}, #{item.wId,jdbcType=INTEGER}, 
+      #{item.wChangeInTime,jdbcType=REAL}, #{item.wMoveSpeedOffset,jdbcType=REAL}, #{item.wCrossOffset,jdbcType=REAL}, 
+      #{item.wCrossLengthBase,jdbcType=REAL}, #{item.wCrossLengthFactor,jdbcType=REAL}, #{item.wCrossDistanceBase,jdbcType=REAL}, 
+      #{item.wCrossDistanceFactor,jdbcType=REAL}, #{item.wAccuracyDivisor,jdbcType=INTEGER}, #{item.wAccuracyOffset,jdbcType=REAL}, 
+      #{item.wMaxInaccuracy,jdbcType=REAL}, #{item.wPenetration,jdbcType=INTEGER}, #{item.wDamage,jdbcType=INTEGER}, 
+      #{item.wRangeModifier,jdbcType=REAL}, #{item.wRangeStart,jdbcType=REAL}, #{item.wRangeEnd,jdbcType=REAL}, 
+      #{item.wFireTime,jdbcType=REAL}, #{item.wReloadTime,jdbcType=REAL}, #{item.wZoomTime,jdbcType=REAL}, 
+      #{item.wZoomValue,jdbcType=REAL}, #{item.wAmmoOneClip,jdbcType=INTEGER}, #{item.wAmmoCount,jdbcType=INTEGER}, 
+      #{item.wAutoFire,jdbcType=INTEGER}, #{item.wTimeToIdle,jdbcType=REAL}, #{item.wNormalOffset,jdbcType=REAL}, 
+      #{item.wNormalFactor,jdbcType=REAL}, #{item.wOnairOffset,jdbcType=REAL}, #{item.wOnairFactor,jdbcType=REAL}, 
+      #{item.wMoveOffset,jdbcType=REAL}, #{item.wMoveFactor,jdbcType=REAL}, #{item.wNormalUpBase,jdbcType=REAL}, 
+      #{item.wNormalLateralBase,jdbcType=REAL}, #{item.wNormalUpModifier,jdbcType=REAL}, #{item.wNormalLateralModifier,jdbcType=REAL}, 
+      #{item.wNormalUpMax,jdbcType=REAL}, #{item.wNormalLateralMax,jdbcType=REAL}, #{item.wNormalDirChange,jdbcType=REAL}, 
+      #{item.wMoveUpBase,jdbcType=REAL}, #{item.wMoveLateralBase,jdbcType=REAL}, #{item.wMoveUpModifier,jdbcType=REAL}, 
+      #{item.wMoveLateralModifier,jdbcType=REAL}, #{item.wMoveUpMax,jdbcType=REAL}, #{item.wMoveLateralMax,jdbcType=REAL}, 
+      #{item.wMoveDirChange,jdbcType=REAL}, #{item.wOnairUpBase,jdbcType=REAL}, #{item.wOnairLateralBase,jdbcType=REAL}, 
+      #{item.wOnairUpModifier,jdbcType=REAL}, #{item.wOnairLateralModifier,jdbcType=REAL}, #{item.wOnairUpMax,jdbcType=REAL}, 
+      #{item.wOnairLateralMax,jdbcType=REAL}, #{item.wOnairDirChange,jdbcType=REAL}, #{item.wCrouchUpBase,jdbcType=REAL}, 
+      #{item.wCrouchLateralBase,jdbcType=REAL}, #{item.wCrouchUpModifier,jdbcType=REAL}, #{item.wCrouchLateralModifier,jdbcType=REAL}, 
+      #{item.wCrouchUpMax,jdbcType=REAL}, #{item.wCrouchLateralMax,jdbcType=REAL}, #{item.wCrouchDirChange,jdbcType=REAL}, 
+      #{item.wUpModifier,jdbcType=REAL}, #{item.wAccuracyTime,jdbcType=REAL}, #{item.wAccuracyTimeModifier,jdbcType=REAL}, 
+      #{item.wMaxAccuracy,jdbcType=REAL}, #{item.wMinAccuracy,jdbcType=REAL}, #{item.wShootBulletCount,jdbcType=INTEGER}, 
+      #{item.wSpread,jdbcType=REAL}, #{item.wFireMaxSpeed,jdbcType=REAL}, #{item.wFireStartSpeed,jdbcType=REAL}, 
+      #{item.wFireAceleration,jdbcType=REAL}, #{item.wFireResistance,jdbcType=REAL}, #{item.wStabTime,jdbcType=REAL}, 
+      #{item.wStabLightTime,jdbcType=REAL}, #{item.wStabHurt,jdbcType=REAL}, #{item.wStabLightHurt,jdbcType=REAL}, 
+      #{item.wExplodeTime,jdbcType=REAL}, #{item.wReadyTime,jdbcType=REAL}, #{item.wThrowOutTime,jdbcType=REAL}, 
+      #{item.wHurtRange,jdbcType=REAL}, #{item.wHurt,jdbcType=REAL}, #{item.cId,jdbcType=INTEGER}, #{item.iId,jdbcType=INTEGER}, 
+      #{item.iValue,jdbcType=VARCHAR}, #{item.wXOffset,jdbcType=INTEGER}, #{item.wSightNormalOffset,jdbcType=REAL}, 
+      #{item.wSightOnairOffset,jdbcType=REAL}, #{item.wSightMoveOffset,jdbcType=REAL}, #{item.wStabDistance,jdbcType=REAL}, 
+      #{item.wStabLightDistance,jdbcType=REAL}, #{item.wStabWidth,jdbcType=REAL}, #{item.wBackFactor,jdbcType=REAL}, 
+      #{item.wFlashRangeStart,jdbcType=REAL}, #{item.wFlashRangeEnd,jdbcType=REAL}, #{item.wFlashBackFactor,jdbcType=REAL}, 
+      #{item.wTimeMax,jdbcType=REAL}, #{item.wTimeFade,jdbcType=REAL}, #{item.wTime,jdbcType=REAL}, 
+      #{item.wHitSpeed,jdbcType=REAL}, #{item.wHitAcceleration,jdbcType=REAL}, #{item.wHitDistance,jdbcType=REAL}, 
+      #{item.wSightInfo,jdbcType=VARCHAR}, #{item.wMaxDistance,jdbcType=REAL}, #{item.wAddBlood,jdbcType=INTEGER}, 
+      #{item.wAmmoType,jdbcType=INTEGER}, #{item.wFlySpeed,jdbcType=REAL}, #{item.wMaxaliveTime,jdbcType=REAL}, 
+      #{item.wGravity,jdbcType=INTEGER}, #{item.wLastHurt,jdbcType=REAL}, #{item.wLastTime,jdbcType=REAL}, 
+      #{item.wSpecialDistance,jdbcType=REAL}, #{item.wSpecialRange,jdbcType=REAL}, #{item.wSpecialLasttime,jdbcType=REAL}, 
+      #{item.wSpecialHurt,jdbcType=REAL}, #{item.wSpecialLasthurt,jdbcType=REAL}, #{item.wParticlemun,jdbcType=INTEGER}, 
+      #{item.wShowSpeed,jdbcType=INTEGER}, #{item.wAmmopartKey,jdbcType=VARCHAR}, #{item.wCritRate,jdbcType=INTEGER}, 
+      #{item.wCritAvailable,jdbcType=INTEGER}, #{item.characterId,jdbcType=VARCHAR}, #{item.wDmgModifyTimerMin,jdbcType=REAL}, 
+      #{item.wDmgModifyTimerMax,jdbcType=REAL}, #{item.wDmgModifyMin,jdbcType=REAL}, #{item.wDmgModifyMax,jdbcType=REAL}, 
+      #{item.wCapsuleHeight,jdbcType=REAL}, #{item.wCapsuleRadius,jdbcType=REAL}, #{item.wDamageModifer,jdbcType=INTEGER}, 
+      #{item.iBuffId,jdbcType=INTEGER}, #{item.gunProperty1,jdbcType=VARCHAR}, #{item.gunProperty2,jdbcType=VARCHAR}, 
+      #{item.gunProperty3,jdbcType=VARCHAR}, #{item.gunProperty4,jdbcType=VARCHAR}, #{item.isVip,jdbcType=INTEGER}, 
+      #{item.isNew,jdbcType=INTEGER}, #{item.isHot,jdbcType=INTEGER}, #{item.gunProperty5,jdbcType=VARCHAR}, 
+      #{item.backBoostPlus,jdbcType=INTEGER}, #{item.wFixPrice,jdbcType=INTEGER}, #{item.index,jdbcType=INTEGER}, 
+      #{item.gunProperty6,jdbcType=VARCHAR}, #{item.gunProperty7,jdbcType=VARCHAR}, #{item.gunProperty8,jdbcType=VARCHAR}, 
+      #{item.cResistanceFire,jdbcType=REAL}, #{item.cResistanceBlast,jdbcType=REAL}, #{item.cResistanceBullet,jdbcType=REAL}, 
+      #{item.cResistanceKnife,jdbcType=REAL}, #{item.cBloodAdd,jdbcType=INTEGER}, #{item.isStrengthen,jdbcType=INTEGER}, 
+      #{item.mType,jdbcType=INTEGER}, #{item.mValue,jdbcType=INTEGER}, #{item.isWeb,jdbcType=INTEGER}, 
+      #{item.fightNum,jdbcType=INTEGER}, #{item.rareLevel,jdbcType=INTEGER}, #{item.isPopular,jdbcType=INTEGER}, 
+      #{item.isExchange,jdbcType=INTEGER}, #{item.isAsset,jdbcType=INTEGER}, #{item.strengthLevel,jdbcType=INTEGER}, 
+      #{item.evaluateRmb,jdbcType=REAL}, #{item.teamLevelOccupyLength,jdbcType=REAL}, #{item.teamLevelOccupyWidth,jdbcType=REAL}, 
+      #{item.needTeamPlaceLevel,jdbcType=INTEGER}, #{item.teamItemUpgradePrice,jdbcType=REAL}, 
+      #{item.timeForBuildingUp,jdbcType=INTEGER}, #{item.timeForCreate,jdbcType=INTEGER}, #{item.timeForBuild,jdbcType=INTEGER}, 
+      #{item.wStabTime1,jdbcType=REAL}, #{item.items,jdbcType=LONGVARCHAR}, #{item.gunProperty,jdbcType=LONGVARCHAR}, 
+      #{item.shoppingType,jdbcType=INTEGER}, #{item.shoppingStartTime,jdbcType=TIMESTAMP}, #{item.shoppingEndTime,jdbcType=TIMESTAMP}
+      )
+		</foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysItem" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_ITEM
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        `NAME`,
+      </if>
+      <if test="displayName != null" >
+        DISPLAY_NAME,
+      </if>
+      <if test="resourceStable != null" >
+        RESOURCE_STABLE,
+      </if>
+      <if test="resourceChangeable != null" >
+        RESOURCE_CHANGEABLE,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="subType != null" >
+        SUB_TYPE,
+      </if>
+      <if test="level != null" >
+        LEVEL,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="modifiedDesc != null" >
+        MODIFIED_DESC,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="wId != null" >
+        W_ID,
+      </if>
+      <if test="wChangeInTime != null" >
+        W_CHANGE_IN_TIME,
+      </if>
+      <if test="wMoveSpeedOffset != null" >
+        W_MOVE_SPEED_OFFSET,
+      </if>
+      <if test="wCrossOffset != null" >
+        W_CROSS_OFFSET,
+      </if>
+      <if test="wCrossLengthBase != null" >
+        W_CROSS_LENGTH_BASE,
+      </if>
+      <if test="wCrossLengthFactor != null" >
+        W_CROSS_LENGTH_FACTOR,
+      </if>
+      <if test="wCrossDistanceBase != null" >
+        W_CROSS_DISTANCE_BASE,
+      </if>
+      <if test="wCrossDistanceFactor != null" >
+        W_CROSS_DISTANCE_FACTOR,
+      </if>
+      <if test="wAccuracyDivisor != null" >
+        W_ACCURACY_DIVISOR,
+      </if>
+      <if test="wAccuracyOffset != null" >
+        W_ACCURACY_OFFSET,
+      </if>
+      <if test="wMaxInaccuracy != null" >
+        W_MAX_INACCURACY,
+      </if>
+      <if test="wPenetration != null" >
+        W_PENETRATION,
+      </if>
+      <if test="wDamage != null" >
+        W_DAMAGE,
+      </if>
+      <if test="wRangeModifier != null" >
+        W_RANGE_MODIFIER,
+      </if>
+      <if test="wRangeStart != null" >
+        W_RANGE_START,
+      </if>
+      <if test="wRangeEnd != null" >
+        W_RANGE_END,
+      </if>
+      <if test="wFireTime != null" >
+        W_FIRE_TIME,
+      </if>
+      <if test="wReloadTime != null" >
+        W_RELOAD_TIME,
+      </if>
+      <if test="wZoomTime != null" >
+        W_ZOOM_TIME,
+      </if>
+      <if test="wZoomValue != null" >
+        W_ZOOM_VALUE,
+      </if>
+      <if test="wAmmoOneClip != null" >
+        W_AMMO_ONE_CLIP,
+      </if>
+      <if test="wAmmoCount != null" >
+        W_AMMO_COUNT,
+      </if>
+      <if test="wAutoFire != null" >
+        W_AUTO_FIRE,
+      </if>
+      <if test="wTimeToIdle != null" >
+        W_TIME_TO_IDLE,
+      </if>
+      <if test="wNormalOffset != null" >
+        W_NORMAL_OFFSET,
+      </if>
+      <if test="wNormalFactor != null" >
+        W_NORMAL_FACTOR,
+      </if>
+      <if test="wOnairOffset != null" >
+        W_ONAIR_OFFSET,
+      </if>
+      <if test="wOnairFactor != null" >
+        W_ONAIR_FACTOR,
+      </if>
+      <if test="wMoveOffset != null" >
+        W_MOVE_OFFSET,
+      </if>
+      <if test="wMoveFactor != null" >
+        W_MOVE_FACTOR,
+      </if>
+      <if test="wNormalUpBase != null" >
+        W_NORMAL_UP_BASE,
+      </if>
+      <if test="wNormalLateralBase != null" >
+        W_NORMAL_LATERAL_BASE,
+      </if>
+      <if test="wNormalUpModifier != null" >
+        W_NORMAL_UP_MODIFIER,
+      </if>
+      <if test="wNormalLateralModifier != null" >
+        W_NORMAL_LATERAL_MODIFIER,
+      </if>
+      <if test="wNormalUpMax != null" >
+        W_NORMAL_UP_MAX,
+      </if>
+      <if test="wNormalLateralMax != null" >
+        W_NORMAL_LATERAL_MAX,
+      </if>
+      <if test="wNormalDirChange != null" >
+        W_NORMAL_DIR_CHANGE,
+      </if>
+      <if test="wMoveUpBase != null" >
+        W_MOVE_UP_BASE,
+      </if>
+      <if test="wMoveLateralBase != null" >
+        W_MOVE_LATERAL_BASE,
+      </if>
+      <if test="wMoveUpModifier != null" >
+        W_MOVE_UP_MODIFIER,
+      </if>
+      <if test="wMoveLateralModifier != null" >
+        W_MOVE_LATERAL_MODIFIER,
+      </if>
+      <if test="wMoveUpMax != null" >
+        W_MOVE_UP_MAX,
+      </if>
+      <if test="wMoveLateralMax != null" >
+        W_MOVE_LATERAL_MAX,
+      </if>
+      <if test="wMoveDirChange != null" >
+        W_MOVE_DIR_CHANGE,
+      </if>
+      <if test="wOnairUpBase != null" >
+        W_ONAIR_UP_BASE,
+      </if>
+      <if test="wOnairLateralBase != null" >
+        W_ONAIR_LATERAL_BASE,
+      </if>
+      <if test="wOnairUpModifier != null" >
+        W_ONAIR_UP_MODIFIER,
+      </if>
+      <if test="wOnairLateralModifier != null" >
+        W_ONAIR_LATERAL_MODIFIER,
+      </if>
+      <if test="wOnairUpMax != null" >
+        W_ONAIR_UP_MAX,
+      </if>
+      <if test="wOnairLateralMax != null" >
+        W_ONAIR_LATERAL_MAX,
+      </if>
+      <if test="wOnairDirChange != null" >
+        W_ONAIR_DIR_CHANGE,
+      </if>
+      <if test="wCrouchUpBase != null" >
+        W_CROUCH_UP_BASE,
+      </if>
+      <if test="wCrouchLateralBase != null" >
+        W_CROUCH_LATERAL_BASE,
+      </if>
+      <if test="wCrouchUpModifier != null" >
+        W_CROUCH_UP_MODIFIER,
+      </if>
+      <if test="wCrouchLateralModifier != null" >
+        W_CROUCH_LATERAL_MODIFIER,
+      </if>
+      <if test="wCrouchUpMax != null" >
+        W_CROUCH_UP_MAX,
+      </if>
+      <if test="wCrouchLateralMax != null" >
+        W_CROUCH_LATERAL_MAX,
+      </if>
+      <if test="wCrouchDirChange != null" >
+        W_CROUCH_DIR_CHANGE,
+      </if>
+      <if test="wUpModifier != null" >
+        W_UP_MODIFIER,
+      </if>
+      <if test="wAccuracyTime != null" >
+        W_ACCURACY_TIME,
+      </if>
+      <if test="wAccuracyTimeModifier != null" >
+        W_ACCURACY_TIME_MODIFIER,
+      </if>
+      <if test="wMaxAccuracy != null" >
+        W_MAX_ACCURACY,
+      </if>
+      <if test="wMinAccuracy != null" >
+        W_MIN_ACCURACY,
+      </if>
+      <if test="wShootBulletCount != null" >
+        W_SHOOT_BULLET_COUNT,
+      </if>
+      <if test="wSpread != null" >
+        W_SPREAD,
+      </if>
+      <if test="wFireMaxSpeed != null" >
+        W_FIRE_MAX_SPEED,
+      </if>
+      <if test="wFireStartSpeed != null" >
+        W_FIRE_START_SPEED,
+      </if>
+      <if test="wFireAceleration != null" >
+        W_FIRE_ACELERATION,
+      </if>
+      <if test="wFireResistance != null" >
+        W_FIRE_RESISTANCE,
+      </if>
+      <if test="wStabTime != null" >
+        W_STAB_TIME,
+      </if>
+      <if test="wStabLightTime != null" >
+        W_STAB_LIGHT_TIME,
+      </if>
+      <if test="wStabHurt != null" >
+        W_STAB_HURT,
+      </if>
+      <if test="wStabLightHurt != null" >
+        W_STAB_LIGHT_HURT,
+      </if>
+      <if test="wExplodeTime != null" >
+        W_EXPLODE_TIME,
+      </if>
+      <if test="wReadyTime != null" >
+        W_READY_TIME,
+      </if>
+      <if test="wThrowOutTime != null" >
+        W_THROW_OUT_TIME,
+      </if>
+      <if test="wHurtRange != null" >
+        W_HURT_RANGE,
+      </if>
+      <if test="wHurt != null" >
+        W_HURT,
+      </if>
+      <if test="cId != null" >
+        C_ID,
+      </if>
+      <if test="iId != null" >
+        I_ID,
+      </if>
+      <if test="iValue != null" >
+        I_VALUE,
+      </if>
+      <if test="wXOffset != null" >
+        W_X_OFFSET,
+      </if>
+      <if test="wSightNormalOffset != null" >
+        W_SIGHT_NORMAL_OFFSET,
+      </if>
+      <if test="wSightOnairOffset != null" >
+        W_SIGHT_ONAIR_OFFSET,
+      </if>
+      <if test="wSightMoveOffset != null" >
+        W_SIGHT_MOVE_OFFSET,
+      </if>
+      <if test="wStabDistance != null" >
+        W_STAB_DISTANCE,
+      </if>
+      <if test="wStabLightDistance != null" >
+        W_STAB_LIGHT_DISTANCE,
+      </if>
+      <if test="wStabWidth != null" >
+        W_STAB_WIDTH,
+      </if>
+      <if test="wBackFactor != null" >
+        W_BACK_FACTOR,
+      </if>
+      <if test="wFlashRangeStart != null" >
+        W_FLASH_RANGE_START,
+      </if>
+      <if test="wFlashRangeEnd != null" >
+        W_FLASH_RANGE_END,
+      </if>
+      <if test="wFlashBackFactor != null" >
+        W_FLASH_BACK_FACTOR,
+      </if>
+      <if test="wTimeMax != null" >
+        W_TIME_MAX,
+      </if>
+      <if test="wTimeFade != null" >
+        W_TIME_FADE,
+      </if>
+      <if test="wTime != null" >
+        W_TIME,
+      </if>
+      <if test="wHitSpeed != null" >
+        W_HIT_SPEED,
+      </if>
+      <if test="wHitAcceleration != null" >
+        W_HIT_ACCELERATION,
+      </if>
+      <if test="wHitDistance != null" >
+        W_HIT_DISTANCE,
+      </if>
+      <if test="wSightInfo != null" >
+        W_SIGHT_INFO,
+      </if>
+      <if test="wMaxDistance != null" >
+        W_MAX_DISTANCE,
+      </if>
+      <if test="wAddBlood != null" >
+        W_ADD_BLOOD,
+      </if>
+      <if test="wAmmoType != null" >
+        W_AMMO_TYPE,
+      </if>
+      <if test="wFlySpeed != null" >
+        W_FLY_SPEED,
+      </if>
+      <if test="wMaxaliveTime != null" >
+        W_MAXALIVE_TIME,
+      </if>
+      <if test="wGravity != null" >
+        W_GRAVITY,
+      </if>
+      <if test="wLastHurt != null" >
+        W_LAST_HURT,
+      </if>
+      <if test="wLastTime != null" >
+        W_LAST_TIME,
+      </if>
+      <if test="wSpecialDistance != null" >
+        W_SPECIAL_DISTANCE,
+      </if>
+      <if test="wSpecialRange != null" >
+        W_SPECIAL_RANGE,
+      </if>
+      <if test="wSpecialLasttime != null" >
+        W_SPECIAL_LASTTIME,
+      </if>
+      <if test="wSpecialHurt != null" >
+        W_SPECIAL_HURT,
+      </if>
+      <if test="wSpecialLasthurt != null" >
+        W_SPECIAL_LASTHURT,
+      </if>
+      <if test="wParticlemun != null" >
+        W_PARTICLEMUN,
+      </if>
+      <if test="wShowSpeed != null" >
+        W_SHOW_SPEED,
+      </if>
+      <if test="wAmmopartKey != null" >
+        W_AMMOPART_KEY,
+      </if>
+      <if test="wCritRate != null" >
+        W_CRIT_RATE,
+      </if>
+      <if test="wCritAvailable != null" >
+        W_CRIT_AVAILABLE,
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID,
+      </if>
+      <if test="wDmgModifyTimerMin != null" >
+        W_DMG_MODIFY_TIMER_MIN,
+      </if>
+      <if test="wDmgModifyTimerMax != null" >
+        W_DMG_MODIFY_TIMER_MAX,
+      </if>
+      <if test="wDmgModifyMin != null" >
+        W_DMG_MODIFY_MIN,
+      </if>
+      <if test="wDmgModifyMax != null" >
+        W_DMG_MODIFY_MAX,
+      </if>
+      <if test="wCapsuleHeight != null" >
+        W_CAPSULE_HEIGHT,
+      </if>
+      <if test="wCapsuleRadius != null" >
+        W_CAPSULE_RADIUS,
+      </if>
+      <if test="wDamageModifer != null" >
+        W_DAMAGE_MODIFER,
+      </if>
+      <if test="iBuffId != null" >
+        I_BUFF_ID,
+      </if>
+      <if test="gunProperty1 != null" >
+        GUN_PROPERTY1,
+      </if>
+      <if test="gunProperty2 != null" >
+        GUN_PROPERTY2,
+      </if>
+      <if test="gunProperty3 != null" >
+        GUN_PROPERTY3,
+      </if>
+      <if test="gunProperty4 != null" >
+        GUN_PROPERTY4,
+      </if>
+      <if test="isVip != null" >
+        IS_VIP,
+      </if>
+      <if test="isNew != null" >
+        IS_NEW,
+      </if>
+      <if test="isHot != null" >
+        IS_HOT,
+      </if>
+      <if test="gunProperty5 != null" >
+        GUN_PROPERTY5,
+      </if>
+      <if test="backBoostPlus != null" >
+        BACK_BOOST_PLUS,
+      </if>
+      <if test="wFixPrice != null" >
+        W_FIX_PRICE,
+      </if>
+      <if test="index != null" >
+        `INDEX`,
+      </if>
+      <if test="gunProperty6 != null" >
+        GUN_PROPERTY6,
+      </if>
+      <if test="gunProperty7 != null" >
+        GUN_PROPERTY7,
+      </if>
+      <if test="gunProperty8 != null" >
+        GUN_PROPERTY8,
+      </if>
+      <if test="cResistanceFire != null" >
+        C_RESISTANCE_FIRE,
+      </if>
+      <if test="cResistanceBlast != null" >
+        C_RESISTANCE_BLAST,
+      </if>
+      <if test="cResistanceBullet != null" >
+        C_RESISTANCE_BULLET,
+      </if>
+      <if test="cResistanceKnife != null" >
+        C_RESISTANCE_KNIFE,
+      </if>
+      <if test="cBloodAdd != null" >
+        C_BLOOD_ADD,
+      </if>
+      <if test="isStrengthen != null" >
+        IS_STRENGTHEN,
+      </if>
+      <if test="mType != null" >
+        M_TYPE,
+      </if>
+      <if test="mValue != null" >
+        M_VALUE,
+      </if>
+      <if test="isWeb != null" >
+        IS_WEB,
+      </if>
+      <if test="fightNum != null" >
+        FIGHT_NUM,
+      </if>
+      <if test="rareLevel != null" >
+        RARE_LEVEL,
+      </if>
+      <if test="isPopular != null" >
+        IS_POPULAR,
+      </if>
+      <if test="isExchange != null" >
+        IS_EXCHANGE,
+      </if>
+      <if test="isAsset != null" >
+        IS_ASSET,
+      </if>
+      <if test="strengthLevel != null" >
+        STRENGTH_LEVEL,
+      </if>
+      <if test="evaluateRmb != null" >
+        EVALUATE_RMB,
+      </if>
+      <if test="teamLevelOccupyLength != null" >
+        TEAM_LEVEL_OCCUPY_LENGTH,
+      </if>
+      <if test="teamLevelOccupyWidth != null" >
+        TEAM_LEVEL_OCCUPY_WIDTH,
+      </if>
+      <if test="needTeamPlaceLevel != null" >
+        NEED_TEAM_PLACE_LEVEL,
+      </if>
+      <if test="teamItemUpgradePrice != null" >
+        TEAM_ITEM_UPGRADE_PRICE,
+      </if>
+      <if test="timeForBuildingUp != null" >
+        TIME_FOR_BUILDING_UP,
+      </if>
+      <if test="timeForCreate != null" >
+        TIME_FOR_CREATE,
+      </if>
+      <if test="timeForBuild != null" >
+        TIME_FOR_BUILD,
+      </if>
+      <if test="wStabTime1 != null" >
+        W_STAB_TIME1,
+      </if>
+      <if test="items != null" >
+        ITEMS,
+      </if>
+      <if test="gunProperty != null" >
+        GUN_PROPERTY,
+      </if>
+      <if test="shoppingType != null" >
+        SHOPPING_TYPE,
+      </if>
+      <if test="shoppingStartTime != null" >
+        SHOPPING_START_TIME,
+      </if>
+      <if test="shoppingEndTime != null" >
+        SHOPPING_END_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="displayName != null" >
+        #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceStable != null" >
+        #{resourceStable,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceChangeable != null" >
+        #{resourceChangeable,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="subType != null" >
+        #{subType,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="modifiedDesc != null" >
+        #{modifiedDesc,jdbcType=CHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="wId != null" >
+        #{wId,jdbcType=INTEGER},
+      </if>
+      <if test="wChangeInTime != null" >
+        #{wChangeInTime,jdbcType=REAL},
+      </if>
+      <if test="wMoveSpeedOffset != null" >
+        #{wMoveSpeedOffset,jdbcType=REAL},
+      </if>
+      <if test="wCrossOffset != null" >
+        #{wCrossOffset,jdbcType=REAL},
+      </if>
+      <if test="wCrossLengthBase != null" >
+        #{wCrossLengthBase,jdbcType=REAL},
+      </if>
+      <if test="wCrossLengthFactor != null" >
+        #{wCrossLengthFactor,jdbcType=REAL},
+      </if>
+      <if test="wCrossDistanceBase != null" >
+        #{wCrossDistanceBase,jdbcType=REAL},
+      </if>
+      <if test="wCrossDistanceFactor != null" >
+        #{wCrossDistanceFactor,jdbcType=REAL},
+      </if>
+      <if test="wAccuracyDivisor != null" >
+        #{wAccuracyDivisor,jdbcType=INTEGER},
+      </if>
+      <if test="wAccuracyOffset != null" >
+        #{wAccuracyOffset,jdbcType=REAL},
+      </if>
+      <if test="wMaxInaccuracy != null" >
+        #{wMaxInaccuracy,jdbcType=REAL},
+      </if>
+      <if test="wPenetration != null" >
+        #{wPenetration,jdbcType=INTEGER},
+      </if>
+      <if test="wDamage != null" >
+        #{wDamage,jdbcType=INTEGER},
+      </if>
+      <if test="wRangeModifier != null" >
+        #{wRangeModifier,jdbcType=REAL},
+      </if>
+      <if test="wRangeStart != null" >
+        #{wRangeStart,jdbcType=REAL},
+      </if>
+      <if test="wRangeEnd != null" >
+        #{wRangeEnd,jdbcType=REAL},
+      </if>
+      <if test="wFireTime != null" >
+        #{wFireTime,jdbcType=REAL},
+      </if>
+      <if test="wReloadTime != null" >
+        #{wReloadTime,jdbcType=REAL},
+      </if>
+      <if test="wZoomTime != null" >
+        #{wZoomTime,jdbcType=REAL},
+      </if>
+      <if test="wZoomValue != null" >
+        #{wZoomValue,jdbcType=REAL},
+      </if>
+      <if test="wAmmoOneClip != null" >
+        #{wAmmoOneClip,jdbcType=INTEGER},
+      </if>
+      <if test="wAmmoCount != null" >
+        #{wAmmoCount,jdbcType=INTEGER},
+      </if>
+      <if test="wAutoFire != null" >
+        #{wAutoFire,jdbcType=INTEGER},
+      </if>
+      <if test="wTimeToIdle != null" >
+        #{wTimeToIdle,jdbcType=REAL},
+      </if>
+      <if test="wNormalOffset != null" >
+        #{wNormalOffset,jdbcType=REAL},
+      </if>
+      <if test="wNormalFactor != null" >
+        #{wNormalFactor,jdbcType=REAL},
+      </if>
+      <if test="wOnairOffset != null" >
+        #{wOnairOffset,jdbcType=REAL},
+      </if>
+      <if test="wOnairFactor != null" >
+        #{wOnairFactor,jdbcType=REAL},
+      </if>
+      <if test="wMoveOffset != null" >
+        #{wMoveOffset,jdbcType=REAL},
+      </if>
+      <if test="wMoveFactor != null" >
+        #{wMoveFactor,jdbcType=REAL},
+      </if>
+      <if test="wNormalUpBase != null" >
+        #{wNormalUpBase,jdbcType=REAL},
+      </if>
+      <if test="wNormalLateralBase != null" >
+        #{wNormalLateralBase,jdbcType=REAL},
+      </if>
+      <if test="wNormalUpModifier != null" >
+        #{wNormalUpModifier,jdbcType=REAL},
+      </if>
+      <if test="wNormalLateralModifier != null" >
+        #{wNormalLateralModifier,jdbcType=REAL},
+      </if>
+      <if test="wNormalUpMax != null" >
+        #{wNormalUpMax,jdbcType=REAL},
+      </if>
+      <if test="wNormalLateralMax != null" >
+        #{wNormalLateralMax,jdbcType=REAL},
+      </if>
+      <if test="wNormalDirChange != null" >
+        #{wNormalDirChange,jdbcType=REAL},
+      </if>
+      <if test="wMoveUpBase != null" >
+        #{wMoveUpBase,jdbcType=REAL},
+      </if>
+      <if test="wMoveLateralBase != null" >
+        #{wMoveLateralBase,jdbcType=REAL},
+      </if>
+      <if test="wMoveUpModifier != null" >
+        #{wMoveUpModifier,jdbcType=REAL},
+      </if>
+      <if test="wMoveLateralModifier != null" >
+        #{wMoveLateralModifier,jdbcType=REAL},
+      </if>
+      <if test="wMoveUpMax != null" >
+        #{wMoveUpMax,jdbcType=REAL},
+      </if>
+      <if test="wMoveLateralMax != null" >
+        #{wMoveLateralMax,jdbcType=REAL},
+      </if>
+      <if test="wMoveDirChange != null" >
+        #{wMoveDirChange,jdbcType=REAL},
+      </if>
+      <if test="wOnairUpBase != null" >
+        #{wOnairUpBase,jdbcType=REAL},
+      </if>
+      <if test="wOnairLateralBase != null" >
+        #{wOnairLateralBase,jdbcType=REAL},
+      </if>
+      <if test="wOnairUpModifier != null" >
+        #{wOnairUpModifier,jdbcType=REAL},
+      </if>
+      <if test="wOnairLateralModifier != null" >
+        #{wOnairLateralModifier,jdbcType=REAL},
+      </if>
+      <if test="wOnairUpMax != null" >
+        #{wOnairUpMax,jdbcType=REAL},
+      </if>
+      <if test="wOnairLateralMax != null" >
+        #{wOnairLateralMax,jdbcType=REAL},
+      </if>
+      <if test="wOnairDirChange != null" >
+        #{wOnairDirChange,jdbcType=REAL},
+      </if>
+      <if test="wCrouchUpBase != null" >
+        #{wCrouchUpBase,jdbcType=REAL},
+      </if>
+      <if test="wCrouchLateralBase != null" >
+        #{wCrouchLateralBase,jdbcType=REAL},
+      </if>
+      <if test="wCrouchUpModifier != null" >
+        #{wCrouchUpModifier,jdbcType=REAL},
+      </if>
+      <if test="wCrouchLateralModifier != null" >
+        #{wCrouchLateralModifier,jdbcType=REAL},
+      </if>
+      <if test="wCrouchUpMax != null" >
+        #{wCrouchUpMax,jdbcType=REAL},
+      </if>
+      <if test="wCrouchLateralMax != null" >
+        #{wCrouchLateralMax,jdbcType=REAL},
+      </if>
+      <if test="wCrouchDirChange != null" >
+        #{wCrouchDirChange,jdbcType=REAL},
+      </if>
+      <if test="wUpModifier != null" >
+        #{wUpModifier,jdbcType=REAL},
+      </if>
+      <if test="wAccuracyTime != null" >
+        #{wAccuracyTime,jdbcType=REAL},
+      </if>
+      <if test="wAccuracyTimeModifier != null" >
+        #{wAccuracyTimeModifier,jdbcType=REAL},
+      </if>
+      <if test="wMaxAccuracy != null" >
+        #{wMaxAccuracy,jdbcType=REAL},
+      </if>
+      <if test="wMinAccuracy != null" >
+        #{wMinAccuracy,jdbcType=REAL},
+      </if>
+      <if test="wShootBulletCount != null" >
+        #{wShootBulletCount,jdbcType=INTEGER},
+      </if>
+      <if test="wSpread != null" >
+        #{wSpread,jdbcType=REAL},
+      </if>
+      <if test="wFireMaxSpeed != null" >
+        #{wFireMaxSpeed,jdbcType=REAL},
+      </if>
+      <if test="wFireStartSpeed != null" >
+        #{wFireStartSpeed,jdbcType=REAL},
+      </if>
+      <if test="wFireAceleration != null" >
+        #{wFireAceleration,jdbcType=REAL},
+      </if>
+      <if test="wFireResistance != null" >
+        #{wFireResistance,jdbcType=REAL},
+      </if>
+      <if test="wStabTime != null" >
+        #{wStabTime,jdbcType=REAL},
+      </if>
+      <if test="wStabLightTime != null" >
+        #{wStabLightTime,jdbcType=REAL},
+      </if>
+      <if test="wStabHurt != null" >
+        #{wStabHurt,jdbcType=REAL},
+      </if>
+      <if test="wStabLightHurt != null" >
+        #{wStabLightHurt,jdbcType=REAL},
+      </if>
+      <if test="wExplodeTime != null" >
+        #{wExplodeTime,jdbcType=REAL},
+      </if>
+      <if test="wReadyTime != null" >
+        #{wReadyTime,jdbcType=REAL},
+      </if>
+      <if test="wThrowOutTime != null" >
+        #{wThrowOutTime,jdbcType=REAL},
+      </if>
+      <if test="wHurtRange != null" >
+        #{wHurtRange,jdbcType=REAL},
+      </if>
+      <if test="wHurt != null" >
+        #{wHurt,jdbcType=REAL},
+      </if>
+      <if test="cId != null" >
+        #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="iId != null" >
+        #{iId,jdbcType=INTEGER},
+      </if>
+      <if test="iValue != null" >
+        #{iValue,jdbcType=VARCHAR},
+      </if>
+      <if test="wXOffset != null" >
+        #{wXOffset,jdbcType=INTEGER},
+      </if>
+      <if test="wSightNormalOffset != null" >
+        #{wSightNormalOffset,jdbcType=REAL},
+      </if>
+      <if test="wSightOnairOffset != null" >
+        #{wSightOnairOffset,jdbcType=REAL},
+      </if>
+      <if test="wSightMoveOffset != null" >
+        #{wSightMoveOffset,jdbcType=REAL},
+      </if>
+      <if test="wStabDistance != null" >
+        #{wStabDistance,jdbcType=REAL},
+      </if>
+      <if test="wStabLightDistance != null" >
+        #{wStabLightDistance,jdbcType=REAL},
+      </if>
+      <if test="wStabWidth != null" >
+        #{wStabWidth,jdbcType=REAL},
+      </if>
+      <if test="wBackFactor != null" >
+        #{wBackFactor,jdbcType=REAL},
+      </if>
+      <if test="wFlashRangeStart != null" >
+        #{wFlashRangeStart,jdbcType=REAL},
+      </if>
+      <if test="wFlashRangeEnd != null" >
+        #{wFlashRangeEnd,jdbcType=REAL},
+      </if>
+      <if test="wFlashBackFactor != null" >
+        #{wFlashBackFactor,jdbcType=REAL},
+      </if>
+      <if test="wTimeMax != null" >
+        #{wTimeMax,jdbcType=REAL},
+      </if>
+      <if test="wTimeFade != null" >
+        #{wTimeFade,jdbcType=REAL},
+      </if>
+      <if test="wTime != null" >
+        #{wTime,jdbcType=REAL},
+      </if>
+      <if test="wHitSpeed != null" >
+        #{wHitSpeed,jdbcType=REAL},
+      </if>
+      <if test="wHitAcceleration != null" >
+        #{wHitAcceleration,jdbcType=REAL},
+      </if>
+      <if test="wHitDistance != null" >
+        #{wHitDistance,jdbcType=REAL},
+      </if>
+      <if test="wSightInfo != null" >
+        #{wSightInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="wMaxDistance != null" >
+        #{wMaxDistance,jdbcType=REAL},
+      </if>
+      <if test="wAddBlood != null" >
+        #{wAddBlood,jdbcType=INTEGER},
+      </if>
+      <if test="wAmmoType != null" >
+        #{wAmmoType,jdbcType=INTEGER},
+      </if>
+      <if test="wFlySpeed != null" >
+        #{wFlySpeed,jdbcType=REAL},
+      </if>
+      <if test="wMaxaliveTime != null" >
+        #{wMaxaliveTime,jdbcType=REAL},
+      </if>
+      <if test="wGravity != null" >
+        #{wGravity,jdbcType=INTEGER},
+      </if>
+      <if test="wLastHurt != null" >
+        #{wLastHurt,jdbcType=REAL},
+      </if>
+      <if test="wLastTime != null" >
+        #{wLastTime,jdbcType=REAL},
+      </if>
+      <if test="wSpecialDistance != null" >
+        #{wSpecialDistance,jdbcType=REAL},
+      </if>
+      <if test="wSpecialRange != null" >
+        #{wSpecialRange,jdbcType=REAL},
+      </if>
+      <if test="wSpecialLasttime != null" >
+        #{wSpecialLasttime,jdbcType=REAL},
+      </if>
+      <if test="wSpecialHurt != null" >
+        #{wSpecialHurt,jdbcType=REAL},
+      </if>
+      <if test="wSpecialLasthurt != null" >
+        #{wSpecialLasthurt,jdbcType=REAL},
+      </if>
+      <if test="wParticlemun != null" >
+        #{wParticlemun,jdbcType=INTEGER},
+      </if>
+      <if test="wShowSpeed != null" >
+        #{wShowSpeed,jdbcType=INTEGER},
+      </if>
+      <if test="wAmmopartKey != null" >
+        #{wAmmopartKey,jdbcType=VARCHAR},
+      </if>
+      <if test="wCritRate != null" >
+        #{wCritRate,jdbcType=INTEGER},
+      </if>
+      <if test="wCritAvailable != null" >
+        #{wCritAvailable,jdbcType=INTEGER},
+      </if>
+      <if test="characterId != null" >
+        #{characterId,jdbcType=VARCHAR},
+      </if>
+      <if test="wDmgModifyTimerMin != null" >
+        #{wDmgModifyTimerMin,jdbcType=REAL},
+      </if>
+      <if test="wDmgModifyTimerMax != null" >
+        #{wDmgModifyTimerMax,jdbcType=REAL},
+      </if>
+      <if test="wDmgModifyMin != null" >
+        #{wDmgModifyMin,jdbcType=REAL},
+      </if>
+      <if test="wDmgModifyMax != null" >
+        #{wDmgModifyMax,jdbcType=REAL},
+      </if>
+      <if test="wCapsuleHeight != null" >
+        #{wCapsuleHeight,jdbcType=REAL},
+      </if>
+      <if test="wCapsuleRadius != null" >
+        #{wCapsuleRadius,jdbcType=REAL},
+      </if>
+      <if test="wDamageModifer != null" >
+        #{wDamageModifer,jdbcType=INTEGER},
+      </if>
+      <if test="iBuffId != null" >
+        #{iBuffId,jdbcType=INTEGER},
+      </if>
+      <if test="gunProperty1 != null" >
+        #{gunProperty1,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty2 != null" >
+        #{gunProperty2,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty3 != null" >
+        #{gunProperty3,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty4 != null" >
+        #{gunProperty4,jdbcType=VARCHAR},
+      </if>
+      <if test="isVip != null" >
+        #{isVip,jdbcType=INTEGER},
+      </if>
+      <if test="isNew != null" >
+        #{isNew,jdbcType=INTEGER},
+      </if>
+      <if test="isHot != null" >
+        #{isHot,jdbcType=INTEGER},
+      </if>
+      <if test="gunProperty5 != null" >
+        #{gunProperty5,jdbcType=VARCHAR},
+      </if>
+      <if test="backBoostPlus != null" >
+        #{backBoostPlus,jdbcType=INTEGER},
+      </if>
+      <if test="wFixPrice != null" >
+        #{wFixPrice,jdbcType=INTEGER},
+      </if>
+      <if test="index != null" >
+        #{index,jdbcType=INTEGER},
+      </if>
+      <if test="gunProperty6 != null" >
+        #{gunProperty6,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty7 != null" >
+        #{gunProperty7,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty8 != null" >
+        #{gunProperty8,jdbcType=VARCHAR},
+      </if>
+      <if test="cResistanceFire != null" >
+        #{cResistanceFire,jdbcType=REAL},
+      </if>
+      <if test="cResistanceBlast != null" >
+        #{cResistanceBlast,jdbcType=REAL},
+      </if>
+      <if test="cResistanceBullet != null" >
+        #{cResistanceBullet,jdbcType=REAL},
+      </if>
+      <if test="cResistanceKnife != null" >
+        #{cResistanceKnife,jdbcType=REAL},
+      </if>
+      <if test="cBloodAdd != null" >
+        #{cBloodAdd,jdbcType=INTEGER},
+      </if>
+      <if test="isStrengthen != null" >
+        #{isStrengthen,jdbcType=INTEGER},
+      </if>
+      <if test="mType != null" >
+        #{mType,jdbcType=INTEGER},
+      </if>
+      <if test="mValue != null" >
+        #{mValue,jdbcType=INTEGER},
+      </if>
+      <if test="isWeb != null" >
+        #{isWeb,jdbcType=INTEGER},
+      </if>
+      <if test="fightNum != null" >
+        #{fightNum,jdbcType=INTEGER},
+      </if>
+      <if test="rareLevel != null" >
+        #{rareLevel,jdbcType=INTEGER},
+      </if>
+      <if test="isPopular != null" >
+        #{isPopular,jdbcType=INTEGER},
+      </if>
+      <if test="isExchange != null" >
+        #{isExchange,jdbcType=INTEGER},
+      </if>
+      <if test="isAsset != null" >
+        #{isAsset,jdbcType=INTEGER},
+      </if>
+      <if test="strengthLevel != null" >
+        #{strengthLevel,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateRmb != null" >
+        #{evaluateRmb,jdbcType=REAL},
+      </if>
+      <if test="teamLevelOccupyLength != null" >
+        #{teamLevelOccupyLength,jdbcType=REAL},
+      </if>
+      <if test="teamLevelOccupyWidth != null" >
+        #{teamLevelOccupyWidth,jdbcType=REAL},
+      </if>
+      <if test="needTeamPlaceLevel != null" >
+        #{needTeamPlaceLevel,jdbcType=INTEGER},
+      </if>
+      <if test="teamItemUpgradePrice != null" >
+        #{teamItemUpgradePrice,jdbcType=REAL},
+      </if>
+      <if test="timeForBuildingUp != null" >
+        #{timeForBuildingUp,jdbcType=INTEGER},
+      </if>
+      <if test="timeForCreate != null" >
+        #{timeForCreate,jdbcType=INTEGER},
+      </if>
+      <if test="timeForBuild != null" >
+        #{timeForBuild,jdbcType=INTEGER},
+      </if>
+      <if test="wStabTime1 != null" >
+        #{wStabTime1,jdbcType=REAL},
+      </if>
+      <if test="items != null" >
+        #{items,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="gunProperty != null" >
+        #{gunProperty,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysItem" >
+    update SYS_ITEM
+    <set >
+      <if test="name != null" >
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="displayName != null" >
+        DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceStable != null" >
+        RESOURCE_STABLE = #{resourceStable,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceChangeable != null" >
+        RESOURCE_CHANGEABLE = #{resourceChangeable,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="subType != null" >
+        SUB_TYPE = #{subType,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        LEVEL = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="modifiedDesc != null" >
+        MODIFIED_DESC = #{modifiedDesc,jdbcType=CHAR},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="wId != null" >
+        W_ID = #{wId,jdbcType=INTEGER},
+      </if>
+      <if test="wChangeInTime != null" >
+        W_CHANGE_IN_TIME = #{wChangeInTime,jdbcType=REAL},
+      </if>
+      <if test="wMoveSpeedOffset != null" >
+        W_MOVE_SPEED_OFFSET = #{wMoveSpeedOffset,jdbcType=REAL},
+      </if>
+      <if test="wCrossOffset != null" >
+        W_CROSS_OFFSET = #{wCrossOffset,jdbcType=REAL},
+      </if>
+      <if test="wCrossLengthBase != null" >
+        W_CROSS_LENGTH_BASE = #{wCrossLengthBase,jdbcType=REAL},
+      </if>
+      <if test="wCrossLengthFactor != null" >
+        W_CROSS_LENGTH_FACTOR = #{wCrossLengthFactor,jdbcType=REAL},
+      </if>
+      <if test="wCrossDistanceBase != null" >
+        W_CROSS_DISTANCE_BASE = #{wCrossDistanceBase,jdbcType=REAL},
+      </if>
+      <if test="wCrossDistanceFactor != null" >
+        W_CROSS_DISTANCE_FACTOR = #{wCrossDistanceFactor,jdbcType=REAL},
+      </if>
+      <if test="wAccuracyDivisor != null" >
+        W_ACCURACY_DIVISOR = #{wAccuracyDivisor,jdbcType=INTEGER},
+      </if>
+      <if test="wAccuracyOffset != null" >
+        W_ACCURACY_OFFSET = #{wAccuracyOffset,jdbcType=REAL},
+      </if>
+      <if test="wMaxInaccuracy != null" >
+        W_MAX_INACCURACY = #{wMaxInaccuracy,jdbcType=REAL},
+      </if>
+      <if test="wPenetration != null" >
+        W_PENETRATION = #{wPenetration,jdbcType=INTEGER},
+      </if>
+      <if test="wDamage != null" >
+        W_DAMAGE = #{wDamage,jdbcType=INTEGER},
+      </if>
+      <if test="wRangeModifier != null" >
+        W_RANGE_MODIFIER = #{wRangeModifier,jdbcType=REAL},
+      </if>
+      <if test="wRangeStart != null" >
+        W_RANGE_START = #{wRangeStart,jdbcType=REAL},
+      </if>
+      <if test="wRangeEnd != null" >
+        W_RANGE_END = #{wRangeEnd,jdbcType=REAL},
+      </if>
+      <if test="wFireTime != null" >
+        W_FIRE_TIME = #{wFireTime,jdbcType=REAL},
+      </if>
+      <if test="wReloadTime != null" >
+        W_RELOAD_TIME = #{wReloadTime,jdbcType=REAL},
+      </if>
+      <if test="wZoomTime != null" >
+        W_ZOOM_TIME = #{wZoomTime,jdbcType=REAL},
+      </if>
+      <if test="wZoomValue != null" >
+        W_ZOOM_VALUE = #{wZoomValue,jdbcType=REAL},
+      </if>
+      <if test="wAmmoOneClip != null" >
+        W_AMMO_ONE_CLIP = #{wAmmoOneClip,jdbcType=INTEGER},
+      </if>
+      <if test="wAmmoCount != null" >
+        W_AMMO_COUNT = #{wAmmoCount,jdbcType=INTEGER},
+      </if>
+      <if test="wAutoFire != null" >
+        W_AUTO_FIRE = #{wAutoFire,jdbcType=INTEGER},
+      </if>
+      <if test="wTimeToIdle != null" >
+        W_TIME_TO_IDLE = #{wTimeToIdle,jdbcType=REAL},
+      </if>
+      <if test="wNormalOffset != null" >
+        W_NORMAL_OFFSET = #{wNormalOffset,jdbcType=REAL},
+      </if>
+      <if test="wNormalFactor != null" >
+        W_NORMAL_FACTOR = #{wNormalFactor,jdbcType=REAL},
+      </if>
+      <if test="wOnairOffset != null" >
+        W_ONAIR_OFFSET = #{wOnairOffset,jdbcType=REAL},
+      </if>
+      <if test="wOnairFactor != null" >
+        W_ONAIR_FACTOR = #{wOnairFactor,jdbcType=REAL},
+      </if>
+      <if test="wMoveOffset != null" >
+        W_MOVE_OFFSET = #{wMoveOffset,jdbcType=REAL},
+      </if>
+      <if test="wMoveFactor != null" >
+        W_MOVE_FACTOR = #{wMoveFactor,jdbcType=REAL},
+      </if>
+      <if test="wNormalUpBase != null" >
+        W_NORMAL_UP_BASE = #{wNormalUpBase,jdbcType=REAL},
+      </if>
+      <if test="wNormalLateralBase != null" >
+        W_NORMAL_LATERAL_BASE = #{wNormalLateralBase,jdbcType=REAL},
+      </if>
+      <if test="wNormalUpModifier != null" >
+        W_NORMAL_UP_MODIFIER = #{wNormalUpModifier,jdbcType=REAL},
+      </if>
+      <if test="wNormalLateralModifier != null" >
+        W_NORMAL_LATERAL_MODIFIER = #{wNormalLateralModifier,jdbcType=REAL},
+      </if>
+      <if test="wNormalUpMax != null" >
+        W_NORMAL_UP_MAX = #{wNormalUpMax,jdbcType=REAL},
+      </if>
+      <if test="wNormalLateralMax != null" >
+        W_NORMAL_LATERAL_MAX = #{wNormalLateralMax,jdbcType=REAL},
+      </if>
+      <if test="wNormalDirChange != null" >
+        W_NORMAL_DIR_CHANGE = #{wNormalDirChange,jdbcType=REAL},
+      </if>
+      <if test="wMoveUpBase != null" >
+        W_MOVE_UP_BASE = #{wMoveUpBase,jdbcType=REAL},
+      </if>
+      <if test="wMoveLateralBase != null" >
+        W_MOVE_LATERAL_BASE = #{wMoveLateralBase,jdbcType=REAL},
+      </if>
+      <if test="wMoveUpModifier != null" >
+        W_MOVE_UP_MODIFIER = #{wMoveUpModifier,jdbcType=REAL},
+      </if>
+      <if test="wMoveLateralModifier != null" >
+        W_MOVE_LATERAL_MODIFIER = #{wMoveLateralModifier,jdbcType=REAL},
+      </if>
+      <if test="wMoveUpMax != null" >
+        W_MOVE_UP_MAX = #{wMoveUpMax,jdbcType=REAL},
+      </if>
+      <if test="wMoveLateralMax != null" >
+        W_MOVE_LATERAL_MAX = #{wMoveLateralMax,jdbcType=REAL},
+      </if>
+      <if test="wMoveDirChange != null" >
+        W_MOVE_DIR_CHANGE = #{wMoveDirChange,jdbcType=REAL},
+      </if>
+      <if test="wOnairUpBase != null" >
+        W_ONAIR_UP_BASE = #{wOnairUpBase,jdbcType=REAL},
+      </if>
+      <if test="wOnairLateralBase != null" >
+        W_ONAIR_LATERAL_BASE = #{wOnairLateralBase,jdbcType=REAL},
+      </if>
+      <if test="wOnairUpModifier != null" >
+        W_ONAIR_UP_MODIFIER = #{wOnairUpModifier,jdbcType=REAL},
+      </if>
+      <if test="wOnairLateralModifier != null" >
+        W_ONAIR_LATERAL_MODIFIER = #{wOnairLateralModifier,jdbcType=REAL},
+      </if>
+      <if test="wOnairUpMax != null" >
+        W_ONAIR_UP_MAX = #{wOnairUpMax,jdbcType=REAL},
+      </if>
+      <if test="wOnairLateralMax != null" >
+        W_ONAIR_LATERAL_MAX = #{wOnairLateralMax,jdbcType=REAL},
+      </if>
+      <if test="wOnairDirChange != null" >
+        W_ONAIR_DIR_CHANGE = #{wOnairDirChange,jdbcType=REAL},
+      </if>
+      <if test="wCrouchUpBase != null" >
+        W_CROUCH_UP_BASE = #{wCrouchUpBase,jdbcType=REAL},
+      </if>
+      <if test="wCrouchLateralBase != null" >
+        W_CROUCH_LATERAL_BASE = #{wCrouchLateralBase,jdbcType=REAL},
+      </if>
+      <if test="wCrouchUpModifier != null" >
+        W_CROUCH_UP_MODIFIER = #{wCrouchUpModifier,jdbcType=REAL},
+      </if>
+      <if test="wCrouchLateralModifier != null" >
+        W_CROUCH_LATERAL_MODIFIER = #{wCrouchLateralModifier,jdbcType=REAL},
+      </if>
+      <if test="wCrouchUpMax != null" >
+        W_CROUCH_UP_MAX = #{wCrouchUpMax,jdbcType=REAL},
+      </if>
+      <if test="wCrouchLateralMax != null" >
+        W_CROUCH_LATERAL_MAX = #{wCrouchLateralMax,jdbcType=REAL},
+      </if>
+      <if test="wCrouchDirChange != null" >
+        W_CROUCH_DIR_CHANGE = #{wCrouchDirChange,jdbcType=REAL},
+      </if>
+      <if test="wUpModifier != null" >
+        W_UP_MODIFIER = #{wUpModifier,jdbcType=REAL},
+      </if>
+      <if test="wAccuracyTime != null" >
+        W_ACCURACY_TIME = #{wAccuracyTime,jdbcType=REAL},
+      </if>
+      <if test="wAccuracyTimeModifier != null" >
+        W_ACCURACY_TIME_MODIFIER = #{wAccuracyTimeModifier,jdbcType=REAL},
+      </if>
+      <if test="wMaxAccuracy != null" >
+        W_MAX_ACCURACY = #{wMaxAccuracy,jdbcType=REAL},
+      </if>
+      <if test="wMinAccuracy != null" >
+        W_MIN_ACCURACY = #{wMinAccuracy,jdbcType=REAL},
+      </if>
+      <if test="wShootBulletCount != null" >
+        W_SHOOT_BULLET_COUNT = #{wShootBulletCount,jdbcType=INTEGER},
+      </if>
+      <if test="wSpread != null" >
+        W_SPREAD = #{wSpread,jdbcType=REAL},
+      </if>
+      <if test="wFireMaxSpeed != null" >
+        W_FIRE_MAX_SPEED = #{wFireMaxSpeed,jdbcType=REAL},
+      </if>
+      <if test="wFireStartSpeed != null" >
+        W_FIRE_START_SPEED = #{wFireStartSpeed,jdbcType=REAL},
+      </if>
+      <if test="wFireAceleration != null" >
+        W_FIRE_ACELERATION = #{wFireAceleration,jdbcType=REAL},
+      </if>
+      <if test="wFireResistance != null" >
+        W_FIRE_RESISTANCE = #{wFireResistance,jdbcType=REAL},
+      </if>
+      <if test="wStabTime != null" >
+        W_STAB_TIME = #{wStabTime,jdbcType=REAL},
+      </if>
+      <if test="wStabLightTime != null" >
+        W_STAB_LIGHT_TIME = #{wStabLightTime,jdbcType=REAL},
+      </if>
+      <if test="wStabHurt != null" >
+        W_STAB_HURT = #{wStabHurt,jdbcType=REAL},
+      </if>
+      <if test="wStabLightHurt != null" >
+        W_STAB_LIGHT_HURT = #{wStabLightHurt,jdbcType=REAL},
+      </if>
+      <if test="wExplodeTime != null" >
+        W_EXPLODE_TIME = #{wExplodeTime,jdbcType=REAL},
+      </if>
+      <if test="wReadyTime != null" >
+        W_READY_TIME = #{wReadyTime,jdbcType=REAL},
+      </if>
+      <if test="wThrowOutTime != null" >
+        W_THROW_OUT_TIME = #{wThrowOutTime,jdbcType=REAL},
+      </if>
+      <if test="wHurtRange != null" >
+        W_HURT_RANGE = #{wHurtRange,jdbcType=REAL},
+      </if>
+      <if test="wHurt != null" >
+        W_HURT = #{wHurt,jdbcType=REAL},
+      </if>
+      <if test="cId != null" >
+        C_ID = #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="iId != null" >
+        I_ID = #{iId,jdbcType=INTEGER},
+      </if>
+      <if test="iValue != null" >
+        I_VALUE = #{iValue,jdbcType=VARCHAR},
+      </if>
+      <if test="wXOffset != null" >
+        W_X_OFFSET = #{wXOffset,jdbcType=INTEGER},
+      </if>
+      <if test="wSightNormalOffset != null" >
+        W_SIGHT_NORMAL_OFFSET = #{wSightNormalOffset,jdbcType=REAL},
+      </if>
+      <if test="wSightOnairOffset != null" >
+        W_SIGHT_ONAIR_OFFSET = #{wSightOnairOffset,jdbcType=REAL},
+      </if>
+      <if test="wSightMoveOffset != null" >
+        W_SIGHT_MOVE_OFFSET = #{wSightMoveOffset,jdbcType=REAL},
+      </if>
+      <if test="wStabDistance != null" >
+        W_STAB_DISTANCE = #{wStabDistance,jdbcType=REAL},
+      </if>
+      <if test="wStabLightDistance != null" >
+        W_STAB_LIGHT_DISTANCE = #{wStabLightDistance,jdbcType=REAL},
+      </if>
+      <if test="wStabWidth != null" >
+        W_STAB_WIDTH = #{wStabWidth,jdbcType=REAL},
+      </if>
+      <if test="wBackFactor != null" >
+        W_BACK_FACTOR = #{wBackFactor,jdbcType=REAL},
+      </if>
+      <if test="wFlashRangeStart != null" >
+        W_FLASH_RANGE_START = #{wFlashRangeStart,jdbcType=REAL},
+      </if>
+      <if test="wFlashRangeEnd != null" >
+        W_FLASH_RANGE_END = #{wFlashRangeEnd,jdbcType=REAL},
+      </if>
+      <if test="wFlashBackFactor != null" >
+        W_FLASH_BACK_FACTOR = #{wFlashBackFactor,jdbcType=REAL},
+      </if>
+      <if test="wTimeMax != null" >
+        W_TIME_MAX = #{wTimeMax,jdbcType=REAL},
+      </if>
+      <if test="wTimeFade != null" >
+        W_TIME_FADE = #{wTimeFade,jdbcType=REAL},
+      </if>
+      <if test="wTime != null" >
+        W_TIME = #{wTime,jdbcType=REAL},
+      </if>
+      <if test="wHitSpeed != null" >
+        W_HIT_SPEED = #{wHitSpeed,jdbcType=REAL},
+      </if>
+      <if test="wHitAcceleration != null" >
+        W_HIT_ACCELERATION = #{wHitAcceleration,jdbcType=REAL},
+      </if>
+      <if test="wHitDistance != null" >
+        W_HIT_DISTANCE = #{wHitDistance,jdbcType=REAL},
+      </if>
+      <if test="wSightInfo != null" >
+        W_SIGHT_INFO = #{wSightInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="wMaxDistance != null" >
+        W_MAX_DISTANCE = #{wMaxDistance,jdbcType=REAL},
+      </if>
+      <if test="wAddBlood != null" >
+        W_ADD_BLOOD = #{wAddBlood,jdbcType=INTEGER},
+      </if>
+      <if test="wAmmoType != null" >
+        W_AMMO_TYPE = #{wAmmoType,jdbcType=INTEGER},
+      </if>
+      <if test="wFlySpeed != null" >
+        W_FLY_SPEED = #{wFlySpeed,jdbcType=REAL},
+      </if>
+      <if test="wMaxaliveTime != null" >
+        W_MAXALIVE_TIME = #{wMaxaliveTime,jdbcType=REAL},
+      </if>
+      <if test="wGravity != null" >
+        W_GRAVITY = #{wGravity,jdbcType=INTEGER},
+      </if>
+      <if test="wLastHurt != null" >
+        W_LAST_HURT = #{wLastHurt,jdbcType=REAL},
+      </if>
+      <if test="wLastTime != null" >
+        W_LAST_TIME = #{wLastTime,jdbcType=REAL},
+      </if>
+      <if test="wSpecialDistance != null" >
+        W_SPECIAL_DISTANCE = #{wSpecialDistance,jdbcType=REAL},
+      </if>
+      <if test="wSpecialRange != null" >
+        W_SPECIAL_RANGE = #{wSpecialRange,jdbcType=REAL},
+      </if>
+      <if test="wSpecialLasttime != null" >
+        W_SPECIAL_LASTTIME = #{wSpecialLasttime,jdbcType=REAL},
+      </if>
+      <if test="wSpecialHurt != null" >
+        W_SPECIAL_HURT = #{wSpecialHurt,jdbcType=REAL},
+      </if>
+      <if test="wSpecialLasthurt != null" >
+        W_SPECIAL_LASTHURT = #{wSpecialLasthurt,jdbcType=REAL},
+      </if>
+      <if test="wParticlemun != null" >
+        W_PARTICLEMUN = #{wParticlemun,jdbcType=INTEGER},
+      </if>
+      <if test="wShowSpeed != null" >
+        W_SHOW_SPEED = #{wShowSpeed,jdbcType=INTEGER},
+      </if>
+      <if test="wAmmopartKey != null" >
+        W_AMMOPART_KEY = #{wAmmopartKey,jdbcType=VARCHAR},
+      </if>
+      <if test="wCritRate != null" >
+        W_CRIT_RATE = #{wCritRate,jdbcType=INTEGER},
+      </if>
+      <if test="wCritAvailable != null" >
+        W_CRIT_AVAILABLE = #{wCritAvailable,jdbcType=INTEGER},
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID = #{characterId,jdbcType=VARCHAR},
+      </if>
+      <if test="wDmgModifyTimerMin != null" >
+        W_DMG_MODIFY_TIMER_MIN = #{wDmgModifyTimerMin,jdbcType=REAL},
+      </if>
+      <if test="wDmgModifyTimerMax != null" >
+        W_DMG_MODIFY_TIMER_MAX = #{wDmgModifyTimerMax,jdbcType=REAL},
+      </if>
+      <if test="wDmgModifyMin != null" >
+        W_DMG_MODIFY_MIN = #{wDmgModifyMin,jdbcType=REAL},
+      </if>
+      <if test="wDmgModifyMax != null" >
+        W_DMG_MODIFY_MAX = #{wDmgModifyMax,jdbcType=REAL},
+      </if>
+      <if test="wCapsuleHeight != null" >
+        W_CAPSULE_HEIGHT = #{wCapsuleHeight,jdbcType=REAL},
+      </if>
+      <if test="wCapsuleRadius != null" >
+        W_CAPSULE_RADIUS = #{wCapsuleRadius,jdbcType=REAL},
+      </if>
+      <if test="wDamageModifer != null" >
+        W_DAMAGE_MODIFER = #{wDamageModifer,jdbcType=INTEGER},
+      </if>
+      <if test="iBuffId != null" >
+        I_BUFF_ID = #{iBuffId,jdbcType=INTEGER},
+      </if>
+      <if test="gunProperty1 != null" >
+        GUN_PROPERTY1 = #{gunProperty1,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty2 != null" >
+        GUN_PROPERTY2 = #{gunProperty2,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty3 != null" >
+        GUN_PROPERTY3 = #{gunProperty3,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty4 != null" >
+        GUN_PROPERTY4 = #{gunProperty4,jdbcType=VARCHAR},
+      </if>
+      <if test="isVip != null" >
+        IS_VIP = #{isVip,jdbcType=INTEGER},
+      </if>
+      <if test="isNew != null" >
+        IS_NEW = #{isNew,jdbcType=INTEGER},
+      </if>
+      <if test="isHot != null" >
+        IS_HOT = #{isHot,jdbcType=INTEGER},
+      </if>
+      <if test="gunProperty5 != null" >
+        GUN_PROPERTY5 = #{gunProperty5,jdbcType=VARCHAR},
+      </if>
+      <if test="backBoostPlus != null" >
+        BACK_BOOST_PLUS = #{backBoostPlus,jdbcType=INTEGER},
+      </if>
+      <if test="wFixPrice != null" >
+        W_FIX_PRICE = #{wFixPrice,jdbcType=INTEGER},
+      </if>
+      <if test="index != null" >
+        `INDEX` = #{index,jdbcType=INTEGER},
+      </if>
+      <if test="gunProperty6 != null" >
+        GUN_PROPERTY6 = #{gunProperty6,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty7 != null" >
+        GUN_PROPERTY7 = #{gunProperty7,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty8 != null" >
+        GUN_PROPERTY8 = #{gunProperty8,jdbcType=VARCHAR},
+      </if>
+      <if test="cResistanceFire != null" >
+        C_RESISTANCE_FIRE = #{cResistanceFire,jdbcType=REAL},
+      </if>
+      <if test="cResistanceBlast != null" >
+        C_RESISTANCE_BLAST = #{cResistanceBlast,jdbcType=REAL},
+      </if>
+      <if test="cResistanceBullet != null" >
+        C_RESISTANCE_BULLET = #{cResistanceBullet,jdbcType=REAL},
+      </if>
+      <if test="cResistanceKnife != null" >
+        C_RESISTANCE_KNIFE = #{cResistanceKnife,jdbcType=REAL},
+      </if>
+      <if test="cBloodAdd != null" >
+        C_BLOOD_ADD = #{cBloodAdd,jdbcType=INTEGER},
+      </if>
+      <if test="isStrengthen != null" >
+        IS_STRENGTHEN = #{isStrengthen,jdbcType=INTEGER},
+      </if>
+      <if test="mType != null" >
+        M_TYPE = #{mType,jdbcType=INTEGER},
+      </if>
+      <if test="mValue != null" >
+        M_VALUE = #{mValue,jdbcType=INTEGER},
+      </if>
+      <if test="isWeb != null" >
+        IS_WEB = #{isWeb,jdbcType=INTEGER},
+      </if>
+      <if test="fightNum != null" >
+        FIGHT_NUM = #{fightNum,jdbcType=INTEGER},
+      </if>
+      <if test="rareLevel != null" >
+        RARE_LEVEL = #{rareLevel,jdbcType=INTEGER},
+      </if>
+      <if test="isPopular != null" >
+        IS_POPULAR = #{isPopular,jdbcType=INTEGER},
+      </if>
+      <if test="isExchange != null" >
+        IS_EXCHANGE = #{isExchange,jdbcType=INTEGER},
+      </if>
+      <if test="isAsset != null" >
+        IS_ASSET = #{isAsset,jdbcType=INTEGER},
+      </if>
+      <if test="strengthLevel != null" >
+        STRENGTH_LEVEL = #{strengthLevel,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateRmb != null" >
+        EVALUATE_RMB = #{evaluateRmb,jdbcType=REAL},
+      </if>
+      <if test="teamLevelOccupyLength != null" >
+        TEAM_LEVEL_OCCUPY_LENGTH = #{teamLevelOccupyLength,jdbcType=REAL},
+      </if>
+      <if test="teamLevelOccupyWidth != null" >
+        TEAM_LEVEL_OCCUPY_WIDTH = #{teamLevelOccupyWidth,jdbcType=REAL},
+      </if>
+      <if test="needTeamPlaceLevel != null" >
+        NEED_TEAM_PLACE_LEVEL = #{needTeamPlaceLevel,jdbcType=INTEGER},
+      </if>
+      <if test="teamItemUpgradePrice != null" >
+        TEAM_ITEM_UPGRADE_PRICE = #{teamItemUpgradePrice,jdbcType=REAL},
+      </if>
+      <if test="timeForBuildingUp != null" >
+        TIME_FOR_BUILDING_UP = #{timeForBuildingUp,jdbcType=INTEGER},
+      </if>
+      <if test="timeForCreate != null" >
+        TIME_FOR_CREATE = #{timeForCreate,jdbcType=INTEGER},
+      </if>
+      <if test="timeForBuild != null" >
+        TIME_FOR_BUILD = #{timeForBuild,jdbcType=INTEGER},
+      </if>
+      <if test="wStabTime1 != null" >
+        W_STAB_TIME1 = #{wStabTime1,jdbcType=REAL},
+      </if>
+      <if test="items != null" >
+        ITEMS = #{items,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="gunProperty != null" >
+        GUN_PROPERTY = #{gunProperty,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="shoppingType != null" >
+        SHOPPING_TYPE = #{shoppingType,jdbcType=INTEGER},
+      </if>
+      <if test="shoppingStartTime != null" >
+        SHOPPING_START_TIME= #{shoppingStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shoppingEndTime != null" >
+        SHOPPING_END_TIME= #{shoppingEndTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysItem" >
+    update SYS_ITEM
+    set `NAME` = #{name,jdbcType=VARCHAR},
+      DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+      RESOURCE_STABLE = #{resourceStable,jdbcType=VARCHAR},
+      RESOURCE_CHANGEABLE = #{resourceChangeable,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=INTEGER},
+      SUB_TYPE = #{subType,jdbcType=INTEGER},
+      LEVEL = #{level,jdbcType=INTEGER},
+      IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      MODIFIED_DESC = #{modifiedDesc,jdbcType=CHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      W_ID = #{wId,jdbcType=INTEGER},
+      W_CHANGE_IN_TIME = #{wChangeInTime,jdbcType=REAL},
+      W_MOVE_SPEED_OFFSET = #{wMoveSpeedOffset,jdbcType=REAL},
+      W_CROSS_OFFSET = #{wCrossOffset,jdbcType=REAL},
+      W_CROSS_LENGTH_BASE = #{wCrossLengthBase,jdbcType=REAL},
+      W_CROSS_LENGTH_FACTOR = #{wCrossLengthFactor,jdbcType=REAL},
+      W_CROSS_DISTANCE_BASE = #{wCrossDistanceBase,jdbcType=REAL},
+      W_CROSS_DISTANCE_FACTOR = #{wCrossDistanceFactor,jdbcType=REAL},
+      W_ACCURACY_DIVISOR = #{wAccuracyDivisor,jdbcType=INTEGER},
+      W_ACCURACY_OFFSET = #{wAccuracyOffset,jdbcType=REAL},
+      W_MAX_INACCURACY = #{wMaxInaccuracy,jdbcType=REAL},
+      W_PENETRATION = #{wPenetration,jdbcType=INTEGER},
+      W_DAMAGE = #{wDamage,jdbcType=INTEGER},
+      W_RANGE_MODIFIER = #{wRangeModifier,jdbcType=REAL},
+      W_RANGE_START = #{wRangeStart,jdbcType=REAL},
+      W_RANGE_END = #{wRangeEnd,jdbcType=REAL},
+      W_FIRE_TIME = #{wFireTime,jdbcType=REAL},
+      W_RELOAD_TIME = #{wReloadTime,jdbcType=REAL},
+      W_ZOOM_TIME = #{wZoomTime,jdbcType=REAL},
+      W_ZOOM_VALUE = #{wZoomValue,jdbcType=REAL},
+      W_AMMO_ONE_CLIP = #{wAmmoOneClip,jdbcType=INTEGER},
+      W_AMMO_COUNT = #{wAmmoCount,jdbcType=INTEGER},
+      W_AUTO_FIRE = #{wAutoFire,jdbcType=INTEGER},
+      W_TIME_TO_IDLE = #{wTimeToIdle,jdbcType=REAL},
+      W_NORMAL_OFFSET = #{wNormalOffset,jdbcType=REAL},
+      W_NORMAL_FACTOR = #{wNormalFactor,jdbcType=REAL},
+      W_ONAIR_OFFSET = #{wOnairOffset,jdbcType=REAL},
+      W_ONAIR_FACTOR = #{wOnairFactor,jdbcType=REAL},
+      W_MOVE_OFFSET = #{wMoveOffset,jdbcType=REAL},
+      W_MOVE_FACTOR = #{wMoveFactor,jdbcType=REAL},
+      W_NORMAL_UP_BASE = #{wNormalUpBase,jdbcType=REAL},
+      W_NORMAL_LATERAL_BASE = #{wNormalLateralBase,jdbcType=REAL},
+      W_NORMAL_UP_MODIFIER = #{wNormalUpModifier,jdbcType=REAL},
+      W_NORMAL_LATERAL_MODIFIER = #{wNormalLateralModifier,jdbcType=REAL},
+      W_NORMAL_UP_MAX = #{wNormalUpMax,jdbcType=REAL},
+      W_NORMAL_LATERAL_MAX = #{wNormalLateralMax,jdbcType=REAL},
+      W_NORMAL_DIR_CHANGE = #{wNormalDirChange,jdbcType=REAL},
+      W_MOVE_UP_BASE = #{wMoveUpBase,jdbcType=REAL},
+      W_MOVE_LATERAL_BASE = #{wMoveLateralBase,jdbcType=REAL},
+      W_MOVE_UP_MODIFIER = #{wMoveUpModifier,jdbcType=REAL},
+      W_MOVE_LATERAL_MODIFIER = #{wMoveLateralModifier,jdbcType=REAL},
+      W_MOVE_UP_MAX = #{wMoveUpMax,jdbcType=REAL},
+      W_MOVE_LATERAL_MAX = #{wMoveLateralMax,jdbcType=REAL},
+      W_MOVE_DIR_CHANGE = #{wMoveDirChange,jdbcType=REAL},
+      W_ONAIR_UP_BASE = #{wOnairUpBase,jdbcType=REAL},
+      W_ONAIR_LATERAL_BASE = #{wOnairLateralBase,jdbcType=REAL},
+      W_ONAIR_UP_MODIFIER = #{wOnairUpModifier,jdbcType=REAL},
+      W_ONAIR_LATERAL_MODIFIER = #{wOnairLateralModifier,jdbcType=REAL},
+      W_ONAIR_UP_MAX = #{wOnairUpMax,jdbcType=REAL},
+      W_ONAIR_LATERAL_MAX = #{wOnairLateralMax,jdbcType=REAL},
+      W_ONAIR_DIR_CHANGE = #{wOnairDirChange,jdbcType=REAL},
+      W_CROUCH_UP_BASE = #{wCrouchUpBase,jdbcType=REAL},
+      W_CROUCH_LATERAL_BASE = #{wCrouchLateralBase,jdbcType=REAL},
+      W_CROUCH_UP_MODIFIER = #{wCrouchUpModifier,jdbcType=REAL},
+      W_CROUCH_LATERAL_MODIFIER = #{wCrouchLateralModifier,jdbcType=REAL},
+      W_CROUCH_UP_MAX = #{wCrouchUpMax,jdbcType=REAL},
+      W_CROUCH_LATERAL_MAX = #{wCrouchLateralMax,jdbcType=REAL},
+      W_CROUCH_DIR_CHANGE = #{wCrouchDirChange,jdbcType=REAL},
+      W_UP_MODIFIER = #{wUpModifier,jdbcType=REAL},
+      W_ACCURACY_TIME = #{wAccuracyTime,jdbcType=REAL},
+      W_ACCURACY_TIME_MODIFIER = #{wAccuracyTimeModifier,jdbcType=REAL},
+      W_MAX_ACCURACY = #{wMaxAccuracy,jdbcType=REAL},
+      W_MIN_ACCURACY = #{wMinAccuracy,jdbcType=REAL},
+      W_SHOOT_BULLET_COUNT = #{wShootBulletCount,jdbcType=INTEGER},
+      W_SPREAD = #{wSpread,jdbcType=REAL},
+      W_FIRE_MAX_SPEED = #{wFireMaxSpeed,jdbcType=REAL},
+      W_FIRE_START_SPEED = #{wFireStartSpeed,jdbcType=REAL},
+      W_FIRE_ACELERATION = #{wFireAceleration,jdbcType=REAL},
+      W_FIRE_RESISTANCE = #{wFireResistance,jdbcType=REAL},
+      W_STAB_TIME = #{wStabTime,jdbcType=REAL},
+      W_STAB_LIGHT_TIME = #{wStabLightTime,jdbcType=REAL},
+      W_STAB_HURT = #{wStabHurt,jdbcType=REAL},
+      W_STAB_LIGHT_HURT = #{wStabLightHurt,jdbcType=REAL},
+      W_EXPLODE_TIME = #{wExplodeTime,jdbcType=REAL},
+      W_READY_TIME = #{wReadyTime,jdbcType=REAL},
+      W_THROW_OUT_TIME = #{wThrowOutTime,jdbcType=REAL},
+      W_HURT_RANGE = #{wHurtRange,jdbcType=REAL},
+      W_HURT = #{wHurt,jdbcType=REAL},
+      C_ID = #{cId,jdbcType=INTEGER},
+      I_ID = #{iId,jdbcType=INTEGER},
+      I_VALUE = #{iValue,jdbcType=VARCHAR},
+      W_X_OFFSET = #{wXOffset,jdbcType=INTEGER},
+      W_SIGHT_NORMAL_OFFSET = #{wSightNormalOffset,jdbcType=REAL},
+      W_SIGHT_ONAIR_OFFSET = #{wSightOnairOffset,jdbcType=REAL},
+      W_SIGHT_MOVE_OFFSET = #{wSightMoveOffset,jdbcType=REAL},
+      W_STAB_DISTANCE = #{wStabDistance,jdbcType=REAL},
+      W_STAB_LIGHT_DISTANCE = #{wStabLightDistance,jdbcType=REAL},
+      W_STAB_WIDTH = #{wStabWidth,jdbcType=REAL},
+      W_BACK_FACTOR = #{wBackFactor,jdbcType=REAL},
+      W_FLASH_RANGE_START = #{wFlashRangeStart,jdbcType=REAL},
+      W_FLASH_RANGE_END = #{wFlashRangeEnd,jdbcType=REAL},
+      W_FLASH_BACK_FACTOR = #{wFlashBackFactor,jdbcType=REAL},
+      W_TIME_MAX = #{wTimeMax,jdbcType=REAL},
+      W_TIME_FADE = #{wTimeFade,jdbcType=REAL},
+      W_TIME = #{wTime,jdbcType=REAL},
+      W_HIT_SPEED = #{wHitSpeed,jdbcType=REAL},
+      W_HIT_ACCELERATION = #{wHitAcceleration,jdbcType=REAL},
+      W_HIT_DISTANCE = #{wHitDistance,jdbcType=REAL},
+      W_SIGHT_INFO = #{wSightInfo,jdbcType=VARCHAR},
+      W_MAX_DISTANCE = #{wMaxDistance,jdbcType=REAL},
+      W_ADD_BLOOD = #{wAddBlood,jdbcType=INTEGER},
+      W_AMMO_TYPE = #{wAmmoType,jdbcType=INTEGER},
+      W_FLY_SPEED = #{wFlySpeed,jdbcType=REAL},
+      W_MAXALIVE_TIME = #{wMaxaliveTime,jdbcType=REAL},
+      W_GRAVITY = #{wGravity,jdbcType=INTEGER},
+      W_LAST_HURT = #{wLastHurt,jdbcType=REAL},
+      W_LAST_TIME = #{wLastTime,jdbcType=REAL},
+      W_SPECIAL_DISTANCE = #{wSpecialDistance,jdbcType=REAL},
+      W_SPECIAL_RANGE = #{wSpecialRange,jdbcType=REAL},
+      W_SPECIAL_LASTTIME = #{wSpecialLasttime,jdbcType=REAL},
+      W_SPECIAL_HURT = #{wSpecialHurt,jdbcType=REAL},
+      W_SPECIAL_LASTHURT = #{wSpecialLasthurt,jdbcType=REAL},
+      W_PARTICLEMUN = #{wParticlemun,jdbcType=INTEGER},
+      W_SHOW_SPEED = #{wShowSpeed,jdbcType=INTEGER},
+      W_AMMOPART_KEY = #{wAmmopartKey,jdbcType=VARCHAR},
+      W_CRIT_RATE = #{wCritRate,jdbcType=INTEGER},
+      W_CRIT_AVAILABLE = #{wCritAvailable,jdbcType=INTEGER},
+      CHARACTER_ID = #{characterId,jdbcType=VARCHAR},
+      W_DMG_MODIFY_TIMER_MIN = #{wDmgModifyTimerMin,jdbcType=REAL},
+      W_DMG_MODIFY_TIMER_MAX = #{wDmgModifyTimerMax,jdbcType=REAL},
+      W_DMG_MODIFY_MIN = #{wDmgModifyMin,jdbcType=REAL},
+      W_DMG_MODIFY_MAX = #{wDmgModifyMax,jdbcType=REAL},
+      W_CAPSULE_HEIGHT = #{wCapsuleHeight,jdbcType=REAL},
+      W_CAPSULE_RADIUS = #{wCapsuleRadius,jdbcType=REAL},
+      W_DAMAGE_MODIFER = #{wDamageModifer,jdbcType=INTEGER},
+      I_BUFF_ID = #{iBuffId,jdbcType=INTEGER},
+      GUN_PROPERTY1 = #{gunProperty1,jdbcType=VARCHAR},
+      GUN_PROPERTY2 = #{gunProperty2,jdbcType=VARCHAR},
+      GUN_PROPERTY3 = #{gunProperty3,jdbcType=VARCHAR},
+      GUN_PROPERTY4 = #{gunProperty4,jdbcType=VARCHAR},
+      IS_VIP = #{isVip,jdbcType=INTEGER},
+      IS_NEW = #{isNew,jdbcType=INTEGER},
+      IS_HOT = #{isHot,jdbcType=INTEGER},
+      GUN_PROPERTY5 = #{gunProperty5,jdbcType=VARCHAR},
+      BACK_BOOST_PLUS = #{backBoostPlus,jdbcType=INTEGER},
+      W_FIX_PRICE = #{wFixPrice,jdbcType=INTEGER},
+      `INDEX` = #{index,jdbcType=INTEGER},
+      GUN_PROPERTY6 = #{gunProperty6,jdbcType=VARCHAR},
+      GUN_PROPERTY7 = #{gunProperty7,jdbcType=VARCHAR},
+      GUN_PROPERTY8 = #{gunProperty8,jdbcType=VARCHAR},
+      C_RESISTANCE_FIRE = #{cResistanceFire,jdbcType=REAL},
+      C_RESISTANCE_BLAST = #{cResistanceBlast,jdbcType=REAL},
+      C_RESISTANCE_BULLET = #{cResistanceBullet,jdbcType=REAL},
+      C_RESISTANCE_KNIFE = #{cResistanceKnife,jdbcType=REAL},
+      C_BLOOD_ADD = #{cBloodAdd,jdbcType=INTEGER},
+      IS_STRENGTHEN = #{isStrengthen,jdbcType=INTEGER},
+      M_TYPE = #{mType,jdbcType=INTEGER},
+      M_VALUE = #{mValue,jdbcType=INTEGER},
+      IS_WEB = #{isWeb,jdbcType=INTEGER},
+      FIGHT_NUM = #{fightNum,jdbcType=INTEGER},
+      RARE_LEVEL = #{rareLevel,jdbcType=INTEGER},
+      IS_POPULAR = #{isPopular,jdbcType=INTEGER},
+      IS_EXCHANGE = #{isExchange,jdbcType=INTEGER},
+      IS_ASSET = #{isAsset,jdbcType=INTEGER},
+      STRENGTH_LEVEL = #{strengthLevel,jdbcType=INTEGER},
+      EVALUATE_RMB = #{evaluateRmb,jdbcType=REAL},
+      TEAM_LEVEL_OCCUPY_LENGTH = #{teamLevelOccupyLength,jdbcType=REAL},
+      TEAM_LEVEL_OCCUPY_WIDTH = #{teamLevelOccupyWidth,jdbcType=REAL},
+      NEED_TEAM_PLACE_LEVEL = #{needTeamPlaceLevel,jdbcType=INTEGER},
+      TEAM_ITEM_UPGRADE_PRICE = #{teamItemUpgradePrice,jdbcType=REAL},
+      TIME_FOR_BUILDING_UP = #{timeForBuildingUp,jdbcType=INTEGER},
+      TIME_FOR_CREATE = #{timeForCreate,jdbcType=INTEGER},
+      TIME_FOR_BUILD = #{timeForBuild,jdbcType=INTEGER},
+      W_STAB_TIME1 = #{wStabTime1,jdbcType=REAL},
+      ITEMS = #{items,jdbcType=LONGVARCHAR},
+      GUN_PROPERTY = #{gunProperty,jdbcType=LONGVARCHAR},
+      SHOPPING_TYPE = #{shoppingType,jdbcType=INTEGER},
+      SHOPPING_START_TIME= #{shoppingStartTime,jdbcType=TIMESTAMP},
+      SHOPPING_END_TIME= #{shoppingEndTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

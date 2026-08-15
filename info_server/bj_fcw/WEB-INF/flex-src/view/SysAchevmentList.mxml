@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="432" height="558" xmlns:component="component.*"
+	label="Select the SYSITEM" title="Select the SYSITEM"
+	showCloseButton="true" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import event.BoxClickEvent;
+			import mx.events.DataGridEvent;
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import common.Constants;
+			import mx.events.ListEvent;
+			import mx.controls.CheckBox;
+			import event.ItemDeleteEvent;
+			import mx.events.ItemClickEvent;
+			import mx.managers.PopUpManager;
+			import mx.collections.ArrayCollection;
+			import vo.SysAchievement;
+			[Bindable]
+			public var achievementList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public var selectedSysItemList:ArrayCollection=new ArrayCollection();
+			public var 	_sa:SysAchievement;
+			[Bindable]
+			public function set sysAchievement(sa:SysAchievement):void{
+				this._sa=sa;
+			}
+			public function get sysAchievement():SysAchievement{
+				return this._sa;
+			} 
+			public function init():void{
+			}
+			public function selectHandler(e:ListEvent):void{
+				sysAchievement=datagrid.selectedItem as SysAchievement;
+				var cb:CheckBox=e.itemRenderer as CheckBox
+				if(cb){
+					if(cb.selected){
+						sysAchievement.selected=true;
+					}else{
+						sysAchievement.selected=false;
+					}
+		 		}
+			}
+			private function selectedAll():void{
+				if(selectAll.selected){
+					for each(var sa:SysAchievement in achievementList){
+						sa.selected=true;
+					}
+					this.datagrid.dataProvider=achievementList;
+				}else{
+					for each(var sa:SysAchievement in achievementList){
+						sa.selected=false;
+					}
+					this.datagrid.dataProvider=achievementList;
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox  height="100%" width="410">
+		
+		<mx:VBox height="461" width="391">
+		<mx:ApplicationControlBar  height="421" width="370">	
+			<component:MyDataGrid id="datagrid"  itemClick="selectHandler(event)" dataProvider="{achievementList}"
+				width="351" height="100%" editable="false">
+			</component:MyDataGrid>
+		</mx:ApplicationControlBar>
+		</mx:VBox>
+		<mx:VBox>
+		<mx:ControlBar>
+			<mx:Button id="save" label="保存"/>
+			<mx:Button id="cancel" label="退出"/>
+			<mx:CheckBox id="selectAll" label="全部选择" change="selectedAll()">
+			</mx:CheckBox>
+		</mx:ControlBar>	
+		</mx:VBox>
+		
+	</mx:VBox>
+</mx:TitleWindow>

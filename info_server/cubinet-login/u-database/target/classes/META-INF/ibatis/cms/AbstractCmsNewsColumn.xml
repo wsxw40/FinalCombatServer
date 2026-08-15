@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="AbstractCmsNewsColumn">
+	<typeAlias alias="CmsNewsColumnObject" type="com.pde.uweb.database.cms.cmsnewscolumn.CmsNewsColumnPojo" />
+	<resultMap id="cmsnewscolumnResult" class="CmsNewsColumnObject">
+		<result property="newsColumnId" column="NEWS_COLUMN_ID_B" jdbcType="NUMBER" />
+		<result property="columnName" column="COLUMN_NAME_V" jdbcType="VARCHAR" />
+		<result property="status" column="STATUS_I" jdbcType="NUMBER" />
+		<result property="createDate" column="CREATE_DATE_D" jdbcType="DATETIME" />
+		<result property="lastModifyDate" column="LAST_MODIFY_DATE_D" jdbcType="DATETIME" />
+		<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+	</resultMap>
+	<resultMap id="cmsnewscolumnVersion" class="java.lang.Long">
+		<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+	</resultMap>
+
+	<!-- insert -->
+	<insert id="insert" parameterClass="CmsNewsColumnObject">
+	insert into CMS_NEWS_COLUMN (NEWS_COLUMN_ID_B, CREATE_DATE_D, VERSION_B
+	<dynamic>
+		<isNotNull prepend="," property="columnName">COLUMN_NAME_V</isNotNull>
+		<isNotNull prepend="," property="status">STATUS_I</isNotNull>
+	</dynamic>
+	) values (#newsColumnId#, NOW(), 1
+	<dynamic>
+		<isNotNull prepend="," property="columnName">#columnName#</isNotNull>
+	</dynamic>
+	)
+	</insert>
+
+	<!-- select -->
+	<select id="select" resultMap="cmsnewscolumnResult" parameterClass="java.lang.Long">
+	SELECT
+		NEWS_COLUMN_ID_B,
+		COLUMN_NAME_V,
+		STATUS_I,
+		CREATE_DATE_D,
+		LAST_MODIFY_DATE_D,
+		VERSION_B
+	FROM CMS_NEWS_COLUMN
+	WHERE NEWS_COLUMN_ID_B = #id#
+	</select>
+
+	<!-- update all columns -->
+	<update id="update" parameterClass="CmsNewsColumnObject">
+	UPDATE CMS_NEWS_COLUMN SET
+		VERSION_B = VERSION_B + 1,
+		LAST_MODIFY_DATE_D = NOW(),
+		COLUMN_NAME_V = #columnName#,
+		STATUS_I = #status#
+	WHERE NEWS_COLUMN_ID_B = #newsColumnId# AND VERSION_B = #version#
+	</update>
+
+	<!-- only update "not null" columns -->
+	<update id="updateForField" parameterClass="CmsNewsColumnObject">
+	UPDATE CMS_NEWS_COLUMN SET
+		VERSION_B = VERSION_B + 1,
+		LAST_MODIFY_DATE_D = NOW()
+		<dynamic>
+			<isNotNull prepend="," property="columnName">COLUMN_NAME_V = #columnName#</isNotNull>
+			<isNotNull prepend="," property="status">STATUS_I = #status#</isNotNull>
+		</dynamic>
+	WHERE NEWS_COLUMN_ID_B = #newsColumnId# AND VERSION_B = #version#
+	</update>
+
+	<!-- delete -->
+	<delete id="delete" parameterClass="java.util.Map">
+		DELETE FROM CMS_NEWS_COLUMN
+		WHERE 	NEWS_COLUMN_ID_B = #id# 
+				AND VERSION_B = #version#
+	</delete>
+
+	<!-- get version -->
+	<select id="getVersion" resultMap="cmsnewscolumnVersion" parameterClass="java.lang.Long">
+		SELECT VERSION_B
+		FROM CMS_NEWS_COLUMN
+		WHERE NEWS_COLUMN_ID_B = #id#
+	</select>
+
+</sqlMap>

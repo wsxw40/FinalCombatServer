@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+	<display-name>Final Combat</display-name>
+	<description>Final Combat Service</description>
+
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+	<!-- Servlet Mapping-->
+	<servlet>
+		<servlet-name>initServlet</servlet-name>
+		<display-name>initServlet</display-name>
+		<load-on-startup>0</load-on-startup>
+		<servlet-class>com.pearl.servlet.InitServlet</servlet-class>
+	</servlet>	
+	<servlet>
+        <servlet-name>MonitorServlet</servlet-name>
+        <display-name>MonitorServlet</display-name>
+        <servlet-class>com.pearl.servlet.MonitorServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>WriteXunleiLog</servlet-name>
+        <display-name>WriteXunleiLog</display-name>
+        <servlet-class>com.pearl.servlet.WriteXunleiLog</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>WriteXunleiLog</servlet-name>
+        <url-pattern>/WriteXunleiLog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MonitorServlet</servlet-name>
+        <url-pattern>/monitor/*</url-pattern>
+    </servlet-mapping>
+	<servlet>
+        <servlet-name>SwitchServlet</servlet-name>
+        <display-name>SwitchServlet</display-name>
+        <servlet-class>com.pearl.servlet.SwitchServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>SwitchServlet</servlet-name>
+        <url-pattern>/switch/*</url-pattern>
+    </servlet-mapping>
+</web-app>

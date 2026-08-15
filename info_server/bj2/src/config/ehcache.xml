@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+<!-- 	<diskStore path="{app.rootPath}/../../ehcache/"/>  -->
+	<diskStore path="${catalina.base}/ehcache/"/> 
+	<cache name="bj2" 
+	   maxElementsInMemory="2000000" 
+	     maxElementsOnDisk="2000000" 
+	     eternal="false" 
+	     overflowToDisk="true" 
+	     diskSpoolBufferSizeMB="20" 
+	     diskPersistent="true" 
+	     timeToIdleSeconds="1800" 
+	     timeToLiveSeconds="3600" 
+	     memoryStoreEvictionPolicy="LFU" 
+	     />
+</ehcache>

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import event.ItemDeleteEvent;
+			import mx.utils.StringUtil;
+			import utils.DatagridValidateFactory;
+			import mx.rpc.events.FaultEvent;
+			import mx.messaging.AbstractConsumer;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.NumberValidator;
+			import mx.validators.Validator;
+			import popup.ViewSysItemLog;
+			import mx.controls.TextInput;
+			import mx.events.CollectionEventKind;
+			import mx.events.CollectionEvent;
+			import mx.events.DataGridEvent;
+			import mx.managers.PopUpManager;
+			import view.CreateSysItemView;
+			import component.MyDataGridColumn;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.events.CloseEvent;
+			import mx.core.UIComponent;
+			import mx.messaging.config.ConfigMap;
+			import vo.SysItem;
+			import common.Constants;
+			import mx.controls.Alert;
+			import mx.controls.TabBar;
+			import mx.events.ItemClickEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			[Bindable]
+			private var allSysItem:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			private var typeIndex:int=0;
+			[Bindable]
+			private var subTypeIndex:int=0;
+			[Bindable]
+			private var typeArray:Array;
+			[Bindable]
+			private var subTypeArray:Array;
+	
+			private var isCopy:Boolean=false;
+			[Bindable]
+			private var sysItem:SysItem=null;
+			private var allSysItemLog:ArrayCollection=new ArrayCollection();
+			private var type:int=1;
+			private var subType:int=1;
+			public var sysItemView:CreateSysItemView;
+			public var viewSysItemLog:ViewSysItemLog;
+			private function init():void{
+				typeArray=Constants.typeArray;
+				subTypeArray=Constants.subTypeArray2;
+				typeTab.selectedIndex=typeIndex;
+				subTypeTab.selectedIndex=subTypeIndex;
+				var columns:Array = Constants.getColumnWeapon(false) as Array;
+				sysItemDataGrid.columns = columns;
+				getRo.getSysItemList(1,1);
+				this.addEventListener(ItemDeleteEvent.ITEM_DELETE,deleteHandler);
+		  	}
+		  	private function getSysItemHandler(evt:ResultEvent):void{
+		  	 	allSysItem=evt.result as ArrayCollection;
+		  	}
+		  	private function getSysItemLogHandler(evt:ResultEvent):void{
+		  	 	allSysItemLog=evt.result as ArrayCollection;
+		  	 	viewSysItemLog=ViewSysItemLog(PopUpManager.createPopUp(this,ViewSysItemLog,true));
+		  	 	if(this.type!=1&&this.type!=3){
+		  	 		viewSysItemLog.width=900;
+		  	 	}
+		  	 	viewSysItemLog.sysItemLogDG.columns=Constants.getLogColumnArray(this.typeIndex,false);
+		  	 	viewSysItemLog.type=this.type;
+		  	 	viewSysItemLog.sysItemLogs=allSysItemLog;
+		  	 	viewSysItemLog.close.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(viewSysItemLog);});
+		  	 	PopUpManager.centerPopUp(viewSysItemLog);
+		  	}
+		  	private function initBtns():void{
+		  		newBtn.enabled=true;
+//		 		deleteBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		copyBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		saveBtn.enabled=false;
+		 		sysItemDataGrid.editable=false;
+		  	}
+		  	private function typeClick(evt:ItemClickEvent):void{
+		  		this.sysItem=null;
+		  		this.isCopy=false;
+		  		initBtns();
+		  		var targetComp:TabBar = TabBar(evt.currentTarget);
+		  		var typeData:int = targetComp.dataProvider[evt.index].data;
+		  		this.type=typeData;
+		  		this.typeIndex=evt.index;
+		  		sysItemDataGrid.columns=Constants.getColumnArray(this.typeIndex,false);
+		  		subTypeArray=Constants.getSubTypeArray(this.typeIndex);
+		  		subTypeTab.selectedIndex=0;
+		  		this.subTypeIndex=0;
+		  		this.subType=1;
+		  		getRo.getSysItemList(this.type,this.subType);
+		  	}
+		  	private function subTypeClick(evt:ItemClickEvent):void{
+		  		this.sysItem=null;
+		  		this.isCopy=false;
+		  		initBtns();
+		  		var targetComp:TabBar = TabBar(evt.currentTarget);
+		  		var subTypeData:int = targetComp.dataProvider[evt.index].data;
+		  		this.subType=subTypeData;
+		  		this.subTypeIndex=evt.index;
+		  		getRo.getSysItemList(this.type,this.subType);
+		  	}
+		  	
+		 	public function selectHandler():void{
+		 		sysItem=sysItemDataGrid.selectedItem as SysItem;
+		 	}
+		 	
+		 	public function clickNewBtn():void{
+		 		sysItemView=CreateSysItemView(PopUpManager.createPopUp(this,CreateSysItemView,true));
+		 		if(isCopy){
+		 			this.sysItem.type=this.type;
+		 			sysItemView.sysItem=this.sysItem;
+		 		}else{
+		 			sysItemView.sysItem=new SysItem();
+		 			sysItemView.sysItem.type=this.type;
+		 			sysItemView.sysItem.subType=this.subType;
+		 		}
+		 		sysItemView.type=this.type;
+		 		sysItemView.close.addEventListener(MouseEvent.CLICK,closePanel);
+		 		sysItemView.save.addEventListener(MouseEvent.CLICK,validate);
+				PopUpManager.centerPopUp(sysItemView);
+		 	}
+		 	private function deleteHandler(evt:ItemDeleteEvent):void{
+		 		deleteRo.deleteSysItem(evt._data);
+		 	}
+		 	public function clickDeleteBtn():void{
+		 		if(this.sysItem==null){
+					Alert.show("请先选择一个物品。");
+				}else{
+		 			deleteRo.deleteSysItem(this.sysItem);
+		 		}
+		 	}
+		 	public function clickEditBtn():void{
+				this.sysItemDataGrid.editable=true;
+				newBtn.enabled=false;
+//		 		deleteBtn.enabled=false;
+
+		 		editBtn.enabled=false;
+		 		copyBtn.enabled=false;
+		 		cancelBtn.enabled=true;
+		 		saveBtn.enabled=true;
+		 	}
+		 	public function clickCancelBtn():void{
+		 		newBtn.enabled=true;
+//		 		deleteBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		copyBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		saveBtn.enabled=false;
+		 		sysItemDataGrid.editable=false;
+		 		getRo.getSysItemList(this.type,this.subType);
+		 	}
+		 	public function clickSaveBtn():void{
+				updateRo.updateSysItem(this.allSysItem);
+				newBtn.enabled=true;
+//		 		deleteBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		copyBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		saveBtn.enabled=false;
+		 		sysItemDataGrid.editable=false;
+			}
+			public function clickCopyBtn():void{
+				if(this.sysItem==null){
+					Alert.show("请先选择一个物品。");
+				}else{
+					isCopy=true;
+				}
+			}
+		 	private function closePanel(evt:MouseEvent):void{
+		 		PopUpManager.removePopUp(sysItemView);
+		 	}
+			public function onBtnClick():void{
+				if(this.sysItem==null){
+					Alert.show("请先选择一个物品。");
+				}else
+				{
+					getRo.getSysItemLog(this.sysItem.id);
+				}
+			}
+			public function validate(evt:MouseEvent):void{
+		 		
+		 		var validators:Array=DatagridValidateFactory.getValidatorArray(this.type,this.sysItemView);
+		 		var validateResult:Array=Validator.validateAll(validators);
+		 		if(validateResult.length > 0){
+ 		   			 return;
+		   		}else{
+		   			createSysItem();
+		   		} 
+		 	}
+		 	public function createSysItem():void{
+		 		createRo.createSysItem(sysItemView.sysItem);
+		 		PopUpManager.removePopUp(sysItemView);
+		 	}
+		 	public function createSysItemHandler(evt:ResultEvent):void{
+		 		
+		 		getRo.getSysItemList(this.type,this.subType);
+		 	}
+		 	public function defaultFaultHandle(evt:FaultEvent):void{
+//		 		Alert.show("系统出现错误，请检查输入参数是否有误。");
+throw evt;
+		 		getRo.getSysItemList(this.type,this.subType);
+		 	}
+		 	private var datagridValidate:Validator;
+		 	public function endEdit(evt:DataGridEvent):void{
+		 		var dataField:String = evt.dataField;
+				var fCell:Array=[evt.columnIndex,evt.rowIndex];
+				var source:Object=evt.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(evt.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = evt.currentTarget.editedItemRenderer.data[evt.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+               		var validate:Validator=DatagridValidateFactory.getValidator(dataField,source);
+               		if(validate!=null){
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.sysItem.isChange=1;
+	               			callLater(maintainFocus);
+	               			
+	               		}else{
+	               			evt.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		}
+               		}else{
+               			callLater(maintainFocus);
+               		}
+               	}else{
+               		callLater(maintainFocus);
+               	}
+               	
+		 	}
+		 	private function maintainEdit(colIndex:int,rowIndex:int,source:Object):void
+			{
+				
+				var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+				if(sysItemDataGrid.editedItemPosition==null)
+				{
+	   				sysItemDataGrid.editedItemPosition = editCell;
+					callLater(validateCurrentEditor);
+	   			}
+			}
+			private function validateCurrentEditor():void{
+				datagridValidate.source=sysItemDataGrid.itemEditorInstance;
+				datagridValidate.validate();
+			}
+			private function maintainFocus():void
+			{
+	   			sysItemDataGrid.editedItemPosition = null;
+			}
+			private function checkIt(evt:Event):void
+			{
+				sysItemDataGrid.invalidateList();
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getSysItemList" result="getSysItemHandler(event)" />
+		<mx:method name="getSysItemLog" result="getSysItemLogHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createSysItem" result="createSysItemHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteSysItem" result="createSysItemHandler(event)"/>
+	</mx:RemoteObject>
+		<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateSysItem" result="createSysItemHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>	
+	
+	<mx:TabBar id="typeTab" dataProvider="{typeArray}" itemClick="typeClick(event)" />
+	<mx:HBox>
+		<mx:TabBar id="subTypeTab" dataProvider="{subTypeArray}" itemClick="subTypeClick(event)" />
+		<mx:Spacer width="200"/>
+		<mx:ControlBar width="100%" >				
+	        	<mx:Button id="newBtn" click="clickNewBtn()" label="新建"/>
+	        	<mx:Button id="copyBtn" click="clickCopyBtn()" label="复制到粘贴板"/>
+	        	<mx:Button id="saveBtn" click="clickSaveBtn()" label="保存" enabled="false"/>
+	        	<!--<mx:Button id="deleteBtn" click="clickDeleteBtn()" label="删除"/>-->
+	        	<mx:Button id="editBtn" click="clickEditBtn()" label="编辑"/>
+	        	<mx:Button id="cancelBtn" click="clickCancelBtn()" label="取消" enabled="false"/>
+	        	<mx:Button id="showLog" click="onBtnClick()" label="查看日志" enabled="true"/>
+	        </mx:ControlBar>
+	</mx:HBox>
+	<mx:HBox  height="100%" width="100%">
+	<mx:VBox  height="100%" width="100%">
+		<mx:ApplicationControlBar  height="100%" width="100%">	
+			<component:MyDataGrid id="sysItemDataGrid" dataProvider="{allSysItem}" itemClick="selectHandler()" lockedColumnCount="4" 
+				width="100%" height="100%" editable="false" change="checkIt(event)"
+				itemEditEnd="endEdit(event)">
+			</component:MyDataGrid>
+		</mx:ApplicationControlBar>
+		</mx:VBox>
+	</mx:HBox>	
+</mx:VBox>

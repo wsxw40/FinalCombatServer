@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="700" height="300"
+	label="vehicle Point" title="vehicle Point"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import vo.VehicleLinePoint;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			[Bindable]
+			public  var vehicleLinePoints:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public  var vehicleLinePoint:VehicleLinePoint;
+			private function onNewBtnClick():void{
+				var point:VehicleLinePoint=new VehicleLinePoint();
+				vehicleLinePoints.addItem(point);
+			}
+			private function onDeleteBtnClick():void{
+				if(this.vehicleLinePoint==null){
+					Alert.show("请选择一条记录。");
+				}else{
+					var index:int=vehicleLinePointDatagrid.selectedIndex;
+					vehicleLinePoints.removeItemAt(index);
+				}
+			}
+			
+			private function onCancelBtnClick():void{
+				PopUpManager.removePopUp(this);
+			}
+			private function selectHandler():void{
+				this.vehicleLinePoint=vehicleLinePointDatagrid.selectedItem as VehicleLinePoint;
+			}
+			
+		]]>
+	</mx:Script>
+<mx:VBox width="670">
+	<mx:VBox>
+		<mx:DataGrid id="vehicleLinePointDatagrid" dataProvider="{vehicleLinePoints}" editable="true" width="664" height="194" itemClick="selectHandler()">
+		</mx:DataGrid>
+	</mx:VBox>
+	<mx:VBox>
+		<mx:ControlBar width="100%" >
+				<mx:Button id="save"  label="保存"/>		
+	        	<mx:Button id="newBtn"  label="新建" click="onNewBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="删除" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="退出"  click="onCancelBtnClick()"/>
+	        
+	     </mx:ControlBar>
+	</mx:VBox>
+</mx:VBox>
+</mx:TitleWindow>

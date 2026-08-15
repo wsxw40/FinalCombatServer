@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" showCloseButton="true" fontSize="12"
+	label="Show Differences" creationComplete="init()" xmlns:component="component.*" close="PopUpManager.removePopUp(this)">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import mx.collections.ArrayCollection;
+			public var _logs:ArrayCollection;
+			public var lockedColumnCount:int=0;
+			[Bindable]
+			public function set logs(logList:ArrayCollection):void{
+				this._logs=logList;
+			}
+			public function get logs():ArrayCollection{
+				return this._logs;
+			}
+			
+			private function init():void{
+			 if(this.lockedColumnCount!=0){logDG.lockedColumnCount=this.lockedColumnCount;}
+			}  
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%">
+	<mx:ApplicationControlBar  height="100%" width="100%">	
+		<component:MyDataGrid id="logDG" dataProvider="{logs}"  
+				width="100%"	 height="80%" editable="false" sortableColumns="false"/>
+	</mx:ApplicationControlBar>
+	<mx:ControlBar>
+		<mx:Button label="退出" id="close" />
+	</mx:ControlBar>
+	</mx:VBox>
+</mx:TitleWindow>

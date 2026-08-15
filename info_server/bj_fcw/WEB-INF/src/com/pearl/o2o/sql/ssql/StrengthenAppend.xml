@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="StrengthenAppend">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="StrengthenAppend" type="com.pearl.o2o.pojo.StrengthenAppend"/> 	
+	<resultMap id="selectResult" class="StrengthenAppend">
+		<result property="id"      		  column="ID"/>
+		<result property="level"  		  column="LEVEL"/>
+		<result property="type"    		  column="TYPE"/>
+		<result property="property1"      column="PROPERTY1"/>
+		<result property="property2"      column="PROPERTY2"/>
+		<result property="streNum" 		  column="STRE_NUM"/>
+		<result property="streGR" 		  column="STRE_GR"/>
+		<result property="winRate" 		  column="WIN_RATE"/>
+		<result property="falseKeepRate"  column="FALSE_KEEP_RATE"/>
+		<result property="falseFallRate"  column="FALSE_FALL_RATE"/>
+		<result property="falseRuinRate"  column="FALSE_RUIN_RATE"/>
+		<result property="holeWinRate" 	  column="HOLE_WIN_RATE"/>
+		<result property="switchFallRate" column="SWITCH_FALL_RATE"/>
+	</resultMap>
+	
+	
+	<!--================================================== Select ==================================================-->
+	<select id="select" resultMap="selectResult">
+  		 SELECT ID,
+		  LEVEL,
+		  TYPE,
+		  PROPERTY1,
+		  PROPERTY2,
+		  STRE_NUM,
+		  STRE_GR,
+		  WIN_RATE,
+		  FALSE_KEEP_RATE,
+		  FALSE_FALL_RATE,
+		  FALSE_RUIN_RATE,
+		  HOLE_WIN_RATE,
+		  SWITCH_FALL_RATE
+		FROM SYS_STRENGTHEN_APPEND
+		ORDER BY ID ASC
+  	</select>
+  	
+  	  	
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+  	<insert id="insert" parameterClass="StrengthenAppend">
+	  	insert into SYS_STRENGTHEN_APPEND(
+			  LEVEL,
+			  TYPE,
+			  PROPERTY1,
+			  PROPERTY2,
+			  STRE_NUM,
+			  STRE_GR,
+			  WIN_RATE,
+			  FALSE_KEEP_RATE,
+			  FALSE_FALL_RATE,
+			  FALSE_RUIN_RATE,
+			  HOLE_WIN_RATE,
+			  SWITCH_FALL_RATE
+  		) values(
+  			#level#,
+			#type#,
+			#property1#,
+			#property2#,
+			#streNum#,
+			#streGR#,
+			#winRate#,	
+			#falseKeepRate#,
+			#falseFallRate#,
+			#falseRuinRate#,
+			#holeWinRate#,
+			#switchFallRate#
+  			)
+  			<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+			</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterClass="StrengthenAppend">
+  		update SYS_STRENGTHEN_APPEND
+  		set LEVEL				= #level#,
+			  TYPE				= #type#,
+			  PROPERTY1			= #property1#,
+			  PROPERTY2			= #property2#,
+			  STRE_NUM			= #streNum#,
+			  STRE_GR			= #streGR#,
+			  WIN_RATE			= #winRate#,
+			  FALSE_KEEP_RATE	= #falseKeepRate#,
+			  FALSE_FALL_RATE	= #falseFallRate#,
+			  FALSE_RUIN_RATE	= #falseRuinRate#,
+			  HOLE_WIN_RATE		= #holeWinRate#,
+			  SWITCH_FALL_RATE	= #switchFallRate#
+  		where ID         = #id#
+  	</update>
+  	
+  	<delete id="delete" parameterClass="java.lang.Integer">
+	  	delete from  SYS_STRENGTHEN_APPEND 
+  		where ID = #value# 
+  	</delete>
+</sqlMap>

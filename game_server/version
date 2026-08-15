@@ -1,0 +1,12 @@
+#!/bin/sh
+
+VERSION="1.0.7"
+SVN=`which svn`
+PWD=`dirname $0`
+
+if [ -n "$SVN" ]; then
+	REVISION=`svn info ${1:-..} | sed -nr 's/Last Changed Rev: ([0-9]+)/.\1/p'`
+	VERSION+="$REVISION"
+fi
+
+echo "const char * build_version = \"$VERSION\";"

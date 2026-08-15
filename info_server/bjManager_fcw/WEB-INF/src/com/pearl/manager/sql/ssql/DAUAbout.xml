@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DAUAbout">
+	<typeAlias alias="BaseDAUAbout" type="com.pearl.manager.pojo.BaseDAUAbout"/>
+	<resultMap id="selectResult" class="BaseDAUAbout">
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="totalRmb" column="RMB"/>
+	</resultMap>
+	<select id="getDauList" parameterClass="java.util.Map" resultMap="selectResult">
+		SELECT p.ID as PLAYER_ID,ifnull(io.num,0) as RMB FROM `PLAYER` p
+		left outer join (select player_id,sum(rmb) as num from ITEM_ORDER  where type=1  and to_days(CREATE_TIME) <![CDATA[ <= ]]> to_days(#start#) group by player_id) io on p.id=io.player_id
+		where to_days(p.last_login_time)=to_days(#start#)   order by p.id;
+	</select>
+	<select id="getFirstCharge" parameterClass="java.util.Map" resultMap="selectResult">
+		select * from (select * from ITEM_ORDER where type=1 group by PLAYER_ID) temp 
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="start">
+			CREATE_TIME <![CDATA[ >= ]]> #start#
+			</isNotNull>
+			<isNotNull prepend="and" property="end">
+				CREATE_TIME <![CDATA[ < ]]> #end#
+			</isNotNull>
+		</dynamic>
+	</select>
+</sqlMap>

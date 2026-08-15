@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TeamLevelInfo">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="TeamLevelInfo" type="com.pearl.o2o.pojo.TeamLevelInfo"/> 	
+	<resultMap id="selectResult" class="TeamLevelInfo">
+		<result property="id" column="ID"/>
+		<result property="teamId" column="TEAM_ID"/>
+		<result property="type" column="LEVEL_TYPE"/>	
+		<result property="refLevelId" column="ORG_LEVEL_ID"/>
+		<result property="name" column="NAME"/>
+		<result property="displayName" column="DISPLAY_NAME"/>
+		<result property="configPoints" column="CONFIG_POINTS"/>
+		<result property="createTime" column="CREATE_TIME_INT"/>
+		<result property="lastUpdatePlayer" column="LAST_UPDATE_ID"/>
+		<result property="lastUpdateTime" column="LAST_UPDATE_TIME_INT"/>
+		<result property="lastBeginUpdateTime" column="LAST_BEGIN_UPDATE_TIME_INT"/>
+		<result property="isEditable" column="IS_EDITABLE"/>	
+		<result property="isDeleted" column="IS_DELETED"/>	
+	</resultMap>
+
+
+	<!--================================================== Select ==================================================-->
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+  		select
+		UNIX_TIMESTAMP(tl.CREATE_TIME) as CREATE_TIME_INT,
+		UNIX_TIMESTAMP(tl.LAST_UPDATE_TIME) as LAST_UPDATE_TIME_INT,
+		UNIX_TIMESTAMP(tl.LAST_BEGIN_UPDATE_TIME) as LAST_BEGIN_UPDATE_TIME_INT,
+			tl.*
+		from TEAM_LEVEL tl
+		where tl.ID = #id# and tl.IS_DELETED= 'N'
+  	</select>
+	
+  	
+  	<select id="selectByResLevelId" parameterClass="java.util.Map" resultMap="selectResult">
+  		select
+		UNIX_TIMESTAMP(tl.CREATE_TIME) as CREATE_TIME_INT,
+		UNIX_TIMESTAMP(tl.LAST_UPDATE_TIME) as LAST_UPDATE_TIME_INT,
+		UNIX_TIMESTAMP(tl.LAST_BEGIN_UPDATE_TIME) as LAST_BEGIN_UPDATE_TIME_INT,
+			tl.*
+		from TEAM_LEVEL tl
+		where tl.ORG_LEVEL_ID = #refLevelId# 
+		and tl.TEAM_ID=#teamId#
+		and tl.IS_DELETED= 'N'
+  	</select>
+  	
+  	<select id="selectAllForTeam" parameterClass="java.util.Map" resultMap="selectResult">
+  		select
+		UNIX_TIMESTAMP(tl.CREATE_TIME) as CREATE_TIME_INT,
+		UNIX_TIMESTAMP(tl.LAST_UPDATE_TIME) as LAST_UPDATE_TIME_INT,
+		UNIX_TIMESTAMP(tl.LAST_BEGIN_UPDATE_TIME) as LAST_BEGIN_UPDATE_TIME_INT,
+			tl.*
+		from TEAM_LEVEL tl
+		where tl.TEAM_ID=#teamId#
+		and tl.IS_DELETED= 'N'
+  	</select>
+	
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="TeamLevelInfo">
+	insert into TEAM_LEVEL(TEAM_ID,LEVEL_TYPE,ORG_LEVEL_ID,NAME,DISPLAY_NAME,CONFIG_POINTS,CREATE_TIME,
+		LAST_UPDATE_ID,LAST_UPDATE_TIME,LAST_BEGIN_UPDATE_TIME,IS_EDITABLE,IS_DELETED)
+	values(
+			#teamId#,
+			#type#,
+			#refLevelId#,
+			#name#,
+			#displayName#,
+			#configPoints#,
+			FROM_UNIXTIME(#createTime#),
+			#lastUpdatePlayer#,
+			FROM_UNIXTIME(#lastUpdateTime#),
+			FROM_UNIXTIME(#lastBeginUpdateTime#),
+			'N',
+			'N'
+	);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>  	
+
+  	<update id = "update" parameterClass="TeamLevelInfo">
+  		update TEAM_LEVEL 
+  			set 
+  			<dynamic prepend="    ">
+  				<isNotNull prepend="," property="name"  removeFirstPrepend="true">
+  					NAME = #name#
+  				</isNotNull>
+  				<isNotNull prepend="," property="isDeleted"  removeFirstPrepend="true">
+  					IS_DELETED = #isDeleted#
+  				</isNotNull>
+  				<isNotNull prepend="," property="displayName"  removeFirstPrepend="true">
+  					DISPLAY_NAME = #displayName#
+  				</isNotNull>
+  				<isNotNull prepend="," property="teamId"  removeFirstPrepend="true">
+  					TEAM_ID = #teamId#
+  				</isNotNull>
+  				<isNotNull prepend="," property="refLevelId"  removeFirstPrepend="true">
+  					ORG_LEVEL_ID = #refLevelId#
+  				</isNotNull>
+  				<isNotNull prepend="," property="lastUpdatePlayer"  removeFirstPrepend="true">
+  					LAST_UPDATE_ID = #lastUpdatePlayer#
+  				</isNotNull>
+  				<isNotNull prepend="," property="lastUpdateTime"  removeFirstPrepend="true">
+  					LAST_UPDATE_TIME = FROM_UNIXTIME(#lastUpdateTime#)
+  				</isNotNull>
+  				<isNotNull prepend="," property="lastBeginUpdateTime"  removeFirstPrepend="true">
+  					LAST_BEGIN_UPDATE_TIME = FROM_UNIXTIME(#lastBeginUpdateTime#)
+  				</isNotNull>
+  				<isNotNull prepend="," property="isEditable"  removeFirstPrepend="true">
+  					IS_EDITABLE = #isEditable#
+  				</isNotNull>
+  				<isNotNull prepend="," property="configPoints"  removeFirstPrepend="true">
+  					CONFIG_POINTS = #configPoints#
+  				</isNotNull>
+  			</dynamic>	
+  		where ID = #id#	and IS_DELETED = 'N';
+  	</update>
+  	
+  	
+  	 
+  	<update id = "updateConfig" parameterClass="TeamLevelInfo">
+  	  	update TEAM_LEVEL
+  	   	set 
+  			CONFIG_POINTS =  #configPoints#,
+  			IS_EDITABLE =  #isEditable#,
+  			LAST_BEGIN_UPDATE_TIME = FROM_UNIXTIME(#lastBeginUpdateTime#),
+  			LAST_UPDATE_TIME = FROM_UNIXTIME(#lastUpdateTime#),
+  			LAST_UPDATE_ID = #lastUpdatePlayer#
+  		where ID = #id# and DELETED = 'N';
+  	</update>
+  	
+  	<delete id="delete" parameterClass="TeamLevelInfo">
+  		update TEAM_LEVEL tl
+  			set tl.IS_DELETED="Y"
+		where ID = #id#
+  	</delete>
+</sqlMap>

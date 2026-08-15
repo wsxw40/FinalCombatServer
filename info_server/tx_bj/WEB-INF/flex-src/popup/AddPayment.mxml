@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	fontSize="12" width="462" xmlns:vo="vo.*" label="Add Payment" title="Add Payment"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}" height="250">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import vo.Payment;
+			[Bindable]
+			public function set payment(rc:Payment):void{
+				 this._payment=rc;
+			}
+			public function get payment():Payment{
+				 return this._payment;
+			}
+		]]>
+	</mx:Script>
+	<vo:Payment id="_payment" cost="{parseInt(cost.text)}" itemId="{parseInt(itemId.text)}" 
+		payType="{parseInt(payType.text)}" unit="{parseInt(unit.text)}" unitType="{parseInt(unitType.text)}" isShow="{parseInt(isShow.text)}"/>
+	
+	<mx:HBox  width="422" height="198">
+	<mx:Form>
+		<mx:FormItem label="itemId">
+			<mx:HBox>
+				<mx:TextInput id="itemId" text="{payment.itemId}" editable="false"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="payType">
+			<mx:HBox>
+				<mx:TextInput id="payType" text="{payment.payType}"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="unitType">
+			<mx:HBox>
+				<mx:TextInput id="unitType" text="{payment.unitType}"/>
+			</mx:HBox>	
+		</mx:FormItem>
+		<mx:FormItem label="cost">
+			<mx:HBox>
+				<mx:TextInput id="cost" text="{payment.cost}"/>
+			</mx:HBox>	
+		</mx:FormItem>
+		<mx:FormItem label="unit">
+			<mx:HBox>
+				<mx:TextInput id="unit" text="{payment.unit}"/>
+			</mx:HBox>	
+		</mx:FormItem>
+		<mx:FormItem label="isShow">
+			<mx:HBox>
+				<mx:TextInput id="isShow" text="{payment.isShow}"/>
+			</mx:HBox>	
+		</mx:FormItem>
+	</mx:Form>
+	<mx:ControlBar>
+			<mx:Button id="save" label="保存"/>
+			<mx:Button id="cancel" label="取消"/>
+		</mx:ControlBar>
+</mx:HBox>		
+</mx:TitleWindow>

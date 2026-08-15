@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WBlackIpMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WBlackIp" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="IP" property="ip" jdbcType="INTEGER" />
+    <result column="IS_BANNED" property="isBanned" jdbcType="VARCHAR" />
+    <result column="BANNED_TIME" property="bannedTime" jdbcType="INTEGER" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, IP, IS_BANNED, BANNED_TIME, DESCRIPTION, CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from BLACK_IP
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WBlackIp" >
+    select 
+    <include refid="Base_Column_List" />
+    from BLACK_IP
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from BLACK_IP where 1 = 1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%')
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from BLACK_IP where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%')
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from BLACK_IP
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WBlackIp" >
+    insert into BLACK_IP (ID, IP, IS_BANNED, 
+      BANNED_TIME, DESCRIPTION, CREATE_TIME
+      )
+    values (#{id,jdbcType=INTEGER}, #{ip,jdbcType=INTEGER}, #{isBanned,jdbcType=VARCHAR}, 
+      #{bannedTime,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into BLACK_IP (ID, IP, IS_BANNED, 
+      BANNED_TIME, DESCRIPTION, CREATE_TIME
+      )
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+		(#{item.id,jdbcType=INTEGER}, #{item.ip,jdbcType=INTEGER}, #{item.isBanned,jdbcType=VARCHAR}, 
+      #{item.bannedTime,jdbcType=INTEGER}, #{item.description,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}
+      )
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WBlackIp" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into BLACK_IP
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="ip != null" >
+        IP,
+      </if>
+      <if test="isBanned != null" >
+        IS_BANNED,
+      </if>
+      <if test="bannedTime != null" >
+        BANNED_TIME,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=INTEGER},
+      </if>
+      <if test="isBanned != null" >
+        #{isBanned,jdbcType=VARCHAR},
+      </if>
+      <if test="bannedTime != null" >
+        #{bannedTime,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WBlackIp" >
+    update BLACK_IP
+    <set >
+      <if test="ip != null" >
+        IP = #{ip,jdbcType=INTEGER},
+      </if>
+      <if test="isBanned != null" >
+        IS_BANNED = #{isBanned,jdbcType=VARCHAR},
+      </if>
+      <if test="bannedTime != null" >
+        BANNED_TIME = #{bannedTime,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WBlackIp" >
+    update BLACK_IP
+    set IP = #{ip,jdbcType=INTEGER},
+      IS_BANNED = #{isBanned,jdbcType=VARCHAR},
+      BANNED_TIME = #{bannedTime,jdbcType=INTEGER},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

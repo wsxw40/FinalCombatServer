@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+//			import vo.GmUser;
+			import mx.controls.Alert;
+			import mx.utils.StringUtil;
+			import mx.validators.Validator;
+			import common.Constants;
+			import mx.rpc.events.ResultEvent;
+			import vo.BannedWord;
+			import mx.events.ListEvent;
+			import mx.collections.ArrayCollection;
+			import vo.GmUser;
+			private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+			//private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+			
+			[Bindable]
+			private var wordAC:ArrayCollection = new ArrayCollection();
+			
+			private var _selectedWord:BannedWord;
+			
+			public function get selectedWord():BannedWord{
+				return this._selectedWord;
+			}
+			
+			[Bindable]
+			public function set selectedWord(w:BannedWord):void{
+				this._selectedWord = w;
+				if(w.isDeleted == Constants.BOOLEAN_YES){
+					isDeletedCB.selected = true;
+				}else{
+					isDeletedCB.selected = false;
+				}
+				if(w.includeInWord == Constants.BOOLEAN_YES){
+					includeCB.selected = true;
+				}else{
+					includeCB.selected = false;
+				}
+			}
+			
+			private function init():void{
+				saveBtn.enabled=false;
+				createBtn.enabled=false;
+				//getRo.getBannedWords()
+			}
+			
+			private function getBannedWordsHandler(e:ResultEvent):void{
+				wordAC = e.result as ArrayCollection;
+			}
+			
+			private function onBannedWordDGItemClick(e:ListEvent):void{
+				selectedWord = e.itemRenderer.data as BannedWord;
+				saveBtn.enabled=true;
+				createBtn.enabled=false;
+				addBtn.enabled = true;
+			}
+			
+			private function onAddBtnClick():void{
+				saveBtn.enabled=false;
+				createBtn.enabled=true;
+				addBtn.enabled = false;
+				selectedWord = new BannedWord();
+			}
+			
+			private var newBannedWord:BannedWord;
+			
+			private function onSaveBtnClick():void{
+				var array:Array = new Array();
+				array.push(sv);
+				var result:Array = Validator.validateAll(array);
+				if(result.length <= 0){
+					newBannedWord = new BannedWord();
+					newBannedWord.id 		 = Number(idLab.text);
+					newBannedWord.bannedWord = StringUtil.trim(wordTI.text);
+					if(isDeletedCB.selected){
+						newBannedWord.isDeleted	= Constants.BOOLEAN_YES;
+						selectedWord.isDeleted=Constants.BOOLEAN_YES;
+					}else{
+						newBannedWord.isDeleted	= Constants.BOOLEAN_NO;
+						selectedWord.isDeleted=Constants.BOOLEAN_NO;
+					}
+					if(includeCB.selected){
+						newBannedWord.includeInWord = Constants.BOOLEAN_YES;
+						selectedWord.includeInWord=Constants.BOOLEAN_YES;
+					}else{
+						newBannedWord.includeInWord	= Constants.BOOLEAN_NO;
+						selectedWord.includeInWord=Constants.BOOLEAN_NO;
+					}
+					
+					if(newBannedWord.id == 0){
+						createRo.createBannedWord(gmUser, newBannedWord);
+					}else{
+						updateRo.updateBannedWord(gmUser, newBannedWord);
+					}
+				}
+			}
+			
+			private function onCreateBtnClick():void{
+				onSaveBtnClick();
+				createBtn.enabled=false;
+				addBtn.enabled = true;
+			}
+			private function createBannedWordHandler(e:ResultEvent):void{
+				newBannedWord.id = e.result as int;
+				wordAC.addItem(newBannedWord);
+				this.selectedWord = newBannedWord;
+				//bannedWordDG.item
+			}
+			private function onSearchBtnClick():void{
+				saveBtn.enabled=false;
+				if(StringUtil.trim(serachWord.text))
+					getRo.getByBannedWord(StringUtil.trim(serachWord.text));
+				else{
+					getRo.getBannedWords();
+				}
+			}
+			private function onClearBtnClick():void{
+				serachWord.text="";
+			}
+			private function getByBannedWordHandler(evt:ResultEvent):void{
+				wordAC = evt.result as ArrayCollection;
+			}
+			private function onRefreshBtnClick():void{
+				saveBtn.enabled=false;
+				createBtn.enabled=false;
+				if(wordAC.length>0){
+					onSearchBtnClick();
+				}
+			}
+			private function onLoadBtnClick():void{
+				updateRo.loadBannedWordFile(gmUser);
+			}
+			private function loadWordHandler(evt:ResultEvent):void{
+				var result : int = evt.result as int;
+				if(0 == result){
+					Alert.show("文件不存在，请把文件放到应用下面work目录下面，再试");
+				} else {
+					getRo.getBannedWords();
+					Alert.show("Load成功");
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getBannedWords" result="getBannedWordsHandler(event)"/>
+		<mx:method name="getByBannedWord" result="getByBannedWordHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create" showBusyCursor="true">
+		<mx:method name="createBannedWord" result="createBannedWordHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update" showBusyCursor="true">
+		<mx:method name="updateBannedWord"/>
+		<mx:method name="loadBannedWordFile" result="loadWordHandler(event);"/>
+	</mx:RemoteObject>
+	
+	<mx:StringValidator id="sv" minLength="1" source="{wordTI}" property="text" required="true"/> 
+	<mx:HBox>
+	<mx:ApplicationControlBar width="100%" >
+			<mx:FormItem label="{resourceManager.getString('Language','label.BannedWord')}" width="300" height="24">
+				<mx:TextInput  width="100%" id="serachWord"  text=""/>
+			</mx:FormItem>
+			<mx:Button label="{resourceManager.getString('Language','button.Search')}" click="onSearchBtnClick()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Reset')}" click="onClearBtnClick()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Refresh')}" click="onRefreshBtnClick()"/>
+	</mx:ApplicationControlBar>
+	</mx:HBox>
+	<mx:DataGrid id="bannedWordDG" dataProvider="{wordAC}" itemClick="onBannedWordDGItemClick(event)" width="100%" height="100%">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="ID"/>
+			<mx:DataGridColumn dataField="bannedWord" headerText="{resourceManager.getString('Language','label.BannedWord')}"/>
+			<mx:DataGridColumn dataField="isDeleted" headerText="{resourceManager.getString('Language','label.IsDelete')}"/>
+			<mx:DataGridColumn dataField="includeInWord" headerText="{resourceManager.getString('Language','label.IncludeInWord')}"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:ApplicationControlBar width="100%" height="100">
+		<mx:VBox width="100%" height="100%" backgroundColor="#FFFFFF">
+			<mx:HBox width="100%" height="100%">
+				<mx:Form>
+					<mx:FormItem label="ID:">
+						<mx:Label id="idLab" text="{selectedWord.id}"/>
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form>
+					<mx:FormItem label="{resourceManager.getString('Language','label.BannedWord')}:" required="true">
+						<mx:TextInput id="wordTI" text="{selectedWord.bannedWord}"/>
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form>
+					<mx:FormItem label="{resourceManager.getString('Language','label.IsDeletedCB')}">
+						<mx:CheckBox id="isDeletedCB"/>
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form>
+					<mx:FormItem label="{resourceManager.getString('Language','label.IncludeCB')}">
+						<mx:CheckBox id="includeCB"/>
+					</mx:FormItem>
+				</mx:Form>
+			</mx:HBox>
+			<mx:HBox>
+				<mx:Button id="addBtn" label="{resourceManager.getString('Language','button.New')}" click="onAddBtnClick()"/>
+				<mx:Button id="createBtn" label="{resourceManager.getString('Language','button.CreateBtn')}" click="onCreateBtnClick()"/>
+				<mx:Button id="saveBtn" label="{resourceManager.getString('Language','button.Save')}" click="onSaveBtnClick()"/>
+				<mx:Button id="loadBtn" label="{resourceManager.getString('Language','button.LoadFile')}" click="onLoadBtnClick()"/>
+			</mx:HBox>
+		</mx:VBox>
+	</mx:ApplicationControlBar>
+</mx:VBox>

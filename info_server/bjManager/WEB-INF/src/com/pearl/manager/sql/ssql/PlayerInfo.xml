@@ -1,0 +1,43 @@
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerInfo">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="PlayerInfo" type="com.pearl.manager.pojo.PlayerInfo" />
+		
+	<resultMap id="selectPlayerInfoResult" class="PlayerInfo" groupBy="id">
+		<result property="id" 				column="ID" />
+		<result property="playerId" 		column="PLAYER_ID" />
+		<result property="xunleiPoint" 		column="XUNLEI_POINT" />
+	</resultMap>
+			
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerInfoResult">
+		select
+		ID,PLAYER_ID,XUNLEI_POINT
+		from PLAYER_INFO p
+		where p.ID = #id#
+	</select>	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="PlayerInfo">
+		insert into PLAYER_INFO (ID,
+			PLAYER_ID,XUNLEI_POINT
+			)
+		values (#id#, 
+			#playerId#, 
+			#xunleiPoint#
+			)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<update id="update" parameterClass="PlayerInfo">
+		update PLAYER_INFO p 
+		set p.XUNLEI_POINT = #xunleiPoint# 
+		where p.ID = #id#
+	</update>
+</sqlMap>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="BlackWhiteList">
+	<typeAlias alias="BlackWhiteList" type="com.pearl.o2o.pojo.BlackWhiteList" />
+	<resultMap id="selectResult" class="BlackWhiteList">
+		<result property="id" column="ID"/>
+		<result property="userId" column="USER_ID"/>			
+		<result property="playerId" column="PLAYER_ID"/>		
+		<result property="playerName" column="PLAYER_NAME"/>
+		<result property="isBlack" column="IS_BLACK"/>
+	</resultMap>
+	
+	<select id="select" resultMap="selectResult">
+		select
+			m.ID,
+			m.USER_ID,
+			m.PLAYER_ID,
+			m.PLAYER_NAME,
+			m.IS_BLACK
+		 from BLACK_WHITE_LIST m
+	</select>
+	
+    <insert id="insert" parameterClass="BlackWhiteList">
+    	insert into BLACK_WHITE_LIST(
+    	USER_ID,
+    	PLAYER_ID,
+    	PLAYER_NAME,
+    	IS_BLACK
+    	)
+    	values(
+   		#userId#,
+   		#playerId#,
+   		#playerName#,
+   		#isBlack#
+   		);
+   		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+    </insert>
+    
+    <update id="update" parameterClass="BlackWhiteList">
+   		update BLACK_WHITE_LIST set 
+   		USER_ID = #userId#,
+    	PLAYER_ID = #playerId#,
+    	PLAYER_NAME = #playerName#,
+    	IS_BLACK = #isBlack#
+    	where ID=#id#;
+    </update>
+    
+    <delete id="delete" parameterClass="java.lang.Integer">
+    	delete from BLACK_WHITE_LIST where ID=#value#;
+    </delete>
+</sqlMap>

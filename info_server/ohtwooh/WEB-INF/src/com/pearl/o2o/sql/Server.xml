@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Server">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="Server" type="com.pearl.o2o.pojo.Server"/> 
+
+	<resultMap id="selectServerResult" class="Server">
+		<result property="id" column="ID"/>
+		<result property="name" column="NAME"/>
+		
+	</resultMap>
+	<select id="select" resultMap="selectServerResult">
+		select * from SERVER t ;
+	</select>  
+</sqlMap>

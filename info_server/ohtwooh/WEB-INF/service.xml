@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="getService" class="com.pearl.o2o.service.GetService">
+		<property name="mcc" ref="memcachedClient" />
+		<property name="userDao" ref="userDao" />
+		<property name="playerDao" ref="playerDao" />
+		<property name="friendDao" ref="friendDao" />
+		<property name="serverDao" ref="serverDao" />
+		<property name="sysItemDao" ref="sysItemDao" />
+		<property name="sysItemLogDao" ref="sysItemLogDao" />
+		<property name="playerItemDao" ref="playerItemDao" />
+		<property name="playerPackDao" ref="playerPackDao" />
+		<property name="messageDao" ref="messageDao" />
+		<property name="characterDao" ref="characterDao" />
+		<property name="characterLogDao" ref="characterLogDao" />
+		<property name="itemOrderDao" ref="itemOrderDao" />	
+		<property name="rankDao" ref="rankDao" />	
+		<property name="teamDao" ref="teamDao" />
+		<property name="keyWordsDao" ref="keyWordsDao" />
+		<property name="sysLevelDao" ref="sysLevelDao" />
+		<property name="playerTeamDao" ref="playerTeamDao" />
+		<property name="teamHistoryDao" ref="teamHistoryDao" />
+		<property name="sysModeConfigDao" ref="sysModeConfigDao" />
+		<property name="sdoComponent" ref="sdoComponent" />
+		<property name="systemDao" ref="systemDao"/>
+	</bean>	 
+	
+	<bean id="createService" class="com.pearl.o2o.service.CreateService">
+		<property name="mcc" ref="memcachedClient" />	
+		<property name="userDao" ref="userDao" />
+		<property name="playerDao" ref="playerDao" />
+		<property name="friendDao" ref="friendDao" />
+		<property name="serverDao" ref="serverDao" />
+		<property name="sysItemDao" ref="sysItemDao" />
+		<property name="sysItemLogDao" ref="sysItemLogDao" />
+		<property name="itemModDao" ref="itemModDao" />
+		<property name="playerItemDao" ref="playerItemDao" />
+		<property name="playerPackDao" ref="playerPackDao" />
+		<property name="getService" ref="getService" />
+		<property name="messageDao" ref="messageDao" />
+		<property name="characterDao" ref="characterDao" />
+		<property name="characterLogDao" ref="characterLogDao" />
+		<property name="itemOrderDao" ref="itemOrderDao" />
+		<property name="playerBuffDao" ref="playerBuffDao" />
+		<property name="teamDao" ref="teamDao" />
+		<property name="playerTeamDao" ref="playerTeamDao" />
+		<property name="sysLevelDao" ref="sysLevelDao" />
+		<property name="sdoComponent" ref="sdoComponent" />
+		<property name="sysModeConfigDao" ref="sysModeConfigDao" />
+	</bean>	
+	
+	<bean id="deleteService" class="com.pearl.o2o.service.DeleteService">
+		<property name="mcc" ref="memcachedClient" />	
+		<property name="userDao" ref="userDao" />
+		<property name="playerDao" ref="playerDao" />
+		<property name="friendDao" ref="friendDao" />
+		<property name="sysItemDao" ref="sysItemDao" />
+		<property name="itemModDao" ref="itemModDao" />				
+		<property name="playerPackDao" ref="playerPackDao" />
+		<property name="playerItemDao" ref="playerItemDao" />
+		<property name="getService" ref="getService" />	
+		<property name="messageDao" ref="messageDao" />	
+		<property name="characterDao" ref="characterDao" />
+		<property name="sysLevelDao" ref="sysLevelDao" />
+		<property name="teamDao" ref="teamDao" />
+	</bean>
+	
+	<bean id="updateService" class="com.pearl.o2o.service.UpdateService">
+		<property name="mcc" ref="memcachedClient" />
+		<property name="userDao" ref="userDao" />
+		<property name="playerDao" ref="playerDao" />		
+		<property name="friendDao" ref="friendDao" />
+		<property name="sysItemDao" ref="sysItemDao" />
+		<property name="sysItemLogDao" ref="sysItemLogDao" />
+		<property name="getService" ref="getService" />
+		<property name="playerPackDao" ref="playerPackDao" />
+		<property name="messageDao" ref="messageDao" />
+		<property name="characterDao" ref="characterDao" />
+		<property name="characterLogDao" ref="characterLogDao" />
+		<property name="playerItemDao" ref="playerItemDao" />
+		<property name="teamDao" ref="teamDao" />
+		<property name="sysLevelDao" ref="sysLevelDao" />
+		<property name="playerTeamDao" ref="playerTeamDao" />
+		<property name="allyDao" ref="allyDao" />
+		<property name="sysModeConfigDao" ref="sysModeConfigDao" />
+		<property name="systemDao" ref="systemDao" />
+		<property name="teamHistoryDao" ref="teamHistoryDao" />
+	</bean>
+ 		 	
+</beans>

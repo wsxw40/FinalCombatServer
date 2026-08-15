@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerTrack">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PlayerTrack" type="com.pearl.o2o.pojo.PlayerTrack"/> 	
+	<resultMap id="selectResult" class="PlayerTrack">
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="giftTime" column="GIFT_TIME"/>
+		<result property="medalCount" column="MEDAL_COUNT"/>
+		<result property="goldCount" column="GOLD_COUNT"/>
+		<result property="firstCost" column="FIRST_COST"/>
+		<result property="firstCostTime" column="FIRST_COST_TIME"/>
+		<result property="newRenewItem" column="NEW_RENEW_ITEM"/>
+	</resultMap>
+	
+	
+	<!--================================================== Select ==================================================-->
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+  		select *
+	    from PLAYER_TRACK 
+  		where PLAYER_ID = #id# 
+  	</select>
+  	
+  	  	
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+  	<insert id="insert" parameterClass="PlayerTrack">
+	  	insert into PLAYER_TRACK values(
+  			#playerId#, 
+  			#giftTime#, 
+  			#medalCount#, 
+  			#goldCount#, 
+  			#firstCost#, 
+  			#firstCostTime#, 
+  			#newRenewItem#
+  			)
+  		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+  	</insert> 
+  	<insert id="update" parameterClass="PlayerTrack">
+	  	update PLAYER_TRACK set 
+  			GIFT_TIME = #giftTime#, 
+  			MEDAL_COUNT = #medalCount#, 
+  			GOLD_COUNT = #goldCount#, 
+  			FIRST_COST = #firstCost#, 
+  			FIRST_COST_TIME = #firstCostTime#, 
+  			NEW_RENEW_ITEM=#newRenewItem#
+  			where PLAYER_ID=#playerId#
+  		
+  		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+  	</insert>
+  	
+</sqlMap>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="baseService"  class="com.pearl.manager.service.BaseService">
+		<property name="gmUserDao" ref="gmUserDao"/>
+		<property name="gmLogDao" ref="gmLogDao"/>
+		<property name="gmGroupDao" ref="gmGroupDao"/>
+		<property name="gmPrivilegeDao" ref="gmPrivilegeDao"/>
+		<property name="gmGroupPrivilegeDao" ref="gmGroupPrivilegeDao"/>
+		<property name="gmUserGroupDao" ref="gmUserGroupDao"/>
+		<property name="chargeLogDao" ref="chargeLogDao"/>
+			<property name="dauDao" ref="dauDao" />
+		<property name="payLogDao"   ref="payLogDao"/>
+	</bean>
+	<!-- GM Tool Log -->
+    <bean id="gmLogInterceptor" class="com.pearl.manager.filter.GmLogInterceptor">
+     	<property name="gmLogDao" ref="gmLogDao"/>
+    </bean>
+	<bean id="getService" class="com.pearl.manager.service.GetService" parent="baseService">
+	</bean>
+	
+	
+	<bean id="createService" class="com.pearl.manager.service.CreateService" parent="baseService">
+	</bean>
+	
+	<bean id="deleteService" class="com.pearl.manager.service.DeleteService" parent="baseService">
+	</bean>
+	
+	<bean id="updateService" class="com.pearl.manager.service.UpdateService" parent="baseService">
+		
+	</bean>	
+	<bean id="nosqlService" class="com.pearl.manager.service.NosqlService">
+		
+	</bean>
+	<bean id="nosqlMetaService" class="com.pearl.manager.service.NosqlService">
+		
+	</bean>
+	<bean id="flexGetService" class="com.pearl.manager.service.flexservice.FlexGetService" parent="getService">
+	</bean>	
+	
+	<bean id="flexCreateService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		 <property name="proxyTargetClass" value="true"/>
+         <property name="target" ref ="flexRealCreateService" />
+         <property name="interceptorNames">
+	         <list>
+	         	<value>gmLogInterceptor</value>
+	         </list>
+         </property>
+	</bean>	
+	<bean id="flexDeleteService" class="org.springframework.aop.framework.ProxyFactoryBean">	
+		 <property name="proxyTargetClass" value="true"/>
+         <property name="target" ref ="flexRealDeleteService" />
+         <property name="interceptorNames">
+	         <list>
+	         	<value>gmLogInterceptor</value>
+	         </list>
+         </property>
+	</bean>	
+	<bean id="flexUpdateService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		 <property name="proxyTargetClass" value="true"/>
+         <property name="target" ref ="flexRealUpdateService" />
+         <property name="interceptorNames">
+	         <list>
+	         	<value>gmLogInterceptor</value>
+	         </list>
+         </property>
+	</bean>	
+	<bean id="flexRealCreateService" class="com.pearl.manager.service.flexservice.FlexCreateService" parent="createService">
+	</bean>	
+	<bean id="flexRealDeleteService" class="com.pearl.manager.service.flexservice.FlexDeleteService" parent="deleteService">	
+	</bean>	
+	<bean id="flexRealUpdateService" class="com.pearl.manager.service.flexservice.FlexUpdateService" parent="updateService">
+	</bean>	
+	<bean id="flexRealNosqlService" class="com.pearl.manager.service.flexservice.FlexNosqlService" parent="nosqlService">
+	</bean>
+</beans>

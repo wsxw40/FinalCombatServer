@@ -1,0 +1,506 @@
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Player">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="Player" type="com.pearl.o2o.pojo.Player" />
+		
+	<resultMap id="selectPlayerResult" class="Player" groupBy="id">
+		<result property="id" 				column="ID" />
+		<result property="userName" 		column="USER_NAME" />
+		<result property="name" 			column="NAME" />
+		<result property="tutorial" 		column="TUTORIAL" />
+		<result property="profile"			column="PROFILE"/>
+	
+		<result property="gPoint" 			column="G_POINT" />
+		<!-- <result property="credit" 			column="CREDIT" /> -->
+		<result property="voucher" 			column="VOUCHER" />
+		<result property="exp" 				column="EXP" />
+		<result property="rank" 			column="RANK" />
+		<result property="characterSize" 		column="CHARACTER_SIZE" />
+		
+		<result property="gScore"			column="GENERAL_SCORE" />
+		<result property="gKill"			column="GENERAL_KILL" />
+		<result property="gDead"			column="GENERAL_DEAD" />
+		<result property="gHeadShot"		column="GENERAL_HEAD_SHOT" />
+		<result property="gKnifeKill"		column="GENERAL_KNIFE_KILL" />
+		<result property="gHealth"			column="GENERAL_HEALTH_NUM" />
+		<result property="gControl"			column="GENERAL_CONTROL" />
+		<result property="gRevenge"			column="GENERAL_REVENGE" />
+		
+		<result property="gWin"				column="GENERAL_WIN" />
+		<result property="gLose"			column="GENERAL_LOSE" />
+		<result property="gTotal"			column="GENERAL_TOTAL" />
+		<result property="gAssist"			column="GENERAL_ASSIST" />
+		<result property="runAway"			column="RUN_AWAY" />
+		<result property="tScore"			column="TEAM_SCORE" />
+		<result property="tKill"			column="TEAM_KILL" />
+		<result property="tDead"			column="TEAM_DEAD" />
+		<result property="tHeadShot"		column="TEAM_HEAD_SHOT" />
+		<result property="tGrenadeKill"		column="TEAM_GRENADE_KILL" />
+		<result property="tKnifeKill"		column="TEAM_KNIFE_KILL" />
+		<result property="tHitPoint"		column="TEAM_HIT_POINT" />
+		<result property="tWin"				column="TEAM_WIN" />
+		<result property="tTotal"			column="TEAM_TOTAL" />
+
+		<result property="funGpTotal"			column="FUN_GP_TOTAL" />
+		<result property="funCrTotal"			column="FUN_CR_TOTAL" />
+		<result property="funGrenadeKill"		column="FUN_GRENADE_KILL" />
+		<result property="funDropKill"			column="FUN_DROP_KILL" />
+		<result property="funWeaponMod"			column="FUN_WEAPON_MOD" />
+		<result property="funDead"				column="FUN_DEAD" />
+		
+		<result property="lastLoginTime" 	column="LAST_LOGIN_TIME_INT" />
+		<result property="lastLogoutTime" 	column="LAST_LOGOUT_TIME_INT" />
+		<result property="lastLoginIp" 		column="LASTLOGINIP" />
+		<result property="icon" 		column="ICON" />
+		<result property="selectedCharacters" 		column="SELECTED_CHARACTERS" />
+		<result property="achievement" 		column="ACHIEVEMENT" />
+		<result property="isNew" 		column="IS_NEW" />
+		<result property="isVip" 		column="IS_VIP" />
+		<result property="isCheck" 		column="IS_CHECK" />
+		<result property="title" 		column="TITLE" />
+		<result property="gold" 		column="GOLD" />
+		<result property="silver" 		column="SILVER" />
+		<result property="bronze" 		column="BRONZE" />
+		<result property="total" 		column="TOTAL" />
+		
+		<result property="weekScore" 		column="WEEK_SCORE" />
+		<result property="weekKill" 		column="WEEK_KILL" />
+		<result property="weekAssist" 		column="WEEK_ASSIST" />
+		<result property="weekDead" 		column="WEEK_DEAD" />
+		<result property="weekWin" 			column="WEEK_WIN" />
+		<result property="weekTotal" 		column="WEEK_TOTAL" />
+		<result property="blackWhite" 		column="BLACK_WHITE" />
+		<result property="characters" 		column="CHARACTERS" />
+		<result property="deleted" 			column="IS_DELETED"/>
+		<result property="createTime" 			column="CREATE_TIME"/>
+		<result property="isXunlei" 			column="IS_XUNLEI"/>
+		<result property="maxFightNum" 			column="MAX_FIGHT_NUM"/>
+		<result property="vipToExpire"		column="VIP_TO_EXPIRE"/>
+		<result property="accountType"		column="ACCOUNT_TYPE"/>
+		<result property="teamId"		column="TEAM_ID"/>
+		<result property="isChest"      column="IS_CHEST"/>
+		<result property="secondPassword"      column="SECOND_PASSWORD"/>
+		<result property="hasSecondPassword"      column="HAS_SECOND_PASSWORD"/>
+		<result property="applyResetTime"      column="APPLY_RESET_SPW_TIME_INT"/>
+		<result property="vipExp"      column="VIP_EXPERIENCE"/>
+		<result property="vipRemainsTeamExp"      column="REMAINS_TEAM_EXP"/>
+		<result property="lastTeamExp"      column="LAST_TEAM_EXP"/>
+		<result property="lastTeamExpExpireTime"      column="LAST_TEAM_EXP_EXPIRE_TIME_INT"/>
+		<result property="lastExitTeamId"      column="LAST_EXIT_TEAM_ID"/>
+		<result property="unusableResource"      column="UNUSABLE_RESOURCE"/>
+		<result property="usableResource"      column="USABLE_RESOURCE"/>	
+		<result property="pResourceBeginTime"      column="P_RESOURCE_BEGIN_TIME_INT"/>	
+		<result property="vipExpGiftLevel"      column="VIP_EXP_GIFT_LEVEL"/>	
+		<result property="matchWin"      column="MATCH_WIN"/>	
+		<result property="pvalue"      column="P_VALUE"/>	
+		<result property="mvalue"      column="M_VALUE"/>	
+	</resultMap>
+			
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerResult">
+		select
+		UNIX_TIMESTAMP(p.LAST_LOGIN_TIME) as LAST_LOGIN_TIME_INT,
+		UNIX_TIMESTAMP(p.LAST_LOGOUT_TIME) as LAST_LOGOUT_TIME_INT,
+		UNIX_TIMESTAMP(p.APPLY_RESET_SPW_TIME) as APPLY_RESET_SPW_TIME_INT,
+		UNIX_TIMESTAMP(p.LAST_TEAM_EXP_EXPIRE_TIME) as LAST_TEAM_EXP_EXPIRE_TIME_INT,
+		UNIX_TIMESTAMP(p.P_RESOURCE_BEGIN_TIME) as P_RESOURCE_BEGIN_TIME_INT,	
+			p.*,
+			inet_ntoa(p.LAST_LOGIN_IP) as LASTLOGINIP
+		from PLAYER p
+		where p.ID = #id# and p.IS_DELETED= 'N'
+	</select>	
+	
+	
+	<select id="selectByUserId" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		select p.ID from PLAYER p
+		where  p.USER_NAME = #userName# and p.IS_DELETED= 'N'
+	</select>
+	
+	
+	<select id="selectByName" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		select p.ID
+		from PLAYER p
+		where  p.IS_DELETED= 'N'
+			<isNotNull prepend="and" property="name">
+				p.NAME = #name#
+			</isNotNull>
+			<isNotNull prepend="and" property="userName">
+				p.USER_NAME = #userName#
+			</isNotNull>;
+	</select>
+	
+	<select id="selectAll" parameterClass="java.util.Map" resultMap="selectPlayerResult">
+		select
+		UNIX_TIMESTAMP(p.LAST_LOGIN_TIME) as LAST_LOGIN_TIME_INT,
+		UNIX_TIMESTAMP(p.LAST_LOGOUT_TIME) as LAST_LOGOUT_TIME_INT,
+		UNIX_TIMESTAMP(p.APPLY_RESET_SPW_TIME) as APPLY_RESET_SPW_TIME_INT,
+		UNIX_TIMESTAMP(p.LAST_TEAM_EXP_EXPIRE_TIME) as LAST_TEAM_EXP_EXPIRE_TIME_INT,
+		UNIX_TIMESTAMP(p.P_RESOURCE_BEGIN_TIME) as P_RESOURCE_BEGIN_TIME_INT,	
+			p.*,
+			inet_ntoa(p.LAST_LOGIN_IP) as LASTLOGINIP
+		from PLAYER p
+	</select>
+
+	<select id="fuzzyCountPlayer" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		select count(*) from PLAYER p 
+		where p.NAME like '$name$' and p.IS_DELETED="N"
+	</select>		
+	
+	
+	<select id="fuzzySelectPlayer" parameterClass="java.util.Map" resultMap="selectPlayerResult">
+		select 
+		UNIX_TIMESTAMP(p.LAST_LOGIN_TIME) as LAST_LOGIN_TIME_INT,
+		UNIX_TIMESTAMP(p.LAST_LOGOUT_TIME) as LAST_LOGOUT_TIME_INT,
+		UNIX_TIMESTAMP(p.APPLY_RESET_SPW_TIME) as APPLY_RESET_SPW_TIME_INT,
+		UNIX_TIMESTAMP(p.LAST_TEAM_EXP_EXPIRE_TIME) as LAST_TEAM_EXP_EXPIRE_TIME_INT,
+		UNIX_TIMESTAMP(p.P_RESOURCE_BEGIN_TIME) as P_RESOURCE_BEGIN_TIME_INT,	
+			p.*,
+			inet_ntoa(p.LAST_LOGIN_IP) as LASTLOGINIP,
+			0						as GENERAL_RANK,
+			0						as TEAM_RANK,
+			0						as TEAMDEATH_RANK,
+			0						as TREASURE_RANK,
+			0						as FLAG_RANK,
+			0						as BIO_RANK,
+			0						as BLAST_RANK,
+			0						as FUN_GP_RANK,
+			0						as FUN_CR_RANK,
+			0						as FUN_GRENADE_KILL_RANK,
+			0						as FUN_DROP_KILL_RANK,
+			0						as FUN_WEAPON_MOD_RANK,
+			0						as FUN_DEAD_RANK,
+			0						as GENERAL_VICTORY_RATE,
+			0						as TEAM_VICTORY_RATE,
+			0						as TEAMDEATH_VICTORY_RATE,
+			0						as TREASURE_VICTORY_RATE,
+			0						as FLAG_VICTORY_RATE,
+			0						as BLAST_VICTORY_RATE,
+			0						as FUN_GUN_COUNT
+		from PLAYER p
+		where p.NAME like '$name$%' and p.IS_DELETED="N"
+		limit #start#, #stop#
+	</select>					
+	
+	
+	<select id="duplicatePlayerCount" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		select count(*) from PLAYER p 
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="name">
+				p.NAME = #name#
+			</isNotNull>		
+			and p.IS_DELETED= 'N';
+		</dynamic>		
+	</select>
+	
+	
+	
+	
+	<typeAlias alias="PlayerVO" type="com.pearl.o2o.pojo.PlayerVO" />
+	<resultMap id="selectSimplePlayerResult" class="PlayerVO" groupBy="id">
+		<result property="id" 				column="ID" />
+		<result property="userName" 		column="USER_NAME" />
+		<result property="name" 			column="NAME" />
+		<result property="gPoint" 			column="G_POINT" />
+		<result property="gScore" 			column="GENERAL_SCORE" />
+		<result property="credit" 			column="CREDIT" />
+		<result property="voucher" 			column="VOUCHER" />
+		<result property="exp" 				column="EXP" />
+		<result property="rank" 			column="RANK" />
+		<result property="isVip" 			column="IS_VIP" />
+		<result property="vipExp" 			column="VIP_EXPERIENCE" />
+		<result property="profile"			column="PROFILE"/>
+		<result property="blackWhite" 		column="BLACK_WHITE" />
+		<result property="deleted" 			column="IS_DELETED"/>
+		<result property="matchWin"      	column="MATCH_WIN"/>	
+		<result property="pvalue"      		column="P_VALUE"/>
+		<result property="mvalue"			column="M_VALUE"/>	
+	</resultMap>
+	
+	<select id="fuzzySelectByName" parameterClass="java.util.Map" resultMap="selectSimplePlayerResult">
+		select *
+		from PLAYER p
+		where p.NAME like '$name$%' and  p.IS_DELETED = 'N' 
+	</select>
+	<select id="selectBlackWhiteList" parameterClass="java.lang.String" resultMap="selectSimplePlayerResult">
+		select *
+		from PLAYER p
+		where p.BLACK_WHITE= #value# and  p.IS_DELETED = 'N' 
+	</select>
+	
+	<select id="selectSimple" parameterClass="java.util.Map" resultMap="selectSimplePlayerResult">
+		select p.*
+		from PLAYER p 
+		where p.IS_DELETED= 'N'
+			<isNotNull prepend="and" property="playerId">
+				p.ID = #playerId#
+			</isNotNull>		
+		
+			<isNotNull prepend="and" property="userName">
+				p.USER_NAME = #userName#
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="name">
+				p.NAME = #name#
+			</isNotNull>						
+			
+			order by p.ID;
+	</select>	
+	
+	
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="Player">
+		insert into PLAYER ( 
+			USER_NAME, 
+			NAME,
+			TEAM_ID,
+			EXP, 
+			RANK, 
+			CHARACTER_SIZE,
+			G_POINT,	 
+			GENERAL_SCORE, 
+			GENERAL_KILL,
+			GENERAL_DEAD,
+			GENERAL_HEAD_SHOT,
+			GENERAL_KNIFE_KILL,
+			GENERAL_WIN,
+			GENERAL_TOTAL,
+			TEAM_SCORE,
+			TEAM_KILL,
+			TEAM_DEAD,
+			TEAM_HEAD_SHOT,
+			TEAM_GRENADE_KILL,
+			TEAM_KNIFE_KILL,
+			TEAM_HIT_POINT,
+			TEAM_WIN,
+			TEAM_TOTAL,
+			FUN_GP_TOTAL,
+			FUN_CR_TOTAL,
+			FUN_GRENADE_KILL,
+			FUN_DROP_KILL,
+			FUN_WEAPON_MOD,
+			FUN_DEAD,
+			IS_DELETED,
+			LAST_LOGIN_TIME,
+			LAST_LOGOUT_TIME,
+			LAST_LOGIN_IP,
+			TUTORIAL,
+			GOLD,SILVER,BRONZE,TOTAL,
+			IS_NEW,IS_VIP,GENERAL_ASSIST,
+			WEEK_SCORE,WEEK_KILL,WEEK_ASSIST,WEEK_DEAD,WEEK_WIN,WEEK_TOTAL,CHARACTERS,SELECTED_CHARACTERS,CREATE_TIME,IS_XUNLEI,
+			GENERAL_HEALTH_NUM,
+			IS_CHECK,MAX_FIGHT_NUM,ACCOUNT_TYPE,IS_CHEST,SECOND_PASSWORD,HAS_SECOND_PASSWORD,APPLY_RESET_SPW_TIME,VIP_EXPERIENCE,
+			REMAINS_TEAM_EXP,LAST_TEAM_EXP,LAST_TEAM_EXP_EXPIRE_TIME,LAST_EXIT_TEAM_ID,UNUSABLE_RESOURCE,USABLE_RESOURCE,P_RESOURCE_BEGIN_TIME,MATCH_WIN,P_VALUE,M_VALUE
+			)
+		values ( 
+			#userName#, 
+			#name#,
+			#teamId#,
+			#exp#, 
+			#rank#, 
+			#characterSize#,
+			#gPoint#, 
+			#gScore#,
+			#gKill#,
+			#gDead#,
+			#gHeadShot#,
+			#gKnifeKill#,
+			#gWin#,
+			#gTotal#,
+			#tScore#,
+			#tKill#,
+			#tDead#,
+			#tHeadShot#,
+			#tGrenadeKill#,
+			#tKnifeKill#,
+			#tHitPoint#,
+			#tWin#,
+			#tTotal#,
+			#funGpTotal#,
+			#funCrTotal#,
+			#funGrenadeKill#,
+			#funDropKill#,
+			#funWeaponMod#,
+			#funDead#,
+			'N',
+			now(),
+			now(),
+			0,
+			#tutorial#,
+			#gold#,#silver#,#bronze#,#total#,
+			#isNew#,#isVip#,#gAssist#,
+			#weekScore#,
+			#weekKill#,
+			#weekAssist#,
+			#weekDead#,
+			#weekWin#,
+			#weekTotal#,#characters#,#selectedCharacters#,#createTime#,#isXunlei#,
+			#gHealth#,#isCheck#,#maxFightNum#,#accountType#,#isChest#,#hasSecondPassword#,
+			#secondPassword#, FROM_UNIXTIME(#applyResetTime#),#vipExp#,0,
+			#lastTeamExp#,FROM_UNIXTIME(#lastTeamExpExpireTime#),#lastExitTeamId#,#unusableResource#,#usableResource#,now(),"1010101010",#pvalue#,#mvalue#
+			)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	
+	<update id="update" parameterClass="Player">
+		update PLAYER p 
+		set p.G_POINT = #gPoint# ,
+	        p.EXP = #exp#,
+	        p.NAME = #name#,
+	        p.RANK = #rank#,
+	       	p.LAST_LOGIN_TIME = FROM_UNIXTIME(#lastLoginTime#),
+	       	p.LAST_LOGIN_IP = inet_aton(#lastLoginIp#),
+	       	p.VOUCHER = #voucher# ,
+	        p.GENERAL_SCORE = #gScore#,
+			p.GENERAL_KILL = #gKill#,
+	        p.GENERAL_DEAD = #gDead#,
+			p.GENERAL_HEAD_SHOT = #gHeadShot#,
+			p.GENERAL_KNIFE_KILL = #gKnifeKill#,
+			p.GENERAL_WIN = #gWin#,
+	        p.GENERAL_TOTAL = #gTotal#,
+			p.TEAM_SCORE = #tScore# ,
+			p.TEAM_KILL = #tKill#,
+			p.TEAM_DEAD = #tDead#,
+			p.TEAM_HEAD_SHOT = #tHeadShot#,
+			p.TEAM_GRENADE_KILL = #tGrenadeKill#,
+			p.TEAM_KNIFE_KILL = #tKnifeKill#,
+			p.TEAM_HIT_POINT = #tHitPoint#,
+			p.TEAM_WIN = #tWin#,
+			p.TEAM_TOTAL = #tTotal#,
+			
+			p.FUN_GP_TOTAL = #funGpTotal#,
+			p.FUN_CR_TOTAL = #funCrTotal#,
+			p.FUN_GRENADE_KILL = #funGrenadeKill#,
+			p.FUN_DROP_KILL = #funDropKill#,
+			p.FUN_WEAPON_MOD = #funWeaponMod#,
+			p.FUN_DEAD = #funDead#,
+			
+			p.TUTORIAL = #tutorial#,
+			p.LAST_LOGOUT_TIME = FROM_UNIXTIME(#lastLogoutTime#),
+			p.PROFILE = #profile# ,
+			p.GOLD=#gold#,
+			p.SILVER=#silver#,
+			p.BRONZE=#bronze#,
+			p.TOTAL=#total#,
+			p.IS_NEW=#isNew#,
+			p.ICON=#icon#,
+			p.TITLE=#title#,
+			p.ACHIEVEMENT=#achievement#,
+			p.IS_VIP=#isVip#,
+			p.GENERAL_ASSIST=#gAssist#,
+			p.WEEK_SCORE=#weekScore#,	
+			p.WEEK_KILL=#weekKill#,	
+			p.WEEK_ASSIST=#weekAssist#,	
+			p.WEEK_DEAD=#weekDead#,	
+			p.WEEK_WIN=#weekWin#,	
+			p.WEEK_TOTAL=#weekTotal#	,
+			p.GENERAL_CONTROL=#gControl#,
+			p.GENERAL_REVENGE=#gRevenge#,
+			p.RUN_AWAY=#runAway#,p.CHARACTERS=#characters#,
+			p.SELECTED_CHARACTERS=#selectedCharacters#,
+			p.CREATE_TIME=#createTime#,
+			p.GENERAL_LOSE = #gLose#,
+			p.IS_XUNLEI=#isXunlei#,
+			p.GENERAL_HEALTH_NUM=#gHealth#,
+			p.IS_CHECK=#isCheck#,
+			p.MAX_FIGHT_NUM=#maxFightNum#,
+			p.VIP_TO_EXPIRE = #vipToExpire#,
+			p.ACCOUNT_TYPE=#accountType#,
+			p.IS_CHEST=#isChest#,
+			p.HAS_SECOND_PASSWORD=#hasSecondPassword#,
+			p.SECOND_PASSWORD=#secondPassword#,
+			p.APPLY_RESET_SPW_TIME= FROM_UNIXTIME(#applyResetTime#),
+			p.VIP_EXPERIENCE=#vipExp#,
+			p.REMAINS_TEAM_EXP=#vipRemainsTeamExp#,
+			p.LAST_TEAM_EXP=#lastTeamExp#,
+			p.LAST_TEAM_EXP_EXPIRE_TIME=FROM_UNIXTIME(#lastTeamExpExpireTime#),
+			p.LAST_EXIT_TEAM_ID=#lastExitTeamId#,
+			p.UNUSABLE_RESOURCE=#unusableResource#,
+			p.USABLE_RESOURCE=#usableResource#,
+			p.P_RESOURCE_BEGIN_TIME=FROM_UNIXTIME(#pResourceBeginTime#),
+			p.VIP_EXP_GIFT_LEVEL=#vipExpGiftLevel#,
+			p.MATCH_WIN=#matchWin#,
+			p.P_VALUE=#pvalue#,
+			p.M_VALUE=#mvalue#
+	where p.ID = #id#
+	</update>
+	
+	<update id="updatePlayer" parameterClass="PlayerVO">
+		update PLAYER p 
+		set p.G_POINT = #gPoint# ,
+	        p.EXP = #exp#,
+	        p.RANK = #rank#
+		where p.ID = #id#
+	</update>
+	
+	<update id="delete" parameterClass="Player">
+		update PLAYER p set p.IS_DELETED = 'Y' where p.id = #id#
+	</update>	
+	
+	<update id="updateBlackWhite" parameterClass="Player">
+		update PLAYER p set p.BLACK_WHITE = #blackWhite# where p.id = #id#
+	</update>
+	<select id="fuzzySelectByUserName" parameterClass="java.util.Map" resultMap="selectSimplePlayerResult">
+		select *
+		from PLAYER p
+		where p.USER_NAME like '$userName$%' and  p.IS_DELETED = 'N' 
+	</select>
+	<select id="selectById" parameterClass="java.lang.Integer" resultMap="selectSimplePlayerResult">
+		select * from PLAYER
+		where ID = #id#
+	</select>
+	<update id="updateXunleiId" parameterClass="PlayerVO">
+		update PLAYER p 
+		set p.USER_NAME = #userName# 
+		where p.ID = #id#
+	</update>
+	
+	
+	
+	<typeAlias alias="PlayerGPointTotal" type="com.pearl.o2o.pojo.PlayerGPointTotal" />
+	<resultMap id="selectPlayerTotalGPoint" class="PlayerGPointTotal">
+		<result property="totalGPoint" column="TOTAL_GPOINT" />
+		<result property="totalPlayer" column="TOTAL_PLAYER" />
+		<result property="amount1" column="amount1" />
+		<result property="amount2" column="amount2" />
+		<result property="amount3" column="amount3" />
+		<result property="amount4" column="amount4" />
+		<result property="amount5" column="amount5" />
+		<result property="amount6" column="amount6" />
+		<result property="amount7" column="amount7" />
+		<result property="amount8" column="amount8" />
+		<result property="amount9" column="amount9" />
+		<result property="amount10" column="amount10" />
+		<result property="amount11" column="amount11" />
+		<result property="amount12" column="amount12" />
+	</resultMap>
+
+	<select id="selectTotalGPoint" resultMap="selectPlayerTotalGPoint">
+		SELECT
+		SUM(`G_POINT`) TOTAL_GPOINT, 
+		COUNT(`ID`) TOTAL_PLAYER,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 0 AND 5000) amount1,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 5001 AND 10000) amount2,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 10001 AND 15000) amount3,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 15001 AND 20000) amount4,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 20001 AND 30000) amount5,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 30001 AND 50000) amount6,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 50001 AND 70000) amount7,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 70001 AND 100000) amount8,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 100001 AND 150000) amount9,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 150001 AND 200000) amount10,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` BETWEEN 200001 AND 300000) amount11,
+		(SELECT COUNT(`ID`) FROM `PLAYER` WHERE `G_POINT` > 300001) amount12
+		FROM `PLAYER`
+	</select>
+	
+</sqlMap>

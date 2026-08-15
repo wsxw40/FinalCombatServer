@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WGmLogMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WGmLog" >
+    <result column="ID" property="id" jdbcType="INTEGER" />
+    <result column="GM_USER_ID" property="gmUserId" jdbcType="INTEGER" />
+    <result column="GM_USER_NAME" property="gmUserName" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="METHOD_NAME" property="methodName" jdbcType="VARCHAR" />
+    <result column="RECORD_TIME" property="recordTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.pearl.fcw.gm.pojo.WGmLog" extends="BaseResultMap" >
+    <result column="ARGS" property="args" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, GM_USER_ID, GM_USER_NAME, `TYPE`, METHOD_NAME,RECORD_TIME
+  </sql>
+  <sql id="Blob_Column_List" >
+    ARGS
+  </sql>
+  <select id="select" resultMap="ResultMapWithBLOBs" parameterType="com.pearl.fcw.gm.pojo.WGmLog" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from GM_LOG
+    where 1=1 
+     <if test="gmUserId != null">
+    and GM_USER_ID =  #{gmUserId,jdbcType=INTEGER}
+    </if>
+     <if test="type != null">
+    and `TYPE` =  #{type,jdbcType=VARCHAR}
+    </if>
+     <if test="modelName != null">
+    and METHOD_NAME =  #{methodName,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from GM_LOG where 1 = 1
+    <if test="searchValue != null">
+    and (ID like '${searchValue}%' or  GM_USER_ID like '${searchValue}%' or GM_USER_NAME like '%${searchValue}%' or `TYPE` like '%${searchValue}%' or METHOD_NAME like '%${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from GM_LOG where 1=1
+  	<if test="searchValue != null">
+    and (ID like '${searchValue}%' or  GM_USER_ID like '${searchValue}%' or GM_USER_NAME like '%${searchValue}%' or `TYPE` like '%${searchValue}%' or METHOD_NAME like '%${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WGmLog" >
+    insert into GM_LOG (ID, GM_USER_ID, GM_USER_NAME, 
+      TYPE, METHOD_NAME, RECORD_TIME, 
+      ARGS)
+    values (#{id,jdbcType=INTEGER}, #{gmUserId,jdbcType=INTEGER}, #{gmUserName,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, #{recordTime,jdbcType=TIMESTAMP}, 
+      #{args,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WGmLog" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into GM_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="gmUserId != null" >
+        GM_USER_ID,
+      </if>
+      <if test="gmUserName != null" >
+        GM_USER_NAME,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="methodName != null" >
+        METHOD_NAME,
+      </if>
+      <if test="recordTime != null" >
+        RECORD_TIME,
+      </if>
+      <if test="args != null" >
+        ARGS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gmUserId != null" >
+        #{gmUserId,jdbcType=INTEGER},
+      </if>
+      <if test="gmUserName != null" >
+        #{gmUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null" >
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="recordTime != null" >
+        #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="args != null" >
+        #{args,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

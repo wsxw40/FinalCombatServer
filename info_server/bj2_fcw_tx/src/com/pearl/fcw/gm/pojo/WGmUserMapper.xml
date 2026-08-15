@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WGmUserMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WGmUser" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="CREATOR_ID" property="creatorId" jdbcType="INTEGER" />
+    <result column="DELETED" property="deleted" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USER_NAME, PASSWORD, NAME, CREATOR_ID, DELETED
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from GM_USER
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WGmUser" >
+    select 
+    <include refid="Base_Column_List" />
+    from GM_USER where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from GM_USER where 1 = 1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '${searchValue}%' or `USER_NAME` like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from GM_USER where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '${searchValue}%' or `USER_NAME` like '${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from GM_USER
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WGmUser" >
+    insert into GM_USER (ID, USER_NAME, PASSWORD, 
+      NAME, CREATOR_ID, DELETED
+      )
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{creatorId,jdbcType=INTEGER}, #{deleted,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WGmUser" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into GM_USER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userName != null" >
+        USER_NAME,
+      </if>
+      <if test="password != null" >
+        PASSWORD,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="creatorId != null" >
+        CREATOR_ID,
+      </if>
+      <if test="deleted != null" >
+        DELETED,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null" >
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WGmUser" >
+    update GM_USER
+    <set >
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null" >
+        CREATOR_ID = #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        DELETED = #{deleted,jdbcType=CHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WGmUser" >
+    update GM_USER
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      CREATOR_ID = #{creatorId,jdbcType=INTEGER},
+      DELETED = #{deleted,jdbcType=CHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

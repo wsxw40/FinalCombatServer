@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	fontSize="12" width="400" height="188" xmlns:vo="vo.*" label="Add SysConfig" title="Add SysConfig"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			[Bindable]
+			public function set sysConfig(rc:SysConfig):void{
+				 this._sysConfig=rc;
+			}
+			public function get sysConfig():SysConfig{
+				 return this._sysConfig;
+			}
+		]]>
+	</mx:Script>
+	<vo:SysConfig id="_sysConfig" key="{key.text}" value="{value.text}"
+		/>
+<mx:HBox >
+	<mx:Form width="376">
+		<mx:FormItem label="Key">
+			<mx:HBox>
+				<mx:TextInput id="key" text="{sysConfig.key}"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="Value">
+			<mx:HBox>
+				<mx:TextInput id="value" text="{sysConfig.value}"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem>
+		<mx:ControlBar>
+			<mx:Button id="save" label="保存"/>
+			<mx:Button id="close" label="取消"/>
+		</mx:ControlBar>	
+		</mx:FormItem>
+	</mx:Form>
+			
+</mx:HBox>		
+</mx:TitleWindow>

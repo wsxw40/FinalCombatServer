@@ -1,0 +1,54 @@
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerMelting">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="PlayerMelting" type="com.pearl.o2o.pojo.PlayerMelting" />
+		
+	<resultMap id="selectPlayerMeltingResult" class="PlayerMelting" groupBy="id">
+		<result property="id" 					column="ID" />
+		<result property="level" 				column="LEVEL" />
+		<result property="exp" 					column="EXP" />
+		<result property="remaind" 				column="REMAIND" />
+		<result property="num" 					column="NUM" />
+		<result property="recovery" 			column="RECOVERY" />
+		<result property="lastInit" 			column="LAST_INIT" />
+		<result property="startTime" 			column="START_TIME" />
+		<result property="grandTotalTime" 		column="GRAND_TOTAL_TIME" />
+	</resultMap>
+			
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerMeltingResult">
+		select
+		ID,LEVEL,EXP,REMAIND,NUM,RECOVERY,LAST_INIT,START_TIME,GRAND_TOTAL_TIME
+		from PLAYER_MELTING p
+		where p.ID = #id#
+	</select>	
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="PlayerMelting">
+		insert into PLAYER_MELTING (ID,LEVEL,EXP,REMAIND,NUM,RECOVERY,LAST_INIT,START_TIME,GRAND_TOTAL_TIME)
+		values (#id#,#level#,#exp#,#remaind#,#num#,#recovery#,#lastInit#,#startTime#,#grandTotalTime#)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT ID from PLAYER_MELTING where ID = #id#
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="PlayerMelting">
+		update PLAYER_MELTING p 
+		set
+	        p.LEVEL = #level#,
+	        p.EXP = #exp#,
+	        p.REMAIND = #remaind#,
+	        p.NUM = #num#,
+	        p.RECOVERY = #recovery#,
+	        p.LAST_INIT = #lastInit#,
+	        p.START_TIME = #startTime#,
+	        p.GRAND_TOTAL_TIME = #grandTotalTime#
+		where p.ID = #id#
+	</update>
+</sqlMap>

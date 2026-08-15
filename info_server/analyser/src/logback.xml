@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="LOGSERVER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logserver/logserver.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logserver/logserver.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="logserver" level="DEBUG" additivity="false">
+		<appender-ref ref="LOGSERVER" />
+	</logger>
+
+	<appender name="LuckPackage" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logserver/bjLuckPackage.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logserver/bjLuckPackage.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="bjLuckPackage" level="INFO" additivity="false">
+		<appender-ref ref="LuckPackage" />
+	</logger>
+
+	<appender name="GPointTotal" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logserver/bjGPointTotal.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logserver/bjGPointTotal.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="bjGPointTotal" level="INFO" additivity="false">
+		<appender-ref ref="GPointTotal" />
+	</logger>
+	
+	<appender name="StageClearChAmount" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logserver/bjStageClearChAmount.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logserver/bjStageClearChAmount.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="bjStageClearChAmount" level="INFO" additivity="false">
+		<appender-ref ref="StageClearChAmount" />
+	</logger>
+	
+	<appender name="StageClearChKD" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logserver/bjStageClearChKD.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logserver/bjStageClearChKD.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="bjStageClearChKD" level="INFO" additivity="false">
+		<appender-ref ref="StageClearChKD" />
+	</logger>
+	
+	<appender name="StageClearLTAmount" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logserver/bjStageClearLTAmount.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logserver/bjStageClearLTAmount.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="bjStageClearLTAmount" level="INFO" additivity="false">
+		<appender-ref ref="StageClearLTAmount" />
+	</logger>
+	
+	<appender name="Exchange" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logserver/bjExchange.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logserver/bjExchange.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="bjExchange" level="INFO" additivity="false">
+		<appender-ref ref="Exchange" />
+	</logger>
+	
+	<appender name="ReCharge" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logserver/bjReCharge.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logserver/bjReCharge.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="bjReCharge" level="INFO" additivity="false">
+		<appender-ref ref="ReCharge" />
+	</logger>
+	
+	<appender name="ItemCost" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logserver/bjItemCost.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logserver/bjItemCost.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="bjItemCost" level="INFO" additivity="false">
+		<appender-ref ref="ItemCost" />
+	</logger>
+
+	<root level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>

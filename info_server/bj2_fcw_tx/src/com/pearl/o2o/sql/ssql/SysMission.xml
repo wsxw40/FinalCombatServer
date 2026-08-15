@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysMission">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="sysMission" type="com.pearl.o2o.pojo.SysMission"/> 	
+	<resultMap id="selectMissionResult" class="sysMission">
+		<result property="id" 				column="ID"/>
+		<result property="name" 			column="NAME"/>
+		<result property="missionTitle"		column="MISSIONTITLE"/>
+		<result property="descriptionCN" 		column="DESCRIPTION"/>
+		<result property="title" 			column="TITLE"/>
+		<result property="type" 			column="TYPE"/>
+		<result property="simpleTarget" 	column="SIMPLE_TARGET"/>
+		<result property="normalTarget" 	column="NORMAL_TARGET"/>
+		<result property="hardTarget" 		column="HARD_TARGET"/>
+		<result property="normalItems" 		column="NORMAL_ITEMS"/>
+		<result property="vipItems" 		column="VIP_ITEMS"/>
+		<result property="action" 			column="ACTION"/> 
+	</resultMap>  		
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" resultMap="selectMissionResult">
+   	 	select ID, NAME, MISSIONTITLE,DESCRIPTION, TITLE, TYPE, SIMPLE_TARGET, NORMAL_TARGET,HARD_TARGET, NORMAL_ITEMS,VIP_ITEMS, ACTION
+    	from SYS_MISSION
+	</select>		
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="sysMission">
+		insert into SYS_MISSION(
+   	 		NAME,
+   	 		MISSIONTITLE,
+   	 		DESCRIPTION,
+   	 		TITLE,
+   	 		TYPE,
+   	 		SIMPLE_TARGET,
+   	 		NORMAL_TARGET,
+   	 		NORMAL_ITEMS,
+   	 		HARD_TARGET,
+   	 		VIP_ITEMS,
+   	 		ACTION
+		) values (
+			#name#,
+			#descriptionCN#,
+			#title#,
+			#type#,
+			#simpleTarget#,
+			#normalTarget#,
+			#hardTarget#,
+			#normalItems#,
+			#vipItems#,
+			#action#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+</sqlMap>

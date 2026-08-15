@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import popup.VehicleLinePointView;
+			import vo.VehicleLinePoint;
+			import popup.FlagPointView;
+			import vo.FlagPoint;
+			import vo.PointVO;
+			import popup.PointView;
+			import popup.ZombieInfoView;
+			import vo.ZombieInfo;
+			import vo.Supplies;
+			import popup.SuppliesView;
+			import popup.WeaponPointView;
+			import vo.WeaponPoint;
+			import vo.BlastPoint;
+			import popup.BlastPointView;
+			import mx.controls.DataGrid;
+			import utils.PointUtils;
+			import vo.GamePoint;
+			import popup.StartPointView;
+			import mx.managers.PopUpManager;
+			import view.CreateBlackWhiteListView;
+			import mx.utils.StringUtil;
+			import utils.DatagridValidateFactory;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import utils.ColumnFactory;
+			import mx.rpc.events.FaultEvent;
+			import vo.LevelWeapon;
+			import vo.Player;
+			import mx.events.ListEvent;
+			import vo.GmUser;
+			private var model:O2oModel = O2oModel.getInstance();
+			[Bindable]
+			private var unSpeakerList:ArrayCollection= new ArrayCollection();
+			[Bindable]
+			private var playerList:ArrayCollection= new ArrayCollection();
+			[Bindable]
+			private var currentPlayer:Player = null;
+			private var isCopy:Boolean=false;
+			//private var  blackWhiteListView:CreateBlackWhiteListView;
+			private function init():void{
+				initBtn();
+				getUnSpeakerList();
+			}
+			private function getUnSpeakerList():void{
+				getRo.getUnSpeakerList();
+			}
+			private function initBtn():void{
+		 		queryBtn.enabled=true;
+		 		addWhiteBtn.enabled=false;
+		 		addNormalBtn.enabled=false;
+			}
+			private function startEdit(evt:DataGridEvent):void{
+				//this.cell=evt.columnIndex;
+			}
+			private function onAddWhiteBtnClick():void{
+				updateRo.updateUnSpeaker(model.gmUser, currentPlayer, 1);
+			}
+			private function onAddNormalBtnClick():void{
+				updateRo.updateUnSpeaker(model.gmUser, currentPlayer, 0);
+			}
+			private function updateUnSpeakerHandler(evt:ResultEvent):void{
+				if(playerList.length > 0){
+					onQueryBtnClick();
+				}
+				getUnSpeakerList();
+			}
+			import utils.*;
+			private function onQueryBtnClick():void{
+				if(StringUtil.trim(userIdTI.text)){
+					var result:int = ValidateUtils.validateInt(StringUtil.trim(userIdTI.text));
+					if(result == 2){
+						Alert.show("Player Id is　int");
+						return;
+					} else if(result == 0){
+						getRo.getPlayerById(StringUtil.trim(userIdTI.text));
+					}
+					nameTI.text="";
+				} else {
+				getRo.fuzzySelectByName(StringUtil.trim(nameTI.text));
+				}
+				addWhiteBtn.enabled = false;
+				addNormalBtn.enabled = false;
+			}
+			private function onItemClick(e:ListEvent):void{
+				currentPlayer = e.itemRenderer.data as Player;
+				addWhiteBtn.enabled = true;
+				addNormalBtn.enabled = true;
+			}
+			private function fuzzySelectByNameHandler(evt:ResultEvent):void{
+			 this.playerList=evt.result as ArrayCollection;
+			 this.playerListPanel.title = "UserList(" + playerList.length + ")";
+			}
+			private function getPlayerByIdHandler(evt:ResultEvent):void{
+			 this.playerList=evt.result as ArrayCollection;
+			 this.playerListPanel.title = "UserList(" + playerList.length + ")";
+			}
+			private function getUnSpeakerListHandler(evt:ResultEvent):void{
+			 this.unSpeakerList=evt.result as ArrayCollection;
+			 this.unSpeakerListPanel.title = "MuteList(" + unSpeakerList.length + ")";
+			}
+			private function onKickOutBtnClick():void{
+				
+			}
+			private function onClearBtnClick():void{
+				userIdTI.text="";
+				nameTI.text="";
+			}
+			private function onRefreshBtnClick():void{
+				if(playerList.length>0){
+					onQueryBtnClick();
+				}
+				getUnSpeakerList();
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="fuzzySelectByName" result="fuzzySelectByNameHandler(event)" fault=""/>
+		<mx:method name="getPlayerById" result="getPlayerByIdHandler(event)" fault=""/>
+		<mx:method name="getUnSpeakerList" result="getUnSpeakerListHandler(event)" fault=""/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateUnSpeaker" result="updateUnSpeakerHandler(event)" fault=""/>
+	</mx:RemoteObject>
+	
+	<mx:VBox  height="100%" width="100%">
+	     <mx:ApplicationControlBar width="100%">
+			<mx:HBox width="100%" height="100%">
+				<mx:FormItem label="Player ID:">
+					<mx:TextInput id="userIdTI"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.CharacterName')}:">
+					<mx:TextInput id="nameTI"/>
+				</mx:FormItem>
+				<mx:Button id="queryBtn" label="{resourceManager.getString('Language','button.Search')}" click="onQueryBtnClick()"/>
+				<mx:Button id="clearBtn" label="{resourceManager.getString('Language','button.Reset')}" click="onClearBtnClick()"/>
+				<mx:Button id="addWhiteBtn" click="onAddWhiteBtnClick()" label="{resourceManager.getString('Language','button.AddToUnSpeaker')}" enabled="false"/>
+				<mx:Button id="addNormalBtn" click="onAddNormalBtnClick()" label="{resourceManager.getString('Language','button.AddToNormal')}" enabled="false"/>
+				<mx:Button id="refreshBtn" click="onRefreshBtnClick()"  label="{resourceManager.getString('Language','button.Refresh')}" enabled="true"/>
+			</mx:HBox>
+		</mx:ApplicationControlBar>
+		<mx:VDividedBox width="100%" height="100%">
+			<mx:Panel title="{resourceManager.getString('Language','label.UserList')}" width="100%" height="100%" id="playerListPanel">
+				<mx:DataGrid id="userDG" dataProvider="{playerList}" itemClick="onItemClick(event)" width="100%" height="100%">
+					<mx:columns>
+						<mx:DataGridColumn dataField="id" headerText="Player ID"/>
+						<mx:DataGridColumn dataField="name" headerText="{resourceManager.getString('Language','label.CharacterName')}"/>
+						<!--<mx:DataGridColumn dataField="blackWhite" headerText="用户状态">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:HBox>
+										<mx:Label id="bwLab">
+											<mx:Script>
+												<![CDATA[
+													import common.Constants;
+													
+													private var _data:Object;
+													
+													public override function get data():Object{
+														return _data;
+													}
+													[Bindable]
+													public override function set data(u:Object):void{
+														this._data = u;
+														if(u.unSpeaker == 0){
+															bwLab.text = "未禁言";
+														}
+														if(u.unSpeaker == 1){
+															bwLab.text = "禁言";
+														}
+													}
+												]]>
+											</mx:Script>
+										</mx:Label>
+									</mx:HBox>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>-->
+						<mx:DataGridColumn dataField="deleted" headerText="{resourceManager.getString('Language','label.IsDelete')}"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:Panel>				
+			<mx:HDividedBox width="100%" height="100%">
+				<mx:Panel title="{resourceManager.getString('Language','label.UnSpeakerList')}" label="vv" width="100%" height="100%" id="unSpeakerListPanel">
+					<mx:DataGrid id="whiteDG" dataProvider="{unSpeakerList}" width="100%" height="100%" itemClick="onItemClick(event)">
+						<mx:columns>
+							<mx:DataGridColumn dataField="id" headerText="{resourceManager.getString('Language','label.PlayerId')}"/>
+							<mx:DataGridColumn dataField="name" headerText="{resourceManager.getString('Language','label.CharacterName')}"/>
+							<mx:DataGridColumn dataField="deleted" headerText="{resourceManager.getString('Language','label.IsDelete')}"/>
+						</mx:columns>
+					</mx:DataGrid>				
+				</mx:Panel>
+			</mx:HDividedBox>
+		</mx:VDividedBox>
+	</mx:VBox>
+</mx:VBox>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysActivity" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="VALUE" property="value" jdbcType="INTEGER" />
+    <result column="TARGET_NUM" property="targetNum" jdbcType="INTEGER" />
+    <result column="ACTION" property="action" jdbcType="INTEGER" />
+    <result column="ITEMS" property="items" jdbcType="VARCHAR" />
+    <result column="THE_SWITCH" property="theSwitch" jdbcType="VARCHAR" />
+    <result column="WITH_AWARD" property="withAward" jdbcType="INTEGER" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="VARCHAR" />
+    <result column="PATH" property="path" jdbcType="VARCHAR" />
+    <result column="CHARACTER_ID" property="characterId" jdbcType="INTEGER" />
+    <result column="ACHIEVEMENT_ACTION" property="achievementAction" jdbcType="INTEGER" />
+    <result column="ACTIVITY_NAME" property="activityName" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+    <result column="UNIT" property="unit" jdbcType="INTEGER" />
+    <result column="UNIT_TYPE" property="unitType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, TITLE, NAME, START_TIME, END_TIME, VALUE, TARGET_NUM, ACTION, ITEMS, THE_SWITCH, 
+    WITH_AWARD, IS_DELETED, PATH, CHARACTER_ID, ACHIEVEMENT_ACTION, ACTIVITY_NAME, DESCRIPTION, 
+    BACK_UP, UNIT, UNIT_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysActivity" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ACTIVITY
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysActivity" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ACTIVITY
+    where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ACTIVITY where 1 = 1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '${searchValue}%' or `TITLE` like '${searchValue}%')
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_ACTIVITY where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '${searchValue}%' or `TITLE` like '${searchValue}%')
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_ACTIVITY
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysActivity" >
+    insert into SYS_ACTIVITY (ID, TITLE, NAME, 
+      START_TIME, END_TIME, VALUE, 
+      TARGET_NUM, ACTION, ITEMS, 
+      THE_SWITCH, WITH_AWARD, IS_DELETED, 
+      PATH, CHARACTER_ID, ACHIEVEMENT_ACTION, 
+      ACTIVITY_NAME, DESCRIPTION, BACK_UP, 
+      UNIT, UNIT_TYPE)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{value,jdbcType=INTEGER}, 
+      #{targetNum,jdbcType=INTEGER}, #{action,jdbcType=INTEGER}, #{items,jdbcType=VARCHAR}, 
+      #{theSwitch,jdbcType=VARCHAR}, #{withAward,jdbcType=INTEGER}, #{isDeleted,jdbcType=VARCHAR}, 
+      #{path,jdbcType=VARCHAR}, #{characterId,jdbcType=INTEGER}, #{achievementAction,jdbcType=INTEGER}, 
+      #{activityName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{backUp,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=INTEGER}, #{unitType,jdbcType=INTEGER})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_ACTIVITY (ID, TITLE, NAME, 
+      START_TIME, END_TIME, VALUE, 
+      TARGET_NUM, ACTION, ITEMS, 
+      THE_SWITCH, WITH_AWARD, IS_DELETED, 
+      PATH, CHARACTER_ID, ACHIEVEMENT_ACTION, 
+      ACTIVITY_NAME, DESCRIPTION, BACK_UP, 
+      UNIT, UNIT_TYPE)
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+    (#{item.id,jdbcType=INTEGER}, #{item.title,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+      #{item.startTime,jdbcType=TIMESTAMP}, #{item.endTime,jdbcType=TIMESTAMP}, #{item.value,jdbcType=INTEGER}, 
+      #{item.targetNum,jdbcType=INTEGER}, #{item.action,jdbcType=INTEGER}, #{item.items,jdbcType=VARCHAR}, 
+      #{item.theSwitch,jdbcType=VARCHAR}, #{item.withAward,jdbcType=INTEGER}, #{item.isDeleted,jdbcType=VARCHAR}, 
+      #{item.path,jdbcType=VARCHAR}, #{item.characterId,jdbcType=INTEGER}, #{item.achievementAction,jdbcType=INTEGER}, 
+      #{item.activityName,jdbcType=VARCHAR}, #{item.description,jdbcType=VARCHAR}, #{item.backUp,jdbcType=VARCHAR}, 
+      #{item.unit,jdbcType=INTEGER}, #{item.unitType,jdbcType=INTEGER})
+		</foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysActivity" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_ACTIVITY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="title != null" >
+        TITLE,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="endTime != null" >
+        END_TIME,
+      </if>
+      <if test="value != null" >
+        VALUE,
+      </if>
+      <if test="targetNum != null" >
+        TARGET_NUM,
+      </if>
+      <if test="action != null" >
+        ACTION,
+      </if>
+      <if test="items != null" >
+        ITEMS,
+      </if>
+      <if test="theSwitch != null" >
+        THE_SWITCH,
+      </if>
+      <if test="withAward != null" >
+        WITH_AWARD,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="path != null" >
+        PATH,
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID,
+      </if>
+      <if test="achievementAction != null" >
+        ACHIEVEMENT_ACTION,
+      </if>
+      <if test="activityName != null" >
+        ACTIVITY_NAME,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+      <if test="unit != null" >
+        UNIT,
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=INTEGER},
+      </if>
+      <if test="targetNum != null" >
+        #{targetNum,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=INTEGER},
+      </if>
+      <if test="items != null" >
+        #{items,jdbcType=VARCHAR},
+      </if>
+      <if test="theSwitch != null" >
+        #{theSwitch,jdbcType=VARCHAR},
+      </if>
+      <if test="withAward != null" >
+        #{withAward,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="characterId != null" >
+        #{characterId,jdbcType=INTEGER},
+      </if>
+      <if test="achievementAction != null" >
+        #{achievementAction,jdbcType=INTEGER},
+      </if>
+      <if test="activityName != null" >
+        #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="unitType != null" >
+        #{unitType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysActivity" >
+    update SYS_ACTIVITY
+    <set >
+      <if test="title != null" >
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="value != null" >
+        VALUE = #{value,jdbcType=INTEGER},
+      </if>
+      <if test="targetNum != null" >
+        TARGET_NUM = #{targetNum,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        ACTION = #{action,jdbcType=INTEGER},
+      </if>
+      <if test="items != null" >
+        ITEMS = #{items,jdbcType=VARCHAR},
+      </if>
+      <if test="theSwitch != null" >
+        THE_SWITCH = #{theSwitch,jdbcType=VARCHAR},
+      </if>
+      <if test="withAward != null" >
+        WITH_AWARD = #{withAward,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        PATH = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID = #{characterId,jdbcType=INTEGER},
+      </if>
+      <if test="achievementAction != null" >
+        ACHIEVEMENT_ACTION = #{achievementAction,jdbcType=INTEGER},
+      </if>
+      <if test="activityName != null" >
+        ACTIVITY_NAME = #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        UNIT = #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE = #{unitType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysActivity" >
+    update SYS_ACTIVITY
+    set TITLE = #{title,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      VALUE = #{value,jdbcType=INTEGER},
+      TARGET_NUM = #{targetNum,jdbcType=INTEGER},
+      ACTION = #{action,jdbcType=INTEGER},
+      ITEMS = #{items,jdbcType=VARCHAR},
+      THE_SWITCH = #{theSwitch,jdbcType=VARCHAR},
+      WITH_AWARD = #{withAward,jdbcType=INTEGER},
+      IS_DELETED = #{isDeleted,jdbcType=VARCHAR},
+      PATH = #{path,jdbcType=VARCHAR},
+      CHARACTER_ID = #{characterId,jdbcType=INTEGER},
+      ACHIEVEMENT_ACTION = #{achievementAction,jdbcType=INTEGER},
+      ACTIVITY_NAME = #{activityName,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      BACK_UP = #{backUp,jdbcType=VARCHAR},
+      UNIT = #{unit,jdbcType=INTEGER},
+      UNIT_TYPE = #{unitType,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

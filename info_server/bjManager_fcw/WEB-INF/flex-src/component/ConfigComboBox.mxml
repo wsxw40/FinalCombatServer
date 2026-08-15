@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()">
+<mx:Script>
+	<![CDATA[
+		import mx.collections.ArrayCollection;
+		[Bindable]
+		public var key:String="";
+		[Bindable]
+		public var confName:String="";
+		[Bindable]
+		public var value:int = 0;
+		private function init():void{
+			valueId.selectedIndex=value;
+		}
+		[Bindable]public var buttons:ArrayCollection;
+	]]>
+</mx:Script>
+<mx:Label text="{key}" id="keyId" fontWeight="bold" width="200"/>
+<mx:Label id="nameId" text="{confName}:" fontWeight="bold" width="200"/>
+<mx:ComboBox dataProvider="{buttons}" id="valueId"/>
+</mx:HBox>

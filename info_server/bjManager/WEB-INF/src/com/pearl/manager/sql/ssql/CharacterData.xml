@@ -1,0 +1,92 @@
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CharacterData">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="CharacterData" type="com.pearl.manager.pojo.CharacterData" />
+		
+	<resultMap id="selectCharacterDataResult" class="CharacterData" groupBy="id">
+		<result property="id" 				column="ID" />
+		<result property="playerId" 		column="PLAYER_ID" />
+		<result property="characterId" 		column="CHARACTER_ID" />
+	
+		<result property="kill" 			column="KILL" />
+		<result property="dead" 			column="DEAD" />
+		<result property="knifeKill" 		column="KNIFE_KILL" />
+		<result property="controlNum" 		column="CONTROL_NUM" />
+		<result property="revengeNum" 		column="REVENGE_NUM" />
+		<result property="assistNum" 		column="ASSIST_NUM" />
+		<result property="usedCount"		column="USED_COUNT" />
+		<result property="maxHeadshot"		column="MAX_HEAD_SHOT" />
+		<result property="maxKill"			column="MAX_KILL" />
+		<result property="maxHealth"		column="MAX_HEALTH" />
+		<result property="maxDamage"		column="MAX_DAMAGE" />
+		<result property="maxAliveTime"		column="MAX_ALIVE_TIME" />
+		<result property="mvpNum"			column="MVP_NUM" />
+	</resultMap>
+			
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectCharacterDataResult">
+		select *
+		from CHARACTER_DATA$tableSuffix$ c
+		where c.PLAYER_ID = #fid#
+	</select>
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="CharacterData">
+		insert into CHARACTER_DATA$tableSuffix$ ( 
+			PLAYER_ID, 
+			CHARACTER_ID,
+			`KILL`,
+			DEAD, 
+			KNIFE_KILL, 
+			CONTROL_NUM,
+			REVENGE_NUM,	 
+			ASSIST_NUM, 
+			USED_COUNT,
+			MAX_HEAD_SHOT,
+			MAX_KILL,
+			MAX_HEALTH,
+			MAX_DAMAGE,
+			MAX_ALIVE_TIME,
+			MVP_NUM
+			)
+		values ( 
+			#playerId#, 
+			#characterId#,
+			#kill#,
+			#dead#, 
+			#knifeKill#, 
+			#controlNum#,
+			#revengeNum#, 
+			#assistNum#,
+			#usedCount#,#maxHeadshot#,#maxKill#,#maxHealth#,#maxDamage#,#maxAliveTime#,#mvpNum#
+			)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	
+	<update id="update" parameterClass="CharacterData">
+		update CHARACTER_DATA$tableSuffix$ c 
+		set c.KILL = #kill# ,
+	        c.DEAD = #dead#,
+	        c.KNIFE_KILL = #knifeKill#,
+	       	c.CONTROL_NUM = #controlNum#,
+	       	c.REVENGE_NUM = #revengeNum#,
+	        c.ASSIST_NUM = #assistNum#,
+			c.USED_COUNT = #usedCount#,
+			MAX_HEAD_SHOT=#maxHeadshot#,
+			MAX_KILL=#maxKill#,
+			MAX_HEALTH=#maxHealth#,
+			MAX_DAMAGE=#maxDamage#,
+			MAX_ALIVE_TIME=#maxAliveTime#,
+			MVP_NUM=#mvpNum#
+		where c.ID = #id#
+	</update>
+</sqlMap>

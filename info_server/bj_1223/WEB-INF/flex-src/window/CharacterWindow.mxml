@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	height="100%" width="100%" xmlns:view="view.*">
+	<mx:TabBar dataProvider="subTab"/>
+	<mx:ViewStack id="subTab" width="100%" height="100%">
+		<view:CharacterManageView label="{resourceManager.getString('Language','label.SystemCharater')}"/>
+		<view:BioCharacterManageView label="{resourceManager.getString('Language','label.BioChemical')}"/>
+	</mx:ViewStack>
+</mx:VBox>

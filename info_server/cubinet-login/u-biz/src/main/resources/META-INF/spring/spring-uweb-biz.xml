@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                     http://www.springframework.org/schema/beans/spring-beans.xsd  
+                     http://www.springframework.org/schema/tx  
+                     http://www.springframework.org/schema/tx/spring-tx.xsd  
+                     http://www.springframework.org/schema/aop  
+                     http://www.springframework.org/schema/aop/spring-aop.xsd">
+<!--=========================== cms 事务配置 ===============================-->
+	<!-- 事务配置 -->
+	<bean id="dataSourceTransactionManager_biz"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_framework" />
+	</bean>
+
+	<!-- 事务属性配置 -->
+	<tx:advice id="txAdvice_biz" transaction-manager="dataSourceTransactionManager_biz">
+		<tx:attributes>
+			<tx:method name="do*RnTx" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="get*" propagation="NOT_SUPPORTED" read-only="true" />
+			<tx:method name="query*" propagation="NOT_SUPPORTED" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- aop 配置 -->
+	<aop:config>
+		<aop:pointcut id="pointcutMethod_biz"
+			expression="execution(* com.pde.uweb.*.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice_biz" pointcut-ref="pointcutMethod_biz" />
+	</aop:config>
+
+	<!-- 缓存管理 -->
+	<bean id="cacheManager_biz" class="com.pde.infor.common.base.cache.LocalCacheManager"></bean>
+
+	<!-- 启动时加载数据到缓存 -->
+	<bean id="staticResourceService_uwebcache"
+		class="com.pde.uweb.cache.service.impl.StaticResourceServiceImpl"
+		init-method="initLoadData">
+		
+		<property name="cacheManager" ref="cacheManager_biz" />
+		<property name="memberService" ref="memberService_biz" />
+	</bean>
+	
+	<!-- 事务配置 -->
+	<bean id="dataSourceTransactionManager_cms"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_cms" />
+	</bean>
+	
+	
+<!--=========================== cms 事务配置 ===============================-->
+	<!-- 事务属性配置 -->
+	<tx:advice id="txAdvice_cms" transaction-manager="dataSourceTransactionManager_cms">
+		<tx:attributes>
+			<tx:method name="do*RnTx" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="get*" propagation="NOT_SUPPORTED" read-only="true" />
+			<tx:method name="query*" propagation="NOT_SUPPORTED" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- aop 配置 -->
+	<aop:config>
+		<aop:pointcut id="pointcutMethod_cms"
+			expression="execution(* com.pde.uweb.*.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice_cms" pointcut-ref="pointcutMethod_cms" />
+	</aop:config>
+	
+	<!-- 导入各业务模块的配置 -->
+	<import resource="classpath:/META-INF/spring/spring-uweb-biz-ma.xml" />
+	
+	<import resource="classpath:/META-INF/spring/spring-uweb-biz-ws.xml" />
+	
+	<import resource="classpath:/META-INF/spring/spring-uweb-biz-bbs.xml" />
+	
+    <import resource="classpath:/META-INF/spring/spring-uweb-biz-news.xml" />
+
+    <import resource="classpath:/META-INF/spring/spring-uweb-biz-mg.xml" />
+    
+    <import resource="classpath:/META-INF/spring/spring-uweb-biz-partner.xml" />
+
+</beans>

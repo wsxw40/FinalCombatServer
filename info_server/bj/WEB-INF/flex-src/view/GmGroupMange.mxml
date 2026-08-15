@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" initialize="init()" xmlns:component="component.*" xmlns:view="view.*">
+	<mx:Script source="../common/CommonScript.as"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ListEvent;
+			import event.GmGroupEvent;
+			import vo.GmPrivilege;
+			import mx.rpc.events.ResultEvent;
+			import vo.GmUser;
+			import vo.GmGroup;
+			import mx.collections.ArrayCollection;
+			
+			private var model:O2oModel = O2oModel.getInstance();		
+			[Bindable]
+			private var groups:ArrayCollection = new ArrayCollection();
+			[Bindable]
+			private var groupsWithoutSelf:ArrayCollection = new ArrayCollection();
+			[Bindable]			
+			public var privileges:ArrayCollection;
+			[Bindable]
+			private var selectedGroup:GmGroup;			
+			
+			private function groupItemClick(e:ListEvent):void{
+				selectedGroup = e.itemRenderer.data as GmGroup;								
+			}
+			
+			private function init():void{
+				getRo.getGmGroups(model.gmUser);
+				getRo.getGmPrivilegesByUserId(model.gmUser.id);
+				addEventListener(GmGroupEvent.CREATE_GM_GROUP, createGmGroupHandler);
+				addEventListener(GmGroupEvent.DELETE_GM_GROUP, deleteGmGroupHandler);
+				addEventListener(GmGroupEvent.UPDATE_GM_GROUP, updateGmGroupHandler);
+			}		
+			
+			private function createGmGroupHandler(e:GmGroupEvent):void{
+				var gmGroup:GmGroup = e.gmGroup;
+				groupsWithoutSelf.addItem(gmGroup);
+				groups.addItem(gmGroup);
+				groupDG.selectedItem = gmGroup;
+				selectedGroup = gmGroup;
+			}	
+			
+			private function deleteGmGroupHandler(e:GmGroupEvent):void{
+				getRo.getGmGroups(model.gmUser);
+				selectedGroup = null;
+			}	
+			
+			private function updateGmGroupHandler(e:GmGroupEvent):void{
+				getRo.getGmGroups(model.gmUser);
+				selectedGroup = null;
+			}	
+			
+			private function defaultHandler(e:ResultEvent):void{
+				getRo.getGmGroups(model.gmUser);
+				selectedGroup = new GmGroup();
+			}
+			
+			private function getGmGroupsHandler(e:ResultEvent):void{
+				groups = e.result as ArrayCollection;
+				getRo.getGmUserGroups(model.gmUser);
+			}
+			
+			private function getGmPrivilegesByUserIdHandler(e:ResultEvent):void{
+				privileges = e.result as ArrayCollection;
+				privView.gc.refresh();
+			}								
+			private function refresh():void{
+				groupUserView.selectedGroup = this.selectedGroup;
+			}
+			private function getGmUserGroupsHanler(e:ResultEvent):void{
+				var result:ArrayCollection = e.result as ArrayCollection;
+				groupsWithoutSelf = result;
+				groupsWithoutSelf.refresh();		
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getGmGroups" result="getGmGroupsHandler(event)" fault="defaultFaultHandler(event)"/>		
+		<mx:method name="getGmPrivilegesByUserId" result="getGmPrivilegesByUserIdHandler(event)" fault="defaultFaultHandler(event)"/>
+		<mx:method name="getGmUserGroups" result="getGmUserGroupsHanler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+		
+	<mx:VBox  width="100%" height="100%">
+		<mx:HBox width="100%">
+	 			<mx:Button label="{resourceManager.getString('Language','button.Refresh')}" click="refresh()"/>
+	 		</mx:HBox>
+		<mx:VDividedBox width="100%" height="100%">
+			<mx:DataGrid id="groupDG" dataProvider="{groupsWithoutSelf}" itemClick="groupItemClick(event)" width="100%" height="100%">
+				<mx:columns>
+					<mx:DataGridColumn dataField="id" headerText="GM Group ID" width="100"/>
+					<mx:DataGridColumn dataField="name" headerText="{resourceManager.getString('Language','label.GroupName')}" width="150"/>
+					<mx:DataGridColumn dataField="description" headerText="{resourceManager.getString('Language','label.Remark')}"/>
+					<mx:DataGridColumn dataField="creatorId" headerText="{resourceManager.getString('Language','label.CreatorId')}" width="120"/>
+					<mx:DataGridColumn dataField="createName" headerText="{resourceManager.getString('Language','label.CreatorName')}" width="150"/>
+					<mx:DataGridColumn dataField="code" headerText="Code" width="100"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:TabNavigator width="100%" height="100%" creationPolicy="all">
+				<view:GmGroupBaseInfo label="Base" selectedGroup="{selectedGroup}" groups="{groups}"/>
+				<view:GmPrivilegeView id="privView" label="Privilege" selectedGroup="{selectedGroup}" privileges="{privileges}"/>
+				<view:GmGroupUserView id="groupUserView" label="Group User" selectedGroup="{selectedGroup}"/>
+			</mx:TabNavigator>
+		</mx:VDividedBox>			
+	</mx:VBox>
+</mx:HBox>

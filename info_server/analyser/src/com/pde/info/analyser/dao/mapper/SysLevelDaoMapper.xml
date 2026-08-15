@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.SysLevelDao">
+
+	<resultMap id="MapName" type="java.lang.String">
+		<result column="DISPLAY_NAME" property="displayName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="LevelId" type="java.lang.String">
+		<result column="ID" property="levelId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="id" type="java.lang.String">
+		<result column="ID" property="id" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- dropdown with map name -->
+	<select id="getAllMapNames" resultMap="MapName">
+    	SELECT DISTINCT `DISPLAY_NAME` FROM `bj`.`SYS_LEVEL`
+  	</select>
+
+	<!-- get LevelId by type and displayName -->
+	<select id="getLevelId" resultMap="LevelId" parameterType="java.util.Map">
+    	SELECT ID FROM `bj`.`SYS_LEVEL` 
+		WHERE 1=1 
+		<if test="type!=null">AND TYPE = #{type}</if>
+		<if test="displayName!=null">AND DISPLAY_NAME = #{displayName, jdbcType=VARCHAR}</if>
+		ORDER BY ID
+  	</select>
+
+</mapper>

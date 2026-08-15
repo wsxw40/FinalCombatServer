@@ -1,0 +1,82 @@
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="GmReport">
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="GmReport" type="com.pearl.manager.pojo.GmReport" />
+	
+	<select id="select" parameterClass="java.util.Map" resultClass="GmReport">
+		select 	r.ID					as id,
+				r.REPORT_PLAYER_ID		as reportPlayerId,
+				p1.NAME					as reportPlayerName,
+				r.TARGET_PLAYER_ID		as targetPlayerId,
+				p2.NAME 				as targetPlayerName,
+				r.MSG					as msg,
+				r.REPORT_DATE			as reportDate,
+				r.TYPE					as type,
+				r.HANDLE_TIME			as handleTime,
+				r.IS_HANDLE				as isHandle			   	
+		from GM_REPORT r, PLAYER p1, PLAYER p2
+		where r.REPORT_PLAYER_ID = p1.ID 
+		  	and r.TARGET_PLAYER_ID = p2.ID
+			<dynamic>
+				<isNotNull prepend="and" property="start">
+					r.REPORT_DATE <![CDATA[ >= ]]> 	#start#	
+				</isNotNull>
+				<isNotNull prepend="and" property="end">
+					r.REPORT_DATE <![CDATA[ <= ]]> 	#end#	
+				</isNotNull>
+				<isNotEqual prepend="and" property="reportPlayerId" compareValue="0">
+					r.REPORT_PLAYER_ID = #reportPlayerId#			
+				</isNotEqual>	
+				<isNotEqual prepend="and" property="targetPlayerId" compareValue="0">
+					r.TARGET_PLAYER_ID = #targetPlayerId#			
+				</isNotEqual>
+				<isNotEqual prepend="and" property="type" compareValue="0">
+					r.TYPE = #type#			
+				</isNotEqual>
+				<isNotNull prepend="and" property="isHandle">
+					r.IS_HANDLE = #isHandle#			
+				</isNotNull>
+			</dynamic>
+	</select>
+	
+	<insert id="insert" parameterClass="GmReport">
+		insert into GM_REPORT (
+			ID,
+			REPORT_PLAYER_ID,
+			TARGET_PLAYER_ID,
+			MSG,
+			REPORT_DATE,
+			TYPE,
+			HANDLE_TIME,
+			IS_HANDLE
+		) values (
+			id,
+			reportPlayerId,
+			targetPlayerId,
+			msg,
+			reportDate,
+			type,
+			handleTime,
+			isHandle
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="GmReport">
+		update GM_REPORT 
+		set REPORT_PLAYER_ID	= #reportPlayerId#,
+			TARGET_PLAYER_ID	= #targetPlayerId#,
+			MSG					= #msg#,
+			REPORT_DATE			= #reportDate#,
+			TYPE				= #type#,
+			HANDLE_TIME			= #handleTime#,
+			IS_HANDLE			= #isHandle#
+		where ID = #id#;
+	</update>
+</sqlMap>
+	

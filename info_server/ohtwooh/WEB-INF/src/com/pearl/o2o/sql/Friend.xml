@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Friend">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="Friend" type="com.pearl.o2o.pojo.Friend"/> 	
+
+	<resultMap id="selectFriendResult" class="Friend">
+		<result property="userId" column="USER_ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="friendId" column="FRIEND_ID"/>			
+		<result property="isBlackList" column="IS_BLACK_LIST"/>		
+		<result property="team" 			column="TEAM" />
+		<result property="name" column="NAME"/>
+		<result property="rank" column="RANK"/>
+		<result property="gender" column="GENDER"/>	
+	</resultMap>
+  
+	<select id="select" parameterClass="java.util.Map" resultMap="selectFriendResult">
+   	 	select 
+   	 		f.USER_ID,
+   	 		f.PLAYER_ID,
+   	 		f.FRIEND_ID,   	 		
+   	 		f.IS_BLACK_LIST,
+   	 		p.NAME,
+   	 		p.RANK,
+   	 		ifnull(t.NAME,"") 		as TEAM,
+   	 		p.GENDER
+    	from FRIEND f, PLAYER p
+    	left outer join PLAYER_TEAM pt on p.ID = pt.PLAYER_ID
+    	left outer join TEAM t on pt.TEAM_ID = t.ID
+		where f.USER_ID= #userId# and f.PLAYER_ID = #playerId#	
+			<isNotNull prepend="and" property="friendId">
+				f.FRIEND_ID = #friendId#
+			</isNotNull>			 
+			
+			<isNotNull property="isBlackList">
+				<isEqual prepend="and" property="isBlackList" compareValue="Y">
+					f.IS_BLACK_LIST = 'Y'
+				</isEqual>
+				<isEqual prepend="and" property="isBlackList" compareValue="N">
+					f.IS_BLACK_LIST = 'N'
+				</isEqual>			
+			</isNotNull>
+			and p.IS_DELETED="N"
+			and f.FRIEND_ID=p.ID							
+	</select>  
+	<select id="selectFriend" parameterClass="java.util.Map" resultMap="selectFriendResult">
+   	 	select
+   	 		f.USER_ID,
+   	 		f.PLAYER_ID,
+   	 		f.FRIEND_ID,
+   	 		f.IS_BLACK_LIST,
+   	 		p.NAME,
+   	 		p.RANK,
+   	 		ifnull(t.NAME,"") 		as TEAM,
+   	 		p.GENDER
+    	from FRIEND f
+      	left outer join  PLAYER p on p.ID=f.PLAYER_ID
+    	left outer join PLAYER_TEAM pt on p.ID = pt.PLAYER_ID
+    	left outer join TEAM t on pt.TEAM_ID = t.ID
+		where  p.IS_DELETED="N"		
+		<isNotNull prepend="and" property="playerId">
+			f.FRIEND_ID = #playerId#
+		</isNotNull>
+		and f.IS_BLACK_LIST = 'N';			 
+	</select>  
+	<insert id="insert" parameterClass="Friend">
+		insert into FRIEND (
+			USER_ID, 
+			PLAYER_ID, 
+			FRIEND_ID,
+			IS_BLACK_LIST
+			)
+		values ( 
+			#userId#, 
+			#playerId#, 
+			#friendId#, 
+			#isBlackList#
+			)
+	</insert>	
+	
+	
+	<update id="update" parameterClass="Friend">
+		update FRIEND f
+		set f.IS_BLACK_LIST = #isBlackList#
+		where f.USER_ID=#userId# and f.PLAYER_ID=#playerId# and f.FRIEND_ID=#friendId#
+	</update>	
+	
+	<delete id="delete" parameterClass="Friend">
+		delete from FRIEND
+		where USER_ID=#userId# and PLAYER_ID=#playerId# and FRIEND_ID=#friendId#
+	</delete>		
+</sqlMap>

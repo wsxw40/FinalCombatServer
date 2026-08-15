@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerQuestMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayerQuest" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="SYS_QUEST_ID" property="sysQuestId" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="NUMBER" property="number" jdbcType="BIGINT" />
+    <result column="COMPLETE_COUNT" property="completeCount" jdbcType="INTEGER" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PLAYER_ID, SYS_QUEST_ID, STATUS, NUMBER, COMPLETE_COUNT, REMARK, CREATE_TIME, UPDATE_TIME, IS_DELETED
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_QUEST${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerQuest" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_QUEST${tableSuffix}
+    where PLAYER_ID = #{shareId,jdbcType=INTEGER} and IS_DELETED = 'N'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PLAYER_QUEST${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayerQuest" >
+    insert into PLAYER_QUEST${tableSuffix} (ID, PLAYER_ID, SYS_QUEST_ID, STATUS, 
+      NUMBER, COMPLETE_COUNT, REMARK, CREATE_TIME, UPDATE_TIME, 
+      IS_DELETED)
+    values (#{id,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, #{sysQuestId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{number,jdbcType=BIGINT}, #{completeCount,jdbcType=INTEGER}, , #{remark,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerQuest" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into PLAYER_QUEST${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="sysQuestId != null" >
+        SYS_QUEST_ID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="number != null" >
+        NUMBER,
+      </if>
+      <if test="completeCount != null" >
+        COMPLETE_COUNT,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="sysQuestId != null" >
+        #{sysQuestId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=BIGINT},
+      </if>
+      <if test="completeCount != null" >
+        #{COMPLETE_COUNT,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{REMARK,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerQuest" >
+    update PLAYER_QUEST${tableSuffix}
+    <set >
+      <if test="playerId != null" >
+        PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="sysQuestId != null" >
+        SYS_QUEST_ID = #{sysQuestId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        NUMBER = #{number,jdbcType=BIGINT},
+      </if>
+      <if test="completeCount != null" >
+        #{COMPLETE_COUNT,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{REMARK,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerQuest" >
+    update PLAYER_QUEST${tableSuffix}
+    set PLAYER_ID = #{playerId,jdbcType=INTEGER},
+    	SYS_QUEST_ID = #{sysQuestId,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=INTEGER},
+      NUMBER = #{number,jdbcType=BIGINT},
+      COMPLETE_COUNT = #{completeCount,jdbcType=INTEGER},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      IS_DELETED = #{isDeleted,jdbcType=CHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

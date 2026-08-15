@@ -1,0 +1,58 @@
+<ns:Pod xmlns:mx="http://www.adobe.com/2006/mxml"  xmlns:ns="com.esria.samples.dashboard.view.*" 
+	title="当日充值金额[金额]视图" 
+	width="100%" height="100%"
+	horizontalScrollPolicy="off"
+	verticalScrollPolicy="off"	
+	>
+<mx:Script>
+	<![CDATA[
+		import mx.charts.series.items.ColumnSeriesItem;
+		import mx.charts.series.ColumnSeries;
+		import mx.charts.HitData;
+		import vo.BaseEveryDayCharge;
+		import mx.controls.Alert;
+		import mx.rpc.events.ResultEvent;
+		import mx.collections.ArrayCollection;
+		[Bindable]
+		private var  datas:ArrayCollection=new ArrayCollection();
+		[Bindable]
+		public var  param:int;
+		[Bindable]
+		public var  start:Date=null;
+		[Bindable]
+		public var  end:Date=null;
+		[Bindable]
+		public var  total:int=0;
+		public function init(total:int,list:ArrayCollection):void{
+			this.total=total;
+			datas=list;
+			var baseVo:BaseEveryDayCharge=new BaseEveryDayCharge();
+			baseVo.singleRmb=0;
+			baseVo.userCount=0;
+			baseVo.totalRmb=0;
+			datas.addItemAt(baseVo,0);
+		}
+		
+         private function dataTipFunction(o:HitData):String
+			{
+				var psi:ColumnSeriesItem=ColumnSeriesItem(o.chartItem);
+				var s:String ="金额："+psi.item.singleRmb +"\n次数："+psi.item.userCount +"\n金额小计："+psi.item.totalRmb +"\n"+"金额占比："+ Math.round(psi.item.totalRmb*100/total) + "%";
+				return s;
+			}
+	]]>
+</mx:Script>
+<mx:SeriesSlide id="slideIn" duration="1000" direction="up"/>
+    <mx:SeriesSlide id="slideOut" duration="1000" direction="down"/>
+	<mx:VBox height="100%" width="100%">
+        	<mx:ColumnChart id="columnChart" height="100%" width="100%" color="0x323232" verticalCenter="true" horizontalCenter="true"
+            showDataTips="true" dataProvider="{datas}" dataTipFunction="dataTipFunction">
+           <mx:horizontalAxis>
+                <mx:CategoryAxis categoryField="singleRmb"/>
+            </mx:horizontalAxis>
+            <mx:series>
+            	 <mx:ColumnSeries yField="totalRmb"  showDataEffect="{slideIn}" 
+                    hideDataEffect="{slideOut}"/>
+            </mx:series>
+        	</mx:ColumnChart>
+    </mx:VBox>
+</ns:Pod>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerMeltingMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayerMelting" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="LEVEL" property="level" jdbcType="INTEGER" />
+    <result column="EXP" property="exp" jdbcType="INTEGER" />
+    <result column="REMAIND" property="remaind" jdbcType="DOUBLE" />
+    <result column="NUM" property="num" jdbcType="INTEGER" />
+    <result column="RECOVERY" property="recovery" jdbcType="INTEGER" />
+    <result column="LAST_INIT" property="lastInit" jdbcType="BIGINT" />
+    <result column="START_TIME" property="startTime" jdbcType="BIGINT" />
+    <result column="GRAND_TOTAL_TIME" property="grandTotalTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID,`LEVEL`,EXP,REMAIND,NUM,RECOVERY,LAST_INIT,START_TIME,GRAND_TOTAL_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerMelting" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_MELTING${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerMelting" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_MELTING${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayerMelting" >
+    insert into PLAYER_MELTING${tableSuffix} (ID, `LEVEL`, EXP, 
+      REMAIND, NUM, RECOVERY, 
+      LAST_INIT, START_TIME, GRAND_TOTAL_TIME
+      )
+    values (#{id,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{exp,jdbcType=INTEGER}, 
+      #{remaind,jdbcType=DOUBLE}, #{num,jdbcType=INTEGER}, #{recovery,jdbcType=INTEGER}, 
+      #{lastInit,jdbcType=BIGINT}, #{startTime,jdbcType=BIGINT}, #{grandTotalTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerMelting" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into PLAYER_MELTING${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="level != null" >
+        `LEVEL`,
+      </if>
+      <if test="exp != null" >
+        EXP,
+      </if>
+      <if test="remaind != null" >
+        REMAIND,
+      </if>
+      <if test="num != null" >
+        NUM,
+      </if>
+      <if test="recovery != null" >
+        RECOVERY,
+      </if>
+      <if test="lastInit != null" >
+        LAST_INIT,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="grandTotalTime != null" >
+        GRAND_TOTAL_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="exp != null" >
+        #{exp,jdbcType=INTEGER},
+      </if>
+      <if test="remaind != null" >
+        #{remaind,jdbcType=DOUBLE},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="recovery != null" >
+        #{recovery,jdbcType=INTEGER},
+      </if>
+      <if test="lastInit != null" >
+        #{lastInit,jdbcType=BIGINT},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="grandTotalTime != null" >
+        #{grandTotalTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerMelting" >
+    update PLAYER_MELTING${tableSuffix}
+    set `LEVEL` = #{level,jdbcType=INTEGER},
+     EXP = #{exp,jdbcType=INTEGER},
+     REMAIND = #{remaind,jdbcType=DOUBLE},
+     NUM = #{num,jdbcType=INTEGER},
+     RECOVERY = #{recovery,jdbcType=INTEGER},
+     LAST_INIT = #{lastInit,jdbcType=BIGINT},
+     START_TIME = #{startTime,jdbcType=BIGINT},
+     GRAND_TOTAL_TIME = #{grandTotalTime,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

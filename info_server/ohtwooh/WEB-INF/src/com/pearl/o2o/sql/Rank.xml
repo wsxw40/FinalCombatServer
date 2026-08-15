@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Rank">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="Rank" type="com.pearl.o2o.pojo.Rank"/> 	
+
+	<resultMap id="selectResult" class="Rank">
+		<result property="id" column="ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="exp" column="EXP"/>		
+	</resultMap>
+  
+	<select id="select" resultMap="selectResult">
+		select * from SYS_RANK;
+	</select>  
+	<select id="selectTitle" parameterClass="java.lang.Integer"  resultMap="selectResult">
+		select * from SYS_RANK where EXP<![CDATA[ <= ]]>#value#  order by ID desc  limit 0,1;
+	</select> 
+	<select id="selectExp" parameterClass="java.lang.Integer"  resultMap="selectResult">
+		select * from SYS_RANK where ID=#value#;
+	</select> 
+</sqlMap>

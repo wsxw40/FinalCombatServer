@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ItemMod">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="ItemMod" type="com.pearl.o2o.pojo.ItemMod" />
+	<select id="select" parameterClass="java.util.Map" resultClass="ItemMod">
+   	 	select 
+   	 		im.PLAYER_ID			as playerId,
+   	 		im.PARENT_ITEM_ID		as parentItemId,
+   	 		im.CHILD_ITEM_ID		as childItemId,
+   	 		im.SEQ					as seq
+    	from ITEM_MOD im
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="playerId">
+				im.PLAYER_ID=#playerId#
+			</isNotNull>
+			<isNotNull prepend="and" property="parentItemId">
+				im.PARENT_ITEM_ID=#parentItemId#
+			</isNotNull>
+			<isNotNull prepend="and" property="childItemId">
+				im.CHILD_ITEM_ID=#childItemId#
+			</isNotNull>
+			<isNotNull prepend="and" property="seq">
+				im.SEQ=#seq#
+			</isNotNull>
+		</dynamic>				
+	</select>  
+	
+	<update id="update" parameterClass="ItemMod">
+		update ITEM_MOD im
+		set im.CHILD_ITEM_ID=#childItemId#
+		where im.PARENT_ITEM_ID=#parentItemId# and im.SEQ=#seq#
+	</update>		
+	<delete id="deleteWeapon" parameterClass="java.lang.Integer">
+		delete from ITEM_MOD
+		where PARENT_ITEM_ID = #value#
+	</delete>
+	<delete id="deletePart" parameterClass="java.lang.Integer">
+		delete from ITEM_MOD
+		where CHILD_ITEM_ID = #value#
+	</delete>
+	<parameterMap class="java.util.Map" id="paramMap">
+		<parameter property="parent_item_id" jdbcType="INT" javaType="java.lang.Integer" mode="IN"/>
+		<parameter property="num" jdbcType="INT" javaType="java.lang.Integer" mode="IN"/>
+		<parameter property="child_items" jdbcType="VARCHAR(1000)" javaType="java.lang.String" mode="IN"/>
+		<parameter property="seqs" jdbcType="VARCHAR(1000)" javaType="java.lang.String" mode="IN"/>
+		<parameter property="modifiedDesc" jdbcType="VARCHAR(45)" javaType="java.lang.String" mode="IN"/>
+	</parameterMap> 	 
+	<procedure id="insert"  parameterMap="paramMap">  
+		{call createItemMode(?,?,?,?,?)}      
+	</procedure>	
+</sqlMap>

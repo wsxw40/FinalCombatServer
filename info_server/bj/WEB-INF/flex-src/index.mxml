@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:vo="vo.*"
+	xmlns:window="window.*"
+	layout="absolute" creationComplete="init()" width="100%" xmlns:local="*" backgroundColor="#f9f8f6">
+	 <mx:Metadata>
+        [ResourceBundle("Language")]
+    </mx:Metadata> 
+	<mx:Style source="style.css" />
+	<mx:Script>
+		<![CDATA[
+			import event.GmUserLogoutEvent;
+			import event.GmUserLoginEvent;
+			import mx.events.StateChangeEvent;
+			import event.LogSelectEvent;
+			import mx.events.MenuEvent;
+			import common.MenuEnum;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import vo.GmPrivilege;
+			private var model:O2oModel = O2oModel.getInstance();
+			private function gmUserLoginHandler(e:GmUserLoginEvent):void{
+				model.gmUser = e.gmUser;
+				getRo.getGmPrivilegesByUserId(model.gmUser.id);				
+			}
+			public function init():void{
+				
+//				this.addEventListener(GmUserLogoutEvent.GM_USER_LOGOUT, logout);
+				this.addEventListener(GmUserLoginEvent.GM_USER_LOGIN, gmUserLoginHandler);
+				this.currentState="login";
+				this.addEventListener(GmUserLogoutEvent.GM_USER_LOGOUT, logout);
+//				this.currentState="manage";
+			}
+			public function logout(evt:GmUserLogoutEvent):void{
+				model.clearPrivilege();
+				this.currentState="login";
+			}
+			public function stateHandler(evt:StateChangeEvent):void{
+				this.currentState="manage";
+			}
+			private function getGmPrivilegesByUserIdHandler(e:ResultEvent):void{
+				var result:ArrayCollection = e.result as ArrayCollection;
+				for each(var p:GmPrivilege in result){
+					if(p.name == "GM LOG"){
+						model.PRIV_LOG = true;
+					}else
+					if(p.name == "GM USER"){
+						model.PRIV_USER = true;
+					}else
+					if(p.name == "GM GROUP"){
+						model.PRIV_GROUP = true;
+					}else
+					if(p.name == "SysItem"){
+						model.PRIV_SYSITEM = true;
+					} else if(p.name == "SysItemPrice"){
+						model.PRIV_SYSITEM_PRICE = true;
+					}else
+					if(p.name == "Character"){
+						model.PRIV_CHARACTER = true;
+					}else
+					if(p.name == "Maps"){
+						model.PRIV_MAPS = true;
+					}else
+					if(p.name == "Player"){
+						model.PRIV_PLAYER = true;
+					}else
+					if(p.name == "PlayerLog"){
+						model.PRIV_PLAYER_LOG = true;
+					}else
+					if(p.name == "GM Email"){
+						model.PRIV_GM_EMAIL = true;
+					}else
+					if(p.name == "Server"){
+						model.PRIV_SERVER = true;
+					}else
+					if(p.name == "System Config"){
+						model.PRIV_SYSTEM_CONFIG = true;
+					}else
+					if(p.name == "Regular Notice"){
+						model.PRIV_REGULAR_NOTICE = true;
+					}else
+					if(p.name == "Black Ip"){
+						model.PRIV_BLACK_IP = true;
+					}else
+					if(p.name == "Banned Word"){
+						model.PRIV_BANNED_WORD = true;
+					}else
+					if(p.name == "Black White"){
+						model.PRIV_BLACK_WHITE = true;
+					}else
+					if(p.name == "Pay Log"){
+						model.PRIV_PAY_LOG = true;
+					}else
+					if(p.name == "Team Log"){
+						model.PRIV_TEAM_LOG = true;
+					}else
+					if(p.name == "Activity"){
+						model.PRIV_ACTIVITY = true;
+					}	
+					if(p.name == "Activitys"){
+						model.PRIV_ACTIVITYS = true;
+					}
+					if(p.name == "Online Award"){
+						model.PRIV_ONLINE_AWARD = true;
+					}	
+					if(p.name == "Strengthen Append"){
+						model.PRIV_STRENGTHEN_APPEND = true;
+					}		
+				}
+				this.currentState = "manage";
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getGmPrivilegesByUserId" result="getGmPrivilegesByUserIdHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:states>
+			<mx:State name="login" id="login">
+				<mx:AddChild>
+					<local:Login />
+				</mx:AddChild>
+			</mx:State>
+			<mx:State name="manage">
+				<mx:AddChild>
+					<local:Manage />
+				</mx:AddChild>
+			</mx:State>
+	</mx:states>
+</mx:Application>

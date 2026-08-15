@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerTeamMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayerTeam" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="TEAM_ID" property="teamId" jdbcType="INTEGER" />
+    <result column="JOB" property="job" jdbcType="TINYINT" />
+    <result column="KILL" property="kill" jdbcType="INTEGER" />
+    <result column="DEAD" property="dead" jdbcType="INTEGER" />
+    <result column="ASSIST" property="assist" jdbcType="INTEGER" />
+    <result column="SCORE" property="score" jdbcType="INTEGER" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="APPROVED" property="approved" jdbcType="CHAR" />
+    <result column="CONTRIBUTION" property="contribution" jdbcType="INTEGER" />
+    <result column="TIMES" property="times" jdbcType="INTEGER" />
+    <result column="POINT" property="point" jdbcType="INTEGER" />
+    <result column="LAST_BURNT" property="lastBurnt" jdbcType="BIGINT" />
+    <result column="TEAM_FIGHT_EXP" property="teamFightExp" jdbcType="INTEGER" />
+    <result column="PERSONAL_FIGHT_EXP" property="personalFightExp" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PLAYER_ID, TEAM_ID, JOB, KILL, DEAD, ASSIST, SCORE, CREATED_TIME, APPROVED, CONTRIBUTION, 
+    TIMES, POINT, LAST_BURNT, TEAM_FIGHT_EXP, PERSONAL_FIGHT_EXP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTeam" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_TEAM${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTeam" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_TEAM${tableSuffix}
+    where TEAM_ID = #{shareId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPlayerId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_TEAM${tableSuffix}
+    where PLAYER_ID = #{playerId,jdbcType=INTEGER} 
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PLAYER_TEAM${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTeam" >
+    insert into PLAYER_TEAM${tableSuffix} (ID, PLAYER_ID, TEAM_ID, 
+      JOB, KILL, DEAD, ASSIST, 
+      SCORE, CREATED_TIME, APPROVED, 
+      CONTRIBUTION, TIMES, POINT, 
+      LAST_BURNT, TEAM_FIGHT_EXP, PERSONAL_FIGHT_EXP
+      )
+    values (#{id,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, #{teamId,jdbcType=INTEGER}, 
+      #{job,jdbcType=TINYINT}, #{kill,jdbcType=INTEGER}, #{dead,jdbcType=INTEGER}, #{assist,jdbcType=INTEGER}, 
+      #{score,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{approved,jdbcType=CHAR}, 
+      #{contribution,jdbcType=INTEGER}, #{times,jdbcType=INTEGER}, #{point,jdbcType=INTEGER}, 
+      #{lastBurnt,jdbcType=BIGINT}, #{teamFightExp,jdbcType=INTEGER}, #{personalFightExp,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTeam" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into PLAYER_TEAM${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="teamId != null" >
+        TEAM_ID,
+      </if>
+      <if test="job != null" >
+        JOB,
+      </if>
+      <if test="kill != null" >
+        KILL,
+      </if>
+      <if test="dead != null" >
+        DEAD,
+      </if>
+      <if test="assist != null" >
+        ASSIST,
+      </if>
+      <if test="score != null" >
+        SCORE,
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME,
+      </if>
+      <if test="approved != null" >
+        APPROVED,
+      </if>
+      <if test="contribution != null" >
+        CONTRIBUTION,
+      </if>
+      <if test="times != null" >
+        TIMES,
+      </if>
+      <if test="point != null" >
+        POINT,
+      </if>
+      <if test="lastBurnt != null" >
+        LAST_BURNT,
+      </if>
+      <if test="teamFightExp != null" >
+        TEAM_FIGHT_EXP,
+      </if>
+      <if test="personalFightExp != null" >
+        PERSONAL_FIGHT_EXP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null" >
+        #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="job != null" >
+        #{job,jdbcType=TINYINT},
+      </if>
+      <if test="kill != null" >
+        #{kill,jdbcType=INTEGER},
+      </if>
+      <if test="dead != null" >
+        #{dead,jdbcType=INTEGER},
+      </if>
+      <if test="assist != null" >
+        #{assist,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approved != null" >
+        #{approved,jdbcType=CHAR},
+      </if>
+      <if test="contribution != null" >
+        #{contribution,jdbcType=INTEGER},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="point != null" >
+        #{point,jdbcType=INTEGER},
+      </if>
+      <if test="lastBurnt != null" >
+        #{lastBurnt,jdbcType=BIGINT},
+      </if>
+      <if test="teamFightExp != null" >
+        #{teamFightExp,jdbcType=INTEGER},
+      </if>
+      <if test="personalFightExp != null" >
+        #{personalFightExp,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTeam" >
+    update PLAYER_TEAM${tableSuffix}
+    <set >
+      <if test="playerId != null" >
+        PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null" >
+        TEAM_ID = #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="job != null" >
+        JOB = #{job,jdbcType=TINYINT},
+      </if>
+      <if test="kill != null" >
+        KILL = #{kill,jdbcType=INTEGER},
+      </if>
+      <if test="dead != null" >
+        DEAD = #{dead,jdbcType=INTEGER},
+      </if>
+      <if test="assist != null" >
+        ASSIST = #{assist,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        SCORE = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approved != null" >
+        APPROVED = #{approved,jdbcType=CHAR},
+      </if>
+      <if test="contribution != null" >
+        CONTRIBUTION = #{contribution,jdbcType=INTEGER},
+      </if>
+      <if test="times != null" >
+        TIMES = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="point != null" >
+        POINT = #{point,jdbcType=INTEGER},
+      </if>
+      <if test="lastBurnt != null" >
+        LAST_BURNT = #{lastBurnt,jdbcType=BIGINT},
+      </if>
+      <if test="teamFightExp != null" >
+        TEAM_FIGHT_EXP = #{teamFightExp,jdbcType=INTEGER},
+      </if>
+      <if test="personalFightExp != null" >
+        PERSONAL_FIGHT_EXP = #{personalFightExp,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTeam" >
+    update PLAYER_TEAM${tableSuffix}
+    set PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      TEAM_ID = #{teamId,jdbcType=INTEGER},
+      JOB = #{job,jdbcType=TINYINT},
+      KILL = #{kill,jdbcType=INTEGER},
+      DEAD = #{dead,jdbcType=INTEGER},
+      ASSIST = #{assist,jdbcType=INTEGER},
+      SCORE = #{score,jdbcType=INTEGER},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      APPROVED = #{approved,jdbcType=CHAR},
+      CONTRIBUTION = #{contribution,jdbcType=INTEGER},
+      TIMES = #{times,jdbcType=INTEGER},
+      POINT = #{point,jdbcType=INTEGER},
+      LAST_BURNT = #{lastBurnt,jdbcType=BIGINT},
+      TEAM_FIGHT_EXP = #{teamFightExp,jdbcType=INTEGER},
+      PERSONAL_FIGHT_EXP = #{personalFightExp,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

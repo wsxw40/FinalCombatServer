@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TeamBuff">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="TeamBuff" type="com.pearl.o2o.pojo.TeamBuff"/> 	
+	<resultMap id="TeamBuffSelectResult" class="TeamBuff">
+		<result property="id" column="ID"/>
+		<result property="teamId" column="TEAM_ID"/>
+		<result property="isEnable" column="IS_ENABLE"/>
+	</resultMap>
+	
+  	<select id="select" resultMap="TeamBuffSelectResult">
+  		select t.ID, t.TEAM_ID,t.IS_ENABLE
+  		from TEAM_BUFF$tableSuffix$ t
+  		where t.TEAM_ID=#fid#
+  	</select>	
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="TeamBuff">
+		insert into 
+			TEAM_BUFF$tableSuffix$(ID,TEAM_ID,IS_ENABLE )
+		values(
+				#id#,
+				#teamId#,
+				#isEnable#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT ID from TEAM_BUFF$tableSuffix$ where ID = #id# AND TEAM_ID = #teamId#
+		</selectKey>
+	</insert>  	
+  	 <delete id="delete" parameterClass="TeamBuff">
+  		delete from 
+  			TEAM_BUFF$tableSuffix$
+		where 
+			ID = #id#
+  	</delete>
+  	<update id="update" parameterClass="TeamBuff">
+		update 
+			TEAM_BUFF$tableSuffix$ t 
+		set
+	        t.TEAM_ID = #teamId#,
+	        t.IS_ENABLE = #isEnable#
+		where 
+			t.ID = #id#
+	</update>
+</sqlMap>	
+  	
+ 
+  	

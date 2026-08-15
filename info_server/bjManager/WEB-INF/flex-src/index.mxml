@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:vo="vo.*"
+	xmlns:window="window.*"
+	layout="absolute" creationComplete="init()" width="100%" xmlns:local="*" backgroundColor="#f9f8f6">
+	<mx:Style source="style.css" />
+	<mx:Script>
+		<![CDATA[
+			import event.GmUserLogoutEvent;
+			import event.GmUserLoginEvent;
+			import mx.events.StateChangeEvent;
+			import event.LogSelectEvent;
+			import mx.events.MenuEvent;
+			import common.MenuEnum;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import vo.GmPrivilege;
+			private var model:O2oModel = O2oModel.getInstance();
+			private function gmUserLoginHandler(e:GmUserLoginEvent):void{
+				model.gmUser = e.gmUser;
+				getRo.getGmPrivilegesByUserId(model.gmUser.id);				
+			}
+			public function init():void{
+				
+//				this.addEventListener(GmUserLogoutEvent.GM_USER_LOGOUT, logout);
+				this.addEventListener(GmUserLoginEvent.GM_USER_LOGIN, gmUserLoginHandler);
+				this.currentState="login";
+				this.addEventListener(GmUserLogoutEvent.GM_USER_LOGOUT, logout);
+//				this.currentState="manage";
+			}
+			public function logout(evt:GmUserLogoutEvent):void{
+				model.clearPrivilege();
+				this.currentState="login";
+			}
+			public function stateHandler(evt:StateChangeEvent):void{
+				this.currentState="manage";
+			}
+			private function getGmPrivilegesByUserIdHandler(e:ResultEvent):void{
+				var result:ArrayCollection = e.result as ArrayCollection;
+				for each(var p:GmPrivilege in result){
+					if(p.name == "Login manager system"){
+						model.PRIV_SYSTEM = true;
+						model.DAYPAY_SYSTEM = true;
+						model.DAYINCOME_SYSTEM = true;
+					}
+				}
+				this.currentState = "manage";
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getGmPrivilegesByUserId" result="getGmPrivilegesByUserIdHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:states>
+			<mx:State name="login" id="login">
+				<mx:AddChild>
+					<local:Login />
+				</mx:AddChild>
+			</mx:State>
+			<mx:State name="manage">
+				<mx:AddChild>
+					<local:Manage />
+				</mx:AddChild>
+			</mx:State>
+	</mx:states>
+</mx:Application>

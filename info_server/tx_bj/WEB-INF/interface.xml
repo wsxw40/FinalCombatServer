@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<!-- just for test 
+	<bean id="c_send_vip_test" class="com.pearl.o2o.servlet.client.SendVipForTest" parent="baseClientServlet" />
+	<bean id="c_send_magic_box_test" class="com.pearl.o2o.servlet.client.SendMagicBoxForTest" parent="baseClientServlet" />
+	<bean id="c_send_hummer_test" class="com.pearl.o2o.servlet.client.SendHummerForTest" parent="baseClientServlet" />
+	-->	
+	<!-- resource war -->
+	<bean id="c_edit_map" class="com.pearl.o2o.servlet.client.EditTeamMap" parent="baseServerServlet" />
+	<bean id="s_save_map" class="com.pearl.o2o.servlet.server.SaveMap" parent="baseServerServlet" />
+	<!-- second_password -->
+	<bean id="c_setcheck_second_password" class="com.pearl.o2o.servlet.client.SetCheckSecondPassword" parent="baseClientServlet"/>
+	<bean id="c_reset_second_password" class="com.pearl.o2o.servlet.client.ResetSecondPassword" parent="baseClientServlet"/>
+	<bean id="c_get_second_password_status" class="com.pearl.o2o.servlet.client.GetSecondPasswordStatus" parent="baseClientServlet"/>
+	<bean id="c_forget_second_password" class="com.pearl.o2o.servlet.client.ForgetSecondPassword" parent="baseClientServlet"/>
+	
+	<!-- compete buy-->
+	<bean id="c_compete_buy_item" class="com.pearl.o2o.servlet.client.CompeteBuyItem" parent="baseClientServlet" />
+	<bean id="c_get_compete_buy_items" class="com.pearl.o2o.servlet.client.GetCompeteBuyItems" parent="baseClientServlet" />
+	<bean id="c_get_choicebox_items" class="com.pearl.o2o.servlet.client.GetChoiceboxItems" parent="baseClientServlet" />
+	<bean id="c_get_compete_buy_time" class="com.pearl.o2o.servlet.client.GetCompeteBuyTime" parent="baseClientServlet" />
+	
+	<bean id="c_daily_discount_item" class="com.pearl.o2o.servlet.client.DailyDiscoutItem" parent="baseClientServlet" />
+	<bean id="c_daily_discount_buy_item" class="com.pearl.o2o.servlet.client.DailyDiscountBuyItem" parent="baseClientServlet" />
+	<bean id="c_get_bluemap_list" class="com.pearl.o2o.servlet.client.GetBlueMaps" parent="baseClientServlet" />
+	<bean id="c_character_team_info" class="com.pearl.o2o.servlet.client.GetCharacterAndTeamInfo" parent="baseClientServlet" />
+	
+	<!-- shooting-->
+	<bean id="c_shooting" class="com.pearl.o2o.servlet.client.ShootingAndLook" parent="baseClientServlet" />
+	<bean id="c_shooting_ammo" class="com.pearl.o2o.servlet.client.ShootingAmmo" parent="baseClientServlet" />
+	<bean id="c_shooting_join" class="com.pearl.o2o.servlet.client.ShootingJoin" parent="baseClientServlet" /> 
+	<bean id="c_shooting_quit" class="com.pearl.o2o.servlet.client.ShootingQuit" parent="baseClientServlet" /> 
+	<!-- common top -->
+	<bean id="c_common_top" class="com.pearl.o2o.servlet.client.GetPlayerCommonTop" parent="baseClientServlet" />
+	<!-- fightnum top -->
+	<bean id="c_fightnum_top" class="com.pearl.o2o.servlet.client.GetPlayerFightNumTop" parent="baseClientServlet" />
+	<!-- magicbox open -->
+	<bean id="c_get_hummer_num" class="com.pearl.o2o.servlet.client.GetHummerNum" parent="baseClientServlet" />
+	<bean id="c_magic_box_list" class="com.pearl.o2o.servlet.client.MagicBoxList" parent="baseClientServlet" />
+	<bean id="c_magic_box_open" class="com.pearl.o2o.servlet.client.MagicBoxOpen" parent="baseClientServlet" />
+	<bean id="c_magic_box_gift_list" class="com.pearl.o2o.servlet.client.MagicBoxGiftList" parent="baseClientServlet" />
+	<bean id="c_magic_box_history_list" class="com.pearl.o2o.servlet.client.MagicBoxHistoryList" parent="baseClientServlet" />
+	
+	<bean id="c_res_box_list" class="com.pearl.o2o.servlet.client.ResMagicBoxList" parent="baseClientServlet" />
+	<bean id="c_res_box_gift_list" class="com.pearl.o2o.servlet.client.ResMagicBoxGiftList" parent="baseClientServlet" />
+	<bean id="c_res_box_open" class="com.pearl.o2o.servlet.client.ResMagicBoxOpen" parent="baseClientServlet" />
+	<!-- vip random -->
+	<bean id="c_vip_random_list" class="com.pearl.o2o.servlet.client.VipRandomList" parent="baseClientServlet" />
+	<bean id="c_vip_random_start" class="com.pearl.o2o.servlet.client.VipRandomStart" parent="baseClientServlet" />
+	<!-- daily check -->
+	<bean id="c_daily_check" class="com.pearl.o2o.servlet.client.DailyCheck" parent="baseClientServlet" />
+	<bean id="c_daily_check_list" class="com.pearl.o2o.servlet.client.DailyCheckList" parent="baseClientServlet" />
+	<bean id="c_daily_gift" class="com.pearl.o2o.servlet.client.DailGiftGet" parent="baseClientServlet" />
+	<bean id="c_daily_num" class="com.pearl.o2o.servlet.client.DailyNumCreate" parent="baseClientServlet" />
+	<bean id="c_team_salary_get" class="com.pearl.o2o.servlet.client.TeamSalaryGet"  parent="baseClientServlet"/>
+	<!-- online award -->
+	<bean id="c_online_award" class="com.pearl.o2o.servlet.client.GetOnlineAward" parent="baseClientServlet" />
+	<bean id="c_online_award_get" class="com.pearl.o2o.servlet.client.GetOnlineAwardGift" parent="baseClientServlet" />
+	<!-- lucky chest -->
+	<bean id="c_chest_list" class="com.pearl.o2o.servlet.client.GetLuckyPackageList" parent="baseClientServlet" />
+	<bean id="c_chest_get" class="com.pearl.o2o.servlet.client.GetLuckyPackageToPlayer" parent="baseClientServlet" />
+	<bean id="c_chest_chip" class="com.pearl.o2o.servlet.client.RegetLuckyPackageChip" parent="baseClientServlet"/>
+	<bean id="c_chest_price" class="com.pearl.o2o.servlet.client.GetLuckyPackagePrice" parent="baseClientServlet"/>
+	<bean id="c_add_pintu" class="com.pearl.o2o.servlet.client.AddPinTu" parent="baseClientServlet"/>
+	<bean id="c_pintu_awards" class="com.pearl.o2o.servlet.client.GetPinTuAwards" parent="baseClientServlet"/>
+	<bean id="c_pintu_gift" class="com.pearl.o2o.servlet.client.GetPinTuGift" parent="baseClientServlet"/>
+	<bean id="c_get_pintu_states" class="com.pearl.o2o.servlet.client.GetPinTuStates" parent="baseClientServlet"/>
+	<!-- friend -->
+	<bean id="c_friends_partners_list" class="com.pearl.o2o.servlet.client.GetFriendPartners" parent="baseClientServlet" />
+	<bean id="c_friends_rank" class="com.pearl.o2o.servlet.client.GetFriendRankList" parent="baseClientServlet" />
+	<bean id="c_friends_news" class="com.pearl.o2o.servlet.client.GetFriendsNews" parent="baseClientServlet" />
+	<bean id="c_friends_search_list" class="com.pearl.o2o.servlet.client.FuzzyGetPlayerList" parent="baseClientServlet" />
+	<bean id="c_friends_list" class="com.pearl.o2o.servlet.client.GetFriendList" parent="baseClientServlet" />
+	<bean id="c_partners_list" class="com.pearl.o2o.servlet.client.GetPartnerList" parent="baseClientServlet" />
+	<bean id="c_friends_blacks_list" class="com.pearl.o2o.servlet.client.GetFriendBlackList" parent="baseClientServlet" />
+	<bean id="c_friends_menu" class="com.pearl.o2o.servlet.client.UpdateFriend" parent="baseClientServlet" />
+	<bean id="c_friend_accept" class="com.pearl.o2o.servlet.client.AcceptFriend" parent="baseClientServlet" />
+	<bean id="c_friend_request" class="com.pearl.o2o.servlet.client.GetRequestFriendList" parent="baseClientServlet" />
+	<bean id="c_get_friend_news" class="com.pearl.o2o.servlet.client.GetFriendsNews" parent="baseClientServlet" />
+	<bean id="c_group_create" class="com.pearl.o2o.servlet.client.CreateGroup" parent="baseClientServlet" />
+	<bean id="c_friend_group_list" class="com.pearl.o2o.servlet.client.GetGroupList" parent="baseClientServlet" />
+	<!-- personal <bean id="c_personal" class="com.pearl.o2o.servlet.client.GetPlayer" parent="baseClientServlet"/> -->
+	<bean id="c_personal_top" class="com.pearl.o2o.servlet.client.GetPlayerTop" parent="baseClientServlet" />
+
+	<bean id="c_personal_info" class="com.pearl.o2o.servlet.client.GetPlayerInfo" parent="baseClientServlet" />
+	<bean id="c_personal_edit_list" class="com.pearl.o2o.servlet.client.GetPlayerInfoEdit" parent="baseClientServlet" />
+	<bean id="c_personal_edit_save" class="com.pearl.o2o.servlet.client.UpdatePlayerInfo" parent="baseClientServlet" />
+	<bean id="c_personal_avatar" class="com.pearl.o2o.servlet.client.GetPlayerAvatar" parent="baseClientServlet" />
+	<bean id="c_personal_simple" class="com.pearl.o2o.servlet.client.GetFontPlayerInfo" parent="baseClientServlet" />
+	<bean id="c_player_achievement" class="com.pearl.o2o.servlet.client.GetPlayerAchievement" parent="baseClientServlet" />
+	<bean id="c_character_data" class="com.pearl.o2o.servlet.client.GetCharacterDataList" parent="baseClientServlet" />
+	<bean id="c_expire_bubble" class="com.pearl.o2o.servlet.client.GetExpireBubble" parent="baseClientServlet" />
+	<bean id="c_vip_info" class="com.pearl.o2o.servlet.client.GetVipInfo" parent="baseClientServlet" />
+	<!-- shop -->
+	<bean id="c_shop_list" class="com.pearl.o2o.servlet.client.GetSysItemList" parent="baseClientServlet" />
+	<bean id="c_shop_req_buy" class="com.pearl.o2o.servlet.client.CreatePlayerItem" parent="baseClientServlet" />
+	<bean id="c_shop_fast_buy" class="com.pearl.o2o.servlet.client.CombineFastBuyItems" parent="baseClientServlet" />
+	<bean id="c_combine_get_price" class="com.pearl.o2o.servlet.client.CombineGetPrice" parent="baseClientServlet" />
+	<bean id="c_shop_req_buy_list" class="com.pearl.o2o.servlet.client.CreatePlayerItemList" parent="baseClientServlet" />
+	<!-- 免费exchange -->
+	<bean id="c_shop_exchange_list" class="com.pearl.o2o.servlet.client.GetExchangeSysItemList" parent="baseClientServlet" />
+	<bean id="c_shop_req_exchange" class="com.pearl.o2o.servlet.client.ExChangePlayerItem" parent="baseClientServlet" />
+	<!-- 资源争夺战exchange -->
+	<bean id="c_shop_zyzdz_ex_list" class="com.pearl.o2o.servlet.client.GetZYZDZExchangeList" parent="baseClientServlet" />
+	<bean id="c_shop_zyzdz_ex_buy" class="com.pearl.o2o.servlet.client.ExChangeZYZDZItem" parent="baseClientServlet" />
+	<!-- VIP 经验exchange -->
+	<bean id="c_shop_vipexp_ex_buy" class="com.pearl.o2o.servlet.client.ExChangeVIPExpItem" parent="baseClientServlet" />
+	
+	<!-- storage -->
+	<bean id="c_storage_list" class="com.pearl.o2o.servlet.client.GetPlayerItemList" parent="baseClientServlet" />
+	<bean id="c_storage_req_equipt" class="com.pearl.o2o.servlet.client.CreatePackEquipment" parent="baseClientServlet" />
+	<bean id="c_storage_destroy" class="com.pearl.o2o.servlet.client.DeletePlayerItem" parent="baseClientServlet" />
+	<bean id="c_storage_fix" class="com.pearl.o2o.servlet.client.FixPlayerItem" parent="baseClientServlet" />
+	<bean id="c_storage_req_unpack" class="com.pearl.o2o.servlet.client.DeletePackEquipment" parent="baseClientServlet" />
+	<bean id="c_storage_req_renew" class="com.pearl.o2o.servlet.client.RenewPlayerItem" parent="baseClientServlet" />
+	<bean id="c_storage_item_use" class="com.pearl.o2o.servlet.client.UsePlayerItem" parent="baseClientServlet" />
+	<bean id="c_storage_item_choice" class="com.pearl.o2o.servlet.client.ChoicePlayerItem" parent="baseClientServlet" />
+	<bean id="c_storage_expitem_use" class="com.pearl.o2o.servlet.client.UseExpPlayerItem" parent="baseClientServlet" />
+	<bean id="c_item_expired_notify" class="com.pearl.o2o.servlet.client.GetItemWillBeExpiredInShortTime" parent="baseClientServlet" />
+	<bean id="c_character_get" class="com.pearl.o2o.servlet.client.GetCharacter" parent="baseClientServlet" />
+	<bean id="c_character_list" class="com.pearl.o2o.servlet.client.GetCharacterList" parent="baseClientServlet" />
+	<bean id="c_character_set" class="com.pearl.o2o.servlet.client.SetCharacter" parent="baseClientServlet" />
+	<bean id="c_character_size_release" class="com.pearl.o2o.servlet.client.ReleaseCharacter" parent="baseClientServlet" />
+	<bean id="c_storage_fix_all" class="com.pearl.o2o.servlet.client.FixPlayerItemByOneKey" parent="baseClientServlet" />
+	
+	<!-- speak -->
+	<bean id="c_speak" class="com.pearl.o2o.servlet.client.UseSpeak" parent="baseClientServlet" />
+	<bean id="c_get_speak" class="com.pearl.o2o.servlet.client.GetSpeak" parent="baseClientServlet" />
+	<!-- team -->
+	<bean id="c_team_name_validate" class="com.pearl.o2o.servlet.client.ValidateTeamName" parent="baseClientServlet" />
+	<bean id="c_team_pre_create" class="com.pearl.o2o.servlet.client.CreateTeamPre" parent="baseClientServlet" />
+	<bean id="c_team_create" class="com.pearl.o2o.servlet.client.CreateTeam" parent="baseClientServlet" />
+	<bean id="c_team_info_get_list" class="com.pearl.o2o.servlet.client.GetTeamList" parent="baseClientServlet" />
+	<bean id="c_team_info_get" class="com.pearl.o2o.servlet.client.GetTeam" parent="baseClientServlet" />
+	<bean id="c_team_upgrade_list" class="com.pearl.o2o.servlet.client.UpgradeTeam" parent="baseClientServlet" />
+	<bean id="c_team_dismiss" class="com.pearl.o2o.servlet.client.DisMissTeam" parent="baseClientServlet" />
+	<bean id="c_team_member_list" class="com.pearl.o2o.servlet.client.GetTeamMember" parent="baseClientServlet" />
+	<bean id="c_team_history_list" class="com.pearl.o2o.servlet.client.GetTeamHistoryList" parent="baseClientServlet" />
+	<bean id="c_team_search_list" class="com.pearl.o2o.servlet.client.FuzzyGetTeam" parent="baseClientServlet" />
+	<bean id="c_team_request_list" class="com.pearl.o2o.servlet.client.GetTeamRequestList" parent="baseClientServlet" />
+	<bean id="c_team_request_op" class="com.pearl.o2o.servlet.client.TeamRequestOp" parent="baseClientServlet" />
+	<bean id="c_team_update_op" class="com.pearl.o2o.servlet.client.TeamUpdateOp" parent="baseClientServlet" />
+	<bean id="c_team_info" class="com.pearl.o2o.servlet.client.GetMyTeamInfo" parent="baseClientServlet" />
+	<bean id="c_team_member_all" class="com.pearl.o2o.servlet.client.GetTeamMemberAll" parent="baseClientServlet" />
+	<bean id="c_get_team_top" class="com.pearl.o2o.servlet.client.GetTeamTop" parent="baseClientServlet" />
+	
+	<!--资源争夺战接口-->
+	<!--显示页面接口-->
+	<bean id="c_get_fightresinfo" class="com.pearl.o2o.servlet.client.GetFightResInfo" parent="baseClientServlet" />
+	<!--显示排行榜-->
+	<bean id="c_get_curzyzdzrank" class="com.pearl.o2o.servlet.client.GetCurZyzdzRank" parent="baseClientServlet" />
+	<!--匹配接口-->
+	<bean id="c_get_battlefield_match" class="com.pearl.o2o.servlet.client.GetBattlefieldMatch" parent="baseClientServlet" />
+	<!--处理匹配结果-->
+	<bean id="c_handle_battlefield_battle" class="com.pearl.o2o.servlet.client.HandleBattlefieldBattle" parent="baseClientServlet" />
+	<!--邀请队友进行资源争夺战进攻-->
+	<bean id="c_push_battlefield_invite" class="com.pearl.o2o.servlet.client.PushBattlefieldInvite" parent="baseClientServlet" />
+	<!--邀请队友进行资源争夺战防守-->
+	<bean id="c_push_battlefield_defense_invite" class="com.pearl.o2o.servlet.client.PushBattlefieldDefenseInvite" parent="baseClientServlet" />
+	<!--资源争夺战团队物品购买-->
+	<bean id="c_shop_req_zyzdzteam_buy" class="com.pearl.o2o.servlet.client.CreateTeamItemZYZDZ" parent="baseClientServlet" />
+	<!--资源争夺战shop界面,2013.11.15可能没有资源争夺战的shop了-->
+	<bean id="c_shopzyzdz_list" class="com.pearl.o2o.servlet.client.GetSysItemListZYZDZ" parent="baseClientServlet" />
+	<!--获得被挑战队伍的详细信息-->
+	<bean id="c_get_challenge_info" class="com.pearl.o2o.servlet.client.GetChallengeInfo" parent="baseClientServlet" />
+	<!--开始资源争夺战挑战赛-->	
+	<bean id="c_battlefield_challenge" class="com.pearl.o2o.servlet.client.BattlefieldChallenge" parent="baseClientServlet" />
+	<!--资源争夺战黑原石转换-->	
+	<bean id="c_zyzdz_transform" class="com.pearl.o2o.servlet.client.ZyzdzTransform" parent="baseClientServlet" />
+	<!--获得加速建造的价格，或者加速建造-->	
+	<bean id="c_get_fc_price" class="com.pearl.o2o.servlet.client.GetFinishCreatePrice" parent="baseClientServlet" />
+	
+	
+	
+	<!--共用测试方法-->	
+	<bean id="c_public_test" class="com.pearl.o2o.servlet.client.PublicTest" parent="baseClientServlet" />
+			
+	
+	<bean id="c_team_record_list" class="com.pearl.o2o.servlet.client.TeamRecordList" parent="baseClientServlet" />
+	<bean id="c_team_res_record_list" class="com.pearl.o2o.servlet.client.TeamResRecordList" parent="baseClientServlet" />
+	<bean id="c_team_proclamation_list" class="com.pearl.o2o.servlet.client.TeamProclamationList" parent="baseClientServlet" />
+	<bean id="c_team_proclamation_create" class="com.pearl.o2o.servlet.client.TeamProclamationCreate" parent="baseClientServlet" />
+	<bean id="c_team_proclamation_del" class="com.pearl.o2o.servlet.client.TeamProclamationDel" parent="baseClientServlet" />
+	<bean id="c_team_introduce_get" class="com.pearl.o2o.servlet.client.TeamIntroduceGet" parent="baseClientServlet" />
+	<bean id="c_team_contribution_get" class="com.pearl.o2o.servlet.client.TeamContributionGet" parent="baseClientServlet" />
+	<bean id="c_team_buff_op" class="com.pearl.o2o.servlet.client.TeamBuffOp" parent="baseClientServlet" />
+	<bean id="c_team_buff_list" class="com.pearl.o2o.servlet.client.TeamBuffList" parent="baseClientServlet" />
+	<bean id="c_team_burnt_list" class="com.pearl.o2o.servlet.client.TeamBurntList" parent="baseClientServlet" />
+	<bean id="c_team_burnt_use" class="com.pearl.o2o.servlet.client.TeamBurntUse" parent="baseClientServlet" />
+	<!-- mail -->
+	<bean id="c_email_item_list" class="com.pearl.o2o.servlet.client.GetMessageItemList" parent="baseClientServlet" />
+	<bean id="c_email_list" class="com.pearl.o2o.servlet.client.GetMessageList" parent="baseClientServlet" />
+	<bean id="c_email_get" class="com.pearl.o2o.servlet.client.GetMessage" parent="baseClientServlet" />
+	<bean id="c_email_delete" class="com.pearl.o2o.servlet.client.DeleteMessage" parent="baseClientServlet" />
+	<bean id="c_email_gift" class="com.pearl.o2o.servlet.client.CreateMessageItem" parent="baseClientServlet" />
+	<bean id="c_email_present" class="com.pearl.o2o.servlet.client.CreateMessagePlayerItem" parent="baseClientServlet" />
+	<bean id="c_email_detach" class="com.pearl.o2o.servlet.client.GetMessageItem" parent="baseClientServlet" />
+	<bean id="c_email_create" class="com.pearl.o2o.servlet.client.CreateMessage" parent="baseClientServlet" />
+	<!-- stage <bean id="c_stage_box_open" class="com.pearl.o2o.servlet.client.StageClearOpen" parent="baseClientServlet"/> -->
+
+	<bean id="c_stage_clear" class="com.pearl.o2o.servlet.client.StageClear" parent="baseClientServlet" />
+	<bean id="c_stage_quit" class="com.pearl.o2o.servlet.client.StageQuit" parent="baseClientServlet" />
+	<bean id="c_stage_clear_open" class="com.pearl.o2o.servlet.client.StageClearOpen" parent="baseClientServlet" />
+	<bean id="c_stage_clear_open_timeout" class="com.pearl.o2o.servlet.client.StageClearOpenTimeOut" parent="baseClientServlet" />
+	<bean id="s_stage_clear" class="com.pearl.o2o.servlet.server.StageClear" parent="baseServerServlet" />
+	<bean id="s_stage_quit" class="com.pearl.o2o.servlet.server.StageQuit" parent="baseServerServlet" />
+
+
+	<bean id="c_rank_list" class="com.pearl.o2o.servlet.client.GetRankList" parent="baseClientServlet" />
+	<bean id="c_end_new" class="com.pearl.o2o.servlet.client.EndNewServlet" parent="baseServerServlet" />
+	<bean id="c_change_name_per" class="com.pearl.o2o.servlet.client.ChangeNamePer" parent="baseClientServlet" />
+	<bean id="c_keep_stay" class="com.pearl.o2o.servlet.client.KeepStay" parent="baseClientServlet" />
+	<bean id="c_strengthen" class="com.pearl.o2o.servlet.client.CombineStrength" parent="baseClientServlet" />
+	<bean id="c_two_to_one" class="com.pearl.o2o.servlet.client.CombineTwoToOne" parent="baseClientServlet" />
+	<bean id="c_slotting" class="com.pearl.o2o.servlet.client.CombineSlotting" parent="baseClientServlet" />
+	<bean id="c_insert" class="com.pearl.o2o.servlet.client.CombineInsert" parent="baseClientServlet" />
+	<bean id="c_convert" class="com.pearl.o2o.servlet.client.CombineConvert" parent="baseClientServlet" />
+	<bean id="c_strength_item_list" class="com.pearl.o2o.servlet.client.CombineItemList" parent="baseClientServlet" />
+	<bean id="c_sort_material" class="com.pearl.o2o.servlet.client.CombineSortMaterial" parent="baseClientServlet" />
+	<bean id="c_remove" class="com.pearl.o2o.servlet.client.CombineRemove" parent="baseClientServlet" />
+	<bean id="c_convert_per" class="com.pearl.o2o.servlet.client.CombineConvertPer" parent="baseClientServlet" />
+	
+	<!-- growth mission -->
+	<bean id="c_get_module_status" class="com.pearl.o2o.servlet.client.GetModuleStatus" parent="baseClientServlet" />
+	<bean id="c_module_response" class="com.pearl.o2o.servlet.client.ModuleResponse" parent="baseClientServlet" />
+	<bean id="c_get_growth_gift" class="com.pearl.o2o.servlet.client.GetGrowthGift" parent="baseClientServlet" />
+	<bean id="c_get_growth_list" class="com.pearl.o2o.servlet.client.GetGrowthMissionList" parent="baseClientServlet" />
+	<bean id="c_mission" class="com.pearl.o2o.servlet.client.GetMission" parent="baseClientServlet" />
+
+	<!-- melting -->
+	<bean id="c_melting_input" class="com.pearl.o2o.servlet.client.Melting" parent="baseClientServlet" />
+	<bean id="c_melting_info_get" class="com.pearl.o2o.servlet.client.GetMeltingInfo" parent="baseClientServlet" />
+	<bean id="c_melting_output_lookover" class="com.pearl.o2o.servlet.client.LookoverMeltingOutput" parent="baseClientServlet" />
+	<bean id="c_melting_output_get" class="com.pearl.o2o.servlet.client.GetMeltingOutput" parent="baseClientServlet" />
+	<bean id="c_melting_output_list" class="com.pearl.o2o.servlet.client.MeltingOutputFine" parent="baseClientServlet" />
+
+	<bean id="s_end_new" class="com.pearl.o2o.servlet.server.EndNewServlet" parent="baseServerServlet" />
+	<bean id="s_notice_list" class="com.pearl.o2o.servlet.server.GetSysNotice" parent="baseServerServlet" />
+	<bean id="s_get_level_info" class="com.pearl.o2o.servlet.server.LevelInfo" parent="baseServerServlet" />
+	<bean id="s_get_character_info" class="com.pearl.o2o.servlet.server.GetPlayer" parent="baseServerServlet" />
+	<bean id="s_keywords" class="com.pearl.o2o.servlet.server.ProxyConfig" parent="baseServerServlet" />
+	<bean id="s_server_list" class="com.pearl.o2o.servlet.server.GetServerList" parent="baseServerServlet" />
+	<bean id="s_get_level_list" class="com.pearl.o2o.servlet.server.LevelList" parent="baseServerServlet" />
+	<bean id="s_player_online" class="com.pearl.o2o.servlet.server.PlayerOnline" parent="baseServerServlet" />
+	<bean id="s_character_online" class="com.pearl.o2o.servlet.server.CharacterOnline" parent="baseServerServlet" />
+	<bean id="s_character_offline" class="com.pearl.o2o.servlet.server.CharacterOffline" parent="baseServerServlet" />
+	<bean id="s_kill_info" class="com.pearl.o2o.servlet.server.SetKillInfo" parent="baseServerServlet" />
+	<bean id="s_sys_config" class="com.pearl.o2o.servlet.server.GetSysConfig" parent="baseServerServlet" />
+	<bean id="s_random_player" class="com.pearl.o2o.servlet.server.RandomAward" parent="baseServerServlet" />
+	<bean id="s_login_activity" class="com.pearl.o2o.servlet.server.LoginActivity" parent="baseServerServlet" />
+	<bean id="s_get_unspeaklist" class="com.pearl.o2o.servlet.server.GetUnSpeakList" parent="baseServerServlet" />
+	
+	<!-- resource war -->
+	<bean id="c_get_team_war" class="com.pearl.o2o.servlet.client.GetTeamResourceWarInfo" parent="baseServerServlet" />
+	<bean id="c_team_item_manage" class="com.pearl.o2o.servlet.client.TeamItemManage" parent="baseServerServlet" />
+	<bean id="c_repair_or_supply" class="com.pearl.o2o.servlet.client.RepairOrSupply" parent="baseServerServlet" />
+	<bean id="c_team_item_intensify" class="com.pearl.o2o.servlet.client.TeamItemIntensify" parent="baseServerServlet" />
+	<bean id="c_get_tree_item" class="com.pearl.o2o.servlet.client.GetTreeItemList" parent="baseServerServlet" />
+	<bean id="c_confirm_level_up" class="com.pearl.o2o.servlet.client.ConfirmLevelUp" parent="baseServerServlet" />
+	<bean id="c_get_personal_place" class="com.pearl.o2o.servlet.client.GetPersonalPlace" parent="baseServerServlet" />
+	<bean id="c_personal_item_intensify" class="com.pearl.o2o.servlet.client.PersonalItemIntensify" parent="baseServerServlet" />
+	<bean id="c_confirm_itemLevelUp" class="com.pearl.o2o.servlet.client.ConfirmItemLevelUp" parent="baseServerServlet" />
+	<bean id="c_get_ourTeamLevel" class="com.pearl.o2o.servlet.client.GetOurTeamLevel" parent="baseServerServlet" />
+	<!-- =============匹配之枪王排位赛============= -->	
+	<!-- 匹配之枪王排位赛 个人积分-->
+	<bean id="c_get_qw_info" class="com.pearl.o2o.servlet.client.GetQwInfo" parent="baseServerServlet" />
+	<bean id="c_get_playeritems_by_sysid" class="com.pearl.o2o.servlet.client.GetPlayerItemsBySysId" parent="baseServerServlet" />
+	<bean id="c_server_remark" class="com.pearl.o2o.servlet.client.GetServerRemark" parent="baseServerServlet" />
+	<!-- =============防沉迷============= -->	
+	<bean id="s_get_fcm_info" class="com.pearl.o2o.servlet.server.Get_FCM_info" parent="baseServerServlet" />
+	<!-- =============买FC点============= -->	
+	<bean id="c_get_qc_info" class="com.pearl.o2o.servlet.client.QqBuyGoods" parent="baseClientServlet" />
+</beans>

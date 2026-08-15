@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Team">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="Team" type="com.pearl.manager.pojo.Team"/> 	
+	<resultMap id="selectResult" class="Team">
+		<result property="id" column="ID"/>
+		<result property="name" column="NAME"/>
+		<result property="declaration" column="DECLARATION"/>	
+		<result property="description" column="DESCRIPTION"/>
+		<result property="board" column="BOARD"/>
+		<result property="logo" column="LOGO"/>
+		<result property="size" column="SIZE"/>
+		<result property="kill" column="KILL"/>
+		<result property="headShot" column="HEAD_SHOT"/>
+		<result property="gameWin" column="GAME_WIN"/>
+		<result property="gameTotal" column="GAME_TOTAL"/>
+		<result property="challengeWin" column="CHALLENGE_WIN"/>	
+		<result property="challengeTotal" column="CHALLENGE_TOTAL"/>
+		<result property="createTime" column="CREATED_TIME"/>
+		<result property="score" column="SCORE" />
+		<result property="number" column="HIT_SCORE" />	
+		<result property="deleted" column="DELETED" />	
+		<result property="province" column="PROVINCE" />	
+		<result property="city" column="CITY" />	
+		<result property="rank" column="RANK" />	
+		<result property="level" column="LEVEL" />	
+		<result property="exp" column="EXP" />	
+		<result property="recoreRankingFormer" column="RECORE_RANKING_FORMER" />	
+		<result property="recoreRankingCurr" column="RECORE_RANKING_CURR" />	
+		<result property="fightRankingFormer" column="FIGHT_RANKING_FORMER" />	
+		<result property="fightRankingCurr" column="FIGHT_RANKING_CURR" />	
+	</resultMap>
+
+	
+	
+	<!--================================================== Select ==================================================-->
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+  		select * from TEAM t
+  		where t.ID = #id# and t.DELETED="N" 
+  	</select>
+	
+	<select id="selectAll" resultMap="selectResult">
+  		select * from TEAM t
+  	</select>
+  	
+  	<select id="getHeader" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+  		select PLAYER_ID from PLAYER_TEAM t
+  		where t.TEAM_ID = #teamid# and t.JOB = 4
+  	</select>
+  	
+  	<select id="selectComplex" parameterClass="java.util.Map" resultMap="selectResult">
+  		select * from TEAM t
+  		where t.DELETED="N" 
+    		<isNotNull prepend="and" property="id">
+				t.ID =  #id#
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="specificName">
+				t.NAME = #specificName#
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="name">
+				t.NAME like '$name$%'
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="province">
+				t.PROVINCE = #province#
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="city">
+				t.CITY = #city#
+			</isNotNull>
+		order by ID;
+  	</select>
+	
+  	
+	<!--
+	<select id="getRecommendTeamList" parameterClass="java.util.Map" resultMap="selectResult">
+		select t.*,count(t.ID) as number
+			from TEAM t inner join PLAYER_TEAM pt on t.ID = pt.TEAM_ID
+			where pt.APPROVED = 'Y'
+			group by ID
+			order by number desc
+			limit #pageStartIndex#, #pageSize#
+	</select> 
+	-->
+	<select id="getRecommendTeamList" parameterClass="java.util.Map" resultMap="selectResult">
+		select t.* from TEAM t 
+		where t.DELETED = 'N'
+		order by HIT_SCORE desc
+		limit 0, 40
+	</select> 
+	
+	
+	<select id="countRecommendTeam"  resultClass="java.lang.Integer">
+		select count(ID) 
+			from TEAM 
+			where DELETED = 'N'
+	</select> 
+	
+	
+	<select id="selectByPlayerId" parameterClass="java.lang.Integer" resultMap = "selectResult">
+		select t.* 
+			from TEAM  t inner join PLAYER_TEAM pt on t.ID = pt.TEAM_ID
+			where pt.PLAYER_ID = #playerId# and pt.APPROVED = 'Y'  
+	</select>
+	
+  	
+	
+  	<select id="fuzzyCountTeam" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+  		select count(*) from TEAM t 
+		where t.NAME =#value#;
+  	</select>
+  	
+
+  	
+  	  	
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="Team">
+	insert into TEAM(NAME,DECLARATION,DESCRIPTION,BOARD,LOGO,SIZE,PROVINCE,CITY,RANK,CREATED_TIME,HIT_SCORE)
+	values(
+			#name#,
+			#declaration#,
+			#description#,
+			#board#,
+			#logo#,
+			#size#,
+			#province#,
+			#city#,
+			#rank#,
+			now(),
+			#number#
+	);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>  	
+  	
+  	<update id = "update" parameterClass="Team">
+  		update TEAM 
+  			set 
+  			<dynamic prepend="    ">
+  				<isNotNull prepend="," property="name"  removeFirstPrepend="true">
+  					NAME = #name#
+  				</isNotNull>
+  				<isNotNull prepend="," property="deleted"  removeFirstPrepend="true">
+  					DELETED = #deleted#
+  				</isNotNull>
+  				<isNotNull prepend="," property="description"  removeFirstPrepend="true">
+  					DESCRIPTION = #description#
+  				</isNotNull>
+  				<isNotNull prepend="," property="board"  removeFirstPrepend="true">
+  					BOARD = #board#
+  				</isNotNull>
+  				<isNotNull prepend="," property="province"  removeFirstPrepend="true">
+  					PROVINCE = #province#
+  				</isNotNull>
+  				<isNotNull prepend="," property="city"  removeFirstPrepend="true">
+  					CITY = #city#
+  				</isNotNull>
+  				<isNotNull prepend="," property="rank"  removeFirstPrepend="true">
+  					RANK = #rank#
+  				</isNotNull>
+  				<isNotNull prepend="," property="size"  removeFirstPrepend="true">
+  					SIZE = #size#
+  				</isNotNull>
+  				<isNotNull prepend="," property="number"  removeFirstPrepend="true">
+  					HIT_SCORE = #number#
+  				</isNotNull>
+  				<isNotNull prepend="," property="level"  removeFirstPrepend="true">
+  					LEVEL = #level#
+  				</isNotNull>
+  				<isNotNull prepend="," property="exp"  removeFirstPrepend="true">
+  					EXP = #exp#
+  				</isNotNull>
+  				<isNotNull prepend="," property="recoreRankingFormer"  removeFirstPrepend="true">
+  					RECORE_RANKING_FORMER = #recoreRankingFormer#
+  				</isNotNull>
+  				<isNotNull prepend="," property="recoreRankingCurr"  removeFirstPrepend="true">
+  					RECORE_RANKING_CURR = #recoreRankingCurr#
+  				</isNotNull>
+  				<isNotNull prepend="," property="fightRankingFormer"  removeFirstPrepend="true">
+  					FIGHT_RANKING_FORMER = #fightRankingFormer#
+  				</isNotNull>
+  				<isNotNull prepend="," property="fightRankingCurr"  removeFirstPrepend="true">
+  					FIGHT_RANKING_CURR = #fightRankingCurr#
+  				</isNotNull>
+  			</dynamic>	
+  		where ID = #id#	and DELETED = 'N';
+  	</update>
+  	
+  
+  	<!-- 
+  	<update id = "updateTeamScore" parameterClass="com.pearl.manager.pojo.TeamScoreIncrement">
+  	  	update TEAM
+  	   	set 
+  			`KILL` = `KILL` + #kill#,
+  			HEAD_SHOT = HEAD_SHOT + #headShot#,
+  			GAME_WIN = GAME_WIN + #gameWin#,
+  			GAME_TOTAL = GAME_TOTAL + 1,
+  			CHALLENGE_WIN =  CHALLENGE_WIN + #challengeWin#,
+  			CHALLENGE_TOTAL = CHALLENGE_TOTAL + #challengeTotal#,
+  			SCORE = SCORE + #score#,
+  			HIT_SCORE = HIT_SCORE + #number#
+  		where ID = #teamId#
+  	</update>
+  	 -->
+  	
+  	 
+  	<update id = "updateTeamScore" parameterClass="com.pearl.manager.pojo.Team">
+  	  	update TEAM
+  	   	set 
+  			`KILL` = #kill#,
+  			HEAD_SHOT =  #headShot#,
+  			GAME_WIN =  #gameWin#,
+  			GAME_TOTAL = #gameTotal#,
+  			CHALLENGE_WIN =  #challengeWin#,
+  			CHALLENGE_TOTAL = #challengeTotal#,
+  			SCORE = #score#,
+  			HIT_SCORE =  #number#,
+			LEVEL = #level#,
+			EXP = #exp#,
+			RECORE_RANKING_FORMER = #recoreRankingFormer#,
+			RECORE_RANKING_CURR = #recoreRankingCurr#,
+			FIGHT_RANKING_FORMER = #fightRankingFormer#,
+			FIGHT_RANKING_CURR = #fightRankingCurr#
+  		where ID = #id#
+  	</update>
+  	
+  	
+  	<update id = "updateSize" parameterClass="java.util.Map">
+  	  	update TEAM
+  	   	set SIZE = #size#
+  		where ID = #teamId# and DELETED="N" ;
+  	</update>
+  	
+  	
+  	<update id = "updateTeamInfo" parameterClass="java.util.Map">	
+  		update TEAM 
+  			set 
+  			<dynamic prepend="    ">
+  				<isNotNull prepend="," property="board"  removeFirstPrepend="true">
+  					BOARD = #board#
+  				</isNotNull>
+  				<isNotNull prepend="," property="province"  removeFirstPrepend="true">
+  					PROVINCE = #province#
+  				</isNotNull>
+  				<isNotNull prepend="," property="city"  removeFirstPrepend="true">
+  					CITY = #city#
+  				</isNotNull>
+  				<isNotNull prepend="," property="rank"  removeFirstPrepend="true">
+  					RANK = #rank#
+  				</isNotNull>
+  			</dynamic>	
+  		where ID = #id#	and DELETED = 'N';
+  	</update>
+  	
+  	
+  	<!--
+  	<update id="delete" parameterClass="Team">
+  		update TEAM t
+  			set t.DELETED = "Y"
+		where t.ID = #id#
+  	</update>
+  	-->
+  	<delete id="delete" parameterClass="Team">
+  		delete from TEAM
+		where ID = #id#
+  	</delete>
+</sqlMap>

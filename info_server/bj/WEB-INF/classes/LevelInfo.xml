@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="LevelInfo">
+	<typeAlias alias="LevelInfo" type="com.pearl.o2o.pojo.LevelInfo"/>
+	
+	<resultMap id="selectLevelInfoResult" class="LevelInfo">
+		<result property="id" column="ID"/>
+		<result property="type" column="TYPE"/>
+		<result property="name" column="NAME"/>	
+		<result property="index" column="INDEX"/>	
+		<result property="isNew" column="ISNEW"/>	
+		<result property="startPoints" column="START_POINTS"/>
+		<result property="blastPoints" column="BLAST_POINTS"/>
+		<result property="flagPoints" column="FLAG_POINTS"/>
+		<result property="weaponPoints" column="WEAPON_POINTS"/>	
+		<result property="bossItems" column="BOSS_ITEMS"/>	
+		<result property="supplies" column="SUPPLIES"/>	
+		<result property="isSelf" column="IS_SELF"/>
+		<result property="displayNameCN" column="DISPLAY_NAME"/>
+		<result property="description" column="DESCRIPTION"/>
+		<result property="zombieInfo" column="ZOMBIE_INFO"/>
+		<result property="levelHorizon" column="LEVEL_HORIZON"/>
+		<result property="lineInfo" column="VEHICLE_LINE_INFO"/>
+		<result property="vehicleInfo" column="VEHICLE_INFO"/>
+		<result property="targetSpeed" column="TARGET_SPEED"/>
+		
+		<result property="bloodOffset" column="BLOOD_OFFSET"/>
+		<result property="isRushGold" column="IS_RUSH_GOLD"/>
+		<result property="isMoneyReward" column="IS_MONEY_REWARD"/>
+		<result property="rushGlodPoint" column="RUSH_GOLD_POINT"/>
+		<result property="isVip" column="IS_VIP"/>
+		<result property="expAdd" column="EXP_ADD"/>
+		<result property="gpAdd" column="GP_ADD"/>
+		<result property="activityStart" column="ACTIVITY_START"/>
+		<result property="activityEnd" column="ACTIVITY_END"/>
+		<result property="num4Team" column="NUM_FOR_TEAM"/>
+		<result property="isGm" column="IS_GM"/>
+		
+	</resultMap>
+
+	<select id="select" parameterClass="java.util.Map" resultMap="selectLevelInfoResult">
+		select *
+    	from SYS_LEVEL;
+	</select>
+	
+	<update id="update" parameterClass="LevelInfo">
+		update SYS_LEVEL 
+		set TYPE=#type#,
+			NAME=#name#,
+			`INDEX`=#index#,
+			ISNEW=#isNew#,
+			START_POINTS=#startPoints#,
+			BLAST_POINTS=#blastPoints#,
+			FLAG_POINTS=#flagPoints#,
+			WEAPON_POINTS=#weaponPoints#,
+			BOSS_ITEMS=#bossItems#,
+			SUPPLIES=#supplies#,
+			IS_SELF=#isSelf#,
+			ZOMBIE_INFO=#zombieInfo#,
+			LEVEL_HORIZON=#levelHorizon#,
+			DISPLAY_NAME=#displayNameCN#,
+			VEHICLE_LINE_INFO=#lineInfo#,
+			VEHICLE_INFO=#vehicleInfo#,
+			TARGET_SPEED=#targetSpeed#,
+			BLOOD_OFFSET=#bloodOffset#,
+			IS_RUSH_GOLD=#isRushGold#,
+			IS_MONEY_REWARD=#isMoneyReward#,
+			RUSH_GOLD_POINT=#rushGlodPoint#,
+			IS_VIP=#isVip#,
+			DESCRIPTION=#description#,
+			EXP_ADD = #expAdd#,
+			GP_ADD = #gpAdd#,
+			ACTIVITY_START = #activityStart#,
+			ACTIVITY_END = #activityEnd#,
+			NUM_FOR_TEAM=#num4Team#
+		where ID=#id#;		
+	</update>
+	<delete id="delete" parameterClass="LevelInfo">
+	delete from SYS_LEVEL where ID=#id#;
+	</delete>
+	<insert id="insert"  parameterClass="LevelInfo">
+		insert into SYS_LEVEL(
+			TYPE,
+			NAME,
+			`INDEX`,
+			ISNEW,
+			START_POINTS,
+			BLAST_POINTS,
+			FLAG_POINTS,
+			WEAPON_POINTS,
+			BOSS_ITEMS,
+			SUPPLIES,
+			IS_SELF,ZOMBIE_INFO,LEVEL_HORIZON,DISPLAY_NAME,VEHICLE_LINE_INFO,VEHICLE_INFO,TARGET_SPEED,
+			BLOOD_OFFSET,IS_RUSH_GOLD,IS_MONEY_REWARD,RUSH_GOLD_POINT,IS_VIP,
+			DESCRIPTION,
+			ACTIVITY_START,
+			ACTIVITY_END,
+			NUM_FOR_TEAM
+		) values(
+			#type#,
+			#name#,
+			#index#,
+			#isNew#,
+			#startPoints#,
+			#blastPoints#,
+			#flagPoints#,
+			#weaponPoints#,
+			#bossItems#,
+			#supplies#,
+			#isSelf#,#zombieInfo#,#levelHorizon#,#displayNameCN#,#lineInfo#,#vehicleInfo#,#targetSpeed#,
+			#bloodOffset#,#isRushGold#,#isMoneyReward#,#rushGlodPoint#,#isVip#,
+			#description#,
+			now(),
+			now(),#num4Team#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+</sqlMap>

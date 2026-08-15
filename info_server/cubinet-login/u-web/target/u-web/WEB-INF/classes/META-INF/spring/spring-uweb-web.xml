@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 【控制器处理 解析】 -->
+	<bean id="methodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="paramName" value="method" />
+	</bean>
+	
+	<!-- 【控制器映射 解析】 -->
+	<bean id="beanNameUrlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"></bean>
+
+	<!-- 【视图 解析】 -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"></bean>
+	<!-- --> 
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.JstlView</value>
+		</property>
+	</bean>
+
+	<!-- 导入sevlet配置 -->
+	<import resource="classpath:/META-INF/servlet/spring-uweb-ma-servlet.xml" />
+	<!-- 导入bbs servlet -->
+  	<import resource="classpath:/META-INF/servlet/spring-uweb-bbs-servlet.xml" /> 
+	<!-- 导入cms servlet -->
+	<import resource="classpath:/META-INF/servlet/spring-uweb-frontcms-servlet.xml" />
+	<!-- 导入mg servlet -->
+	<import resource="classpath:/META-INF/servlet/spring-uweb-mg-servlet.xml" />
+	<!-- 导入partner servlet -->
+	<import resource="classpath:/META-INF/servlet/spring-uweb-partner-servlet.xml" />
+
+</beans>

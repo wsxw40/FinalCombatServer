@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Server">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="Server" type="com.pearl.o2o.pojo.Server"/> 
+
+	<resultMap id="selectServerResult" class="Server">
+		<result property="id" column="ID"/>
+		<result property="name" column="NAME"/>
+		<result property="max" column="MAX_LEVEL"/>
+		<result property="min" column="MIN_LEVEL"/>
+		<result property="maxOnline" column="MAX_ONLINE"/>
+		<result property="isNew" column="IS_NEW"/>
+		<result property="minFightNum" column="MIN_FIGHTNUM"/>
+		<result property="gameType" column="GAME_TYPE"/>
+		<result property="maxTeam" column="MAX_TEAM_LEVEL"/>
+		<result property="minTeam" column="MIN_TEAM_LEVEL"/>
+	</resultMap>
+	<select id="select" resultMap="selectServerResult">
+		select * from SERVER t ;
+	</select>
+	<insert id="insert" parameterClass="Server">
+		insert into SERVER(
+			NAME,
+			MAX_LEVEL,
+			MIN_LEVEL,
+			MAX_ONLINE,IS_NEW,MIN_FIGHTNUM,GAME_TYPE,
+			MAX_TEAM_LEVEL,MIN_TEAM_LEVEL
+		) values(
+			#name#,#max#,#min#,#maxOnline#,#isNew#,#minFightNum#,#gameType#,
+			#maxTeam#,#minTeam#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert> 
+	<update id="update" parameterClass="Server" >
+		update SERVER set
+			NAME=#name#,MAX_LEVEL=#max#,MIN_LEVEL=#min#,MAX_ONLINE=#maxOnline#,IS_NEW=#isNew#,MIN_FIGHTNUM=#minFightNum#,
+			GAME_TYPE=#gameType#,MAX_TEAM_LEVEL=#maxTeam#,MIN_TEAM_LEVEL=#minTeam#
+		where ID=#id#;	
+	</update> 
+	<delete id="delete" parameterClass="Server">
+		delete from SERVER where ID=#id#;
+	</delete>
+</sqlMap>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()" height="34">
+<mx:Script>
+	<![CDATA[
+		[Bindable]
+		public var key:String="";
+		[Bindable]
+		public var confName:String="";
+		[Bindable]
+		public var value:String="";
+		private function init():void{
+			
+		}
+	]]>
+</mx:Script>
+<!--<mx:CheckBox id="isSelected"/>-->
+<mx:Label text="{key}" id="keyId" fontWeight="bold" width="250"/>
+<mx:Label id="nameId" text="{confName}:" fontWeight="bold" width="250"/>
+<mx:TextArea toolTip="以‘,’分割(divide by ',')"  text="{value}" id="valueId" height="33" width="343"/>
+</mx:HBox>

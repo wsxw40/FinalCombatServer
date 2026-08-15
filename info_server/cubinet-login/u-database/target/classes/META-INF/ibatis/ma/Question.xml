@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="Question">
+
+	<typeAlias alias="QuestionObject" type="com.pde.uweb.database.ma.security.QuestionPojo" />
+	<resultMap id="questionResult" class="QuestionObject">
+		<result property="questionId" column="QUESTION_ID_B" jdbcType="NUMBER" />
+		<result property="questionInfo" column="QUESTION_INFO_V" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="info" class="java.lang.String">
+		<result property="questionInfo" column="QUESTION_INFO_V" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- select -->
+	<select id="selectAll" resultMap="questionResult" parameterClass="java.lang.Long">
+	SELECT QUESTION_ID_B, 
+		QUESTION_INFO_V
+	FROM QUESTION
+	WHERE STATUS_T = 1
+	ORDER BY ORDER_BY_ID_T
+	</select>
+
+	<!-- selectInfoById -->
+	<select id="selectInfoById" resultMap="info" parameterClass="java.lang.Long">
+	SELECT
+		QUESTION_INFO_V
+	FROM QUESTION
+	WHERE QUESTION_ID_B = #id#
+	</select>
+
+</sqlMap>

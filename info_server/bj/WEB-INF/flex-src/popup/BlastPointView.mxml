@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300"
+	label="blast Point" title="blast Point"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import vo.BlastPoint;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			[Bindable]
+			public  var blastPoints:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public  var blastPoint:BlastPoint;
+			private function onNewBtnClick():void{
+				var blast:BlastPoint=new BlastPoint();
+				blastPoints.addItem(blast);
+			}
+			private function onDeleteBtnClick():void{
+				if(this.blastPoint==null){
+					Alert.show("请选择一条记录。");
+				}else{
+					var index:int=blastPointDatagrid.selectedIndex;
+					blastPoints.removeItemAt(index);
+				}
+			}
+			
+			private function onCancelBtnClick():void{
+				PopUpManager.removePopUp(this);
+			}
+			private function selectHandler():void{
+				this.blastPoint=blastPointDatagrid.selectedItem as BlastPoint;
+			}
+			
+		]]>
+	</mx:Script>
+<mx:VBox>
+	<mx:VBox>
+		<mx:DataGrid id="blastPointDatagrid" dataProvider="{blastPoints}" editable="true" width="378" height="194" itemClick="selectHandler()">
+		</mx:DataGrid>
+	</mx:VBox>
+	<mx:VBox>
+		<mx:ControlBar width="100%" >
+				<mx:Button id="save"  label="保存"/>		
+	        	<mx:Button id="newBtn"  label="新建" click="onNewBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="删除" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="退出"  click="onCancelBtnClick()"/>
+	        
+	     </mx:ControlBar>
+	</mx:VBox>
+</mx:VBox>
+</mx:TitleWindow>

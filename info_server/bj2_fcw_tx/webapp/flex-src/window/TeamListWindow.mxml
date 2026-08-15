@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import vo.Team;
+			import vo.TeamRecord;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.events.*;
+			import mx.utils.StringUtil;
+			public var currentTeam:Team;
+			import vo.GmUser;
+			private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+			[Bindable]
+			private var teamList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			private var searchList:ArrayCollection=new ArrayCollection();
+			public function init():void{
+				getRo.getTeamList();
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+
+			private function getTeamListHandler(evt:ResultEvent):void{
+				this.teamList = evt.result as ArrayCollection;
+				searchBtnClick();
+				//teamList.filterFunction=typeFilter;
+				//teamList.refresh();
+			}
+			private function deleteTeamListHandler():void{
+				getRo.getTeamList();
+			}
+		/*private function typeFilter(item:Object):Boolean{
+				var log:PayLog = item as PayLog;
+				if(this.selectedPayType == -1 && this.selectedUseType==-1 )
+					return true;
+				if((log.payType==this.selectedPayType||this.selectedPayType==-1) && (log.itemType==this.selectedUseType||this.selectedUseType==-1))			
+					return true;
+				else 
+					return false;
+			}
+			private function doPayTypeFilter(evt:Event):void{
+			this.selectedPayType  = evt.target.selectedItem.data;
+        	payLogList.filterFunction=typeFilter;
+        	payLogList.refresh();
+		}*/
+		import mx.rpc.events.FaultEvent;
+        private function defaultFaultHandler(evt:FaultEvent):void{
+        	Alert.show(evt.fault.faultString);
+        }
+        private function showTeamLog():void{
+        	if(teamLogView.visible){
+        		logLabel.label="Show Team Log";
+				teamLogView.visible=false;
+				teamLogView.height=0;
+        	} else {
+        		logLabel.label="Hide Team Log";
+				teamLogView.visible=true;
+				teamLogView.height=300;
+        	}
+		}
+		private function selectHandler():void{
+			currentTeam = teamDatagrid.selectedItem as Team;
+			teamLogView.teamId = currentTeam.id;
+			teamLogView.getLogByTeamId(currentTeam.id);
+			if(teamLogView.fatherWindow == null){
+				teamLogView.fatherWindow = this;
+			}
+		}
+		private function searchBtnClick():void{
+			var condition : String = StringUtil.trim(teamName.text);
+			searchList = new ArrayCollection();
+			if(condition){
+				if(condition == "*" || condition==""){
+					this.searchList = this.teamList;
+				} else {
+					for each(var team:Team in teamList){
+						if(team.name.indexOf(condition) != -1){
+							searchList.addItem(team);
+						}
+					}
+				}
+			} else {
+				this.searchList = this.teamList;
+			}
+			this.teamListPanel.title = "ClanList(" + searchList.length + ")";
+		}
+		
+		private function refreshBtnClick():void{
+			//初始化数据，并搜索
+			getRo.getTeamList();
+			//teamLogView.init();
+		}
+		private function deleteBtnClick():void{
+			if(null == currentTeam){
+				Alert.show("choose one");
+			} else {
+				deleteRo.deleteTeam(gmUser, currentTeam.id);
+			}
+		}
+		/*private var selectedState:String = null;
+		private function doTypeFilter(evt:Event):void{
+			this.selectedState  = evt.target.selectedItem.data;
+        		searchList.filterFunction=typeFilter;
+        		searchList.refresh();
+		}
+		private function typeFilter(item:Object):Boolean{
+				if(selectedState == null){
+					return true;
+				} else if(selectedState == item.deleted){
+					return true;
+				} else {
+					return false;
+				}
+			}
+		[Bindable]
+        public var types:ArrayCollection = new ArrayCollection(
+                [ {label:"------所有------", data:null}, 
+                  {label:"解散", data:"Y"}, 
+                  {label:"正常", data:"N"}
+                ]);*/
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getTeamList" result="getTeamListHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteTeam" result="deleteTeamListHandler()" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox>
+		<mx:ApplicationControlBar>	
+			<mx:Button label="{resourceManager.getString('Language','button.HideTeamLog')}" click="showTeamLog();" id="logLabel"/>
+			<mx:Label text="{resourceManager.getString('Language','button.label.TeamName')}"/><mx:TextInput id="teamName"/><mx:Button label="{resourceManager.getString('Language','button.Search')}" click="searchBtnClick();" id="searchBtn"/>
+			<!--<mx:Label text="操作类型：" />
+			<mx:ComboBox dataProvider="{types}" close="doTypeFilter(event)"/>-->
+			<mx:Button label="{resourceManager.getString('Language','button.Delete')}" click="deleteBtnClick();" id="deleteBtn"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Refresh')}" click="refreshBtnClick();" id="refreshBtn"/>
+		</mx:ApplicationControlBar>
+	</mx:HBox>
+	<mx:Panel width="100%" height="100%" title="{resourceManager.getString('Language','label.TeamList')}" id="teamListPanel">
+		<mx:DataGrid id="teamDatagrid" dataProvider="{searchList}" width="100%" height="100%" itemClick="selectHandler();"> 
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="{resourceManager.getString('Language','label.TeamId')}" editable="false"/>
+				<mx:DataGridColumn dataField="name" headerText="{resourceManager.getString('Language','label.TeamName')}"/>
+				<mx:DataGridColumn dataField="deleted" headerText="{resourceManager.getString('Language','label.IsDissolve')}"/>
+				<mx:DataGridColumn dataField="description" headerText="{resourceManager.getString('Language','label.Distribution')}"/>
+				<mx:DataGridColumn dataField="memberCount" headerText="{resourceManager.getString('Language','label.TeamMemberCount')}"/>
+				<mx:DataGridColumn dataField="score" headerText="{resourceManager.getString('Language','label.Score')}"/>
+				<mx:DataGridColumn dataField="leaderName" headerText="{resourceManager.getString('Language','label.LeaderName')}"/>
+				<mx:DataGridColumn dataField="createTimeStr" headerText="{resourceManager.getString('Language','label.CreateTime')}"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Panel>
+	<mx:Panel width="100%" height="100%" title="{resourceManager.getString('Language','label.TeamLogList')}" id="teamLogPanel">
+		<view:TeamLogView id="teamLogView" width="100%" height="300" visible="true"/>
+	</mx:Panel>
+</mx:VBox>

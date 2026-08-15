@@ -1,0 +1,55 @@
+com.pearl.o2o.servlet.server.GetServerList
+		//zlm2015-10-9-匹配-服务器-开始
+		out.write(BinaryUtil.toByta(s.getServerType()));
+		//zlm2015-10-9-匹配-服务器-结束
+-->
+		//zlm2015-10-9-匹配-服务器-开始
+		//out.write(BinaryUtil.toByta(s.getServerType()));
+		//zlm2015-10-9-匹配-服务器-结束
+===================================================================
+com.pearl.o2o.servlet.server.GetPlayer
+        //剩余复活币数量
+		out.write(BinaryUtil.toByta(remainReliveCoinNum));
+        //玩家总战斗力
+		out.write(BinaryUtil.toByta(player.getMaxFightNum()));
+		//
+		int mateRank = getService.getQW_MateRank(playerId);
+        mateRank++;//这里不知道为什么从0开始算了。。。
+        out.write(BinaryUtil.toByta(mateRank));
+		//
+-->
+com.pearl.o2o.servlet.server.GetPlayer
+        //剩余复活币数量
+		out.write(BinaryUtil.toByta(remainReliveCoinNum));
+        //玩家总战斗力
+		out.write(BinaryUtil.toByta(player.getMaxFightNum()));
+		//
+		int mateRank = getService.getQW_MateRank(playerId);
+        mateRank++;//这里不知道为什么从0开始算了。。。
+        //			out.write(BinaryUtil.toByta(mateRank));
+		//
+=================================================================
+com.pearl.o2o.service.GetService
+	public SysItem joinPayment(SysItem si) throws Exception{
+		...
+		log.error(ExceptionMessage.SYS_ITEM_EMPTY_PRICE + si.getDisplayNameCN());
+		throw new Exception(ExceptionMessage.SYS_ITEM_EMPTY_PRICE + "id=" + si.getId());
+-->
+		log.error(ExceptionMessage.SYS_ITEM_EMPTY_PRICE + si.getDisplayNameCN());
+		//throw new Exception(ExceptionMessage.SYS_ITEM_EMPTY_PRICE + "id=" + si.getId());
+=================================================================
+com.pearl.o2o.servlet.server.StageClear
+	         //zlm2015-10-9-匹配-开始 
+            int isMatch =  r.readInt();
+            stageClearInfo.setIsMatch(isMatch);
+            //zlm2015-10-9-匹配-结束
+-->
+            //zlm2015-10-9-匹配-开始 
+            //			int isMatch =  r.readInt();
+            //			stageClearInfo.setIsMatch(isMatch);
+            //zlm2015-10-9-匹配-结束
+=================================================================
+com.pearl.o2o.servlet.server.StageQuit
+	int isMatch = r.readInt();//6为匹配
+-->
+	int isMatch = 0;//r.readInt();//6为匹配

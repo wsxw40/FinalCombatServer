@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" fontSize="12" width="1564" xmlns:vo="vo.*" 
+	label="Add Level Weapon" title="Add Level Weapon"
+	showCloseButton="true" close="PopUpManager.removePopUp(this)">
+	<mx:Script>
+		<![CDATA[
+			import vo.ResourceChangeable;
+			import popup.AddResourceChangeable;
+			import mx.managers.PopUpManager;
+			[Bindable]
+			public var levelId:int;
+			private function init():void{
+				
+			}
+			
+			[Bindable]
+		public function set weapon(weapon:LevelWeapon):void{
+		    this._weapon=weapon;
+		}
+		public function get weapon():LevelWeapon{
+		    return this._weapon;
+		}
+		public function clearForm():void{
+			this.weapon=new LevelWeapon();
+		
+		}
+			private var arc:AddResourceChangeable;
+		public function showResourceChangdePopup():void{
+				//waopon type
+				//tansfer resourceChangeable
+				var str:String=resourceChangeable.text as String;
+				var array:Array=str.split(";");
+				var rc:ResourceChangeable=new ResourceChangeable;
+				if(array.length==12){
+					rc.gs=array[0];
+					rc.sp=array[1];
+					rc.si=array[2];
+					rc.hm=array[3];
+					rc.tg=array[4];
+					rc.mz=array[5];
+					rc.rs=array[6];
+					rc.gp=array[7];
+					rc.bl=array[8];
+					rc.fh=array[9];
+					rc.sl=array[10];
+					rc.fl=array[11];
+				}else{
+					rc.gs="";
+					rc.sp="";
+					rc.si="";
+					rc.hm="";
+					rc.tg="";
+					rc.mz="";
+					rc.rs="";
+					rc.gp="";
+					rc.bl="";
+					rc.fh="";
+					rc.sl="";
+					rc.fl="";
+				}
+				
+				arc= AddResourceChangeable(PopUpManager.createPopUp(this,AddResourceChangeable,true));
+				arc.resourceChangeable=rc;
+				arc.save.addEventListener(MouseEvent.CLICK,closePanel);
+				arc.cancel.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(arc);});
+				PopUpManager.centerPopUp(arc);
+			
+		}
+		private function closePanel(evt:MouseEvent):void{
+			var rc:ResourceChangeable=new ResourceChangeable;
+			rc=arc.resourceChangeable;
+			var str:String=rc.gs+";"+rc.sp+";"+rc.si+";"+rc.hm+";"+rc.tg+";"+rc.mz+";"+rc.rs
+							+";"+rc.gp+";"+rc.bl+";"+rc.fh+";"+rc.sl+";"+rc.fl;
+			this.resourceChangeable.text=str;
+			PopUpManager.removePopUp(arc);
+		}
+		]]>
+	</mx:Script>
+	<vo:LevelWeapon  id="_weapon"
+ 			name="{sName.text}"
+ 		displayName="{displayName.text}"
+ 		WId="{parseInt(wId.text)}"
+ 		resourceStable="{resourceStable.text}"
+ 		resourceChangeable="{resourceChangeable.text}"
+ 		wChangeInTime="{parseFloat(wChangeInTime.text)}"
+ 		wMoveSpeedOffset="{parseFloat(wMoveSpeedOffset.text)}"
+ 		wCrossOffset="{parseFloat(wCrossOffset.text)}"
+ 		WAccuracyDivisor="{parseInt(wAccuracyDivisor.text)}"
+ 		wAccuracyOffset="{parseFloat(wAccuracyOffset.text)}"
+ 		wMaxInaccuracy="{parseFloat(wMaxInaccuracy.text)}"
+ 		WPenetration="{parseInt(wPenetration.text)}"
+ 		WDamage="{parseInt(wDamage.text)}"
+ 		wRangeModifier="{parseFloat(wRangeModifier.text)}"
+ 		wFireTime="{parseFloat(wFireTime.text)}"
+ 		wReloadTime="{parseFloat(wReloadTime.text)}"
+ 		wZoomTime="{parseFloat(wZoomTime.text)}"
+ 		wZoomValue="{parseFloat(wZoomValue.text)}"
+ 		WAmmoOneClip="{parseInt(wAmmoOneClip.text)}"
+ 		WAmmoCount="{parseInt(wAmmoCount.text)}"
+ 		WAutoFire="{parseInt(wAutoFire.text)}"
+ 		wTimeToIdle="{parseFloat(wTimeToIdle.text)}"
+ 		wNormalOffset="{parseFloat(wNormalOffset.text)}"
+ 		wNormalFactor="{parseFloat(wNormalFactor.text)}"
+ 		wOnairOffset="{parseFloat(wOnairOffset.text)}"
+ 		wOnairFactor="{parseFloat(wOnairFactor.text)}"
+ 		wMoveOffset="{parseFloat(wMoveOffset.text)}"
+ 		wMoveFactor="{parseFloat(wMoveFactor.text)}"
+ 		wNormalUpBase="{parseFloat(wNormalUpBase.text)}"
+ 		wNormalLateralBase="{parseFloat(wNormalLateralBase.text)}"
+ 		wNormalUpModifier="{parseFloat(wNormalUpModifier.text)}"
+ 		wNormalLateralModifier="{parseFloat(wNormalLateralModifier.text)}"
+ 		wNormalUpMax="{parseFloat(wNormalUpMax.text)}"
+ 		wNormalLateralMax="{parseFloat(wNormalLateralMax.text)}"
+ 		wNormalDirChange="{parseFloat(wNormalDirChange.text)}"
+ 		wMoveUpBase="{parseFloat(wMoveUpBase.text)}"
+ 		wMoveLateralBase="{parseFloat(wMoveLateralBase.text)}"
+ 		wMoveUpModifier="{parseFloat(wMoveUpModifier.text)}"
+ 		wMoveLateralModifier="{parseFloat(wMoveLateralModifier.text)}"
+ 		wMoveUpMax="{parseFloat(wMoveUpMax.text)}"
+ 		wMoveLateralMax="{parseFloat(wMoveLateralMax.text)}"
+ 		wMoveDirChange="{parseFloat(wMoveDirChange.text)}"
+ 		wOnairUpBase="{parseFloat(wOnairUpBase.text)}"
+ 		wOnairLateralBase="{parseFloat(wOnairLateralBase.text)}"
+ 		wOnairUpModifier="{parseFloat(wOnairUpModifier.text)}"
+ 		wOnairLateralModifier="{parseFloat(wOnairLateralModifier.text)}"
+ 		wOnairUpMax="{parseFloat(wOnairUpMax.text)}"
+ 		wOnairLateralMax="{parseFloat(wOnairLateralMax.text)}"
+ 		wOnairDirChange="{parseFloat(wOnairDirChange.text)}"
+ 		wCrouchUpBase="{parseFloat(wCrouchUpBase.text)}"
+ 		wCrouchLateralBase="{parseFloat(wCrouchLateralBase.text)}"
+ 		wCrouchUpModifier="{parseFloat(wCrouchUpModifier.text)}"
+ 		wCrouchLateralModifier="{parseFloat(wCrouchLateralModifier.text)}"
+ 		wCrouchUpMax="{parseFloat(wCrouchUpMax.text)}"
+ 		wCrouchLateralMax="{parseFloat(wCrouchLateralMax.text)}"
+ 		wCrouchDirChange="{parseFloat(wCrouchDirChange.text)}"
+ 		wUpModifier="{parseFloat(wUpModifier.text)}"
+ 		wStabTime="{parseFloat(wStabTime.text)}"
+ 		wStabLightTime="{parseFloat(wStabLightTime.text)}"
+ 		wStabHurt="{parseFloat(wStabHurt.text)}"
+ 		wStabLightHurt="{parseFloat(wStabLightHurt.text)}"
+ 		wExplodeTime="{parseFloat(wExplodeTime.text)}"
+ 		wReadyTime="{parseFloat(wReadyTime.text)}"
+ 		wThrowOutTime="{parseFloat(wThrowOutTime.text)}"
+ 		wHurtRange="{parseFloat(wHurtRange.text)}"
+ 		wHurt="{parseFloat(wHurt.text)}"
+ 		WShootBulletCount="{parseInt(wShootBulletCount.text)}"
+ 		WSpread="{parseFloat(wSpread.text)}"
+ 		WFireMaxSpeed="{parseFloat(wFireMaxSpeed.text)}"
+ 		WFireStartSpeed="{parseFloat(wFireStartSpeed.text)}"
+ 		WFireAceleration="{parseFloat(wFireAceleration.text)}"
+ 		WFireResistance="{parseFloat(wFireResistance.text)}"
+ 		WRangeStart="{parseFloat(wRangeStart.text)}"
+ 		WRangeEnd="{parseFloat(wRangeEnd.text)}"
+ 		WAccuracyTime="{parseFloat(wAccuracyTime.text)}"
+ 		WAccuracyTimeModefier="{parseFloat(wAccuracyTimeModefier.text)}"
+ 		WMaxAccuracy="{parseFloat(wMaxAccuracy.text)}"
+ 		WMinAccuracy="{parseFloat(wMinAccuracy.text)}"
+ 		WCrossLengthBase="{parseFloat(wCrossLengthBase.text)}"
+ 		WCrossLengthFactor="{parseFloat(wCrossLengthFactor.text)}"
+ 		WCrossDistanceBase="{parseFloat(wCrossDistanceBase.text)}"
+ 		WCrossDistanceFactor="{parseFloat(wCrossDistanceFactor.text)}"
+ 		WMaxLength="{parseInt(wMaxLength.text)}"
+ 		WXOffset = "{parseFloat(wXOffset.text)}"
+ 		WSightNormalOffset= "{parseFloat(wSightNormalOffset.text)}"
+ 		WSightOnairOffset= "{parseFloat(wSightOnairOffset.text)}"
+ 		WSightMoveOffset= "{parseFloat(wSightMoveOffset.text)}"
+ 		WStabDistance= "{parseFloat(wStabDistance.text)}"
+ 		WStabLightDistance= "{parseFloat(wStabLightDistance.text)}"
+ 		WStabWidth= "{parseFloat(wStabWidth.text)}"
+ 		WBackFactor= "{parseFloat(wBackFactor.text)}"
+ 		WFlashRangeStart= "{parseFloat(wFlashRangeStart.text)}"
+ 		WFlashRangeEnd= "{parseFloat(wFlashRangeEnd.text)}"
+ 		WTimeMax= "{parseFloat(wTimeMax.text)}"
+ 		WTimeFade= "{parseFloat(wTimeFade.text)}"
+ 		WTime= "{parseFloat(wTime.text)}"
+ 		WFlashBackFactor="{parseFloat(wFlashBackFactor.text)}"
+ 		sysItemId="{parseInt(sysItemId.text)}"
+ 		sysLevelId="{parseInt(sysLevelId.text)}"
+ 			/>
+	
+	<mx:HBox width="1537" height="720">
+ 		<mx:VBox width="286" paddingLeft="5" height="712">
+ 		<mx:Box borderStyle="solid" width="273"  height="151">
+ 			<mx:Label text="基本信息" color="blue"/>
+ 			
+ 			<mx:FormItem label="SysItemId"  required="true">
+			       	<mx:HBox width="100%" >
+			       		<mx:TextInput id="sysItemId" text="{weapon.sysItemId}" width="100%" />
+			       	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem label="SysLevelId"  required="true">
+			       	<mx:HBox width="100%" >
+			       		<mx:TextInput id="sysLevelId" text="{levelId}" width="100%" />
+			       	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem label="Name"  required="true">
+			       	<mx:HBox width="100%" >
+			       		<mx:TextInput id="sName" text="{weapon.name}" width="100%" />
+			       	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem label="Display Name" required="true">
+			       	<mx:HBox width="100%" >
+			       		<mx:TextInput  id="displayName" text="{weapon.displayName}" width="100%" />
+			       	</mx:HBox>
+			</mx:FormItem>
+			</mx:Box>
+ 		<mx:Box borderStyle="solid" width="275" height="552">
+ 			<mx:Label text="基本武器信息" color="blue"/>
+ 			<mx:FormItem  label="Weapon Id" >
+ 			      	<mx:HBox width="100%" >
+ 			      		<mx:TextInput id="wId" text="{weapon.WId}" width="50" />
+ 			      	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="resourceStable">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="resourceStable" text="{weapon.resourceStable}" width="100"/>
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="resourceChangeable">
+ 			   	<mx:HBox width="121" >
+ 			   		<mx:TextInput id="resourceChangeable" text="{weapon.resourceChangeable}" width="120" editable="true" click="showResourceChangdePopup()"/>
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wChangeInTime">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wChangeInTime" text="{weapon.wChangeInTime}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wMoveSpeedOffset">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wMoveSpeedOffset" text="{weapon.wMoveSpeedOffset}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			
+ 			<mx:FormItem  label="wPenetration">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wPenetration" text="{weapon.WPenetration}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wDamage">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wDamage" text="{weapon.WDamage}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wRangeModifier">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wRangeModifier" text="{weapon.wRangeModifier}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wFireTime">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wFireTime" text="{weapon.wFireTime}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wReloadTime">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wReloadTime" text="{weapon.wReloadTime}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wZoomTime">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wZoomTime" text="{weapon.wZoomTime}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wZoomValue">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wZoomValue" text="{weapon.wZoomValue}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wAmmoOneClip">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wAmmoOneClip" text="{weapon.WAmmoOneClip}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wAmmoCount">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wAmmoCount" text="{weapon.WAmmoCount}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 			<mx:FormItem  label="wAutoFire">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wAutoFire" text="{weapon.WAutoFire}" width="50" />
+ 			   	</mx:HBox>
+ 			</mx:FormItem>
+ 				<mx:FormItem  label="wTimeToIdle">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wTimeToIdle" text="{weapon.wTimeToIdle}" width="50" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				<mx:FormItem  label="WMaxLength">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wMaxLength" text="{weapon.WMaxLength}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 		</mx:Box>
+ 		</mx:VBox>
+	 	<mx:VBox width="306" height="712">
+ 				
+			<mx:Box borderStyle="solid" width="298"  height="336">
+				<mx:Label   text="手雷信息" color="blue"/>
+			<mx:FormItem  label="wUpModifier">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wUpModifier" text="{weapon.wUpModifier}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wStabTime">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wStabTime" text="{weapon.wStabTime}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wStabLightTime">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wStabLightTime" text="{weapon.wStabLightTime}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wStabHurt">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wStabHurt" text="{weapon.wStabHurt}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wStabLightHurt">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wStabLightHurt" text="{weapon.wStabLightHurt}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wExplodeTime">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wExplodeTime" text="{weapon.wExplodeTime}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wReadyTime">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wReadyTime" text="{weapon.wReadyTime}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wThrowOutTime">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput  id="wThrowOutTime" text="{weapon.wThrowOutTime}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wHurtRange">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wHurtRange" text="{weapon.wHurtRange}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wHurt">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wHurt" text="{weapon.wHurt}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			</mx:Box>
+			<mx:VBox borderStyle="solid" width="297" height="362">
+				<mx:FormItem  label="wShootBulletCount">
+				  	<mx:HBox width="100%" >
+				  		<mx:TextInput id="wShootBulletCount" text="{weapon.WShootBulletCount}" width="122" />
+				  	</mx:HBox>
+				  	</mx:FormItem>
+			   	<mx:FormItem  label="wSpread">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wSpread" text="{weapon.wSpread}" width="122" />
+			   	</mx:HBox>
+			   	</mx:FormItem>
+				<mx:FormItem  label="wFireMaxSpeed">
+				  	<mx:HBox width="100%" >
+				  		<mx:TextInput id="wFireMaxSpeed" text="{weapon.wFireMaxSpeed}" width="122" />
+				  	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wFireStartSpeed">
+				  	<mx:HBox width="100%" >
+				  		<mx:TextInput id="wFireStartSpeed" text="{weapon.wFireStartSpeed}" width="122" />
+				  	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wFireAceleration">
+				  	<mx:HBox width="100%" >
+				  		<mx:TextInput id="wFireAceleration" text="{weapon.wFireAceleration}" width="122" />
+				  	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wFireResistance">
+				  	<mx:HBox width="100%" >
+				  		<mx:TextInput id="wFireResistance" text="{weapon.wFireResistance}" width="122" />
+				  	</mx:HBox>
+				</mx:FormItem>
+					<mx:FormItem  label="WRangeStart">
+					 	<mx:HBox width="100%" >
+					 		<mx:TextInput id="wRangeStart" text="{weapon.wRangeStart}" width="122" />
+					 	</mx:HBox>
+					</mx:FormItem>
+				<mx:FormItem  label="WRangeEnd">
+				  	<mx:HBox width="100%" >
+				  		<mx:TextInput id="wRangeEnd" text="{weapon.wRangeEnd}" width="122" />
+				  	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="WAccuracyTime">
+				  	<mx:HBox width="100%" >
+				  		<mx:TextInput id="wAccuracyTime" text="{weapon.wAccuracyTime}" width="122" />
+				  	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="WAccuracyTimeModefier">
+				  	<mx:HBox width="100%" >
+				  		<mx:TextInput id="wAccuracyTimeModefier" text="{weapon.wAccuracyTimeModefier}" width="122" />
+				  	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="WMaxAccuracy">
+				  	<mx:HBox width="100%" >
+				  		<mx:TextInput id="wMaxAccuracy" text="{weapon.wMaxAccuracy}" width="122" />
+				  	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="WMinAccuracy">
+				  	<mx:HBox width="100%" >
+				  		<mx:TextInput id="wMinAccuracy" text="{weapon.wMinAccuracy}" width="122" />
+				  	</mx:HBox>
+				</mx:FormItem>
+			</mx:VBox>
+ 		</mx:VBox>
+	 	<mx:VBox width="300" height="706">
+	 			<mx:Box borderStyle="solid" width="291" >
+	 			<mx:Label text="武器后坐力" color="blue"/>
+		 			<mx:FormItem label="wNormalOffset">
+				       	<mx:HBox width="100%">
+				       		<mx:TextInput id="wNormalOffset"  text="{weapon.wNormalOffset}" width="50" />
+				       	</mx:HBox>
+					</mx:FormItem>
+					<mx:FormItem  label="wNormalFactor">
+				       	<mx:HBox width="100%" >
+				       		<mx:TextInput id="wNormalFactor" text="{weapon.wNormalFactor}" width="50" />
+				        </mx:HBox>
+					</mx:FormItem>
+					<mx:FormItem  label="wOnairOffset">
+						<mx:HBox width="100%" >
+				       		<mx:TextInput id="wOnairOffset" text="{weapon.wOnairOffset}" width="50" />
+						</mx:HBox>
+					</mx:FormItem> 
+					<mx:FormItem  label="wOnairFactor">
+				       	<mx:HBox width="100%" >
+				       		<mx:TextInput id="wOnairFactor" text="{weapon.wOnairFactor}" width="50" />
+				       	</mx:HBox>
+					</mx:FormItem> 
+					<mx:FormItem  label="wMoveOffset">
+				       	<mx:HBox width="100%" >
+				       		<mx:TextInput id="wMoveOffset" text="{weapon.wMoveOffset}" width="50" />
+				       	</mx:HBox>
+					</mx:FormItem> 
+					<mx:FormItem  label="wMoveFactor">
+					   	<mx:HBox width="100%" >
+					   		<mx:TextInput id="wMoveFactor" text="{weapon.wMoveFactor}" width="50" />
+					   	</mx:HBox>
+					</mx:FormItem>
+				</mx:Box>
+				<mx:Box borderStyle="solid" width="290">
+				<mx:Label text="武器后坐力（站立）" color="blue"/>
+				<mx:FormItem  label="wNormalUpBase">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wNormalUpBase" text="{weapon.wNormalUpBase}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wNormalLateralBase">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wNormalLateralBase" text="{weapon.wNormalLateralBase}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wNormalUpModifier">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wNormalUpModifier" text="{weapon.wNormalUpModifier}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wNormalLateralModifier">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wNormalLateralModifier" text="{weapon.wNormalLateralModifier}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wNormalUpMax">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wNormalUpMax" text="{weapon.wNormalUpMax}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wNormalLateralMax">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wNormalLateralMax" text="{weapon.wNormalLateralMax}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wNormalDirChange">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wNormalDirChange" text="{weapon.wNormalDirChange}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				</mx:Box>
+				<mx:Box borderStyle="solid" width="292"  height="245">
+				<mx:Label text="武器后坐力（跑动）" color="blue"/>
+				<mx:FormItem  label="wMoveUpBase">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wMoveUpBase" text="{weapon.wMoveUpBase}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wMoveLateralBase">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wMoveLateralBase" text="{weapon.wMoveLateralBase}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wMoveUpModifier">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wMoveUpModifier" text="{weapon.wMoveUpModifier}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wMoveLateralModifier">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wMoveLateralModifier" text="{weapon.wMoveLateralModifier}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wMoveUpMax">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wMoveUpMax" text="{weapon.wMoveUpMax}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wMoveLateralMax">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wMoveLateralMax" text="{weapon.wMoveLateralMax}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wMoveDirChange">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wMoveDirChange" text="{weapon.wMoveDirChange}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				</mx:Box>
+				
+				
+	 	</mx:VBox>
+	 	
+	 	<mx:VBox width="300" height="704">
+	 		<mx:Box borderStyle="solid" width="291"  height="245">
+	 		<mx:Label text="武器后坐力（跳起）" color="blue"/>
+				<mx:FormItem  label="wOnairUpBase">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wOnairUpBase" text="{weapon.wOnairUpBase}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wOnairLateralBase">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wOnairLateralBase" text="{weapon.wOnairLateralBase}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+	 			<mx:FormItem  label="wOnairUpModifier">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wOnairUpModifier" text="{weapon.wOnairUpModifier}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem  label="wOnairLateralModifier">
+				   	<mx:HBox width="100%" >
+				   		<mx:TextInput id="wOnairLateralModifier" text="{weapon.wOnairLateralModifier}" width="50" />
+				   	</mx:HBox>
+				</mx:FormItem>
+ 			<mx:FormItem  label="wOnairUpMax">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wOnairUpMax" text="{weapon.wOnairUpMax}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wOnairLateralMax">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wOnairLateralMax" text="{weapon.wOnairLateralMax}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wOnairDirChange">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wOnairDirChange" text="{weapon.wOnairDirChange}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			</mx:Box>
+			<mx:Box borderStyle="solid" width="290"  height="243">
+			<mx:Label text="武器后坐力（蹲）" color="blue"/>
+			<mx:FormItem  label="wCrouchUpBase">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wCrouchUpBase" text="{weapon.wCrouchUpBase}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wCrouchLateralBase">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wCrouchLateralBase" text="{weapon.wCrouchLateralBase}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wCrouchUpModifier">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wCrouchUpModifier" text="{weapon.wCrouchUpModifier}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wCrouchLateralModifier">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wCrouchLateralModifier" text="{weapon.wCrouchLateralModifier}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wCrouchUpMax">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wCrouchUpMax" text="{weapon.wCrouchUpMax}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wCrouchLateralMax">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wCrouchLateralMax" text="{weapon.wCrouchLateralMax}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wCrouchDirChange">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wCrouchDirChange" text="{weapon.wCrouchDirChange}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			</mx:Box>
+			
+ 			
+			<mx:Box borderStyle="solid" width="292"  height="152">
+			<mx:Label text="武器精度" color="blue"/>
+			<mx:FormItem  label="wCrossOffset">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wCrossOffset" text="{weapon.wCrossOffset}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			
+			<mx:FormItem  label="wAccuracyDivisor">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wAccuracyDivisor" text="{weapon.WAccuracyDivisor}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wAccuracyOffset">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wAccuracyOffset" text="{weapon.wAccuracyOffset}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem  label="wMaxInaccuracy">
+			   	<mx:HBox width="100%" >
+			   		<mx:TextInput id="wMaxInaccuracy" text="{weapon.wMaxInaccuracy}" width="50" />
+			   	</mx:HBox>
+			</mx:FormItem>
+			</mx:Box>
+			
+ 	</mx:VBox>
+ 		<mx:VBox height="710" width="311">
+ 			<mx:VBox borderStyle="solid" width="307" height="693">
+ 				<mx:FormItem  label="wXOffset">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wXOffset" text="{weapon.wXOffset}" width="122" />
+ 				  	</mx:HBox>
+ 				  	</mx:FormItem>
+ 			   	<mx:FormItem  label="wSightNormalOffset">
+ 			   	<mx:HBox width="100%" >
+ 			   		<mx:TextInput id="wSightNormalOffset" text="{weapon.wSightNormalOffset}" width="122" />
+ 			   	</mx:HBox>
+ 			   	</mx:FormItem>
+ 				<mx:FormItem  label="wSightOnairOffset">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wSightOnairOffset" text="{weapon.wSightOnairOffset}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				<mx:FormItem  label="wSightMoveOffset">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wSightMoveOffset" text="{weapon.wSightMoveOffset}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				
+ 				<mx:FormItem  label="wStabDistance">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wStabDistance" text="{weapon.wStabDistance}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				
+ 				<mx:FormItem  label="wStabLightDistance">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wStabLightDistance" text="{weapon.wStabLightDistance}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				
+ 				<mx:FormItem  label="wStabWidth">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wStabWidth" text="{weapon.wStabWidth}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				
+ 				<mx:FormItem  label="wBackFactor">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wBackFactor" text="{weapon.wBackFactor}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				
+ 				<mx:FormItem  label="wFlashRangeStart">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wFlashRangeStart" text="{weapon.wFlashRangeStart}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				
+ 				<mx:FormItem  label="wFlashRangeEnd">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wFlashRangeEnd" text="{weapon.wFlashRangeEnd}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				<mx:FormItem  label="wFlashBackFactor">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wFlashBackFactor" text="{weapon.wFlashBackFactor}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				
+ 				<mx:FormItem  label="wTimeMax">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wTimeMax" text="{weapon.wTimeMax}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				<mx:FormItem  label="wTimeFade">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wTimeFade" text="{weapon.wTimeFade}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				<mx:FormItem  label="wTime">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wTime" text="{weapon.wTime}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				<mx:FormItem  label="WCrossLengthBase">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wCrossLengthBase" text="{weapon.wCrossLengthBase}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				<mx:FormItem  label="WCrossLengthFactor">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wCrossLengthFactor" text="{weapon.wCrossLengthFactor}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				<mx:FormItem  label="WCrossDistanceBase">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wCrossDistanceBase" text="{weapon.wCrossDistanceBase}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 				<mx:FormItem  label="WCrossDistanceFactor">
+ 				  	<mx:HBox width="100%" >
+ 				  		<mx:TextInput id="wCrossDistanceFactor" text="{weapon.wCrossDistanceFactor}" width="122" />
+ 				  	</mx:HBox>
+ 				</mx:FormItem>
+ 			</mx:VBox>
+ 		</mx:VBox>
+ 	
+ 	</mx:HBox>
+ 	<mx:HBox width="100%">
+	 	<mx:ApplicationControlBar width="100%">
+		 	<mx:ControlBar>
+		 		<mx:Button id="close" label="退出"/>
+				<mx:Button id="save" label="保存"/>
+				<mx:Button id="clear" label="清空" click="clearForm()"/>
+			</mx:ControlBar>
+		</mx:ApplicationControlBar>		
+ 	</mx:HBox>
+</mx:TitleWindow>

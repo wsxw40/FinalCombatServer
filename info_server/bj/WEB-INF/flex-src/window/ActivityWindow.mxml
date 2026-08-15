@@ -1,0 +1,955 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*" xmlns:common="common.*" xmlns:utils="utils.*">
+	<mx:Script>
+		<![CDATA[
+			import common.Constants;
+			import mx.formatters.SwitchSymbolFormatter;
+			import mx.controls.DataGrid;
+			import utils.PointUtils;
+			import mx.managers.PopUpManager;
+			import mx.utils.StringUtil;
+			import utils.DatagridValidateFactory;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import utils.ColumnFactory;
+			import mx.rpc.events.FaultEvent;
+			import vo.SysActivity;
+			import vo.GmUser;
+			import utils.*;
+			import popup.AddSysActivity;
+			import popup.UpdateSysActivity;
+			import event.ItemDeleteEvent;
+			private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+			[Bindable]private var activityList:ArrayCollection;
+			private var addSysActivity:AddSysActivity;
+			private var updateSysActivity:UpdateSysActivity;
+			
+             private var onoff:ArrayCollection= new ArrayCollection(
+                [ 
+                  {label:"On", data:"Y"},
+                  {label:"Off", data:"N"}
+                ]);
+             private var offon:ArrayCollection= new ArrayCollection(
+                [ 
+                  {label:"Off", data:"N"},
+                  {label:"On", data:"Y"}
+                ]);
+             private var hours:ArrayCollection= new ArrayCollection(
+                [ 
+               	  {label:"0", data:0},
+                  {label:"1", data:1},
+                  {label:"2", data:2},
+                  {label:"3", data:3},
+                  {label:"4", data:4},
+                  {label:"5", data:5},
+                  {label:"6", data:6},
+                  {label:"7", data:7},
+                  {label:"8", data:8},
+                  {label:"9", data:9},
+                  {label:"10", data:10},
+                  {label:"11", data:11},
+                  {label:"12", data:12},
+                  {label:"13", data:13},
+                  {label:"14", data:14},
+                  {label:"15", data:15},
+                  {label:"16", data:16},
+                  {label:"17", data:17},
+                  {label:"18", data:18},
+                  {label:"19", data:19},
+                  {label:"20", data:20},
+                  {label:"21", data:21},
+                  {label:"22", data:22},
+                  {label:"23", data:23},
+                  {label:"24", data:24},
+                  {label:"25", data:25},
+                  {label:"26", data:26},
+                  {label:"27", data:27},    
+ 				  {label:"31", data:31},    
+                  {label:"10000", data:10000}
+                ]);
+			[Bindable]
+			private var sysActivity:SysActivity=null;
+			[Bindable]
+			private var startDate:int=new Date().time;
+			[Bindable]
+			private var endDate:int=new Date().time;
+			private function init():void{
+				var columns:Array = ColumnFactory.getActivityColumn(false) as Array;
+				getRo.getActivitysList();
+			}
+			private function selectHandler():void{
+				save.enabled = true;
+				actionType.enabled = false;
+				okNew.enabled = false;
+				award.enabled = true;
+				/* editBtn.enabled=true; */
+				this.sysActivity=activityDataGrid.selectedItem as SysActivity;
+				goneAll();
+				if(this.sysActivity.action == 1){
+					rank.enabled = true;
+					_rank.text = this.sysActivity.value.toString();
+				} else if(this.sysActivity.action == 8){
+					mission_num.enabled = true;
+					_mission_num.text = this.sysActivity.value.toString();
+				} else if(this.sysActivity.action == 4){
+					exp_double.enabled = true;
+					award.enabled = false;
+					_exp_double.text = this.sysActivity.value.toString();
+				}  else if(this.sysActivity.action == 5){
+					achievement.enabled = true;
+				} else if(this.sysActivity.action == 6||this.sysActivity.action == 19||this.sysActivity.action == 18){
+					kill_num.enabled = true;
+					_kill_num.text = this.sysActivity.targetNum.toString();
+				} else if(this.sysActivity.action == 7){
+					boss_kill_num.enabled = true;
+					_boss_kill_num.text = this.sysActivity.targetNum.toString();
+				} else if(this.sysActivity.action == 10||this.sysActivity.action == 24){
+					kill_boss_num.enabled = true;
+					_kill_boss_num.text = this.sysActivity.targetNum.toString();
+				} /* else if(this.sysActivity.action == 9){
+					take_off.enabled = true;
+					_take_off.text = this.sysActivity.value.toString();
+				}  */else if(this.sysActivity.action == 3){
+					random_space.enabled = true;
+					random_num.enabled = true;
+					_random_num.text = this.sysActivity.value.toString();
+					_random_space.text = this.sysActivity.targetNum.toString();
+				} else if(this.sysActivity.action == 11||this.sysActivity.action == 16||this.sysActivity.action == 17||this.sysActivity.action == 25){
+					hour2hour.enabled = true;
+					if(this.sysActivity.action == 16||this.sysActivity.action == 17||this.sysActivity.action == 23){
+						percentNum.enabled = true;
+						_percentNum.editable=true;
+						_percentNum.text="1";
+					}
+					hour1.selectedIndex = this.sysActivity.value;
+					hour2.selectedIndex = this.sysActivity.targetNum;
+//					if(this.sysActivity.action == 17){
+//						this.exp_double.enabled=true;
+//					}
+				} else if(this.sysActivity.action == 12){
+					top_start.enabled = true;
+					top_end.enabled = true;
+					_top_start.text = this.sysActivity.value.toString();
+					_top_end.text = this.sysActivity.targetNum.toString();
+				} else if(this.sysActivity.action == 15){
+					loginLevel.enabled = true;
+					_loginLevel.text = this.sysActivity.value.toString();
+				}else if(this.sysActivity.action == 20){
+					pay_num.enabled = true;
+					_pay_num.text = this.sysActivity.targetNum.toString();
+				}else if(this.sysActivity.action == 21){
+					rank.enabled = true;
+					_rank.text = this.sysActivity.targetNum.toString();
+				}else if(this.sysActivity.action==26){
+					rank.enabled = true;
+					_rank.text = this.sysActivity.targetNum.toString();
+				}else if(this.sysActivity.action==27){
+					combat_num.enabled = true;
+					_combat_num.text = this.sysActivity.value.toString();
+				}
+				if(this.sysActivity.withAward == 0){
+						award.enabled = false;
+				}	
+				initSwitch();
+				initBackup();
+				initTimeSelect();
+			}
+			private function goneAll():void{
+				hour1.selectedIndex = 0;
+				hour2.selectedIndex = 0;
+			 	rank.enabled = false;
+			 	random_num.enabled = false;
+			 	random_space.enabled = false;
+			 	kill_num.enabled = false;
+			 	pay_num.enabled = false;
+			 	boss_kill_num.enabled = false;
+			 	kill_boss_num.enabled = false;
+			 	mission_num.enabled = false;
+			 	achievement.enabled = false;
+			 	exp_double.enabled = false;
+			 	hour2hour.enabled = false;
+			 	percentNum.enabled = false;
+			 	_percentNum.editable=false;
+			 	top_start.enabled = false;
+			 	top_end.enabled = false;
+			 	loginLevel.enabled = false;
+			 	/* take_off.enabled = false; */
+			 	_rank.text = "";
+			 	_random_num.text = "";
+			 	_random_space.text = "";
+			 	_kill_num.text = "";
+			 	_pay_num.text = "";
+			 	_boss_kill_num.text = "";
+			 	_mission_num.text = "";
+			 	/* _take_off.text = ""; */
+			 	_kill_boss_num.text = "";
+			 	_top_start.text = "";
+			 	_top_end.text = "";
+			 	_exp_double.text = "";
+			 	_loginLevel.text = "";
+			}
+			private function getActivityListHandler(evt:ResultEvent):void{
+			 	this.activityList=evt.result as ArrayCollection;
+			 	this.sysActivity = null;
+			 	goneAll();
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+			private function onNewBtnClick():void{
+				goneAll();
+				this.sysActivity = new SysActivity();
+				actionType.enabled = true;
+				okNew.enabled = true;
+				save.enabled = false;
+				action.selectedIndex = 0;
+			}
+			private function addNewSysActivity(e:MouseEvent):void{
+				if(StringUtil.trim(addSysActivity.sysActivity.name)){
+					createRo.createActivity(gmUser, addSysActivity.sysActivity);
+				} else {
+					Alert.show("not empty");
+				}
+			}
+			private function onDeleteBtnClick():void{
+				if(this.sysActivity == null){
+					Alert.show("Choose one");
+				} else if(this.sysActivity.id==0){
+					Alert.show("Choose one");
+				} else {
+					deleteRo.deleteActivity(gmUser, this.sysActivity);
+				}
+			}
+			private function onEditBtnClick():void{
+				addSysActivity=AddSysActivity(PopUpManager.createPopUp(this,AddSysActivity,true));
+				addSysActivity.sysActivity=this.sysActivity;
+				addSysActivity.actions=Constants.actions;
+				addSysActivity.close.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(addSysActivity);});
+		 		addSysActivity.save.addEventListener(MouseEvent.CLICK,addNewSysActivity);
+				PopUpManager.centerPopUp(addSysActivity);
+			}
+			private function onRefreshClick():void{
+				getRo.getActivitysList();
+			}
+            private function saveBtnClick(type:int):void {
+               if(this.sysActivity != null){
+               		if(_title.text == ""){
+               			Alert.show("title not empty");
+               			return;
+               		}
+               		if(_title.text.length > 16){
+               			Alert.show("活动名称不能超过16个字！");
+               			return;
+               		}
+               		if(this.sysActivity.action == 1){
+						var result:int = ValidateUtils.validateInt(_rank.text);
+						if(result == 1){
+							Alert.show("级别输入不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("级别应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.value = parseInt(StringUtil.trim(_rank.text));
+						}
+					} else if(this.sysActivity.action == 8){
+						var result:int = ValidateUtils.validateInt(_mission_num.text);
+						if(result == 1){
+							Alert.show("任务数量输入不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("任务数量应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.value = parseInt(StringUtil.trim(_mission_num.text));
+						}
+					} else if(this.sysActivity.action == 12){
+						var result1:int = ValidateUtils.validateInt(_top_start.text);
+						var result2:int = ValidateUtils.validateInt(_top_end.text);
+						if(result1 == 1 || result2 == 1){
+							Alert.show("名次不能为空");
+							return;
+						} else if(result1 == 2 || result2 == 2){
+							Alert.show("名次应该是整数");
+							return;
+						} else if(result1 == 0 || result2 == 0){
+							this.sysActivity.value = parseInt(StringUtil.trim(_top_start.text));
+							this.sysActivity.targetNum = parseInt(StringUtil.trim(_top_end.text));
+						}
+					} else if(this.sysActivity.action == 6||this.sysActivity.action == 19||this.sysActivity.action == 18){
+						var result:int = ValidateUtils.validateInt(_kill_num.text);
+						if(result == 1){
+							Alert.show("杀敌数输入不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("杀敌数量应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.targetNum = parseInt(StringUtil.trim(_kill_num.text));
+						}
+					} else if(this.sysActivity.action == 7){
+						var result:int = ValidateUtils.validateInt(_boss_kill_num.text);
+						if(result == 1){
+							Alert.show("杀敌数输入不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("杀敌数量应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.targetNum = parseInt(StringUtil.trim(_boss_kill_num.text));
+						}
+					} else if(this.sysActivity.action == 10||this.sysActivity.action == 24){
+						var result:int = ValidateUtils.validateInt(_kill_boss_num.text);
+						if(result == 1){
+							Alert.show("杀BOSS数输入不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("杀BOSS数量应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.targetNum = parseInt(StringUtil.trim(_kill_boss_num.text));
+						}
+						_kill_boss_num.text = this.sysActivity.value.toString();
+					} /* else if(this.sysActivity.action == 9){
+						var result:int = ValidateUtils.validateInt(_take_off.text);
+						if(result == 1){
+							Alert.show("折扣不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("折扣应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.value = parseFloat(StringUtil.trim(_take_off.text));
+						}
+					}  */else if(this.sysActivity.action == 3){
+						var result:int = ValidateUtils.validateInt(_random_num.text);
+						if(result == 1){
+							Alert.show("随机抽奖人数不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("随机抽奖人数应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.value = parseInt(StringUtil.trim(_random_num.text));
+						}
+						var result:int = ValidateUtils.validateInt(_random_space.text);
+						if(result == 1){
+							Alert.show("随机抽奖间隔不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("随机抽奖间隔应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.targetNum = parseInt(StringUtil.trim(_random_space.text));
+						}
+					} else if(this.sysActivity.action == 4){
+						var result:int = ValidateUtils.validateInt(_exp_double.text);
+						if(result == 1){
+							Alert.show("倍数不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("倍数应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.value = parseInt(StringUtil.trim(_exp_double.text));
+						}
+					} else if(this.sysActivity.action == 5){
+						if(sysAchevement == null && this.sysActivity.achievement_action==0){
+							Alert.show("你还没有设置成就");
+							return;
+						}
+					} else if(this.sysActivity.action == 15){
+						var result:int = ValidateUtils.validateInt(_loginLevel.text);
+						if(result == 1){
+							Alert.show("等级不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("等级应该是整数");
+							return;
+						} else if(result == 0){
+							var level:int = parseInt(StringUtil.trim(_loginLevel.text));
+							if(level < 1){
+								Alert.show("等级应该是正数");
+								return;
+							} else {
+								this.sysActivity.value = level;
+							}
+						}
+					}else if(this.sysActivity.action == 16||this.sysActivity.action == 17){
+						var result:int = ValidateUtils.validateInt(_percentNum.text);
+						if(result == 1){
+							Alert.show("请设置强化概率");
+							return;
+						} else if(result == 2){
+							Alert.show("强化概率的百分比是整数");
+							return;
+						} else if(result == 0){
+							var percentNum:int = parseInt(StringUtil.trim(_percentNum.text));
+							
+							if(percentNum <-20|| percentNum >50){
+								Alert.show("强化概率的百分比的范围为[-20,50]");
+								return;
+							} 
+								this.sysActivity.unit = percentNum;
+//							}
+						}
+					}else if(this.sysActivity.action == 20){
+						var result:int = ValidateUtils.validateInt(_pay_num.text);
+						if(result == 1){
+							Alert.show("请设置消费值");
+							return;
+						} else if(result == 2){
+							Alert.show("消费值是整数");
+							return;
+						} else if(result == 0){
+							var payNum:int = parseInt(StringUtil.trim(_pay_num.text));
+							if(payNum < 1){
+								Alert.show("消费值是正数");
+								return;
+							} else {
+								this.sysActivity.targetNum = payNum;
+							}
+						}
+					}else if(this.sysActivity.action == 21 || this.sysActivity.action==26){
+						var result:int = ValidateUtils.validateInt(_rank.text);
+						if(result == 1){
+							Alert.show("请设置强化等级");
+							return;
+						} else if(result == 2){
+							Alert.show("强化等级是整数");
+							return;
+						} else if(result == 0){
+							var rank:int = parseInt(StringUtil.trim(_rank.text));
+							if(rank < 1){
+								Alert.show("强化等级是正数");
+								return;
+							} else {
+								this.sysActivity.targetNum = rank;
+							}
+						} 
+					} else if(this.sysActivity.action == 27){
+						var result:int = ValidateUtils.validateInt(_combat_num.text);
+						if(result == 1){
+							Alert.show("完成次数不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("完成次数应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.value = parseInt(StringUtil.trim(_combat_num.text));
+						}
+					} else if(this.sysActivity.action == 31){
+						var result1:int = ValidateUtils.validateInt(_start_rank.text);
+						var result2:int = ValidateUtils.validateInt(_end_rank.text);
+						if(result1 == 1 || result2 == 1){
+							Alert.show("名次不能为空");
+							return;
+						} else if(result1 == 2 || result2 == 2){
+							Alert.show("名次应该是整数");
+							return;
+						} else if(result1 == 0 || result2 == 0){
+							this.sysActivity.value = parseInt(StringUtil.trim(_start_rank.text));
+							this.sysActivity.targetNum = parseInt(StringUtil.trim(_end_rank.text));
+						}
+					}
+					
+					if(this.sysActivity.withAward == 1){ 	
+						if(this.sysActivity.items.search(",")>0){
+	               			Alert.show("只能设置一个奖品");
+	               			return; 
+	               		}
+						if((this.sysActivity.items==null || this.sysActivity.items=="")&&this.sysActivity.action != 4){
+							Alert.show("你还没有设置奖品");
+							return; 
+						}	
+					} else {
+						this.sysActivity.items = "";
+					}
+					var isSend : Boolean = true;
+					/*  if("" == this.sysActivity.items){
+						var a:Alert = Alert.show("您还没有设置奖品，选YES提交活动，选NO将取消提交", "Comfirm", Alert.YES|Alert.NO,this, function(evt:CloseEvent):void{
+							if(evt.detail == Alert.NO){
+								isSend = false;
+							}
+						}, null, Alert.NO);
+					}  */
+					if(isSend){
+						this.sysActivity.startTime = startTime.selectedDate;
+						this.sysActivity.endTime = endTime.selectedDate;
+						this.sysActivity.theSwitch = button.selectedItem.data;
+						this.sysActivity.path = _path.text;
+						this.sysActivity.title = _title.text;
+						this.sysActivity.backup=InitOverDay.selectedItem.data;
+						if(type==1){
+							updateRo.updateActivity(gmUser,this.sysActivity);
+						} else if(type==2){
+							/* Alert.show(sysActivity.action.toString()); */
+							this.sysActivity.name = action.selectedLabel;
+							createRo.createActivity(gmUser,this.sysActivity);
+						}
+					}
+               }
+            }
+            private function refreshData():void {
+               if(this.sysActivity != null){
+               		initTimeSelect();
+					initSwitch();
+					initBackup();
+					goneAll();
+					okNew.enabled = false;
+					actionType.enabled = false;					
+               }
+            } 
+            
+            private function initSwitch():void{
+            	if(this.sysActivity.theSwitch == "Y"){
+					button.selectedIndex = 0;
+				} else {
+					button.selectedIndex = 1;
+				}
+            }
+            private function initBackup():void{
+            	if(this.sysActivity.backup == "Y"){
+					InitOverDay.selectedIndex = 1;
+				} else {
+					InitOverDay.selectedIndex = 0;
+				}
+            }
+            private function initTimeSelect():void{
+            	startTime.selectedDate = this.sysActivity.startTime;
+				endTime.selectedDate = this.sysActivity.endTime;
+				_path.text = this.sysActivity.path;
+				_title.text = this.sysActivity.title;
+            }
+            import view.SysItemNameList2;
+            import event.BoxClickEvent;
+            import mx.events.CloseEvent;
+            import vo.SysItem;
+            private var weapons : ArrayCollection = new ArrayCollection();
+            private var items : String = "";
+            private var sysItemNameView:SysItemNameList2;
+            private function setAward():void{
+            	if(this.sysActivity != null){
+            		getRo.getSysItemList(1);
+            	} else {
+            		Alert.show("请选择一个活动或者创建活动");
+            	}
+            }
+            private function getSysItemListHandler(evt:ResultEvent):void{
+			 this.weapons=evt.result as ArrayCollection;
+			 if(sysItemNameView==null){
+				 sysItemNameView=SysItemNameList2(PopUpManager.createPopUp(this,SysItemNameList2,true));
+				 PopUpManager.centerPopUp(sysItemNameView);
+				 sysItemNameView.sysItemNameDatagrid.columns=ColumnFactory.getSysItemName2(false);
+				
+				 sysItemNameView.save.addEventListener(MouseEvent.CLICK,presentGift);
+				 sysItemNameView.addEventListener(BoxClickEvent.BOX_CLICK,changList);
+				 sysItemNameView.addEventListener(CloseEvent.CLOSE,function():void{
+				 	PopUpManager.removePopUp(sysItemNameView);
+				 	sysItemNameView=null;});
+				 sysItemNameView.cancel.addEventListener(MouseEvent.CLICK,function():void{
+				 	PopUpManager.removePopUp(sysItemNameView);
+				 	sysItemNameView=null;});
+			 }
+			  for(var i:int = 0;i<weapons.length; i++){
+			  	var sysItem:SysItem = weapons[i];
+			  	if(sysItem.id.toString() == this.sysActivity.items){
+			  		sysItem.selected = true;
+			  	}
+			  }
+			  sysItemNameView.sysItemList=this.weapons;
+			}
+			private function addItem():void{
+            	getRo.getSysItemList(1);
+            }
+            private function changList(e:BoxClickEvent):void{
+				getRo.getSysItemList(e._data);
+			}
+            private function presentGift(e:MouseEvent):void{
+				var list:ArrayCollection=sysItemNameView.sysItemList;
+				var selectedList:ArrayCollection=new ArrayCollection();
+				var count:int = 0;
+				items = "";
+				for each(var si:SysItem in list){
+					if(si.selected){
+						/* if(items == ""){
+							items += (si.id); 
+						} else {
+							items += ("," + si.id); 
+						} */
+						items += (si.id);
+						count ++;
+					}
+				}
+				if(count == 0){
+					Alert.show("你还没有设置奖品");
+				}
+				else if(count > 1){
+					Alert.show("只能设置一个奖品");
+				} else if(count == 1){
+					this.sysActivity.items = items;
+					this.sysActivity.unit=parseInt(sysItemNameView.unit.text);
+					this.sysActivity.unitType=parseInt(sysItemNameView.unitType.text);
+					items = "";
+					PopUpManager.removePopUp(sysItemNameView);
+					sysItemNameView=null;
+				}
+			}
+			//设置成就
+			import vo.SysAchievement;
+			import view.SysAchevmentList;
+			private var achievementList : ArrayCollection = new ArrayCollection();
+			private var sysAchevmentView:SysAchevmentList;
+			private var sysAchevement : SysAchievement = null;
+			private function setAchievement():void{
+            	if(this.sysActivity != null){
+            		getRo.getAchievementList();
+            	}
+            }
+            private function getAchievementListHandler(evt:ResultEvent):void{
+			 this.achievementList=evt.result as ArrayCollection;
+			 if(sysAchevmentView==null){
+				 sysAchevmentView=SysAchevmentList(PopUpManager.createPopUp(this,SysAchevmentList,true));
+				 PopUpManager.centerPopUp(sysAchevmentView);
+				 sysAchevmentView.datagrid.columns=ColumnFactory.getAchievement(false);
+				
+				 sysAchevmentView.save.addEventListener(MouseEvent.CLICK,changeAchievement);
+				 sysAchevmentView.addEventListener(CloseEvent.CLOSE,function():void{
+				 	PopUpManager.removePopUp(sysAchevmentView);
+				 	sysAchevmentView=null;});
+				 sysAchevmentView.cancel.addEventListener(MouseEvent.CLICK,function():void{
+				 	PopUpManager.removePopUp(sysAchevmentView);
+				 	sysAchevmentView=null;});
+			 }
+			  sysAchevmentView.achievementList=this.achievementList;
+			}
+			
+			private function changeAchievement(e:MouseEvent):void{
+				var list:ArrayCollection=sysAchevmentView.achievementList;
+				var selectedList:ArrayCollection=new ArrayCollection();
+				for each(var sa:SysAchievement in list){
+					if(sa.selected){
+						selectedList.addItem(sa);
+						sysAchevement = sa;
+					}
+				}
+				if(selectedList.length > 1){
+					Alert.show("只能选择一个成就");
+				} else if(selectedList.length == 0){
+					Alert.show("必须要选择一个成就");
+				} else if(selectedList.length == 1){
+					this.sysActivity.value = sysAchevement.id;
+					this.sysActivity.chracter_id = sysAchevement.characterId;
+					this.sysActivity.achievement_action = sysAchevement.action;
+					this.sysActivity.targetNum = sysAchevement.number;
+					PopUpManager.removePopUp(sysAchevmentView);
+				 	sysAchevmentView=null;
+				} 
+			}
+			
+			private function afterUpdateActivity():void{
+				goneAll();
+				getRo.getActivitysList();
+			}
+			private function afterDeleteActivity():void{
+				goneAll();
+				getRo.getActivitysList();
+			}
+			private function afterCreateActivity():void{
+				goneAll();
+				action.selectedIndex = 0;
+				actionType.enabled = false;
+				okNew.enabled = false;
+				getRo.getActivitysList();
+				
+			}
+			private function slectAction(evt:Event):void {
+			 	goneAll();
+			 	award.enabled = true;
+			 	this.sysActivity.action = evt.target.selectedItem.data;
+			 	if(this.sysActivity.action == 14 || this.sysActivity.action == 13 || this.sysActivity.action == 4
+			 		||this.sysActivity.action == 16|| this.sysActivity.action == 17||this.sysActivity.action == 25
+			 		||this.sysActivity.action == 23|| this.sysActivity.action == 22 || this.sysActivity.action == 26
+			 		||this.sysActivity.action == 10000){
+					this.sysActivity.withAward = 0;
+					award.enabled = false;
+				}	
+                if(this.sysActivity.action == 1){
+						rank.enabled = true;
+					} else if(this.sysActivity.action == 8){
+						mission_num.enabled = true;
+					} else if(this.sysActivity.action == 6){
+						kill_num.enabled = true;
+					} else if(this.sysActivity.action == 7){
+						boss_kill_num.enabled = true;
+					} else if(this.sysActivity.action == 10||this.sysActivity.action == 24){
+						kill_boss_num.enabled = true;
+					} /* else if(this.sysActivity.action == 9){
+						var result:int = ValidateUtils.validateInt(_take_off.text);
+						if(result == 1){
+							Alert.show("折扣不能为空");
+							return;
+						} else if(result == 2){
+							Alert.show("折扣应该是整数");
+							return;
+						} else if(result == 0){
+							this.sysActivity.value = parseFloat(StringUtil.trim(_take_off.text));
+						}
+					}  */else if(this.sysActivity.action == 3){
+						random_num.enabled = true;
+						random_space.enabled = true;
+					} else if(this.sysActivity.action == 5){
+						achievement.enabled = true;
+					} else if(this.sysActivity.action == 4){
+						exp_double.enabled = true;
+					} else if(this.sysActivity.action == 11||this.sysActivity.action == 16||this.sysActivity.action == 17||this.sysActivity.action == 25){
+						hour2hour.enabled = true;
+						if(this.sysActivity.action == 16||this.sysActivity.action == 17||this.sysActivity.action == 23){
+							percentNum.enabled = true;
+							_percentNum.editable=true;
+							_percentNum.text="1";
+						}
+						this.sysActivity.value = hour1.selectedItem.data;
+						this.sysActivity.targetNum = hour2.selectedItem.data;
+					} else if(this.sysActivity.action == 12){
+						top_start.enabled = true;
+						top_end.enabled = true;
+					} else if(this.sysActivity.action == 15){
+						loginLevel.enabled = true;
+					}else if(this.sysActivity.action == 18||this.sysActivity.action == 19){
+						kill_num.enabled = true;
+					}else if(this.sysActivity.action == 20){
+						pay_num.enabled = true;
+					}else if(this.sysActivity.action == 21){
+						rank.enabled = true;
+					}else if(this.sysActivity.action == 26){
+						rank.enabled = true;
+					}else if(this.sysActivity.action==27){
+						combat_num.enabled = true;
+					}else if(this.sysActivity.action==31){
+						start_rank.enabled = true;
+						end_rank.enabled = true;
+					}
+            }  
+            private function hour1Change(evt:Event):void {
+			 	this.sysActivity.value = evt.target.selectedItem.data;
+            }
+            private function hour2Change(evt:Event):void {
+			 	this.sysActivity.targetNum = evt.target.selectedItem.data;
+            }  
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getActivitysList" result="getActivityListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getSysItemList" result="getSysItemListHandler(event)"/>
+		<mx:method name="getAchievementList" result="getAchievementListHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createActivity" result="afterCreateActivity()" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateActivity" result="afterUpdateActivity()" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteActivity" result="afterDeleteActivity()" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:VBox width="100%" height="100%">
+	<mx:HBox>
+	</mx:HBox>
+	<mx:VDividedBox  height="100%" width="100%">
+		<mx:ControlBar  height="269" width="100%">	
+			<mx:DataGrid id="activityDataGrid" dataProvider="{activityList}" itemClick="selectHandler()" lockedColumnCount="3"
+				width="100%" height="100%" editable="false" >
+			<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="{resourceManager.getString('Language','label.ActivityId')}" width="50"/>
+			<mx:DataGridColumn dataField="title" headerText="{resourceManager.getString('Language','label.ActivityName')}" width="80"/>
+			<mx:DataGridColumn dataField="action" headerText="{resourceManager.getString('Language','label.ActivityType')}" width="400">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:HBox>
+							<mx:Label id="bwLab1">
+							<mx:Script>
+										<![CDATA[
+											import common.Constants;
+											private var _data:Object;
+											
+											public override function get data():Object{
+												return _data;
+											}
+											[Bindable]
+											public override function set data(u:Object):void{
+												this._data = u;
+												for(var i:int = 0; i < Constants.actions.length; i++){
+													if(Constants.actions[i].data == u.action){
+														bwLab1.text = Constants.actions[i].label;
+													}
+												}
+											}
+										]]>
+									</mx:Script>
+							</mx:Label>
+						</mx:HBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn dataField="value" headerText="{resourceManager.getString('Language','label.Value1')}" width="50"/>
+			<mx:DataGridColumn dataField="targetNum" headerText="{resourceManager.getString('Language','label.Value2')}" width="50"/>
+			<mx:DataGridColumn dataField="itemsStr" headerText="{resourceManager.getString('Language','label.ActivityAward')}" width="50"/>
+			<mx:DataGridColumn dataField="startTimeStr" headerText="{resourceManager.getString('Language','label.StartTime')}" width="100"/>
+			<mx:DataGridColumn dataField="endTimeStr" headerText="{resourceManager.getString('Language','label.EndTime')}" width="100"/>
+			<mx:DataGridColumn dataField="unit" headerText="{resourceManager.getString('Language','label.Amount')}" width="100"/>
+			<mx:DataGridColumn dataField="unitType" headerText="{resourceManager.getString('Language','label.ConsumeType')}" width="100"/>
+			</mx:columns>
+			</mx:DataGrid>
+		</mx:ControlBar>
+		<!--<mx:ControlBar  height="70%" width="100%">-->	
+		<mx:HBox height="60%" width="100%" horizontalAlign="center" horizontalCenter="true">
+		<mx:Panel title="{resourceManager.getString('Language','label.ChosableParametersList')}" height="483" width="669">
+		<mx:HBox height="426" width="646">
+			<mx:VBox>
+				<mx:Form>
+					<mx:FormItem label="{resourceManager.getString('Language','label.Grade')}：" enabled="false" id="rank">
+			        	<mx:TextInput id="_rank" />     
+					</mx:FormItem>
+					<mx:FormItem label="{resourceManager.getString('Language','label.RandomAmount')}：" enabled="false" id="random_num">
+			        	<mx:TextInput id="_random_num" />     
+					</mx:FormItem>
+					<mx:FormItem label="{resourceManager.getString('Language','label.DistanceMin')}：" enabled="false" id="random_space">
+			        	<mx:TextInput id="_random_space" />     
+					</mx:FormItem>
+					<mx:FormItem label="{resourceManager.getString('Language','label.Kill_ChargeMoney')}：" enabled="false" id="kill_num">
+			        	<mx:TextInput id="_kill_num" />     
+					</mx:FormItem>
+					<mx:FormItem label="{resourceManager.getString('Language','label.PayAmount')}：" enabled="false" id="pay_num">
+			        	<mx:TextInput id="_pay_num" />     
+					</mx:FormItem>
+					<mx:FormItem label="{resourceManager.getString('Language','label.BossKill')}：" enabled="false" id="boss_kill_num">
+			        	<mx:TextInput id="_boss_kill_num" />     
+					</mx:FormItem>
+					<mx:FormItem label="{resourceManager.getString('Language','label.KillBossNum')}：" enabled="false" id="kill_boss_num">
+			        	<mx:TextInput id="_kill_boss_num" />     
+					</mx:FormItem>
+					<mx:FormItem label="{resourceManager.getString('Language','label.FinishNum')}：" enabled="false" id="mission_num">
+			        	<mx:TextInput id="_mission_num" />     
+					</mx:FormItem>
+					<mx:FormItem label="{resourceManager.getString('Language','label.FinishCombatNum')}：" enabled="false" id="combat_num">
+			        	<mx:TextInput id="_combat_num" />     
+					</mx:FormItem>
+					<mx:FormItem label="{resourceManager.getString('Language','label.InitOverDay')}：" enabled="true" id="chooseOverDay">
+			        	<mx:HBox>
+							<mx:ComboBox  dataProvider="{offon}" id="InitOverDay"/>
+						</mx:HBox>    
+					</mx:FormItem>
+					<mx:FormItem label="开始等级：" enabled="false" id="start_rank">
+			        	<mx:TextInput id="_start_rank" />     
+					</mx:FormItem>
+					<mx:FormItem label="结束等级：" enabled="false" id="end_rank">
+			        	<mx:TextInput id="_end_rank" />     
+					</mx:FormItem>
+					<!--<mx:FormItem label="商品折扣：" enabled="false" id="take_off">
+			        	<mx:TextInput id="_take_off" />     
+					</mx:FormItem>-->
+				</mx:Form>
+			</mx:VBox>
+			<mx:VBox>
+			<mx:Form>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Percent')}：" enabled="false" id="percentNum">
+			        	<mx:TextInput id="_percentNum" text="{this.sysActivity.unit}"/>     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.FinishAchievement')}：" enabled="false" id="achieve_num">
+			        	<mx:TextInput id="_achieve_num" />     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Multiple')}：" enabled="false" id="exp_double">
+		        	<mx:TextInput id="_exp_double" />     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.StartEndTime')}：" enabled="false" id="hour2hour">
+		        	<mx:ComboBox  dataProvider="{hours}"  close="hour1Change(event);" id="hour1"/>
+		        	<mx:ComboBox  dataProvider="{hours}"  close="hour2Change(event);" id="hour2"/>     
+				</mx:FormItem>
+				<!--<mx:FormItem label="CAL倍数：" enabled="false" id="cal_double">
+		        	<mx:TextInput id="_cal_double" />     
+				</mx:FormItem>-->
+				<mx:FormItem label="{resourceManager.getString('Language','label.StartRanking')}：" enabled="false" id="top_start">
+		        	<mx:TextInput id="_top_start" />     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.EndRanking')}：" enabled="false" id="top_end">
+		        	<mx:TextInput id="_top_end" />        
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.ActivityGrade')}：" enabled="false" id="loginLevel">
+		        	<mx:TextInput id="_loginLevel" />        
+				</mx:FormItem></mx:Form>
+				
+			</mx:VBox>
+		</mx:HBox>
+		</mx:Panel>
+		<mx:Panel title="{resourceManager.getString('Language','label.RequiredParametersList')}"  height="482" width="850">
+		<mx:VBox width="840" height="403">
+			<mx:Form width="830" height="265">
+				<mx:FormItem label="{resourceManager.getString('Language','label.ActivityId')}：">
+					<mx:HBox>
+						<mx:Label text="{this.sysActivity.id}"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.ActivityName')}：" id="title">
+		        	<mx:TextInput id="_title"/>     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.AwardSet')}：" enabled="false" id="actionType">
+					<mx:HBox>
+						<mx:ComboBox  dataProvider="{Constants.actions}"  close="slectAction(event);" id="action"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Switch')}：">
+					<mx:HBox>
+						<mx:ComboBox  dataProvider="{onoff}" id="button"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.ActivityPicture')}：" id="path">
+		        	<mx:TextInput id="_path"/>     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.StartTime')}：">
+					<mx:HBox>
+						<mx:VBox horizontalAlign="center" verticalAlign="top">
+			       			 <mx:VBox horizontalAlign="center" verticalAlign="middle" >
+			            			<common:DateTimePicker id="startTime" minuteIncrement="1" backgroundColor="#FFFFFF"/>
+			        		</mx:VBox>
+		    			</mx:VBox>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.EndTime')}：">
+					<mx:HBox>
+						<mx:VBox horizontalAlign="center" verticalAlign="top">
+			       			 <mx:VBox horizontalAlign="center" verticalAlign="middle" >
+			            			<common:DateTimePicker id="endTime" minuteIncrement="1" backgroundColor="#FFFFFF"/>
+			        		</mx:VBox>
+		    			</mx:VBox>
+					</mx:HBox>
+				</mx:FormItem>			
+			</mx:Form>
+			<mx:ApplicationControlBar>
+				<mx:Button id="award" label="{resourceManager.getString('Language','label.AwardSet')}" click="setAward();"/>
+				<mx:Button id="achievement" label="{resourceManager.getString('Language','button.SetAchievement')}" click="setAchievement();" enabled="false"/>
+				<mx:Button id="fresh" label="{resourceManager.getString('Language','button.Refresh   ')}" click="onRefreshClick();"/>
+				<mx:Button id="deleteBtn" label="{resourceManager.getString('Language','button.Delete')}" click="onDeleteBtnClick()"/>
+			</mx:ApplicationControlBar>
+			<mx:ApplicationControlBar>
+				<mx:Button id="save" label="{resourceManager.getString('Language','button.Save')}" click="saveBtnClick(1);"/>
+				<mx:Button id="cancle" label="{resourceManager.getString('Language','button.Cancel')}" click="refreshData();"/>
+			</mx:ApplicationControlBar>
+			<mx:ApplicationControlBar>
+				<mx:Button id="newBtn"  label="{resourceManager.getString('Language','button.New')}"  click="onNewBtnClick()"/>
+				<mx:Button id="okNew"  label="{resourceManager.getString('Language','button.Save')}"  click="saveBtnClick(2)" enabled = "false"/>
+			</mx:ApplicationControlBar>
+		</mx:VBox>
+		</mx:Panel>
+		</mx:HBox>
+		<!--</mx:ControlBar>-->
+	</mx:VDividedBox>	
+	</mx:VBox>
+</mx:VBox>

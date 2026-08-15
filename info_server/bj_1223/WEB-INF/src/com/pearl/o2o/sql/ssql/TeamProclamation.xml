@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TeamProclamation">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="TeamProclamation" type="com.pearl.o2o.pojo.TeamProclamation"/> 	
+	<resultMap id="teamProclamationSelectResult" class="TeamProclamation">
+		<result property="id" column="ID"/>
+		<result property="teamId" column="TEAM_ID"/>
+		<result property="playerId" column="PLAYER_ID"/>	
+		<result property="content" column="CONTENT"/>
+		<result property="createTime" column="CREATED_TIME"/>
+	</resultMap>
+	<!--================================================== Select ==================================================-->
+	<!-- <select id="selectById" parameterClass="java.util.Map" resultMap="selectResult">
+  		select t.ID, t.TEAM_ID,t.PLAYER_ID,t.CONTENT,t.CREATED_TIME from TEAM_PROCLAMATION t
+  		where t.ID = #id# 
+  	</select>
+	
+	<select id="selectAll" resultMap="selectResult">
+  		select t.ID, t.TEAM_ID,t.PLAYER_ID,t.CONTENT,t.CREATED_TIME from TEAM_PROCLAMATION t
+  	</select> -->
+  	<select id="select" resultMap="teamProclamationSelectResult">
+  		select t.ID, t.TEAM_ID,t.PLAYER_ID,t.CONTENT,t.CREATED_TIME from TEAM_PROCLAMATION t
+  		where t.TEAM_ID=#fid#;
+  	</select>	
+	<select id="selectByPlayerId" parameterClass="java.lang.Integer" resultMap = "teamProclamationSelectResult">
+		select  t.ID, t.TEAM_ID,t.PLAYER_ID,t.CONTENT,t.CREATED_TIME
+			from TEAM_PROCLAMATION  t 
+			where t.PLAYER_ID = #playerId# 
+	</select>
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="TeamProclamation">
+		insert into TEAM_PROCLAMATION(TEAM_ID,PLAYER_ID,CONTENT,CREATED_TIME)
+		values(
+				#teamId#,
+				#playerId#,
+				#content#,
+				#createTime#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>  	
+  	
+  	 <delete id="delete" parameterClass="TeamProclamation">
+  		delete from TEAM_PROCLAMATION
+		where ID = #id#
+  	</delete>
+
+  	
+  	<update id="update" parameterClass="TeamProclamation">
+		update TEAM_PROCLAMATION t 
+		set
+	        t.TEAM_ID = #teamId#,
+	        t.PLAYER_ID = #playerId#,
+	        t.CONTENT = #content#,
+	        t.CREATED_TIME = #createTime#,
+		where t.ID = #id#
+	</update>
+</sqlMap>	
+  	
+ 
+  	

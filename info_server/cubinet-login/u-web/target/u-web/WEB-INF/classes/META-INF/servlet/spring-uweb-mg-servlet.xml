@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 登陆游戏 -->
+    <bean name="/login/ma/gameLogin.htm" class="com.pde.uweb.web.controller.mg.GameLoginController">
+        <property name="cgcRequestUrl" value="${uweb.cgcLoginUrl}" />
+        <property name="partnerId" value="${uweb.partnerId}" />
+    </bean>
+
+    <!-- 我的游戏 -->
+    <bean name="/login/mg/myGameList.htm" class="com.pde.uweb.web.controller.mg.MyGameListController">
+        <property name="cgcMyGameListUrl" value="${uweb.cgcMyGameListUrl}" />
+        <property name="partnerId" value="${uweb.partnerId}" />
+    </bean>
+
+    <!-- 激活码激活 -->
+    <bean name="/login/mg/cdKeyActivate.htm" class="com.pde.uweb.web.controller.mg.CDKeyActivateController">
+        <property name="cgcCdkeyActivateUrl" value="${uweb.cgcCdkeyActivateUrl}" />
+        <property name="partnerId" value="${uweb.partnerId}" />
+    </bean>
+</beans>

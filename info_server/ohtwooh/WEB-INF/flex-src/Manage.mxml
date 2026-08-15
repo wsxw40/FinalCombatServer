@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:window="window.*" backgroundColor="0xB3AD93">
+<mx:Script>
+	<![CDATA[
+			import common.MenuEnum;
+			import mx.events.MenuEvent;
+			import event.LogSelectEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			public function init():void{
+				mainScreenVS.selectedChild=maps;
+			}
+			
+			[Embed(source="/resource/battle_jamp_logo.jpg")]
+			public static const logo1:Class;
+			
+			public function onMenuClick(evt:MenuEvent):void{
+				if(evt.label == "Item Manager"){
+					mainScreenVS.selectedChild=sysItems;
+				}else if(evt.label == "Map Manager"){
+					mainScreenVS.selectedChild=maps;
+				}else if(evt.label == "Mode Config Manager"){
+					mainScreenVS.selectedChild=modeCofigs;
+				}else if(evt.label == "Player Manager"){
+					mainScreenVS.selectedChild=players;
+				}
+				else{
+					mainScreenVS.selectedChild=characters;
+				}
+			}		
+	]]>
+</mx:Script>
+	<mx:ApplicationControlBar width="100%">
+			<mx:HBox width="100%">	
+				<mx:MenuBar id="menus" dataProvider="{MenuEnum.mainMenuItems}"
+							width="80"  itemClick="onMenuClick(event)" styleName="MenuBar"/>
+				<mx:HBox width="100%" horizontalAlign="right">
+					<mx:Image source="{logo1}"/>
+				</mx:HBox>			
+			</mx:HBox>
+			
+	</mx:ApplicationControlBar>
+		<mx:ViewStack id="mainScreenVS" width="100%" height="100%">
+			<window:SysItemManageWindow id="sysItems" label="Manage Item"/>
+			<window:CharacterManageWindow id="characters" label="Manage Character"/>
+			<window:MapManagementWindow id="maps" label="Manage Weapon in Map"/>
+			<window:WeaponForMapManageWindow id="mapWeapons" label="Manage Maps"/>
+			<window:ModeConfigManageWindow id="modeCofigs" label="Mode Config Manager"/>
+			<window:PlayerManageWindow id="players" label="Player Manager"/>
+		</mx:ViewStack>
+</mx:VBox>

@@ -1,0 +1,66 @@
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerChest">
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="PlayerChest" type="com.pearl.manager.pojo.PlayerChest" />
+		
+	<resultMap id="selectResult" class="PlayerChest">
+		<result property="id"				column="ID"/>
+		<result property="playerId"			column="PLAYER_ID"/>
+		<result property="level"			column="LEVEL"/>
+		<result property="isOpen"			column="IS_OPEN"/>
+		<result property="howGet"			column="HOW_GET"/>
+		<result property="sysItemId"		column="SYS_ITEM_ID"/>
+		<result property="createTime"		column="CREATE_TIME"/>
+	</resultMap>
+	
+	<select id="select" resultMap="selectResult">
+		select * 
+		from PLAYER_CHEST$tableSuffix$ pc
+		where
+		<dynamic prepend="    ">
+			<isNotNull prepend="and" property="fid">
+				pc.PLAYER_ID =  #fid#
+			</isNotNull>
+			and IS_OPEN = 0
+		</dynamic>
+		order by pc.ID
+	</select>
+	
+	<insert id="insert" parameterClass="PlayerChest">
+		insert into PLAYER_CHEST$tableSuffix$ (
+			PLAYER_ID,
+			LEVEL,
+			IS_OPEN,
+			HOW_GET,
+			SYS_ITEM_ID,
+			CREATE_TIME
+		) values (
+			#playerId#,
+			#level#,
+			#isOpen#,
+			#howGet#,
+			#sysItemId#,
+			#createTime#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="PlayerChest">
+		update PLAYER_CHEST$tableSuffix$ pc
+		set pc.IS_OPEN 			= #isOpen#,
+			pc.SYS_ITEM_ID		= #sysItemId#
+		where pc.ID = #id#
+	</update>
+	
+	<delete id="delete" parameterClass="PlayerChest">
+		update PLAYER_CHEST$tableSuffix$ pc
+		set pc.IS_OPEN 	= 1
+		where pc.ID = #id#
+	</delete>
+	
+</sqlMap>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE sqlMapConfig
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings
+		lazyLoadingEnabled="false" 
+		useStatementNamespaces="true"
+		cacheModelsEnabled="true"/>
+	
+	<sqlMap resource="com/pearl/o2o/sql/Order.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/User.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/Player.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/Friend.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/PlayerItem.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/PlayerMission.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/PlayerAchievement.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/PlayerPack.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/Server.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/Channel.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/SysItem.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/SysItemLog.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ItemMod.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/Message.xml" />		
+	<sqlMap resource="com/pearl/o2o/sql/Character.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/CharacterLog.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/PlayerBuff.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/Rank.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/KeyWord.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/LevelInfo.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/LevelWeapon.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/Team.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/PlayerTeam.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/TeamHistory.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/SysModeConfig.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/SysConfiguration.xml" />	
+</sqlMapConfig>

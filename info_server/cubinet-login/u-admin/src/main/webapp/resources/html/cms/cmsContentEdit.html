@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+<title>73u CMS 新闻资讯编辑</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="/u-admin/resources/uploadify/uploadify.css" />
+<script type="text/javascript" src="/u-admin/resources/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/u-admin/resources/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+	<h1>73u CMS 新闻资讯编辑</h1>
+	<hr />
+	<form id="cmsForm">
+	<input type="hidden" id="newsId" />
+		<div>
+			标题：<input id="headline" type="text" maxlength="50" />（不超过50个字）
+		</div>
+		<div id="headlineError" style="display:none">标题不能为空</div>
+
+		<div>
+			栏目：<select id="newsColumnId">	</select>
+		</div>
+
+		<div>
+			摘要 :以最简单的方式介绍这篇文章，内容不超过150个字。
+		</div>
+		<div>
+			<textarea id="subhead" rows="4" cols="115"></textarea>
+		</div>
+		<div id="subheadError1" style="display:none">摘要不能为空</div>
+		<div id="subheadError2" style="display:none">摘要不能超过150个字</div>
+		<br />
+		
+		<div>新闻缩略图（300K以内）：<img id="thumbnails" height="80" width="80">
+		<input type="file" name="uploadify" id="file_upload" />
+		</div>
+
+        <div>
+        	作者：<input id="author" maxlength="32" type="text" />
+			&nbsp;&nbsp;
+        	
+        	显示优先级（数值越大越靠前）：
+            <select id="priorityLevel"></select>
+            &nbsp;&nbsp;
+        	
+        	<!-- 
+        	置顶级别：
+			<select name="topLevel">
+            	<option value="1" <c:if test="${cmsContent.topLevel==1}">selected</c:if>>1</option>
+                <option value="2" <c:if test="${cmsContent.topLevel==2}">selected</c:if>>2</option>
+            </select>
+            &nbsp;&nbsp;
+			
+			是否头条：
+            <select name="headlineStatus">
+            	<option value="1" <c:if test="${cmsContent.headlineStatus==1}">selected</c:if>>是</option>
+                <option value="0" <c:if test="${cmsContent.headlineStatus==0}">selected</c:if>>否</option>
+            </select>
+        	-->
+
+			是否显示：
+            <select id="status"></select>
+            &nbsp;&nbsp;
+            
+			资讯类型：<select id="type"></select>
+        </div>
+        
+        <br />
+        <div>
+        	<input id="content" name="content" type="hidden" />
+        	<iframe id="content___Frame" frameborder="0" height="500" scrolling="no" width="900" src="/u-admin/fckeditor/editor/fckeditor.html?InstanceName=content&amp;Toolbar=Default"></iframe> 
+		</div>
+		<div id="error"></div>
+		<br />
+		<input id="btnSubmit" type="button" value="发布" />
+		<a href="/u-admin/resources/html/cms/cmsContentList.html">返回新闻列表</a>
+	</form>
+<script type="text/javascript" src="/u-admin/resources/js/73u.common.js"></script>
+<script type="text/javascript" src="/u-admin/resources/js/73u.cms.edit.js"></script>
+</body>
+</html>

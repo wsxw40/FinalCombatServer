@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<title>CHILDREN GM TOOLS</title>
+	</head>
+	<script src="js/jquery-1.7.2.js"></script>
+	<script type="text/javascript" src="js/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("[name='buttonC']").mouseover(function(){
+				// $(this).css("background","gray");
+			}).mouseout(function(){
+				// $(this).css("background","#CCC");
+			}).click(function(){
+				$("#mainDiv").load("cindex?action="+$(this).attr("id"));
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+	<link rel="stylesheet" href="css/uniform.css" />
+	<link rel="stylesheet" href="css/select2.css" />
+	<link rel="stylesheet" href="css/jquery.gritter.css">
+	<link rel="stylesheet" href="css/maruti-style.css" />
+	<link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
+	<style>
+	.mainDiv{border:1px solid #CCC;top:1px;padding-top:10px;padding-left:3px}  
+	#mainDiv{margin:10px}  
+	.buttonC{border:1px solid white;height:35px;font-size:15px;padding-left:15px;padding-right:15px;smargin-left:10px;}
+	</style>
+	<body>   
+		<div class='mainDiv' id="" style="border:1px solid #CCC;">
+			<button class='btn btn-info' name='buttonC' align="center" id="gmGift">发送道具</button>
+			<button class='btn btn-info' name='buttonC'  align="center" id="dataOhte">数据操作</button>
+			<button class='btn btn-info' name='buttonC'  align="center" id="levelOhte">地替坐标(批量操作)</button>
+			<button class='btn btn-info' name='buttonC'  align="center" id="bossOhte" disabled=true>Boss管理</button>
+		</div>
+		<div id='mainDiv' style="border:0px solid black;">
+		</div>
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.LevelAmountDao">
+
+	<resultMap id="StatisticResultMap" type="com.pde.info.analyser.pojo.LevelAmountStatistic">
+		<result column="STATISTIC_DATE" property="statisticDate" jdbcType="VARCHAR" />
+		<result column="LEVEL22" property="level22" jdbcType="INTEGER" />
+		<result column="LEVEL3" property="level3" jdbcType="INTEGER" />
+		<result column="LEVEL15" property="level15" jdbcType="INTEGER" />
+		<result column="LEVEL30" property="level30" jdbcType="INTEGER" />
+		<result column="LEVEL8" property="level8" jdbcType="INTEGER" />
+		<result column="LEVEL20" property="level20" jdbcType="INTEGER" />
+		<result column="LEVEL19" property="level19" jdbcType="INTEGER" />
+		<result column="LEVEL14" property="level14" jdbcType="INTEGER" />
+		<result column="LEVEL_T" property="levelT" jdbcType="INTEGER" />
+		<result column="LEVEL36" property="level36" jdbcType="INTEGER" />
+		<result column="LEVEL29" property="level29" jdbcType="INTEGER" />
+		<result column="LEVEL28" property="level28" jdbcType="INTEGER" />
+		<result column="LEVEL32" property="level32" jdbcType="INTEGER" />
+		<result column="LEVEL12" property="level12" jdbcType="INTEGER" />
+		<result column="LEVEL5" property="level5" jdbcType="INTEGER" />
+		<result column="LEVEL38" property="level38" jdbcType="INTEGER" />
+		<result column="LEVEL25" property="level25" jdbcType="INTEGER" />
+		<result column="LEVEL26" property="level26" jdbcType="INTEGER" />
+		<result column="LEVEL35" property="level35" jdbcType="INTEGER" />
+		<result column="LEVEL24" property="level24" jdbcType="INTEGER" />
+		<result column="LEVEL7" property="level7" jdbcType="INTEGER" />
+		<result column="LEVEL9" property="level9" jdbcType="INTEGER" />
+		<result column="LEVEL10" property="level10" jdbcType="INTEGER" />
+		<result column="LEVEL27" property="level27" jdbcType="INTEGER" />
+		<result column="LEVEL16" property="level16" jdbcType="INTEGER" />
+		<result column="LEVEL37" property="level37" jdbcType="INTEGER" />
+		<result column="LEVEL34" property="level34" jdbcType="INTEGER" />
+		<result column="LEVEL31" property="level31" jdbcType="INTEGER" />
+		<result column="LEVEL2" property="level2" jdbcType="INTEGER" />
+		<result column="LEVEL6" property="level6" jdbcType="INTEGER" />
+		<result column="LEVEL11" property="level11" jdbcType="INTEGER" />
+		<result column="LEVEL33" property="level33" jdbcType="INTEGER" />
+		<result column="LEVEL23" property="level23" jdbcType="INTEGER" />
+		<result column="LEVEL1" property="level1" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="getStatistic" resultMap="StatisticResultMap" parameterType="java.util.Map">
+		SELECT `STATISTIC_DATE`,
+		`LEVEL22`,`LEVEL3`,`LEVEL15`,`LEVEL30`,`LEVEL8`,`LEVEL20`,`LEVEL19`,`LEVEL14`,`LEVEL_T`,`LEVEL36`,`LEVEL29`,`LEVEL28`,`LEVEL32`,`LEVEL12`,`LEVEL5`,`LEVEL38`,`LEVEL25`,`LEVEL26`,`LEVEL35`,`LEVEL24`,`LEVEL7`,`LEVEL9`,`LEVEL10`,`LEVEL27`,`LEVEL16`,`LEVEL37`,`LEVEL34`,`LEVEL31`,`LEVEL2`,`LEVEL6`,`LEVEL11`,`LEVEL33`,`LEVEL23`,`LEVEL1`
+    	FROM `INFO_REPORT_LEVEL`
+		WHERE `STATISTIC_DATE` BETWEEN #{startDate} AND #{endDate}
+	</select>
+
+</mapper>

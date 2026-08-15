@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysQuestMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysQuest" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="NAME_I18N" property="nameI18n" jdbcType="VARCHAR" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="TITLE_I18N" property="titleI18n" jdbcType="VARCHAR" />
+    <result column="DESC" property="desc" jdbcType="VARCHAR" />
+    <result column="DESC_I18N" property="descI18n" jdbcType="VARCHAR" />
+    <result column="ICON" property="icon" jdbcType="VARCHAR" />
+    <result column="RESOURCE" property="resource" jdbcType="VARCHAR" />
+    <result column="UI_ACTION" property="uiAction" jdbcType="INTEGER" />
+    <result column="UI_TYPE" property="uiType" jdbcType="INTEGER" />
+    <result column="UI_GROUP" property="uiGroup" jdbcType="INTEGER" />
+    <result column="UI_INDEX" property="uiIndex" jdbcType="INTEGER" />
+    <result column="NUMBER" property="number" jdbcType="BIGINT" />
+    <result column="COMPLETE_COUNT" property="completeCount" jdbcType="INTEGER" />
+    <result column="REPEAT_TYPE" property="repeatType" jdbcType="INTEGER" />
+    <result column="REPEAT_PARAM" property="repeatParam" jdbcType="INTEGER" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="COLOR" property="color" jdbcType="INTEGER" />
+    <result column="SYS_CHARACTER_ID" property="sysCharacterId" jdbcType="INTEGER" />
+    <result column="LEVEL" property="level" jdbcType="INTEGER" />
+    <result column="VIP_LEVEL" property="vipLevel" jdbcType="INTEGER" />
+    <result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
+    <result column="DIFFICULTY" property="difficulty" jdbcType="INTEGER" />
+    <result column="TRIGGER_NUMBER" property="triggerNumber" jdbcType="VARCHAR" />
+    <result column="TRIGGER_INTERFACE" property="triggerInterface" jdbcType="VARCHAR" />
+    <result column="WEIGHT_RATE" property="weightRate" jdbcType="INTEGER" />
+    <result column="PROBABILITY" property="probability" jdbcType="REAL" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="CHAR" />
+    <result column="IS_AUTO_AWARD" property="isAutoAward" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.pearl.fcw.gm.pojo.WSysQuest" extends="BaseResultMap" >
+    <result column="TRIGGER_EVENT" property="triggerEvent" jdbcType="LONGVARCHAR" />
+    <result column="ITEMS" property="items" jdbcType="LONGVARCHAR" />
+    <result column="VIP_ITEMS" property="vipItems" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, `NAME`, NAME_I18N, TITLE, TITLE_I18N, `DESC`, DESC_I18N, ICON, RESOURCE, UI_ACTION, UI_TYPE, 
+    UI_GROUP, UI_INDEX, NUMBER, COMPLETE_COUNT, REPEAT_TYPE, REPEAT_PARAM, START_TIME, END_TIME, COLOR, SYS_CHARACTER_ID, 
+    `LEVEL`, VIP_LEVEL, PARENT_ID, DIFFICULTY, TRIGGER_NUMBER, TRIGGER_INTERFACE, WEIGHT_RATE, PROBABILITY, 
+    IS_DELETED, IS_AUTO_AWARD
+  </sql>
+  <sql id="Blob_Column_List" >
+    TRIGGER_EVENT, ITEMS, VIP_ITEMS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SYS_QUEST
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="ResultMapWithBLOBs" parameterType="com.pearl.fcw.gm.pojo.WSysQuest" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SYS_QUEST
+    where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SYS_QUEST where 1 = 1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `TITLE` like '%${searchValue}%' or `NAME` like '%${searchValue}%'  or `DESC` like '%${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_RANK where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `TITLE` like '%${searchValue}%' or `NAME` like '%${searchValue}%'  or `DESC` like '%${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_QUEST
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysQuest" >
+    insert into SYS_QUEST (ID, `NAME`, NAME_I18N, 
+      TITLE, TITLE_I18N, `DESC`, 
+      DESC_I18N, ICON, RESOURCE, 
+      UI_ACTION, UI_TYPE, UI_GROUP, 
+      UI_INDEX, NUMBER, COMPLETE_COUNT, REPEAT_TYPE, REPEAT_PARAM, 
+      START_TIME, END_TIME, COLOR, 
+      SYS_CHARACTER_ID, `LEVEL`, VIP_LEVEL, 
+      PARENT_ID, DIFFICULTY, TRIGGER_NUMBER, TRIGGER_INTERFACE, 
+      WEIGHT_RATE, PROBABILITY, IS_DELETED, IS_AUTO_AWARD, 
+      TRIGGER_EVENT, ITEMS, VIP_ITEMS
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{nameI18n,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{titleI18n,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, 
+      #{descI18n,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{resource,jdbcType=VARCHAR}, 
+      #{uiAction,jdbcType=INTEGER}, #{uiType,jdbcType=INTEGER}, #{uiGroup,jdbcType=INTEGER}, 
+      #{uiIndex,jdbcType=INTEGER}, #{number,jdbcType=BIGINT}, #{completeCount,jdbcType=INTEGER}, 
+      #{repeatType,jdbcType=INTEGER}, #{repeatParam,jdbcType=INTEGER}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{color,jdbcType=INTEGER}, 
+      #{sysCharacterId,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{vipLevel,jdbcType=INTEGER}, 
+      #{parentId,jdbcType=INTEGER}, #{difficulty,jdbcType=INTEGER}, #{triggerNumber,jdbcType=VARCHAR}, #{triggerInterface,jdbcType=VARCHAR}, 
+      #{weightRate,jdbcType=INTEGER}, #{probability,jdbcType=REAL}, #{isDeleted,jdbcType=CHAR}, 
+      #{isAutoAward,jdbcType=INTEGER}, 
+      #{triggerEvent,jdbcType=LONGVARCHAR}, #{items,jdbcType=LONGVARCHAR}, #{vipItems,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_QUEST (ID, `NAME`, NAME_I18N, 
+      TITLE, TITLE_I18N, `DESC`, 
+      DESC_I18N, ICON, RESOURCE, 
+      UI_ACTION, UI_TYPE, UI_GROUP, 
+      UI_INDEX, NUMBER, COMPLETE_COUNT, REPEAT_TYPE, REPEAT_PARAM, 
+      START_TIME, END_TIME, COLOR, 
+      SYS_CHARACTER_ID, `LEVEL`, VIP_LEVEL, 
+      PARENT_ID, DIFFICULTY, TRIGGER_NUMBER, TRIGGER_INTERFACE, 
+      WEIGHT_RATE, PROBABILITY, IS_DELETED, IS_AUTO_AWARD, 
+      TRIGGER_EVENT, ITEMS, VIP_ITEMS
+      )
+    values     
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+		(#{item.id,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, #{item.nameI18n,jdbcType=VARCHAR}, 
+      #{item.title,jdbcType=VARCHAR}, #{item.titleI18n,jdbcType=VARCHAR}, #{item.desc,jdbcType=VARCHAR}, 
+      #{item.descI18n,jdbcType=VARCHAR}, #{item.icon,jdbcType=VARCHAR}, #{item.resource,jdbcType=VARCHAR}, 
+      #{item.uiAction,jdbcType=INTEGER}, #{item.uiType,jdbcType=INTEGER}, #{item.uiGroup,jdbcType=INTEGER}, 
+      #{item.uiIndex,jdbcType=INTEGER}, #{item.number,jdbcType=BIGINT}, #{item.completeCount,jdbcType=INTEGER}, 
+      #{item.repeatType,jdbcType=INTEGER}, #{item.repeatParam,jdbcType=INTEGER}, 
+      #{item.startTime,jdbcType=TIMESTAMP}, #{item.endTime,jdbcType=TIMESTAMP}, #{item.color,jdbcType=INTEGER}, 
+      #{item.sysCharacterId,jdbcType=INTEGER}, #{item.level,jdbcType=INTEGER}, #{item.vipLevel,jdbcType=INTEGER}, 
+      #{item.parentId,jdbcType=INTEGER}, #{item.difficulty,jdbcType=INTEGER}, #{item.triggerNumber,jdbcType=VARCHAR}, #{item.triggerInterface,jdbcType=VARCHAR}, 
+      #{item.weightRate,jdbcType=INTEGER}, #{item.probability,jdbcType=REAL}, #{item.isDeleted,jdbcType=CHAR}, 
+      #{item.isAutoAward,jdbcType=INTEGER}, 
+      #{item.triggerEvent,jdbcType=LONGVARCHAR}, #{item.items,jdbcType=LONGVARCHAR}, #{item.vipItems,jdbcType=LONGVARCHAR}
+      )
+		</foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysQuest" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_QUEST
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        `NAME`,
+      </if>
+      <if test="nameI18n != null" >
+        NAME_I18N,
+      </if>
+      <if test="title != null" >
+        TITLE,
+      </if>
+      <if test="titleI18n != null" >
+        TITLE_I18N,
+      </if>
+      <if test="desc != null" >
+        `DESC`,
+      </if>
+      <if test="descI18n != null" >
+        DESC_I18N,
+      </if>
+      <if test="icon != null" >
+        ICON,
+      </if>
+      <if test="resource != null" >
+        RESOURCE,
+      </if>
+      <if test="uiAction != null" >
+        UI_ACTION,
+      </if>
+      <if test="uiType != null" >
+        UI_TYPE,
+      </if>
+      <if test="uiGroup != null" >
+        UI_GROUP,
+      </if>
+      <if test="uiIndex != null" >
+        UI_INDEX,
+      </if>
+      <if test="number != null" >
+        NUMBER,
+      </if>
+      <if test="completeCount != null" >
+        COMPLETE_COUNT,
+      </if>
+      <if test="repeatType != null" >
+        REPEAT_TYPE,
+      </if>
+      <if test="repeatParam != null" >
+        REPEAT_PARAM,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="endTime != null" >
+        END_TIME,
+      </if>
+      <if test="color != null" >
+        COLOR,
+      </if>
+      <if test="sysCharacterId != null" >
+        SYS_CHARACTER_ID,
+      </if>
+      <if test="level != null" >
+        `LEVEL`,
+      </if>
+      <if test="vipLevel != null" >
+        VIP_LEVEL,
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="difficulty != null" >
+        DIFFICULTY,
+      </if>
+      <if test="triggerNumber != null" >
+        TRIGGER_NUMBER,
+      </if>
+      <if test="triggerInterface != null" >
+        TRIGGER_INTERFACE,
+      </if>
+      <if test="weightRate != null" >
+        WEIGHT_RATE,
+      </if>
+      <if test="probability != null" >
+        PROBABILITY,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="isAutoAward != null" >
+        IS_AUTO_AWARD,
+      </if>
+      <if test="triggerEvent != null" >
+        TRIGGER_EVENT,
+      </if>
+      <if test="items != null" >
+        ITEMS,
+      </if>
+      <if test="vipItems != null" >
+        VIP_ITEMS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="nameI18n != null" >
+        #{nameI18n,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="titleI18n != null" >
+        #{titleI18n,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null" >
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="descI18n != null" >
+        #{descI18n,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="resource != null" >
+        #{resource,jdbcType=VARCHAR},
+      </if>
+      <if test="uiAction != null" >
+        #{uiAction,jdbcType=INTEGER},
+      </if>
+      <if test="uiType != null" >
+        #{uiType,jdbcType=INTEGER},
+      </if>
+      <if test="uiGroup != null" >
+        #{uiGroup,jdbcType=INTEGER},
+      </if>
+      <if test="uiIndex != null" >
+        #{uiIndex,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=BIGINT},
+      </if>
+      <if test="completeCount != null" >
+        #{completeCount,jdbcType=INTEGER},
+      </if>
+      <if test="repeatType != null" >
+        #{repeatType,jdbcType=INTEGER},
+      </if>
+      <if test="repeatParam != null" >
+        #{repeatParam,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="color != null" >
+        #{color,jdbcType=INTEGER},
+      </if>
+      <if test="sysCharacterId != null" >
+        #{sysCharacterId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="vipLevel != null" >
+        #{vipLevel,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="difficulty != null" >
+        #{difficulty,jdbcType=INTEGER},
+      </if>
+      <if test="triggerNumber != null" >
+        #{triggerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerInterface != null" >
+        #{triggerInterface,jdbcType=VARCHAR},
+      </if>
+      <if test="weightRate != null" >
+        #{weightRate,jdbcType=INTEGER},
+      </if>
+      <if test="probability != null" >
+        #{probability,jdbcType=REAL},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="triggerEvent != null" >
+        #{triggerEvent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="items != null" >
+        #{items,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="vipItems != null" >
+        #{vipItems,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysQuest" >
+    update SYS_QUEST
+    <set >
+      <if test="name != null" >
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="nameI18n != null" >
+        NAME_I18N = #{nameI18n,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="titleI18n != null" >
+        TITLE_I18N = #{titleI18n,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null" >
+        `DESC` = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="descI18n != null" >
+        DESC_I18N = #{descI18n,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        ICON = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="resource != null" >
+        RESOURCE = #{resource,jdbcType=VARCHAR},
+      </if>
+      <if test="UI_ACTION != null" >
+        UI_ACTION = #{uiAction,jdbcType=INTEGER},
+      </if>
+      <if test="uiType != null" >
+        UI_TYPE = #{uiType,jdbcType=INTEGER},
+      </if>
+      <if test="uiGroup != null" >
+        UI_GROUP = #{uiGroup,jdbcType=INTEGER},
+      </if>
+      <if test="uiIndex != null" >
+        UI_INDEX = #{uiIndex,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        NUMBER = #{number,jdbcType=BIGINT},
+      </if>
+      <if test="completeCount != null" >
+        COMPLETE_COUNT = #{completeCount,jdbcType=INTEGER},
+      </if>
+      <if test="repeatType != null" >
+        REPEAT_TYPE = #{repeatType,jdbcType=INTEGER},
+      </if>
+      <if test="repeatParam != null" >
+        REPEAT_PARAM = #{repeatParam,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="color != null" >
+        COLOR = #{color,jdbcType=INTEGER},
+      </if>
+      <if test="sysCharacterId != null" >
+        SYS_CHARACTER_ID = #{sysCharacterId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        `LEVEL` = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="vipLevel != null" >
+        VIP_LEVEL = #{vipLevel,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="difficulty != null" >
+        DIFFICULTY = #{difficulty,jdbcType=INTEGER},
+      </if>
+      <if test="triggerNumber != null" >
+        TRIGGER_NUMBER = #{triggerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerInterface != null" >
+        TRIGGER_INTERFACE = #{triggerInterface,jdbcType=VARCHAR},
+      </if>
+      <if test="weightRate != null" >
+        WEIGHT_RATE = #{weightRate,jdbcType=INTEGER},
+      </if>
+      <if test="probability != null" >
+        PROBABILITY = #{probability,jdbcType=REAL},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="isAutoAward != null" >
+        IS_AUTO_AWARD = #{isAutoAward,jdbcType=INTEGER},
+      </if>
+      <if test="triggerEvent != null" >
+        TRIGGER_EVENT = #{triggerEvent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="items != null" >
+        ITEMS = #{items,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="vipItems != null" >
+        VIP_ITEMS = #{vipItems,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysQuest" >
+    update SYS_QUEST
+    set `NAME` = #{name,jdbcType=VARCHAR},
+      NAME_I18N = #{nameI18n,jdbcType=VARCHAR},
+      TITLE = #{title,jdbcType=VARCHAR},
+      TITLE_I18N = #{titleI18n,jdbcType=VARCHAR},
+      `DESC` = #{desc,jdbcType=VARCHAR},
+      DESC_I18N = #{descI18n,jdbcType=VARCHAR},
+      ICON = #{icon,jdbcType=VARCHAR},
+      RESOURCE = #{resource,jdbcType=VARCHAR},
+      UI_ACTION = #{uiAction,jdbcType=INTEGER},
+      UI_TYPE = #{uiType,jdbcType=INTEGER},
+      UI_GROUP = #{uiGroup,jdbcType=INTEGER},
+      UI_INDEX = #{uiIndex,jdbcType=INTEGER},
+      NUMBER = #{number,jdbcType=BIGINT},
+      COMPLETE_COUNT = #{completeCount,jdbcType=INTEGER},
+      REPEAT_TYPE = #{repeatType,jdbcType=INTEGER},
+      REPEAT_PARAM = #{repeatParam,jdbcType=INTEGER},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      COLOR = #{color,jdbcType=INTEGER},
+      SYS_CHARACTER_ID = #{sysCharacterId,jdbcType=INTEGER},
+      `LEVEL` = #{level,jdbcType=INTEGER},
+      VIP_LEVEL = #{vipLevel,jdbcType=INTEGER},
+      PARENT_ID = #{parentId,jdbcType=INTEGER},
+      DIFFICULTY = #{difficulty,jdbcType=INTEGER},
+      TRIGGER_NUMBER = #{triggerNumber,jdbcType=VARCHAR},
+      TRIGGER_INTERFACE = #{triggerInterface,jdbcType=VARCHAR},
+      WEIGHT_RATE = #{weightRate,jdbcType=INTEGER},
+      PROBABILITY = #{probability,jdbcType=REAL},
+      IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      IS_AUTO_AWARD = #{isAutoAward,jdbcType=INTEGER},
+      TRIGGER_EVENT = #{triggerEvent,jdbcType=LONGVARCHAR},
+      ITEMS = #{items,jdbcType=LONGVARCHAR},
+      VIP_ITEMS = #{vipItems,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()"  horizontalAlign="center">
+<mx:Script>
+	<![CDATA[
+		import mx.events.ListEvent;
+		import mx.events.DataGridEvent;
+		import mx.events.CloseEvent;
+		import vo.GmUser;
+		import vo.SysItem;
+		import mx.managers.PopUpManager;
+		import view.SysItemSelectOneView;
+		import mx.collections.ICollectionView;
+		import mx.validators.Validator;
+		import mx.collections.ArrayCollection;
+		import vo.OnlineAward;
+		import mx.controls.Alert;
+		import mx.rpc.events.ResultEvent;
+		private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+		private function init():void{
+			getRo.getOnlineAwardList();
+		}
+		
+		private function getOnlineAwardListHandler(e:ResultEvent):void{
+			awardList=e.result as ArrayCollection;
+			if(awardList==null){
+				awardList=new ArrayCollection();
+			}
+		}
+		[Bindable]
+		private var awardList:ArrayCollection;
+		[Bindable]
+		private var isEditable:Boolean=false;
+		private var itemId:int=0;
+		
+		private function add():void{
+			isEditable=true;
+			inForm(null);
+		}
+		
+		private function edit():void{
+			if(dg.selectedIndex<0){
+				Alert.show("请先选择要修改的条目");
+				return;
+			}
+			isEditable=true;
+			inForm(dg.selectedItem);
+		}
+		
+		private function remove():void{
+			if(dg.selectedIndex<0){
+				Alert.show("请先选择要删除的条目");
+				return ;
+			}
+			Alert.show("确认删除？","提示",Alert.YES|Alert.NO,this,removeHandler);
+		}
+		
+		private function removeHandler(e:CloseEvent):void{
+			if(e.detail==Alert.YES){
+				deleteRo.deleteOnlineAward(gmUser,dg.selectedItem);
+				var item:OnlineAward;
+				for (var i:int=0;i<awardList.length;i++){
+					item=awardList.getItemAt(i) as OnlineAward;
+					if(item.id==dg.selectedItem.id){
+						awardList.removeItemAt(i);
+						break;
+					}
+				}
+				isEditable=false;
+				inForm(null);
+			}
+		}
+		private function save():void{
+			var result:Array=Validator.validateAll(validateArray);
+			if(result.length>0)return;
+			if(itemId==0){
+				Alert.show("请设置奖品");
+				return ;
+			}
+			var obj:OnlineAward;
+			if(aid.text==""){
+				obj=new OnlineAward();
+				obj.itemId=itemId;
+				obj.itemName=itemName.text;
+				obj.level=parseInt(level.text);
+				obj.unit=parseInt(unit.text);
+				obj.unitType=parseInt(unitType.text);
+				obj.type=parseInt(type.text);
+				obj.weight=parseInt(weight.text);
+				obj.music=parseInt(music.text);
+				createRo.createOnlineAward(gmUser,obj);
+			}else{
+				obj=dg.selectedItem as OnlineAward;
+				obj.itemId=itemId;
+				obj.itemName=itemName.text;
+				obj.level=parseInt(level.text);
+				obj.unit=parseInt(unit.text);
+				obj.unitType=parseInt(unitType.text);
+				obj.type=parseInt(type.text);
+				obj.weight=parseInt(weight.text);
+				obj.music=parseInt(music.text);
+				updateRo.updateOnlineAward(gmUser,obj);
+			}
+			isEditable=false;
+			inForm(null);
+		}
+		
+		private function resetAwardList(e:ResultEvent):void{
+			init();
+		}
+		
+		private function onChange():void{
+			var selectedItem:Object=dg.selectedItem;
+			if(selectedItem!=null && isEditable){
+				inForm(selectedItem);
+			}
+		}
+		
+		private var editAwardView:SysItemSelectOneView;
+		private function editAward():void{
+			editAwardView=PopUpManager.createPopUp(this,SysItemSelectOneView,true) as SysItemSelectOneView;
+			PopUpManager.centerPopUp(editAwardView);
+			editAwardView.okBtn.addEventListener(MouseEvent.CLICK,chooseAward);
+			editAwardView.dg.addEventListener(ListEvent.ITEM_DOUBLE_CLICK,chooseAward);
+		}
+		
+		private function chooseAward(e:Event):void{
+			var selectedSysItem:SysItem=editAwardView.dg.selectedItem as SysItem;
+			if(selectedSysItem==null){
+				Alert.show("请选择一个奖品");
+				return;
+			}else{
+				itemId=selectedSysItem.id;
+				itemName.text=selectedSysItem.displayNameCN;
+				PopUpManager.removePopUp(editAwardView);
+			}
+		}
+		
+		private function inForm(obj:Object):void{
+			if(obj==null){
+				itemName.text = "";
+				level.text    = "0";
+				type.text     = "0";
+				unit.text	  = "0";
+				unitType.text = "0";
+				aid.text	  = "";
+				itemId		  = 0;
+				weight.text   = "0";
+				music.text    = "0";
+			}else{
+				itemName.text = OnlineAward(obj).itemName;
+				level.text    = OnlineAward(obj).level.toString();
+				type.text     = OnlineAward(obj).type.toString();
+				unit.text	  = OnlineAward(obj).unit.toString();
+				unitType.text = OnlineAward(obj).unitType.toString();
+				aid.text	  = OnlineAward(obj).id.toString();
+				itemId		  = OnlineAward(obj).itemId;
+				weight.text   =  OnlineAward(obj).weight.toString();;
+				music.text    =  OnlineAward(obj).music.toString();
+			}
+		}
+	]]>
+</mx:Script>
+<mx:RemoteObject id="getRo" destination="ro.get">
+	<mx:method name="getOnlineAwardList" result="getOnlineAwardListHandler(event)"/>
+</mx:RemoteObject>
+<mx:RemoteObject id="createRo" destination="ro.create">
+	<mx:method name="createOnlineAward" result="resetAwardList(event)"/>
+</mx:RemoteObject>
+<mx:RemoteObject id="updateRo" destination="ro.update">
+	<mx:method name="updateOnlineAward" result="resetAwardList(event)"/>
+</mx:RemoteObject>
+<mx:RemoteObject id="deleteRo" destination="ro.delete">
+	<mx:method name="deleteOnlineAward" result="resetAwardList(event)"/>
+</mx:RemoteObject>
+<mx:Array id="validateArray">
+		<mx:NumberValidator source="{level}" property="text" allowNegative="false" domain="int" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{unit}" property="text" allowNegative="false" domain="int" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{unitType}" property="text" allowNegative="false" domain="int" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{type}" property="text" allowNegative="false" domain="int" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{weight}" property="text" allowNegative="false" domain="int" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{music}" property="text" allowNegative="false" domain="int" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+</mx:Array>
+	<mx:VBox height="100%">
+		<mx:HBox>
+			<mx:Button label="{resourceManager.getString('Language','button.New')}" click="add()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Edit')}" click="edit()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Delete')}" click="remove()"/>
+			<mx:Button id="okBtn" label="{resourceManager.getString('Language','button.Save')}" click="save()" enabled="{isEditable}"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Form>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Award')}" >
+					<mx:Label id="aid"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.AwardName')}" required="true">
+					<mx:HBox>
+						<mx:Label id="itemName" width="100"/>
+						<mx:Button label="{resourceManager.getString('Language','label.AwardSet')}" click="editAward()" enabled="{isEditable}"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.AwardLevel')}" required="true">
+					<mx:TextInput id="level" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Class')}" required="true">
+					<mx:TextInput id="type" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Form>
+				<mx:FormItem label="{resourceManager.getString('Language','label.ConsumeType')}" required="true">
+					<mx:TextInput id="unitType" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.ConsumeValue')}" required="true">
+					<mx:TextInput id="unit" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Weight')}" required="true">
+					<mx:TextInput id="weight" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Music')}" required="true">
+					<mx:TextInput id="music" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:HBox>
+		<mx:Label text="{resourceManager.getString('Language','label.AwardList')}"/>
+		<mx:DataGrid id="dg" dataProvider="{awardList}" change="onChange()" height="100%">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="{resourceManager.getString('Language','label.Award')}" editable="false"/>
+				<mx:DataGridColumn dataField="itemName" headerText="{resourceManager.getString('Language','label.AwardName')}" width="200"/>
+				<mx:DataGridColumn dataField="level" headerText="{resourceManager.getString('Language','label.AwardLevel')}" editable="false"/>
+				<mx:DataGridColumn dataField="unitType" headerText="{resourceManager.getString('Language','label.ConsumeType')}" editable="false"/>
+				<mx:DataGridColumn dataField="unit" headerText="{resourceManager.getString('Language','label.ConsumeValue')}" editable="false"/>
+				<mx:DataGridColumn dataField="type" headerText="{resourceManager.getString('Language','label.Class')}" editable="false"/>	
+				<mx:DataGridColumn dataField="weight" headerText="{resourceManager.getString('Language','label.Weight')}" editable="false"/>	
+				<mx:DataGridColumn dataField="music" headerText="{resourceManager.getString('Language','label.Music')}" editable="false"/>	
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:VBox>
+</mx:VBox>

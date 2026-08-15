@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view:Pod xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:view="com.esria.samples.dashboard.view.*"
+		  title="每月充值[金额][人数]视图" 
+		  creationComplete="init()"
+		  layout="absolute"
+		  width="400" 
+		  height="300">
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import vo.ChargeMonthMoneyCount;
+			import window.MonthCharge;
+			[Bindable]
+			public var  yearValue:String;
+			[Bindable]
+			public var  monthValue:String;
+			public var  monthCharge:MonthCharge;
+			[Bindable]
+			private function yearChange(e:Event):void{
+				yearValue = ComboBox(e.target).selectedItem.valueOf();
+			}
+			private function monthChanged(e:Event):void{
+				monthValue= ComboBox(e.target).selectedItem.data;
+			}
+			
+			[Bindable]
+			private var  yearDatas:ArrayCollection=new ArrayCollection();
+			private function init():void{
+				var nowYear:Number=new Date().fullYear;
+				yearDatas.addItem(nowYear);
+				for(var i:int=1;i<10;i++){
+					yearDatas.addItem(nowYear-i);
+				}
+				var nowMonth:Number=new Date().month;
+				month.selectedIndex=nowMonth-1;
+				getRo.getMonthChargeMoneyAmount(yearValue,monthValue);
+				//trace("初始化成功");
+			}
+			[Bindable]
+			private var datas:ArrayCollection ;
+			public function refresh():void{
+				getRo.getMonthChargeMoneyAmount(yearValue,monthValue);
+			}
+			/**
+			 * 月份 
+			 **/
+			public var monthDatas:ArrayCollection = new ArrayCollection(
+				[ {label:"1", data:1}, 
+					{label:"2", data:2}, 
+					{label:"3", data:3}, 
+					{label:"4", data:4},
+					{label:"5", data:5}, 
+					{label:"6", data:6}, 
+					{label:"7", data:7}, 
+					{label:"8", data:8},
+					{label:"9", data:9},
+					{label:"10", data:10},
+					{label:"11", data:11},
+					{label:"12", data:12} 
+				]);
+			private function refreshView():void{
+				//trace(">>>>>>>>>>>>>>>>> refreshView前 <<<<<<<<<<<<<<<<<<<<");
+				monthCharge.monthChargeMoneyCount.refresh();
+				//trace(">>>>>>>>>>>>>>>>> 后 <<<<<<<<<<<<<<<<<<<<");
+			}
+			private function getPlayerChargeHandler(e:ResultEvent):void{
+				datas=e.result as ArrayCollection;
+				//trace("datas="+datas.length+">>>>>>>>返回数据>>>>");
+				var total:int=0;
+				for each(var f:ChargeMonthMoneyCount in datas){
+					trace("区间："+f.chargeMoney+"金额："+f.chargeNumber);
+					total+=total+f.chargeNumber
+				}
+				trace("total="+total+">>>>>>>>返回数据>>>>>>>>>>>>>>>>>>");
+				//monthCharge.monthChargeMoneyCount.init(datas);
+			}
+		
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getMonthChargeMoneyAmount" result="getPlayerChargeHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:VBox>
+		<mx:HBox   horizontalAlign="right">
+			<mx:Label color="0x323232" text="年份：" />
+			<mx:ComboBox id="year" dataProvider="{yearDatas}" change="yearChange(event);"  width="150" color="0x000000"/>
+			<mx:Label  color="0x323232" text="月份：" /> 
+			<mx:ComboBox id="month" dataProvider="{monthDatas}"  close="monthChanged(event);" width="150" color="0x000000"/>
+			<mx:Button label="刷新视图" click="refreshView()"/>
+			<mx:VBox height="20%"/>
+			<mx:Legend dataProvider="{column}" color="0x323232" horizontalAlign="right"/>
+		</mx:HBox>
+		<mx:VBox height="20%"/>
+		<mx:VBox  height="80%"  width="80%" verticalAlign="bottom">
+			<mx:ColumnChart id="column" height="100%" color="0x323232"
+							showDataTips="true" dataProvider="{datas}">
+				<mx:horizontalAxis>
+					<mx:CategoryAxis categoryField="chargeMoney"/>
+				</mx:horizontalAxis>
+				<mx:series>
+					<mx:ColumnSeries xField="chargeMoney" yField="chargeNumber" displayName="chargeMoney"/>
+				</mx:series>
+			</mx:ColumnChart>
+		</mx:VBox>
+	</mx:VBox>
+
+</view:Pod>

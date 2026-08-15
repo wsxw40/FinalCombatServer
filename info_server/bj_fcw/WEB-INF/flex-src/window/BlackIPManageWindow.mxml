@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" fontSize="12" 
+	 height="100%"
+	creationComplete="init()" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.StringUtil;
+			import mx.controls.TextInput;
+			import utils.ColumnFactory;
+			import popup.ViewCharacterLog;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.ValidationResult;
+			import mx.validators.Validator;
+			import utils.DatagridValidateFactory;
+			import mx.managers.PopUpManager;
+			import view.CreateBlackIPView;
+			import mx.controls.Alert;
+			import component.MyDataGridColumn;
+			import vo.BlackIP;
+			import mx.events.DataGridEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import vo.GmUser;
+			private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+			[Bindable]
+			private var blackIPList:ArrayCollection;
+			
+			private var characterLog:ArrayCollection;
+			[Bindable]
+			private var blackIP:BlackIP=null;
+			private var blackIPView:CreateBlackIPView;
+			private var characterLogView:ViewCharacterLog;
+			private var isCopy:Boolean=false;
+			private function init():void{
+				initBtn();				
+				blackIPDataGrid.columns=ColumnFactory.getBlackIPColumns(false);
+				getRo.getBlackIP();
+			}
+			
+			private function initBtn():void{
+				newBtn.enabled=true;
+				//copyBtn.enabled=true;
+				saveBtn.enabled=false;
+		 		deleteBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+			}
+			
+			
+			private function checkIt(event:Event):void
+			{
+				blackIPDataGrid.invalidateList();
+			}
+			private function onNewBtnClick():void{
+				blackIPView=CreateBlackIPView(PopUpManager.createPopUp(this,CreateBlackIPView,true));
+				if(isCopy){
+					blackIPView.blackIP=this.blackIP;
+				}else{
+					blackIPView.blackIP=new BlackIP();
+				}
+				blackIPView.cancel.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(blackIPView);});
+				blackIPView.save.addEventListener(MouseEvent.CLICK,onValidate);
+				PopUpManager.centerPopUp(blackIPView);
+			}
+			private function onCopyBtnClick():void{
+				if(this.blackIP==null){
+					Alert.show("Pls choose one");
+				}else{
+					isCopy=true;
+				}
+			}
+			private function onValidate(evt:MouseEvent):void{
+				//var validators:Array=DatagridValidateFactory.getCharacterValidateArray(blackIPView);
+				//var validateResult:Array=Validator.validateAll(validators);
+				/*if(validateResult.length>0){
+					return;
+				}else{
+					saveBlackIP();
+				}*/
+				
+				if(!blackIPView.blackIP.ip){
+					Alert.show("IPNot empty");
+				} else if(!blackIPView.blackIP.bannedTime){
+					Alert.show("Incorrect time format");
+				}
+				else if(!blackIPView.blackIP.description){
+					Alert.show("Description not empty");
+				}
+				else if(!blackIPView.blackIP.isBanned){
+					Alert.show("Not empty");
+				} else {
+					saveBlackIP();
+				}
+			}
+			private function onSaveBtnClick():void{
+				updateRo.updateBlackIP(gmUser, this.blackIPList);
+				initBtn();
+				blackIPDataGrid.editable=false;
+				onSearchBtnClick();
+			}
+			private function onDeleteBtnClick():void{
+				if(this.blackIP==null){
+					Alert.show("Pls choose one");
+				}else
+				{
+				deleteRo.deleteBlackIP(gmUser, this.blackIP);
+				getRo.getBlackIP();
+				}
+			}
+			private function onEditBtnClick():void{
+				blackIPDataGrid.editable=true;
+				newBtn.enabled=false;
+		 		deleteBtn.enabled=false;
+		 		editBtn.enabled=false;
+		 		//copyBtn.enabled=false;
+		 		cancelBtn.enabled=true;
+		 		saveBtn.enabled=true;
+			}
+			private function onCancelBtnClick():void{
+				initBtn();
+				blackIPDataGrid.editable=false;
+				getRo.getSysCharacterList();
+			}
+			private function onRefreshClick():void{
+				onSearchBtnClick();
+			}
+			private function saveBlackIP():void{
+				createRo.createBlackIP(gmUser, blackIPView.blackIP);
+				PopUpManager.removePopUp(blackIPView);
+				getRo.getBlackIP();
+			}
+			private var datagridValidate:Validator;
+			private function endEdit(event:DataGridEvent):void{
+		 		var dataField:String = event.dataField;
+				var fCell:Array=[event.columnIndex,event.rowIndex];
+				var source:Object=event.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(event.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = event.currentTarget.editedItemRenderer.data[event.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+               		
+               		var validate:Validator=DatagridValidateFactory.getCharacterValidater(dataField,source);
+               		validate=null;//
+               		if(validate!=null){
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.blackIP.isChanged=1;
+	               			callLater(maintainFocus);
+	               			
+	               		}else{
+	               			event.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		}
+               		}else{
+               			callLater(maintainFocus);
+               		}
+               		this.blackIP.isChanged=1;
+               	}else{
+               		callLater(maintainFocus);
+               	}
+               	
+		 	}
+		 	private function maintainEdit(colIndex:int,rowIndex:int,source:Object):void
+			{
+				
+				var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+				if(blackIPDataGrid.editedItemPosition==null)
+				{
+	   				blackIPDataGrid.editedItemPosition = editCell;
+					callLater(validateCurrentEditor);
+	   			}
+			}
+			private function validateCurrentEditor():void{
+				datagridValidate.source=blackIPDataGrid.itemEditorInstance;
+				datagridValidate.validate();
+			}
+			private function maintainFocus():void
+			{
+	   			blackIPDataGrid.editedItemPosition = null;
+			}
+			
+			//handler
+			private function getBlackIPListHandler(evt:ResultEvent):void{
+				blackIPList=evt.result as ArrayCollection;
+			}
+			private function getByIPHandler(evt:ResultEvent):void{
+				blackIPList=evt.result as ArrayCollection;
+			}
+			private function createBlackIPHandler(evt:ResultEvent):void{
+				getRo.getSysCharacterList();
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+			private function selectHandler():void{
+		 		this.blackIP=blackIPDataGrid.selectedItem as BlackIP;
+		 	}
+		 	import mx.utils.StringUtil; 
+		 	private function onSearchBtnClick():void{
+		 		var tempIP:String  = serachIP.text;
+		 		tempIP = StringUtil.trim(tempIP);
+		 		if(tempIP.length==0){
+		 			getRo.getBlackIP();
+		 			//Alert.show("IP不能为空","警告");
+		 		} else {
+		 			getRo.getByIP(serachIP.text);
+		 		}
+		 	}
+		 	private function onClearBtnClick():void{
+		 		serachIP.text="";
+		 	}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getBlackIP" result="getBlackIPListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getByIP" result="getByIPHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createBlackIP" result="createBlackIPHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteBlackIP" result="createBlackIPHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateBlackIP" result="createBlackIPHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox  height="100%" width="100%">
+	
+	<mx:VBox  height="100%" width="100%">
+	<mx:HBox>
+		<mx:ApplicationControlBar width="100%" >			
+	        	<mx:Button id="newBtn"  label="{resourceManager.getString('Language','button.New')}" click="onNewBtnClick()"/>
+	        	<mx:Button id="saveBtn"  label="{resourceManager.getString('Language','button.Save')}"  click="onSaveBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="{resourceManager.getString('Language','button.Delete')}" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="editBtn"  label="{resourceManager.getString('Language','button.Edit')}" click="onEditBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="{resourceManager.getString('Language','button.Cancel')}"  click="onCancelBtnClick()"/>
+	        	<mx:Button id="showLog"  label="{resourceManager.getString('Language','button.Reset')}"  click="onRefreshClick()"/>
+	     </mx:ApplicationControlBar>
+	</mx:HBox>
+	<mx:HBox>
+		<mx:ApplicationControlBar width="100%" >
+			<mx:FormItem label=" IP:" width="300" height="24">
+				<mx:TextInput  width="100%" id="serachIP"  text=""/>
+			</mx:FormItem>
+			<mx:Button label="{resourceManager.getString('Language','button.Search')}" click="onSearchBtnClick()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Refresh')}" click="onClearBtnClick()"/>
+		</mx:ApplicationControlBar>
+	</mx:HBox>
+		<mx:ApplicationControlBar  height="100%" width="100%">	
+			<component:MyDataGrid id="blackIPDataGrid" dataProvider="{blackIPList}" itemClick="selectHandler()" lockedColumnCount="2" 
+				width="100%" height="100%" editable="false" change="checkIt(event)"
+				itemEditEnd="endEdit(event)">
+			</component:MyDataGrid>
+		</mx:ApplicationControlBar>  
+		</mx:VBox>
+	</mx:HBox>	
+</mx:VBox>

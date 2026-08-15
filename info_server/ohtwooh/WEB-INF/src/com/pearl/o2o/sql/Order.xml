@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Order">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="ItemOrder" type="com.pearl.o2o.pojo.SDOItemOrderPojo"/> 	
+
+	<resultMap id="selectItemOrderResult" class="ItemOrder">
+		<result property="id" column="ID"/>
+		<result property="orderId" column="CONTEXT_ID"/>
+		<result property="paytype" column="PAYTYPE"/>	
+		<result property="o2oUid" column="O2O_USER_ID"/>
+		<result property="sdoUid" column="SDO_USER_ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="amount" column="AMOUNT"/>	
+		<result property="state" column="STATE"/>	
+		<result property="goodsinfo" column="GOODS_INFO"/>	
+		<result property="lastModifyTime" column="LASTMODIFYTIME"/>			
+		<result property="endpointIp" column="ENDPOINT_IP"/>
+		<result property="areaIdPlayer" column="AREAID"/>
+		<result property="groupIdPlayer" column="GROUPID"/>
+	</resultMap>
+  
+	<select id="selectOrderByOrderId" parameterClass="java.lang.String" resultMap="selectItemOrderResult">
+   	 	select *
+    	from ITEM_ORDER 
+		where CONTEXT_ID=#value#
+	</select>  	
+	
+	<insert id="insert" parameterClass="ItemOrder">
+		insert into ITEM_ORDER
+			(	ID,
+				CONTEXT_ID,
+				PAYTYPE,
+				O2O_USER_ID,
+				SDO_USER_ID,
+				PLAYER_ID,
+				STATE,
+				AMOUNT,	
+				LASTMODIFYTIME,
+				GOODS_INFO,
+				ENDPOINT_IP,
+				AREAID,
+				GROUPID
+			)
+		values
+			(#id#,
+			 #orderId#,
+			 #paytype#,
+			 #o2oUid#,
+			 #sdoUid#,
+			 #playerId#,
+			 #state#,
+			 #amount#,
+			 now(),
+			 #goodsinfo#,
+			 #endpointIp#,
+			 #areaIdPlayer#,
+			 #groupIdPlayer#
+			)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>	
+	</insert>
+	
+	<update id="updateOrderState" parameterClass="java.util.Map">
+   		update ITEM_ORDER set STATE=#state# where CONTEXT_ID=#orderId#;
+    </update>
+    
+</sqlMap>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayerInfo" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="XUNLEI_POINT" property="xunleiPoint" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.pearl.fcw.lobby.pojo.WPlayerInfo" extends="BaseResultMap" >
+<!--     <result column="PROTO" property="proto" jdbcType="LONGVARBINARY" /> -->
+    <result column="CACHES" property="caches" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PLAYER_ID, XUNLEI_POINT
+  </sql>
+  <sql id="Blob_Column_List" >
+    CACHES
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="com.pearl.fcw.lobby.pojo.WPlayerInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from PLAYER_INFO${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="ResultMapWithBLOBs" parameterType="com.pearl.fcw.lobby.pojo.WPlayerInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from PLAYER_INFO${tableSuffix}
+    where PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PLAYER_INFO${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayerInfo" >
+    insert into PLAYER_INFO${tableSuffix} (ID, PLAYER_ID, XUNLEI_POINT, 
+      CACHES)
+    values (#{id,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, #{xunleiPoint,jdbcType=INTEGER}, 
+      #{caches,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerInfo" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into PLAYER_INFO${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="xunleiPoint != null" >
+        XUNLEI_POINT,
+      </if>
+      <if test="caches != null" >
+        CACHES,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="xunleiPoint != null" >
+        #{xunleiPoint,jdbcType=INTEGER},
+      </if>
+      <if test="caches != null" >
+        #{caches,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerInfo" >
+    update PLAYER_INFO${tableSuffix}
+    <set >
+      <if test="playerId != null" >
+        PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="xunleiPoint != null" >
+        XUNLEI_POINT = #{xunleiPoint,jdbcType=INTEGER},
+      </if>
+      <if test="caches != null" >
+        CACHES = #{caches,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.pearl.fcw.lobby.pojo.WPlayerInfo" >
+    update PLAYER_INFO${tableSuffix}
+    set PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      XUNLEI_POINT = #{xunleiPoint,jdbcType=INTEGER},
+      CACHES = #{caches,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerInfo" >
+    update PLAYER_INFO${tableSuffix}
+    set PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      XUNLEI_POINT = #{xunleiPoint,jdbcType=INTEGER},
+      CACHES = #{caches,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

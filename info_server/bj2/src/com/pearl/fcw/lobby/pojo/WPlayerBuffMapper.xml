@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerBuffMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayerBuff" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="PLAYER_ITEM_ID" property="playerItemId" jdbcType="INTEGER" />
+    <result column="BUFF_ID" property="buffId" jdbcType="SMALLINT" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, PLAYER_ID, PLAYER_ITEM_ID, BUFF_ID, BACK_UP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerBuff" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_BUFF${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerBuff" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_BUFF${tableSuffix}
+    where PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PLAYER_BUFF${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayerBuff" >
+    insert into PLAYER_BUFF${tableSuffix} (ID, USER_ID, PLAYER_ID, 
+      PLAYER_ITEM_ID, BUFF_ID, BACK_UP
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, 
+      #{playerItemId,jdbcType=INTEGER}, #{buffId,jdbcType=SMALLINT}, #{backUp,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerBuff" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into PLAYER_BUFF${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="playerItemId != null" >
+        PLAYER_ITEM_ID,
+      </if>
+      <if test="buffId != null" >
+        BUFF_ID,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="playerItemId != null" >
+        #{playerItemId,jdbcType=INTEGER},
+      </if>
+      <if test="buffId != null" >
+        #{buffId,jdbcType=SMALLINT},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerBuff" >
+    update PLAYER_BUFF${tableSuffix}
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="playerItemId != null" >
+        PLAYER_ITEM_ID = #{playerItemId,jdbcType=INTEGER},
+      </if>
+      <if test="buffId != null" >
+        BUFF_ID = #{buffId,jdbcType=SMALLINT},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerBuff" >
+    update PLAYER_BUFF${tableSuffix}
+    set USER_ID = #{userId,jdbcType=INTEGER},
+      PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      PLAYER_ITEM_ID = #{playerItemId,jdbcType=INTEGER},
+      BUFF_ID = #{buffId,jdbcType=SMALLINT},
+      BACK_UP = #{backUp,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

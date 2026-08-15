@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="AbstractPartner">
+	<typeAlias alias="PartnerObject" type="com.pde.uweb.database.partner.partner.PartnerPojo" />
+	<resultMap id="partnerResult" class="PartnerObject">
+		<result property="id" column="ID_B" jdbcType="NUMBER" />
+		<result property="partnerId" column="PARTNER_ID_V" jdbcType="VARCHAR" />
+		<result property="status" column="STATUS_I" jdbcType="NUMBER" />
+		<result property="createDate" column="CREATE_DATE_D" jdbcType="DATETIME" />
+		<result property="lastModifyDate" column="LAST_MODIFY_DATE_D" jdbcType="DATETIME" />
+		<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+	</resultMap>
+	<resultMap id="partnerVersion" class="java.lang.Long">
+		<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+	</resultMap>
+
+	<!-- insert -->
+	<insert id="insert" parameterClass="PartnerObject">
+		insert into PARTNER (ID_B,CREATE_DATE_D,LAST_MODIFY_DATE_D,VERSION_B
+		<dynamic>
+			<isNotNull prepend="," property="partnerId">PARTNER_ID_V</isNotNull>
+			<isNotNull prepend="," property="status">STATUS_I</isNotNull>
+		</dynamic>
+		) values(#id#, NOW(), NOW(), 1
+		<dynamic>
+			<isNotNull prepend="," property="partnerId">#partnerId#</isNotNull>
+			<isNotNull prepend="," property="status">#status#</isNotNull>
+		</dynamic>
+		)
+	</insert>
+
+	<!-- select -->
+	<select id="select" resultMap="partnerResult" parameterClass="java.lang.Long">
+		SELECT
+			ID_B,
+			PARTNER_ID_V,
+			STATUS_I,
+			CREATE_DATE_D,
+			LAST_MODIFY_DATE_D,
+			VERSION_B
+		FROM PARTNER
+		WHERE ID_B = #id#
+	</select>
+
+	<!-- update all columns -->
+	<update id="update" parameterClass="PartnerObject">
+		UPDATE PARTNER SET
+			VERSION_B = VERSION_B + 1,
+			LAST_MODIFY_DATE_D = NOW(),
+			PARTNER_ID_V = #partnerId#,
+			STATUS_I = #status#
+		WHERE ID_B = #id# AND VERSION_B = #version#
+	</update>
+
+	<!-- only update "not null" columns -->
+	<update id="updateForField" parameterClass="PartnerObject">
+		UPDATE PARTNER SET
+			VERSION_B = VERSION_B + 1,
+			LAST_MODIFY_DATE_D = NOW()
+		<dynamic>
+			<isNotNull prepend="," property="partnerId">PARTNER_ID_V = #partnerId#</isNotNull>
+			<isNotNull prepend="," property="status">STATUS_I = #status#</isNotNull>
+		</dynamic>
+		WHERE ID_B = #id# AND VERSION_B = #version#
+	</update>
+
+	<!-- delete -->
+	<delete id="delete" parameterClass="java.util.Map">
+		DELETE FROM PARTNER
+		WHERE ID_B = #id#
+		AND VERSION_B = #version#
+	</delete>
+
+	<!-- get version -->
+	<select id="getVersion" resultMap="partnerVersion" parameterClass="java.lang.Long">
+		SELECT VERSION_B
+		FROM PARTNER
+		WHERE ID_B = #id#
+	</select>
+
+</sqlMap>

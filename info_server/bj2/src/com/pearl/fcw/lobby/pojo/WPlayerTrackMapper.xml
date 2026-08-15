@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerTrackMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayerTrack" >
+    <id column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="GIFT_TIME" property="giftTime" jdbcType="VARCHAR" />
+    <result column="MEDAL_COUNT" property="medalCount" jdbcType="INTEGER" />
+    <result column="GOLD_COUNT" property="goldCount" jdbcType="INTEGER" />
+    <result column="FIRST_COST" property="firstCost" jdbcType="DOUBLE" />
+    <result column="FIRST_COST_TIME" property="firstCostTime" jdbcType="VARCHAR" />
+    <result column="NEW_RENEW_ITEM" property="newRenewItem" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PLAYER_ID,GIFT_TIME,MEDAL_COUNT,GOLD_COUNT,FIRST_COST,FIRST_COST_TIME,NEW_RENEW_ITEM
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTrack" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_TRACK${tableSuffix}
+    where PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTrack" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_TRACK${tableSuffix}
+    where PLAYER_ID = #{playerId,jdbcType=INTEGER}    
+  </select>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTrack" >
+    insert into PLAYER_TRACK${tableSuffix} (PLAYER_ID, GIFT_TIME, MEDAL_COUNT, 
+      GOLD_COUNT, FIRST_COST, FIRST_COST_TIME, 
+      NEW_RENEW_ITEM)
+    values (#{playerId,jdbcType=INTEGER}, #{giftTime,jdbcType=VARCHAR}, #{medalCount,jdbcType=INTEGER}, 
+      #{goldCount,jdbcType=INTEGER}, #{firstCost,jdbcType=DOUBLE}, #{firstCostTime,jdbcType=VARCHAR}, 
+      #{newRenewItem,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTrack" >
+  	<selectKey keyProperty="playerId" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into PLAYER_TRACK${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="giftTime != null" >
+        GIFT_TIME,
+      </if>
+      <if test="medalCount != null" >
+        MEDAL_COUNT,
+      </if>
+      <if test="goldCount != null" >
+        GOLD_COUNT,
+      </if>
+      <if test="firstCost != null" >
+        FIRST_COST,
+      </if>
+      <if test="firstCostTime != null" >
+        FIRST_COST_TIME,
+      </if>
+      <if test="newRenewItem != null" >
+        NEW_RENEW_ITEM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="giftTime != null" >
+        #{giftTime,jdbcType=VARCHAR},
+      </if>
+      <if test="medalCount != null" >
+        #{medalCount,jdbcType=INTEGER},
+      </if>
+      <if test="goldCount != null" >
+        #{goldCount,jdbcType=INTEGER},
+      </if>
+      <if test="firstCost != null" >
+        #{firstCost,jdbcType=DOUBLE},
+      </if>
+      <if test="firstCostTime != null" >
+        #{firstCostTime,jdbcType=VARCHAR},
+      </if>
+      <if test="newRenewItem != null" >
+        #{newRenewItem,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerTrack" >
+    update PLAYER_TRACK${tableSuffix}
+    set GIFT_TIME = #{giftTime,jdbcType=VARCHAR},
+    set MEDAL_COUNT = #{medalCount,jdbcType=INTEGER},
+    set GOLD_COUNT = #{goldCount,jdbcType=INTEGER},
+    set FIRST_COST =  #{firstCost,jdbcType=DOUBLE},
+    set FIRST_COST_TIME =  #{firstCostTime,jdbcType=VARCHAR},
+    set NEW_RENEW_ITEM =  #{newRenewItem,jdbcType=LONGVARCHAR}
+    where PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </update>
+</mapper>

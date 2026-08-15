@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<import resource="service.xml"/>
+	<import resource="dao.xml"/>
+	
+	<!--	XMemcached Configuration -->
+	<bean name="memcachedClient" class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean" destroy-method="shutdown">
+		<property name="servers" value="localhost:11211"/>
+        <property name="weights">                        
+        	<list>                                
+        		<value>5</value>
+        		<value>5</value>                                                   		                                                   
+        	</list>                
+        </property>
+        
+		<!-- nio connection pool size -->                
+		<property name="connectionPoolSize" value="1"/>
+	
+		<!-- Use TextCommandFactory -->                
+		<property name="commandFactory">
+			<bean class="net.rubyeye.xmemcached.command.TextCommandFactory"></bean>                
+		</property>
+		
+		<!-- Distributed strategy -->                
+		<property name="sessionLocator">                        
+			<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"></bean>                
+		</property>		
+	</bean>
+	
+	<!-- enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<!-- PlatformTransactionManager -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- DataSource: C3P0 Configuration-->	
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">  
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+         <property name="jdbcUrl" value="jdbc:mysql://localhost/ohtwooh?characterEncoding=utf8&amp;autoReconnect=true&amp;noAccessToProcedureBodies=true"/>
+         <property name="user" value="ohtwooh"/>  
+       	 <property name="password" value="123456"/>
+       	 <property name="checkoutTimeout" value="5000"/>
+        <property name="minPoolSize" value="30"/>
+        <property name="maxPoolSize" value="200"/>        
+    </bean>
+
+
+	<!-- Connection Pool: iBatis Configuration -->
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="WEB-INF/classes/SqlMapConfig.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+		
+	<!-- Sdo  gw -->
+	<bean id="sdoComponent" class="com.snda.services.oa.client.impl.SDOComponentImpl"  destroy-method="cleanup" />
+</beans>

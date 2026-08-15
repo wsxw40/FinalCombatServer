@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="file:config/application.properties"/>
+
+    <bean id="classMetadataFactory" class="com.pearl.fcw.info.core.persistence.config.ClassMetadataScanner" scope="singleton">
+        <constructor-arg ref="entities"/>
+    </bean>
+
+    <!-- Activates scanning of @Autowired -->
+    <context:annotation-config/>
+
+    <!-- Activates scanning of @Repository and @Service -->
+    <context:component-scan base-package="com.pearl.fcw.info"/>
+
+    <import resource="persistence.xml"/>
+
+    <bean id="executableSelector" class="com.pearl.fcw.info.core.network.SpringBeanExecutableSelector"/>
+
+    <bean id="kryoFactory" class="com.pearl.fcw.info.core.persistence.serializer.KryoFactory">
+        <property name="entities" ref="entities"/>
+    </bean>
+
+    <bean id="kryoSerializer" class="com.pearl.fcw.info.core.persistence.serializer.KryoSerializer">
+        <constructor-arg index="0" ref="kryoFactory"/>
+    </bean>
+    
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+    	<constructor-arg index="0" value="${redis.host}"/>
+    	<constructor-arg index="1" value="${redis.port}"/>
+    </bean>
+
+    <bean id="redisClient" class="com.pearl.fcw.info.core.persistence.cache.RedisClient">
+        <constructor-arg index="0" ref="jedisPool"/>
+        <constructor-arg index="1" ref="kryoSerializer"/>
+    </bean>
+
+    <bean id="infoServerLock" class="com.pearl.fcw.info.core.lock.InfoServerLock">
+        <constructor-arg index="0" ref="redisClient"/>
+    </bean>
+
+    <bean id="baseService" class="com.pearl.fcw.info.lobby.service.BaseService">
+        <property name="redisClient" ref="redisClient"/>
+    </bean>
+
+</beans>

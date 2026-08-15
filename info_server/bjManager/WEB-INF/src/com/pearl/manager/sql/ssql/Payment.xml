@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Payment">
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="Payment" type="com.pearl.manager.pojo.Payment"/> 	
+	<resultMap id="selectResult" class="Payment">
+		<result property="id" column="ID"/>
+		<result property="itemId" column="ITEM_ID"/>
+		<result property="payType" column="PAY_TYPE"/>	
+		<result property="unitType" column="UNIT_TYPE"/>
+		<result property="cost" column="COST"/>
+		<result property="unit" column="UNIT"/>
+		<result property="isShow" column="IS_SHOW"/>
+	</resultMap>
+  
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+   	 	select * 
+    	from PAYMENT 
+    	where ITEM_ID=#fid#;
+	</select>  	
+	<insert id="insert" parameterClass="Payment">
+		insert into PAYMENT
+			(	
+				ITEM_ID,
+				PAY_TYPE,
+				UNIT_TYPE,
+				COST,
+				UNIT,IS_SHOW
+			)
+		values
+			(
+			 #itemId#,
+			 #payType#,
+			 #unitType#,
+			 #cost#,
+			 #unit#,#isShow#
+			)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>	
+	</insert>
+	<update id="update" parameterClass="Payment">
+   		update PAYMENT set 
+				ITEM_ID=#itemId#,
+				PAY_TYPE=#payType#,
+				UNIT_TYPE=#unitType#,
+				COST=#cost#,
+				UNIT=#unit#,
+				IS_SHOW=#isShow#
+   		where ID=#id#;
+    </update>
+    <delete id="delete" parameterClass="Payment">
+    	delete from PAYMENT where ID=#id#;
+    </delete>
+</sqlMap>

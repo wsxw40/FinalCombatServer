@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerGrowthMissionMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayerGrowthMission" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <id column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="NUMBER" property="number" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="BIT" />
+    <result column="RECEIVED" property="received" jdbcType="BIT" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PLAYER_ID, NUMBER, STATUS, RECEIVED, BACK_UP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerGrowthMission" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_GROWTH_MISSION${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+      and PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerGrowthMission" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_GROWTH_MISSION${tableSuffix}
+    where PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerGrowthMission" >
+    delete from PLAYER_GROWTH_MISSION${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+      and PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayerGrowthMission" >
+    insert into PLAYER_GROWTH_MISSION${tableSuffix} (ID, PLAYER_ID, NUMBER, 
+      STATUS, RECEIVED, BACK_UP)
+    values (#{id,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, 
+      #{status,jdbcType=BIT}, #{received,jdbcType=BIT}, #{backUp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerGrowthMission" >
+    insert into PLAYER_GROWTH_MISSION${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="number != null" >
+        NUMBER,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="received != null" >
+        RECEIVED,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="received != null" >
+        #{received,jdbcType=BIT},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerGrowthMission" >
+    update PLAYER_GROWTH_MISSION${tableSuffix}
+    <set >
+      <if test="number != null" >
+        NUMBER = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=BIT},
+      </if>
+      <if test="received != null" >
+        RECEIVED = #{received,jdbcType=BIT},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+      and PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerGrowthMission" >
+    update PLAYER_GROWTH_MISSION${tableSuffix}
+    set NUMBER = #{number,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=BIT},
+      RECEIVED = #{received,jdbcType=BIT},
+      BACK_UP = #{backUp,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+      and PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </update>
+</mapper>

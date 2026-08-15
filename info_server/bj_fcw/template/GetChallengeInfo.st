@@ -1,0 +1,11 @@
+id="#$id#"
+name="#$name#"
+level=#$level#
+stones=#$stones#
+canRobStones=#$canRobStones#
+teamSpaceLevel=#$teamSpaceLevel#
+battleFieldId=#$battleFieldId#
+battleFieldConfig="#$battleFieldConfig#"
+formatedConfig="#$formatedConfig#"
+challengeCost=#$challengeCost#
+ableBeChallenge=#$ableBeChallenge#

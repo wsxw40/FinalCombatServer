@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerTeam">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PlayerTeam" type="com.pearl.o2o.pojo.PlayerTeam"/> 	
+
+	<resultMap id="selectResult" class="PlayerTeam">
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="teamId" column="TEAM_ID"/>
+		<result property="nickName" column="NAME"/>	
+		<result property="rank" column="RANK"/>
+		<result property="job" column="JOB"/>
+		<result property="killNum" column="KILL"/>
+		<result property="deadNum" column="DEAD"/>
+		<result property="approved" column="APPROVED"/>
+		<result property="createTime" column="CREATED_TIME"/>
+	</resultMap>
+	
+	<insert id="insert" parameterClass="PlayerTeam">
+		insert into PLAYER_TEAM (PLAYER_ID,TEAM_ID,JOB,`KILL`,DEAD,CREATED_TIME,APPROVED) 
+		values(#playerId#,#teamId#,#job#,#killNum#,#deadNum#,now(),#approved#);
+	</insert>
+	
+	<select id="selectById" parameterClass="java.lang.Integer" resultClass="PlayerTeam">
+	select
+		PLAYER_ID as playerId,
+		TEAM_ID as teamId,
+		"" as nickName,
+		"" as rank,
+		JOB as job,
+		`KILL` as killNum,
+		`DEAD` as deadNum,
+		UNIX_TIMESTAMP(CREATED_TIME) as createTime,
+		APPROVED as approved
+	from PLAYER_TEAM where PLAYER_ID = #playerId# 
+	</select>
+		
+		
+	<update id="updateApply" parameterClass="java.util.Map" >
+		update PLAYER_TEAM 
+			set TEAM_ID = #teamId#,
+				 CREATED_TIME = now()
+		where PLAYER_ID = #id# and APPROVED != 'Y' 
+	</update>
+	
+	<update id="approveApply" parameterClass="java.util.Map" >
+		update PLAYER_TEAM 
+			set 
+			 	`KILL` = #player.GKill#,
+			 	DEAD = #player.GDead#,
+			 	APPROVED = 'Y'
+			where PLAYER_ID = #player.id# and TEAM_ID = #teamId# and APPROVED = 'N'
+	</update>
+	
+	<update id="updateJob" parameterClass="java.util.Map">
+		update PLAYER_TEAM
+			set JOB = #newJob#
+		where PLAYER_ID = #id# and APPROVED = 'Y'  
+	</update>
+	
+	<delete id="remove" parameterClass="java.util.Map" >
+		delete from PLAYER_TEAM where PLAYER_ID = #playerId# and TEAM_ID = #teamId#  
+	</delete>
+	
+	<delete id="removeAllApplication" parameterClass="java.lang.Integer" >
+		delete from PLAYER_TEAM where PLAYER_ID = #playerId# and APPROVED != 'Y'  
+	</delete>
+	
+	<select id="select" parameterClass="java.lang.Integer" resultMap="selectResult">
+		select 
+			pt.PLAYER_ID,
+			pt.TEAM_ID,
+			p.NAME,
+			p.RANK,
+			pt.JOB,
+			pt.KILL,
+			pt.DEAD,
+			UNIX_TIMESTAMP(pt.CREATED_TIME) as CREATED_TIME,
+			pt.APPROVED
+			
+		from PLAYER_TEAM pt
+		left outer join PLAYER p on pt.PLAYER_ID=p.ID
+		where pt.TEAM_ID=#value# and pt.APPROVED != 'N'
+		order by pt.JOB desc;
+	</select>
+  	
+  	<select id="selectUnProvedMember" parameterClass="java.lang.Integer" resultMap="selectResult">
+  		select 
+			pt.PLAYER_ID,
+			pt.TEAM_ID,
+			p.NAME,
+			p.RANK,
+			pt.JOB,
+			pt.KILL,
+			pt.DEAD,
+			UNIX_TIMESTAMP(pt.CREATED_TIME) as CREATED_TIME,
+			pt.APPROVED
+			
+		from PLAYER_TEAM pt
+		left outer join PLAYER p on pt.PLAYER_ID=p.ID
+		where pt.TEAM_ID=#value# and pt.APPROVED = 'N'
+  	</select>
+  	
+</sqlMap>

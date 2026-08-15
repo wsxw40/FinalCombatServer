@@ -1,0 +1,76 @@
+<project name="bj" default="dist" basedir=".">
+    <description>
+    	Final Combat Service
+    </description>
+    
+  <!-- set global properties for this build -->
+  <property name="src" location="WEB-INF/src"/>	
+  <property name="build" location="build"/>
+  <property name="classes" location="${build}/WEB-INF/classes"/>  	
+  <property name="dist"  location="dist"/>
+
+  <path id="java.lib.path">
+    <fileset dir="WEB-INF/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+	
+  <path id="java.class.path">
+    <fileset dir="${build}/WEB-INF/classes">
+      <include name="**/*.class"/>
+    </fileset>
+  </path>	
+	
+	
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${classes}"/>
+    <mkdir dir="${dist}"/>  	
+  </target>
+
+  <target name="compile" depends="init"
+  		description="compile the source" >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${classes}" encoding="UTF-8">
+      <classpath refid="java.lib.path"/>
+    </javac>
+  	
+  	<copy todir="${build}">
+  		<fileset dir="${basedir}">
+  			<include name="META-INF/**"/>
+  			<include name="template/**"/>
+  			<include name="*.jpg"/>
+  		</fileset>
+  	</copy>    	  
+  	
+  	<copy todir="${build}/WEB-INF">
+  	    <fileset dir="WEB-INF">
+  	      <include name="lib/**"/>
+  	      <include name="*.xml"/>
+  	      <include name="*.properties"/> 
+  		</fileset>
+  		
+  	</copy>   	
+  	
+  	<copy todir="${classes}">
+  	    <fileset dir="${src}">
+  	      <include name="**/*.xml"/>
+  	      <include name="**/*.properties"/>
+  		</fileset>
+  	</copy>  	  	
+  </target>
+  <target name="dist" depends="clean,compile"
+        description="generate the distribution" >
+    <!-- Put everything in ${build} into the normandy.war file -->
+  	<war destfile="${dist}/bjlog.war" basedir="${build}" needxmlfile="false"/>
+  </target>
+	
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>

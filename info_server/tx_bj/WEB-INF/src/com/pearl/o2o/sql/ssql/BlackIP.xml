@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="BlackIP">
+	<typeAlias alias="blackIP" type="com.pearl.o2o.pojo.BlackIP" />
+	<resultMap id="selectResult" class="blackIP">
+		<result property="id" column="ID"/>
+		<result property="ip" column="IP"/>			
+		<result property="isBanned" column="IS_BANNED"/>		
+		<result property="bannedTime" column="BANNED_TIME"/>
+		<result property="description" column="DESCRIPTION"/>
+		<result property="createTime" column="CREATE_TIME"/>
+	</resultMap>
+	
+	<select id="select" resultMap="selectResult">
+		select
+			m.ID,
+			inet_ntoa(m.IP) as IP,
+			m.IS_BANNED,
+			m.BANNED_TIME,
+			m.DESCRIPTION,
+			UNIX_TIMESTAMP(m.CREATE_TIME) as CREATE_TIME
+		 from BLACK_IP m
+	</select>
+	
+    <insert id="insert" parameterClass="blackIP">
+    	insert into BLACK_IP(
+    	IP,
+    	IS_BANNED,
+    	BANNED_TIME,
+    	DESCRIPTION,
+    	CREATE_TIME
+    	)
+    	values(
+   		inet_aton(#ip#),
+   		#isBanned#,
+   		#bannedTime#,
+   		#description#,
+   		FROM_UNIXTIME(#createTime#)
+   		);
+   		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+    </insert>
+    
+    <update id="update" parameterClass="blackIP">
+   		update BLACK_IP set 
+   		IP = inet_aton(#ip#),
+    	IS_BANNED = #isBanned#,
+    	BANNED_TIME = #bannedTime#,
+    	DESCRIPTION = #description#,
+    	CREATE_TIME = FROM_UNIXTIME(#createTime#)
+    	where ID = #id#;
+    </update>
+    
+    <delete id="delete" parameterClass="java.lang.Integer">
+    	delete from BLACK_IP where ID=#value#;
+    </delete>
+    
+    <select id="selectByIP" parameterClass="java.lang.String" resultMap="selectResult">
+    	select
+			m.ID,
+			inet_ntoa(m.IP) as IP,
+			m.IS_BANNED,
+			m.BANNED_TIME,
+			m.DESCRIPTION,
+			UNIX_TIMESTAMP(m.CREATE_TIME) as CREATE_TIME
+		 from BLACK_IP m
+		 where m.IP = inet_aton(#value#)
+    </select>
+</sqlMap>

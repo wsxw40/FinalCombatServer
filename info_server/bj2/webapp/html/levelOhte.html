@@ -1,0 +1,163 @@
+<html>
+	<head>
+		<title>CHILDREN GM TOOLS</title>
+	</head>
+	<script type="text/javascript">
+		$(document).ready(function(){
+		var page=0;
+			$.ajax({
+					type:'post',
+					dataType:'json',
+					url:'cindex/levelOhte',
+					data:'{}',
+					cache:true, 
+					success:function(msg)
+					{ 
+						var con="<thead><tr>";
+						var top="<tr>";
+						var i = 1;
+						for(var key in msg){ 
+							var ccid = 0;
+							for(ckey in msg[key]){
+								if(ckey=='ID'){
+									ccid=msg[key][ckey];
+									}
+								if(ckey=='displayNameCN'){
+									con+="<td><span class='badge' name='button' id='"+ccid+"'  >"+msg[key][ckey]+"</span></td>";
+									if(i++%5==0)
+									{
+										con+="</tr></thead><thead><tr>";
+									}
+									ccid=0;
+								}
+							}
+						}
+					$("#content").html("<table class='table table-bordered table-striped with-check' align='center' border=0 width=100% >"+top+con+"</table></br>");
+					
+					var id = 0;
+					$("[name='button']").mouseover(function(){
+							$(this).css("cursor","hand");
+						}).mouseout(function(){
+						}).click(function(){
+							var tName = $(this).attr("id");
+							// alert(tName);
+							$.ajax({
+								type:'post',
+								dataType:'json',
+								url:'cindex/levelOhte',
+								// data:'content='+tName,
+								data:'tableName='+tName, 
+								cache:false, 
+								success:function(msg)
+								{ 
+									var ta ="<table class='table table-bordered table-striped with-check'><thead><tr>" 
+									+"<td colspan=5>"
+									+"<br/>此处只接受 <font color='red'>坐标类XYZ</font> 类相关信息：<br/><textarea style='width:350px;height:500px;color:gray' id='xyzpoint'>每行为一组信息，格式：\r\nX,Y,Z ...</textarea>"
+									+"</td>"
+									+"<td>"
+									+"type：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' id='type'/><br/>"
+									+"name：&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' id='name'/><br/>"
+									+"value：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' id='value'/><br/>"
+									+"random：&nbsp;&nbsp;&nbsp;<input type='text' id='random'/><br/>"
+									+"skillTime：&nbsp;&nbsp;<input type='text' id='skillTime'/><br/>"
+									+"z轴偏移量：&nbsp;&nbsp;<input type='text' id='zy'/><br/>"
+									+"<br/><input id='input1' type='button' class='btn btn-success' value='更改地图(覆盖)'/> "
+									+"<br/><input id='input2' type='button' class='btn btn-success' value='更改地图(追加)'/>"
+									+"</td></tr></thead></table>"
+									
+									var con="";
+									for(var key in msg){ 	
+										for(ckey in msg[key]){
+											if(ckey=='ID')
+												{id=msg[key][ckey];}
+											if(ckey=='SUPPLIES'){
+												con+="<thead><tr>";
+												con+="<td width=10% style='color:red'>"+ckey+"</td><td align=left style='font-size:12px'><input type='text' class='button' align='center' id='"+ckey+"' value='"+msg[key][ckey]+"' style='width:1300px;height:30px;color:red'/></td>";
+												con+="</tr></thead>";
+											}else{
+												con+="<thead><tr>";
+												con+="<td width=10%>"+ckey+"</td><td align=left style='font-size:12px'><input type='text' class='button' align='center' id='"+ckey+"' value='"+msg[key][ckey]+"' style='width:1000px;height:30px'/></td>";
+												con+="</tr></thead>";
+											}
+										
+										}
+									}
+									$("#content").html(ta+"<table class='table table-bordered table-striped with-check' align='left'>"+top+con+"</table>");
+									
+									$("#input1").click(function(){ 
+										var xyzpoint = $("#xyzpoint").val();//所有XYZ有关信息
+										var type = $("#type").val();		
+										var name = $("#name").val();		
+										var value = $("#value").val();		
+										var random = $("#random").val();
+										var skillTime = $("#skillTime").val();
+										var type1	=	1;
+										var zy =  $("#zy").val();
+										if(xyzpoint.length<=0||type.length<=0||name.length<=0||value.length<=0||random.length<=0||skillTime.length<=0){
+											alert("各参数不能为空！！");
+											return;
+										}
+										if(!/.*,.*,.*/.test(xyzpoint)){
+											alert("坐标格式为 X,Y,X 中间是以','分隔哦！！");
+											return;
+										}
+										
+										$.ajax({
+											type:'post',
+											dataType:'json',
+											url:'cindex/levelOhte',
+											data:'xyzpoint='+xyzpoint+'&tableName='+id+'&type='+type+'&name='+name+'&value='+value+'&random='+random+'&skillTime='+skillTime+'&type1='+type1+'&zy='+zy,
+											success:function(msg)
+											{ 
+												alert(msg["msg"]);
+											},error:function(){
+												alert("exception!~");
+											}
+											});
+									});
+									 $("#input2").click(function(){
+										var xyzpoint = $("#xyzpoint").val();//所有XYZ有关信息
+										var type = $("#type").val();		
+										var name = $("#name").val();		
+										var value = $("#value").val();		
+										var random = $("#random").val();
+										var skillTime = $("#skillTime").val();
+										var type1	=	2;
+										var zy =  $("#zy").val();
+										if(xyzpoint.length<=0||type.length<=0||name.length<=0||value.length<=0||random.length<=0||skillTime.length<=0){
+											alert("各参数不能为空！！");
+											return;
+										}
+										if(!/.*,.*,.*/.test(xyzpoint)){
+											alert("坐标格式为 X,Y,X 中间是以','分隔哦！！");
+											return;
+										}
+										$.ajax({
+											type:'post',
+											dataType:'json',
+											url:'cindex/levelOhte',
+											data:'xyzpoint='+xyzpoint+'&tableName='+id+'&type='+type+'&name='+name+'&value='+value+'&random='+random+'&skillTime='+skillTime+'&type1='+type1+'&zy='+zy,
+											success:function(msg)
+											{ 
+												alert(msg["msg"]);
+											},error:function(){
+												alert("exception!~");
+											}
+											});
+									});
+								  },error:function(){alert("Exception");}
+								  
+							});
+						});
+					
+					},error:function(XMLHttpRequest,textStatus,errorThrown){alert("service timeout! , status:"+XMLHttpRequest.status+" , readyState:"+XMLHttpRequest.readyState+" , textStatus:"+textStatus);}
+			});
+		});
+	</script>
+	<style>
+		.mainDiv{border:1px solid #CCC;}
+	</style>
+	<body>  
+		<div id='content' style="width:100%;padding:2px;height:3000px;"></div> 
+	</body>
+</html>

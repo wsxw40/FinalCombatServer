@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:Script source="../common/CommonScript.as"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			import vo.GmUser;
+			import mx.events.ListEvent;
+			import mx.controls.Alert;
+			import vo.GmPrivilege;
+			import mx.collections.ArrayCollection;
+			import vo.GmGroup;
+			
+			private var model:O2oModel = O2oModel.getInstance();
+			[Bindable]
+			public var privileges:ArrayCollection = new ArrayCollection();
+			
+			private var _selectedGroup:GmGroup;
+			
+			public function get selectedGroup():GmGroup{
+				return this._selectedGroup;
+			}
+			[Bindable]
+			public function set selectedGroup(group:GmGroup):void{
+				this._selectedGroup = group;
+				if(selectedGroup){
+					getRo.getGmPrivilegesByGroupId(selectedGroup.id);
+				}
+			}
+			
+			[Bindable]
+			private var selectedPriv:GmPrivilege;
+			
+			private function privilegeItemClick(e:ListEvent):void{
+				selectedPriv = e.itemRenderer.data as GmPrivilege;
+			}
+			
+			private function addGroupPriv():void{
+				var ac:ArrayCollection = new ArrayCollection();
+				for each(var gp:GmPrivilege in privileges){
+					if(gp.selected){
+						ac.addItem(gp);
+					}
+				}
+				if(selectedGroup){
+					if(ac.length > 0){
+						createRo.createGmGroupPrivilege(model.gmUser, selectedGroup.id, ac);
+					}else{
+						Alert.show("Privilege Can Not Null");
+					}
+				}else{
+					Alert.show("Choose One Group!");
+				}
+			}
+			
+			private function cancelPriv():void{
+				for each(var gp:GmPrivilege in privileges){
+					gp.selected = false;
+				}
+			}
+			
+			private function getGmPrivilegesByGroupIdHandler(e:ResultEvent):void{
+				var result:ArrayCollection = e.result as ArrayCollection;
+				for each(var gp:GmPrivilege in privileges){
+					gp.selected = false;
+				}
+				
+				for each(var priv:GmPrivilege in result){
+					for each(var p:GmPrivilege in privileges){
+						if(priv.id == p.id){
+							p.selected = true;
+							break;
+						}
+					}
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getGmPrivilegesByGroupId" result="getGmPrivilegesByGroupIdHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create" showBusyCursor="true">		
+		<mx:method name="createGmGroupPrivilege" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>	
+	
+	<mx:VBox height="100%" width="100%">
+		<mx:AdvancedDataGrid id="privilegeADG" itemClick="privilegeItemClick(event)" initialize="gc.refresh();" width="100%" height="100%">
+			<mx:dataProvider>
+				<mx:GroupingCollection id="gc" source="{privileges}">
+					<mx:grouping>
+						<mx:Grouping>
+							<mx:GroupingField name="parent"/>
+						</mx:Grouping>
+					</mx:grouping>
+				</mx:GroupingCollection>
+			</mx:dataProvider>
+			<mx:columns>
+				<mx:AdvancedDataGridColumn dataField="selected" headerText="{resourceManager.getString('Language','label.Privilege')}" width="80">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:HBox horizontalAlign="center">
+								<mx:CheckBox id="selectCB" selected="{data.selected}" change="onChange()">
+									<mx:Script>
+										<![CDATA[												
+											private function onChange():void{
+												if(selectCB.selected){
+													data.selected = true;
+												}else{
+													data.selected = false;
+												}
+											}
+										]]>
+									</mx:Script>
+								</mx:CheckBox>
+							</mx:HBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:AdvancedDataGridColumn>				
+			    <mx:AdvancedDataGridColumn dataField="name" />
+			    <mx:AdvancedDataGridColumn dataField="description"/>
+			</mx:columns>
+		</mx:AdvancedDataGrid>
+		<mx:ControlBar width="100%">
+			<mx:VBox height="100%" width="100%">
+				<mx:HBox height="100%" width="100%" horizontalAlign="center">
+					<mx:Button label="{resourceManager.getString('Language','button.Save')}" click="addGroupPriv()"/>
+					<mx:Button label="{resourceManager.getString('Language','button.Cancel')}" click="cancelPriv()"/>
+				</mx:HBox>
+			</mx:VBox>
+		</mx:ControlBar>
+	</mx:VBox>
+</mx:Canvas>

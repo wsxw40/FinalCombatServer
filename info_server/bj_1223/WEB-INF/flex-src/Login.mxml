@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+	verticalAlign="bottom" paddingBottom="150" horizontalAlign="center" creationComplete="init()"   backgroundImage="login_bg.jpg">
+	<mx:Script>
+		<![CDATA[
+			import vo.GmUser;
+			import mx.collections.ArrayCollection;
+			import mx.utils.StringUtil;
+			import mx.rpc.events.ResultEvent;
+			import event.GmUserLoginEvent;
+			import mx.controls.Alert;
+			import mx.events.StateChangeEvent;
+			private function init():void{
+		    	userName.setFocus();
+		    	userName.setSelection(0, 0);
+		    }
+		    private function login():void{
+		    	
+		    	var name:String = StringUtil.trim(userName.text);
+				var pswd:String = StringUtil.trim(password.text);
+				getRo.getLoginGmUser(name, pswd);
+		    }
+		    private function getLoginGmUserHandler(e:ResultEvent):void{
+		    	var result:ArrayCollection = e.result as ArrayCollection;
+		    	if(result.length > 0){
+		    		var gu:GmUser = result.getItemAt(0) as GmUser;
+		    		var event:GmUserLoginEvent = new GmUserLoginEvent(GmUserLoginEvent.GM_USER_LOGIN, gu, true);
+		    		dispatchEvent(event);
+		    	}else{
+		    		message.text = "Login Fail!";
+		    	}
+		    }
+		     private function cancel():void{
+		    	userName.text = null;
+		    	password.text = null;
+		    }
+		]]>
+	</mx:Script>
+	<mx:StringValidator id="sv" source="{userName}" minLength="1" property="text" required="true"/>
+	
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getLoginGmUser" result="getLoginGmUserHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:Panel  width="370" height="240" 
+		verticalAlign="middle" verticalScrollPolicy="off"
+		horizontalAlign="center" horizontalScrollPolicy="off">
+		<mx:Form width="100%" verticalGap="15" verticalScrollPolicy="off">
+			<mx:FormItem label="Name" width="100%">
+				<mx:TextInput id="userName" enter="login()"/>
+			</mx:FormItem>
+			<mx:FormItem label="Password" >
+				<mx:TextInput id="password" width="100%" displayAsPassword="true" enter="login()"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:Label id="message" width="100%" color="0xFF0000" paddingLeft="10" paddingRight="10"/>
+		<mx:ControlBar horizontalAlign="center">
+			<mx:Button label="Login" 
+				width="94" fontWeight="bold"
+				click="login()"/>
+				<mx:Button label="Reset" 
+				width="94" fontWeight="bold"
+				click="cancel()"/>
+		</mx:ControlBar>	  	
+	</mx:Panel> 
+</mx:VBox>

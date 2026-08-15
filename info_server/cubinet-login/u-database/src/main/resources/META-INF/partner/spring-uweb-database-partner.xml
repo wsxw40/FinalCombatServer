@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="partnerDao_database" class="com.pde.uweb.database.partner.partner.PartnerDaoImpl">
+		<property name="sqlMapClient" ref="mysqlSqlMapClient_database" />
+	</bean>
+	<bean id="webcafeIpListDao" class="com.pde.uweb.database.partner.webcafelist.WebcafeIpListDao">
+		<property name="sqlMapClient" ref="mysqlSqlMapClient_database" />
+	</bean>
+	<bean id="partnerUserDao_database" class="com.pde.uweb.database.partner.partneruser.PartnerUserDaoImpl">
+		<property name="sqlMapClient" ref="mysqlSqlMapClient_database" />
+	</bean>
+
+</beans>

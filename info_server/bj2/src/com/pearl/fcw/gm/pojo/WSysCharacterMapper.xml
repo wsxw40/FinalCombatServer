@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysCharacterMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysCharacter" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="RUN_SPEED" property="runSpeed" jdbcType="REAL" />
+    <result column="WALK_SPEED" property="walkSpeed" jdbcType="REAL" />
+    <result column="CROUCH_SPEED" property="crouchSpeed" jdbcType="REAL" />
+    <result column="ACCEL_SPEED" property="accelSpeed" jdbcType="REAL" />
+    <result column="JUMP_SPEED" property="jumpSpeed" jdbcType="REAL" />
+    <result column="THROW_SPEED" property="throwSpeed" jdbcType="REAL" />
+    <result column="RESOURCE_P" property="resourceP" jdbcType="VARCHAR" />
+    <result column="IS_DEFAULT" property="isDefault" jdbcType="CHAR" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="CHAR" />
+    <result column="COST" property="cost" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="MAX_HP" property="maxHp" jdbcType="INTEGER" />
+    <result column="EX_HP" property="exHp" jdbcType="INTEGER" />
+    <result column="LEVEL" property="level" jdbcType="INTEGER" />
+    <result column="IS_FIRED" property="isFired" jdbcType="INTEGER" />
+    <result column="RESOURCE_NAME" property="resourceName" jdbcType="VARCHAR" />
+    <result column="IS_ENABLE" property="isEnable" jdbcType="INTEGER" />
+    <result column="CONTROLLER_HEIGHT" property="controllerHeight" jdbcType="REAL" />
+    <result column="CONTROLLER_RADIUS" property="controllerRadius" jdbcType="REAL" />
+    <result column="CONTROLLER_CROUCH_HEIGHT" property="controllerCrouchHeight" jdbcType="REAL" />
+    <result column="SCORE_OFFSET" property="scoreOffset" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, RUN_SPEED, WALK_SPEED, CROUCH_SPEED, ACCEL_SPEED, JUMP_SPEED, THROW_SPEED, RESOURCE_P, 
+    IS_DEFAULT, IS_DELETED, COST, NAME, MAX_HP, EX_HP, LEVEL, IS_FIRED, RESOURCE_NAME, 
+    IS_ENABLE, CONTROLLER_HEIGHT, CONTROLLER_RADIUS, CONTROLLER_CROUCH_HEIGHT, SCORE_OFFSET
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_CHARACTER
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysCharacter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_CHARACTER where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_CHARACTER where 1=1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%'  or `NAME` like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_CHARACTER where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_CHARACTER
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysCharacter" >
+    insert into SYS_CHARACTER (ID, RUN_SPEED, WALK_SPEED, 
+      CROUCH_SPEED, ACCEL_SPEED, JUMP_SPEED, 
+      THROW_SPEED, RESOURCE_P, IS_DEFAULT, 
+      IS_DELETED, COST, NAME, 
+      MAX_HP, EX_HP, LEVEL, 
+      IS_FIRED, RESOURCE_NAME, IS_ENABLE, 
+      CONTROLLER_HEIGHT, CONTROLLER_RADIUS, CONTROLLER_CROUCH_HEIGHT, 
+      SCORE_OFFSET)
+    values (#{id,jdbcType=INTEGER}, #{runSpeed,jdbcType=REAL}, #{walkSpeed,jdbcType=REAL}, 
+      #{crouchSpeed,jdbcType=REAL}, #{accelSpeed,jdbcType=REAL}, #{jumpSpeed,jdbcType=REAL}, 
+      #{throwSpeed,jdbcType=REAL}, #{resourceP,jdbcType=VARCHAR}, #{isDefault,jdbcType=CHAR}, 
+      #{isDeleted,jdbcType=CHAR}, #{cost,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{maxHp,jdbcType=INTEGER}, #{exHp,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, 
+      #{isFired,jdbcType=INTEGER}, #{resourceName,jdbcType=VARCHAR}, #{isEnable,jdbcType=INTEGER}, 
+      #{controllerHeight,jdbcType=REAL}, #{controllerRadius,jdbcType=REAL}, #{controllerCrouchHeight,jdbcType=REAL}, 
+      #{scoreOffset,jdbcType=INTEGER})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_CHARACTER (ID, RUN_SPEED, WALK_SPEED, 
+      CROUCH_SPEED, ACCEL_SPEED, JUMP_SPEED, 
+      THROW_SPEED, RESOURCE_P, IS_DEFAULT, 
+      IS_DELETED, COST, NAME, 
+      MAX_HP, EX_HP, LEVEL, 
+      IS_FIRED, RESOURCE_NAME, IS_ENABLE, 
+      CONTROLLER_HEIGHT, CONTROLLER_RADIUS, CONTROLLER_CROUCH_HEIGHT, 
+      SCORE_OFFSET)
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+	    (#{item.id,jdbcType=INTEGER}, #{item.runSpeed,jdbcType=REAL}, #{item.walkSpeed,jdbcType=REAL}, 
+	      #{item.crouchSpeed,jdbcType=REAL}, #{item.accelSpeed,jdbcType=REAL}, #{item.jumpSpeed,jdbcType=REAL}, 
+	      #{item.throwSpeed,jdbcType=REAL}, #{item.resourceP,jdbcType=VARCHAR}, #{item.isDefault,jdbcType=CHAR}, 
+	      #{item.isDeleted,jdbcType=CHAR}, #{item.cost,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, 
+	      #{item.maxHp,jdbcType=INTEGER}, #{item.exHp,jdbcType=INTEGER}, #{item.level,jdbcType=INTEGER}, 
+	      #{item.isFired,jdbcType=INTEGER}, #{item.resourceName,jdbcType=VARCHAR}, #{item.isEnable,jdbcType=INTEGER}, 
+	      #{item.controllerHeight,jdbcType=REAL}, #{item.controllerRadius,jdbcType=REAL}, #{item.controllerCrouchHeight,jdbcType=REAL}, 
+	      #{item.scoreOffset,jdbcType=INTEGER})
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysCharacter" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_CHARACTER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="runSpeed != null" >
+        RUN_SPEED,
+      </if>
+      <if test="walkSpeed != null" >
+        WALK_SPEED,
+      </if>
+      <if test="crouchSpeed != null" >
+        CROUCH_SPEED,
+      </if>
+      <if test="accelSpeed != null" >
+        ACCEL_SPEED,
+      </if>
+      <if test="jumpSpeed != null" >
+        JUMP_SPEED,
+      </if>
+      <if test="throwSpeed != null" >
+        THROW_SPEED,
+      </if>
+      <if test="resourceP != null" >
+        RESOURCE_P,
+      </if>
+      <if test="isDefault != null" >
+        IS_DEFAULT,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="cost != null" >
+        COST,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="maxHp != null" >
+        MAX_HP,
+      </if>
+      <if test="exHp != null" >
+        EX_HP,
+      </if>
+      <if test="level != null" >
+        LEVEL,
+      </if>
+      <if test="isFired != null" >
+        IS_FIRED,
+      </if>
+      <if test="resourceName != null" >
+        RESOURCE_NAME,
+      </if>
+      <if test="isEnable != null" >
+        IS_ENABLE,
+      </if>
+      <if test="controllerHeight != null" >
+        CONTROLLER_HEIGHT,
+      </if>
+      <if test="controllerRadius != null" >
+        CONTROLLER_RADIUS,
+      </if>
+      <if test="controllerCrouchHeight != null" >
+        CONTROLLER_CROUCH_HEIGHT,
+      </if>
+      <if test="scoreOffset != null" >
+        SCORE_OFFSET,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="runSpeed != null" >
+        #{runSpeed,jdbcType=REAL},
+      </if>
+      <if test="walkSpeed != null" >
+        #{walkSpeed,jdbcType=REAL},
+      </if>
+      <if test="crouchSpeed != null" >
+        #{crouchSpeed,jdbcType=REAL},
+      </if>
+      <if test="accelSpeed != null" >
+        #{accelSpeed,jdbcType=REAL},
+      </if>
+      <if test="jumpSpeed != null" >
+        #{jumpSpeed,jdbcType=REAL},
+      </if>
+      <if test="throwSpeed != null" >
+        #{throwSpeed,jdbcType=REAL},
+      </if>
+      <if test="resourceP != null" >
+        #{resourceP,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null" >
+        #{isDefault,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="cost != null" >
+        #{cost,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="maxHp != null" >
+        #{maxHp,jdbcType=INTEGER},
+      </if>
+      <if test="exHp != null" >
+        #{exHp,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="isFired != null" >
+        #{isFired,jdbcType=INTEGER},
+      </if>
+      <if test="resourceName != null" >
+        #{resourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnable != null" >
+        #{isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="controllerHeight != null" >
+        #{controllerHeight,jdbcType=REAL},
+      </if>
+      <if test="controllerRadius != null" >
+        #{controllerRadius,jdbcType=REAL},
+      </if>
+      <if test="controllerCrouchHeight != null" >
+        #{controllerCrouchHeight,jdbcType=REAL},
+      </if>
+      <if test="scoreOffset != null" >
+        #{scoreOffset,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysCharacter" >
+    update SYS_CHARACTER
+    <set >
+      <if test="runSpeed != null" >
+        RUN_SPEED = #{runSpeed,jdbcType=REAL},
+      </if>
+      <if test="walkSpeed != null" >
+        WALK_SPEED = #{walkSpeed,jdbcType=REAL},
+      </if>
+      <if test="crouchSpeed != null" >
+        CROUCH_SPEED = #{crouchSpeed,jdbcType=REAL},
+      </if>
+      <if test="accelSpeed != null" >
+        ACCEL_SPEED = #{accelSpeed,jdbcType=REAL},
+      </if>
+      <if test="jumpSpeed != null" >
+        JUMP_SPEED = #{jumpSpeed,jdbcType=REAL},
+      </if>
+      <if test="throwSpeed != null" >
+        THROW_SPEED = #{throwSpeed,jdbcType=REAL},
+      </if>
+      <if test="resourceP != null" >
+        RESOURCE_P = #{resourceP,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null" >
+        IS_DEFAULT = #{isDefault,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="cost != null" >
+        COST = #{cost,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="maxHp != null" >
+        MAX_HP = #{maxHp,jdbcType=INTEGER},
+      </if>
+      <if test="exHp != null" >
+        EX_HP = #{exHp,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        LEVEL = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="isFired != null" >
+        IS_FIRED = #{isFired,jdbcType=INTEGER},
+      </if>
+      <if test="resourceName != null" >
+        RESOURCE_NAME = #{resourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnable != null" >
+        IS_ENABLE = #{isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="controllerHeight != null" >
+        CONTROLLER_HEIGHT = #{controllerHeight,jdbcType=REAL},
+      </if>
+      <if test="controllerRadius != null" >
+        CONTROLLER_RADIUS = #{controllerRadius,jdbcType=REAL},
+      </if>
+      <if test="controllerCrouchHeight != null" >
+        CONTROLLER_CROUCH_HEIGHT = #{controllerCrouchHeight,jdbcType=REAL},
+      </if>
+      <if test="scoreOffset != null" >
+        SCORE_OFFSET = #{scoreOffset,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysCharacter" >
+    update SYS_CHARACTER
+    set RUN_SPEED = #{runSpeed,jdbcType=REAL},
+      WALK_SPEED = #{walkSpeed,jdbcType=REAL},
+      CROUCH_SPEED = #{crouchSpeed,jdbcType=REAL},
+      ACCEL_SPEED = #{accelSpeed,jdbcType=REAL},
+      JUMP_SPEED = #{jumpSpeed,jdbcType=REAL},
+      THROW_SPEED = #{throwSpeed,jdbcType=REAL},
+      RESOURCE_P = #{resourceP,jdbcType=VARCHAR},
+      IS_DEFAULT = #{isDefault,jdbcType=CHAR},
+      IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      COST = #{cost,jdbcType=INTEGER},
+      NAME = #{name,jdbcType=VARCHAR},
+      MAX_HP = #{maxHp,jdbcType=INTEGER},
+      EX_HP = #{exHp,jdbcType=INTEGER},
+      LEVEL = #{level,jdbcType=INTEGER},
+      IS_FIRED = #{isFired,jdbcType=INTEGER},
+      RESOURCE_NAME = #{resourceName,jdbcType=VARCHAR},
+      IS_ENABLE = #{isEnable,jdbcType=INTEGER},
+      CONTROLLER_HEIGHT = #{controllerHeight,jdbcType=REAL},
+      CONTROLLER_RADIUS = #{controllerRadius,jdbcType=REAL},
+      CONTROLLER_CROUCH_HEIGHT = #{controllerCrouchHeight,jdbcType=REAL},
+      SCORE_OFFSET = #{scoreOffset,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

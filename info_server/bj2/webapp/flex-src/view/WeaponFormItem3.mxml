@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+<mx:Script>
+	<![CDATA[
+		import mx.events.ValidationResultEvent;
+		import utils.DatagridValidateFactory;
+		import mx.validators.Validator;
+		import vo.SysItem;
+		private var _sysItem:SysItem;
+		[Bindable]
+		public function set sysItem(value:SysItem):void{
+			this._sysItem=value;
+		}
+		public function get sysItem():SysItem{
+			return this._sysItem;
+		}
+		
+		public var validateArray:Array=new Array();
+		private function validateTextInput(e:Event):void{
+			var source:TextInput=e.currentTarget as TextInput;
+			var dataField:String=source.id;
+			var pattern:RegExp = / /g;
+			var value:String=source.text.replace(pattern,"");
+			var validate:Validator=DatagridValidateFactory.getSysitemValidator(dataField,source);
+			var val:ValidationResultEvent=validate.validate();
+			if(val.type=="valid"){
+				if(sysItem[dataField] is String){
+					sysItem[dataField]=value;
+				}else if(sysItem[dataField] is Number){
+					sysItem[dataField]=parseFloat(value);
+				}
+			}else{
+				validateArray.push(validate);
+			}
+			sysItem.isChange=1;
+		} 
+		
+	]]>
+</mx:Script>
+	<mx:VBox width="100%" borderStyle="solid" verticalGap="0">
+		<mx:Label text="手雷相关参数"/>
+		<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+			<mx:FormItem label="wExplodeTime">
+				<mx:TextInput change="validateTextInput(event)" id="wExplodeTime" text="{sysItem.wExplodeTime}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wReadyTime">
+				<mx:TextInput change="validateTextInput(event)" id="wReadyTime" text="{sysItem.wReadyTime}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wThrowOutTime">
+				<mx:TextInput change="validateTextInput(event)" id="wThrowOutTime" text="{sysItem.wThrowOutTime}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wBackFactor">
+				<mx:TextInput change="validateTextInput(event)" id="wBackFactor" text="{sysItem.wBackFactor}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wFlashRangeStart">
+				<mx:TextInput change="validateTextInput(event)" id="wFlashRangeStart" text="{sysItem.wFlashRangeStart}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wFlashRangeEnd">
+				<mx:TextInput change="validateTextInput(event)" id="wFlashRangeEnd" text="{sysItem.wFlashRangeEnd}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wFlashBackFactor">
+				<mx:TextInput change="validateTextInput(event)" id="wFlashBackFactor" text="{sysItem.wFlashBackFactor}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wTimeMax">
+				<mx:TextInput change="validateTextInput(event)" id="wTimeMax" text="{sysItem.wTimeMax}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wTimeFade">
+				<mx:TextInput change="validateTextInput(event)" id="wTimeFade" text="{sysItem.wTimeFade}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wTime">
+				<mx:TextInput change="validateTextInput(event)" id="wTime" text="{sysItem.wTime}"/>
+			</mx:FormItem>
+		</mx:Form>
+
+
+
+		<mx:VBox width="50%" borderStyle="solid" verticalGap="0">
+			<mx:Label text="其他"/>
+			<mx:HBox width="100%">
+				<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+					<mx:FormItem label="wUpModifier">
+						<mx:TextInput change="validateTextInput(event)" id="wUpModifier" text="{sysItem.wUpModifier}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wAccuracyTime">
+						<mx:TextInput change="validateTextInput(event)" id="wAccuracyTime" text="{sysItem.wAccuracyTime}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wAccuracyTimeModefier">
+						<mx:TextInput change="validateTextInput(event)" id="wAccuracyTimeModefier" text="{sysItem.wAccuracyTimeModefier}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wMaxAccuracy">
+						<mx:TextInput change="validateTextInput(event)" id="wMaxAccuracy" text="{sysItem.wMaxAccuracy}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wMinAccuracy">
+						<mx:TextInput change="validateTextInput(event)" id="wMinAccuracy" text="{sysItem.wMinAccuracy}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wHitAcceleration">
+						<mx:TextInput change="validateTextInput(event)" id="wHitAcceleration" text="{sysItem.wHitAcceleration}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wHitDistance">
+						<mx:TextInput change="validateTextInput(event)" id="wHitDistance" text="{sysItem.wHitDistance}"/>
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+					<mx:FormItem label="wMaxDistance">
+						<mx:TextInput change="validateTextInput(event)" id="wMaxDistance" text="{sysItem.wMaxDistance}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wLastTime">
+						<mx:TextInput change="validateTextInput(event)" id="wLastTime" text="{sysItem.wLastTime}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wSpecialRange">
+						<mx:TextInput change="validateTextInput(event)" id="wSpecialRange" text="{sysItem.wSpecialRange}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wSpecialDistance">
+						<mx:TextInput change="validateTextInput(event)" id="wSpecialDistance" text="{sysItem.wSpecialDistance}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wSpecialLasttime">
+						<mx:TextInput change="validateTextInput(event)" id="wSpecialLasttime" text="{sysItem.wSpecialLasttime}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wSpecialHurt">
+						<mx:TextInput change="validateTextInput(event)" id="wSpecialHurt" text="{sysItem.wSpecialHurt}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wSpecialLasthurt">
+						<mx:TextInput change="validateTextInput(event)" id="wSpecialLasthurt" text="{sysItem.wSpecialLasthurt}"/>
+					</mx:FormItem>
+				</mx:Form>
+			</mx:HBox>
+		</mx:VBox>		
+	</mx:VBox>
+	<mx:VBox width="100%" borderStyle="solid" verticalGap="0">
+		<mx:VBox width="100%" borderStyle="solid" verticalGap="0">
+			<mx:Label text="特殊参数"/>
+			<mx:HBox width="100%">
+				<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+					<mx:FormItem label="wHurt">
+						<mx:TextInput change="validateTextInput(event)" id="wHurt" text="{sysItem.wHurt}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wHurtRange">
+						<mx:TextInput change="validateTextInput(event)" id="wHurtRange" text="{sysItem.wHurtRange}"/>
+					</mx:FormItem>
+					<mx:FormItem label="WAddBlood">
+						<mx:TextInput change="validateTextInput(event)" id="WAddBlood" text="{sysItem.WAddBlood}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wFlySpeed">
+						<mx:TextInput change="validateTextInput(event)" id="wFlySpeed" text="{sysItem.wFlySpeed}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wMaxaliveTime">
+						<mx:TextInput change="validateTextInput(event)" id="wMaxaliveTime" text="{sysItem.wMaxaliveTime}"/>
+					</mx:FormItem>
+					<mx:FormItem label="WGravity">
+						<mx:TextInput change="validateTextInput(event)" id="WGravity" text="{sysItem.WGravity}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wParticlenum">
+						<mx:TextInput change="validateTextInput(event)" id="wParticlenum" text="{sysItem.wParticlenum}"/>
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+					<mx:FormItem label="wShowSpeed">
+						<mx:TextInput change="validateTextInput(event)" id="wShowSpeed" text="{sysItem.wShowSpeed}"/>
+					</mx:FormItem>
+					<mx:FormItem label="WAmmoType">
+						<mx:TextInput change="validateTextInput(event)" id="WAmmoType" text="{sysItem.WAmmoType}"/>
+					</mx:FormItem>
+					<mx:FormItem label="WAmmopartKey">
+						<mx:TextInput change="validateTextInput(event)" id="WAmmopartKey" text="{sysItem.WAmmopartKey}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wCapsuleHeight">
+						<mx:TextInput change="validateTextInput(event)" id="wCapsuleHeight" text="{sysItem.wCapsuleHeight}"/>
+					</mx:FormItem>
+					<mx:FormItem label="wCapsuleRadius">
+						<mx:TextInput change="validateTextInput(event)" id="wCapsuleRadius" text="{sysItem.wCapsuleRadius}"/>
+					</mx:FormItem>
+					<mx:FormItem label="素材类">
+						<mx:TextInput change="validateTextInput(event)" id="MType" text="{sysItem.MType}"/>
+					</mx:FormItem>
+					<mx:FormItem label="素材值">
+						<mx:TextInput change="validateTextInput(event)" id="MValue" text="{sysItem.MValue}"/>
+					</mx:FormItem>
+				</mx:Form>
+			</mx:HBox>
+		</mx:VBox>
+		<mx:VBox width="100%" borderStyle="solid" verticalGap="0">
+			<mx:Label text="资源争夺战特殊参数"/>
+			<mx:HBox width="100%">
+				<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+					<mx:FormItem label="teamOccupyLength">
+						<mx:TextInput change="validateTextInput(event)" id="teamOccupyLength" text="{sysItem.teamOccupyLength}"/>
+					</mx:FormItem>
+					<mx:FormItem label="teamOccupyWidth">
+						<mx:TextInput change="validateTextInput(event)" id="teamOccupyWidth" text="{sysItem.teamOccupyWidth}"/>
+					</mx:FormItem>
+					<mx:FormItem label="needTeamPlaceLevel">
+						<mx:TextInput change="validateTextInput(event)" id="needTeamPlaceLevel" text="{sysItem.needTeamPlaceLevel}"/>
+					</mx:FormItem>
+					<mx:FormItem label="teamItemUpgradePrice">
+						<mx:TextInput change="validateTextInput(event)" id="teamItemUpgradePrice" text="{sysItem.teamItemUpgradePrice}"/>
+					</mx:FormItem>
+					<mx:FormItem label="timeForCreate(min)">
+						<mx:TextInput change="validateTextInput(event)" id="timeForCreate" text="{sysItem.timeForCreate}"/>
+					</mx:FormItem>
+				</mx:Form>
+			</mx:HBox>
+		</mx:VBox>			
+	</mx:VBox>
+	
+
+	
+</mx:HBox>

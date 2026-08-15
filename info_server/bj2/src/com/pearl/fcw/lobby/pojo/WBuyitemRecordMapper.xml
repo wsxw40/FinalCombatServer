@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WBuyitemRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WBuyitemRecord" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="ITEM_ID" property="itemId" jdbcType="INTEGER" />
+    <result column="COST_ID" property="costId" jdbcType="INTEGER" />
+    <result column="RECORD" property="record" jdbcType="INTEGER" />
+    <result column="PAY_TYPE" property="payType" jdbcType="INTEGER" />
+    <result column="PAY_AMOUNT" property="payAmount" jdbcType="INTEGER" />
+    <result column="LAST_BUY_DATE" property="lastBuyDate" jdbcType="DATE" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PLAYER_ID, ITEM_ID, COST_ID, RECORD, PAY_TYPE, PAY_AMOUNT, LAST_BUY_DATE, CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from BUYITEM_RECORD${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from BUYITEM_RECORD${tableSuffix}
+    where PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from BUYITEM_RECORD${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WBuyitemRecord" >
+    insert into BUYITEM_RECORD${tableSuffix} (ID, PLAYER_ID, ITEM_ID, 
+      COST_ID, RECORD, PAY_TYPE, 
+      PAY_AMOUNT, LAST_BUY_DATE, CREATE_TIME
+      )
+    values (#{id,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, 
+      #{costId,jdbcType=INTEGER}, #{record,jdbcType=INTEGER}, #{payType,jdbcType=INTEGER}, 
+      #{payAmount,jdbcType=INTEGER}, #{lastBuyDate,jdbcType=DATE}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WBuyitemRecord" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into BUYITEM_RECORD${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="itemId != null" >
+        ITEM_ID,
+      </if>
+      <if test="costId != null" >
+        COST_ID,
+      </if>
+      <if test="record != null" >
+        RECORD,
+      </if>
+      <if test="payType != null" >
+        PAY_TYPE,
+      </if>
+      <if test="payAmount != null" >
+        PAY_AMOUNT,
+      </if>
+      <if test="lastBuyDate != null" >
+        LAST_BUY_DATE,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="costId != null" >
+        #{costId,jdbcType=INTEGER},
+      </if>
+      <if test="record != null" >
+        #{record,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=INTEGER},
+      </if>
+      <if test="lastBuyDate != null" >
+        #{lastBuyDate,jdbcType=DATE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WBuyitemRecord" >
+    update BUYITEM_RECORD${tableSuffix}
+    <set >
+      <if test="playerId != null" >
+        PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        ITEM_ID = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="costId != null" >
+        COST_ID = #{costId,jdbcType=INTEGER},
+      </if>
+      <if test="record != null" >
+        RECORD = #{record,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null" >
+        PAY_TYPE = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payAmount != null" >
+        PAY_AMOUNT = #{payAmount,jdbcType=INTEGER},
+      </if>
+      <if test="lastBuyDate != null" >
+        LAST_BUY_DATE = #{lastBuyDate,jdbcType=DATE},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WBuyitemRecord" >
+    update BUYITEM_RECORD${tableSuffix}
+    set PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      ITEM_ID = #{itemId,jdbcType=INTEGER},
+      COST_ID = #{costId,jdbcType=INTEGER},
+      RECORD = #{record,jdbcType=INTEGER},
+      PAY_TYPE = #{payType,jdbcType=INTEGER},
+      PAY_AMOUNT = #{payAmount,jdbcType=INTEGER},
+      LAST_BUY_DATE = #{lastBuyDate,jdbcType=DATE},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

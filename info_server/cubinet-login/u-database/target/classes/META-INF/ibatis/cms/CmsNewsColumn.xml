@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="CmsNewsColumn">
+	<typeAlias alias="CmsNewsColumnObject" type="com.pde.uweb.database.cms.cmsnewscolumn.CmsNewsColumnPojo" />
+	<resultMap id="cmsnewscolumnResult" class="CmsNewsColumnObject">
+		<result property="newsColumnId" column="NEWS_COLUMN_ID_B" jdbcType="NUMBER" />
+		<result property="columnName" column="COLUMN_NAME_V" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- select -->
+	<select id="selectAll" resultMap="cmsnewscolumnResult">
+	SELECT
+		NEWS_COLUMN_ID_B,
+		COLUMN_NAME_V
+	FROM CMS_NEWS_COLUMN
+	WHERE STATUS_I = 1
+	</select>
+	
+</sqlMap>

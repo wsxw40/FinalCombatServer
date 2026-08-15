@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="baseDao" abstract="true">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="gmUserDao" class="com.pearl.manager.dao.impl.nonjoin.GmUserDao" parent="baseDao"/>
+	<bean id="gmLogDao" class="com.pearl.manager.dao.impl.nonjoin.GmLogDao" parent="baseDao"/>
+	<bean id="gmGroupDao" class="com.pearl.manager.dao.impl.nonjoin.GmGroupDao" parent="baseDao"/>
+	<bean id="gmPrivilegeDao" class="com.pearl.manager.dao.impl.nonjoin.GmPrivilegeDao" parent="baseDao"/>
+	<bean id="gmGroupPrivilegeDao" class="com.pearl.manager.dao.impl.nonjoin.GmGroupPrivilegeDao" parent="baseDao"/>
+	<bean id="gmUserGroupDao" class="com.pearl.manager.dao.impl.nonjoin.GmUserGroupDao" parent="baseDao"/>
+	<bean id="chargeLogDao" class="com.pearl.manager.dao.impl.nonjoin.ChargeLogDao" parent="baseDao"/>
+	<bean id="payLogDao" class="com.pearl.manager.dao.impl.nonjoin.PayLogDao" parent="baseDao"/>
+	<bean id="dauDao" class="com.pearl.manager.dao.impl.nonjoin.DauDao" parent="baseDao"/>
+	
+</beans>

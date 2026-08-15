@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="GmUserGroup">
+	
+	<insert id="insert" parameterClass="java.util.Map">
+		insert into GM_USER_GROUP (
+			USER_ID,
+			GROUP_ID
+		) values (
+			#userId#,
+			#groupId#
+		);
+	</insert>
+	
+	<delete id="delete" parameterClass="java.util.Map">
+		delete from GM_USER_GROUP 
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="userId">
+				USER_ID = #userId#		
+			</isNotNull>	
+			<isNotNull prepend="and" property="groupId">
+				GROUP_ID = #groupId#		
+			</isNotNull>
+			<isNotEmpty prepend="and" property="groups">
+				<iterate property="groups" open="(" close=")" conjunction="OR">
+					GROUP_ID = #groups[].id#			
+				</iterate>		
+			</isNotEmpty>		
+		</dynamic>
+		
+	</delete>
+
+</sqlMap>

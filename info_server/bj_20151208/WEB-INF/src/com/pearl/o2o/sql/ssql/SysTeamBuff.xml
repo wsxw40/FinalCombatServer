@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysTeamBuff">
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="SysTeamBuff" type="com.pearl.o2o.pojo.SysTeamBuff"/> 	
+	<resultMap id="SysTeamBuffSelectResult" class="SysTeamBuff">
+		<result property="id" column="ID"/>
+		<result property="rank" column="RANK"/>
+		<result property="sysItemId" column="SYS_ITEM_ID"/>
+		<result property="unit" column="UNIT"/>
+		<result property="unitType" column="UNIT_TYPE"/>
+		<result property="isDelete" column="IS_DELETE"/>		
+		<result property="isEnable" column="IS_ENABLE"/>
+		<result property="payType" column="PAY_TYPE"/>
+		<result property="cost" column="COST"/>
+	</resultMap>  
+  	<!--====================================================  select  ==========================================================-->
+  	<select id="select" resultMap="SysTeamBuffSelectResult">
+   	 	select t.ID, t.RANK,t.SYS_ITEM_ID,t.PAY_TYPE,t.COST,t.UNIT,t.UNIT_TYPE,t.IS_DELETE,t.IS_ENABLE
+    	from SYS_TEAM_BUFF t
+    	where t.IS_DELETE = 0
+	</select>
+	 	<select id="selectById" resultMap="SysTeamBuffSelectResult">
+   	 	select t.ID, t.RANK,t.SYS_ITEM_ID,t.PAY_TYPE,t.COST,t.UNIT,t.UNIT_TYPE,t.IS_DELETE,t.IS_ENABLE
+	    from SYS_TEAM_BUFF t
+	    where ID = #id#
+	</select>		
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="SysTeamBuff">
+		insert into SYS_TEAM_BUFF( t.RANK,t.SYS_ITEM_ID,t.PAY_TYPE,t.COST,t.UNIT,t.UNIT_TYPE,t.IS_DELETE,t.IS_ENABLE)
+		values(
+				#rank#,
+				#sysItemId#,
+				#payType#,
+				#cost#,
+				#unit#
+				#unitType#
+				#isDelete#
+				#isEnable#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>  	
+  	 <delete id="delete" parameterClass="SysTeamBuff">
+  		delete from SYS_TEAM_BUFF
+		where ID = #id#
+  	</delete>
+  	<update id="update" parameterClass="SysTeamBuff">
+		update SYS_TEAM_BUFF t 
+		set
+	   		t.RANK=#rank#,
+			t.SYS_ITEM_ID=#sysItemId#,
+			t.PAY_TYPE=#payType#
+			t.COST=#cost#
+			t.UNIT=#unit#
+			t.UNIT_TYPE=#unitType#
+			t.IS_DELETE=#isDelete#
+			t.IS_ENABLE=#isEnable#
+		where t.ID = #id#
+	</update>
+</sqlMap>	
+  	
+ 
+  	

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VDividedBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	xmlns:vo="vo.*" 
+	height="100%" width="100%"
+	fontSize="12"
+	creationComplete="init()">
+	
+	<mx:Script source="../common/CommonScript.as"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import popup.GmUserGroupPopup;
+			import vo.GmGroup;
+			import event.BoxClickEvent;
+			import mx.validators.Validator;
+			import vo.GmUser;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;	
+			import mx.controls.Alert;	
+			private var model:O2oModel = O2oModel.getInstance();
+			
+			
+			[Bindable]
+			private var gmUsers:ArrayCollection;			
+			[Bindable]
+			private var gmUser:GmUser;			
+			[Bindable]
+			private var gmUserGroups:ArrayCollection = new ArrayCollection();
+			
+			private var createdGmUser:GmUser;			
+			
+			private function init():void{
+				refresh();
+			}	
+				
+			
+			private var group:GmGroup;
+			
+			private function refresh():void{
+				getRo.getGmUsers(model.gmUser);
+				gmUser 		  = null;
+				createdGmUser = null;
+				gmUserGroups  = new ArrayCollection();
+				username.enabled=false;
+				password.enabled=false;
+				displayname.enabled=true;
+				
+			}
+			
+			private function onGmUserChange():void{
+				gmUser = gmUserDG.selectedItem as GmUser;
+				username.enabled=false;
+				password.enabled=false;
+				displayname.enabled=false;
+				if(model.gmUser.id == gmUser.id || gmUser.creatorId == model.gmUser.id){
+					displayname.enabled=true;
+				}
+				getRo.getGmUserGroups(gmUser);
+			}
+			
+			private function addGmUser():void{
+				username.enabled=true;
+				password.enabled=true;
+				gmUser = new GmUser();
+				gmUsers.addItem(gmUser);
+				gmUserDG.selectedItem = gmUser;
+				gmUserGroups = new ArrayCollection();
+			}
+			
+			private function saveGmUser():void{
+				var validateResult:Array = Validator.validateAll(validators);
+				if(validateResult.length == 0){
+					gmUser.name 	= displayname.text;
+					if(gmUser.id == 0){
+						gmUser.userName = username.text;
+						gmUser.password = password.text; 
+						gmUser.creatorId= model.gmUser.id;
+						createRo.createGmUser(model.gmUser, gmUser);
+						createdGmUser = gmUser;
+					}
+					else{
+						updateRo.updateGmUser(model.gmUser, gmUser);
+					}
+				}					
+			}
+			
+			private function deleteGmUser():void{
+				if(model.gmUser.id == 1){//admin可以直接删除用户
+					deleteRo.deleteGmUser(model.gmUser, gmUser);
+					gmUsers.removeItemAt(gmUsers.getItemIndex(gmUser));
+				}else{
+					if(gmUser.groups == null){
+						deleteRo.deleteGmUser(model.gmUser, gmUser);
+						gmUsers.removeItemAt(gmUsers.getItemIndex(gmUser));
+					}else{
+						Alert.show("请先将该用户从Group中移除后再进行删除操作！");
+					}
+				}				
+			}			
+		
+			private function getGmUsersHandler(e:ResultEvent):void{
+				gmUsers = e.result as ArrayCollection;
+			}
+	
+			private function createGmUserHandler(e:ResultEvent):void{
+				createdGmUser.id = (e.result as GmUser).id;
+				username.enabled=false;
+				password.enabled=false;
+			}	
+			
+			private function getGmUserGroupsHandler(e:ResultEvent):void{
+				gmUserGroups = e.result as ArrayCollection;
+			}
+		]]>
+	</mx:Script>
+
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getGmUsers" result="getGmUsersHandler(event)" fault="defaultFaultHandler(event)"/>
+		<mx:method name="getGmUserGroups" result="getGmUserGroupsHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create" showBusyCursor="true">
+		<mx:method name="createGmUser" result="createGmUserHandler(event)" fault="defaultFaultHandler(event)"/>		
+	</mx:RemoteObject>	
+	<mx:RemoteObject id="updateRo" destination="ro.update" showBusyCursor="true">
+		<mx:method name="updateGmUser" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete" showBusyCursor="true">
+		<mx:method name="deleteGmUser" fault="defaultFaultHandler(event)"/>		
+	</mx:RemoteObject>	
+	
+	<mx:Array id="validators">
+		<mx:StringValidator id="usernameSV" source="{username}" property="text" minLength="1"/>
+		<mx:StringValidator id="displaynameSV" source="{displayname}" property="text" minLength="1"/>
+		
+	</mx:Array>
+	
+	<mx:ApplicationControlBar width="100%" height="100%">
+		<mx:VBox width="100%" height="100%">
+	 		<mx:HBox width="100%">
+	 			<mx:Button label="{resourceManager.getString('Language','button.New')}" click="addGmUser()"/>
+	 			<mx:Button label="{resourceManager.getString('Language','button.Refresh')}" click="refresh()"/>
+	 			<mx:Button label="{resourceManager.getString('Language','button.Save')}" click="saveGmUser()"/>
+	 			<mx:Button label="{resourceManager.getString('Language','button.Delete')}" click="deleteGmUser()" />	 	
+	 		</mx:HBox>
+	 		<mx:DataGrid id="gmUserDG" width="100%" height="100%" dataProvider="{gmUsers}" change="onGmUserChange()">
+	 			<mx:columns>
+	 				<mx:DataGridColumn headerText="GM User ID" dataField="id"/>
+	 				<mx:DataGridColumn headerText="{resourceManager.getString('Language','label.UserName')}" dataField="userName"/>
+	 				<mx:DataGridColumn headerText="{resourceManager.getString('Language','label.Name')}" dataField="name"/>
+	 				<mx:DataGridColumn headerText="{resourceManager.getString('Language','label.CreatorId')}" dataField="creatorId"/>	 	
+	 				<mx:DataGridColumn headerText="{resourceManager.getString('Language','label.CreatorUserName')}" dataField="creatorName"/>
+	 				<mx:DataGridColumn headerText="{resourceManager.getString('Language','label.Group')}" dataField="groups"/>
+	 			</mx:columns>
+	 		</mx:DataGrid>
+	 	</mx:VBox>
+	</mx:ApplicationControlBar>
+	
+	<mx:ApplicationControlBar width="100%">
+		<mx:VBox width="100%" height="100%">
+	 		<mx:HBox width="100%">
+	 			<mx:TabBar dataProvider="{userVS}"/>
+	 			<!--mx:HBox width="100%" horizontalAlign="right">
+	 				<mx:Button label="Save" click="saveGmUser()"/>
+	 			</mx:HBox-->	 			
+	 		</mx:HBox>
+	 			 		
+	 		<mx:ViewStack id="userVS" width="100%">	 			
+		 		<mx:HBox label="Basic" width="100%" height="100%" backgroundColor="#FFFFFF">	 			
+			 		<mx:Form>
+			 			<mx:FormItem label="GM User ID:" required="true">
+			 				<mx:Label text="{gmUser.id}"/>
+			 			</mx:FormItem>
+			 			<mx:FormItem label="{resourceManager.getString('Language','label.UserName')}:" required="true">
+			 				<mx:TextInput id="username" text="{gmUser.userName}" enabled="false" width="200"/>
+			 			</mx:FormItem>
+			 			<mx:FormItem label="{resourceManager.getString('Language','label.Name')}:" required="true">
+			 				<mx:TextInput id="displayname" text="{gmUser.name}" enabled="{gmUser!=null}" width="200"/>
+			 			</mx:FormItem>
+			 			<mx:FormItem label="{resourceManager.getString('Language','label.Password')}:">
+			 				<mx:TextInput id="password" text="{gmUser.password}" enabled="false" width="200" displayAsPassword="true"/>
+			 			</mx:FormItem>					
+			 		</mx:Form>	
+			 		<mx:Form>
+			 			<!--<mx:FormItem label="用户所在组:">
+							<mx:List id="groupList" dataProvider="{gmUserGroups}" labelField="name" width="200" height="110"/>
+						</mx:FormItem>-->
+						<!--mx:FormItem width="100%" horizontalAlign="right">
+							<mx:HBox>
+								<mx:Button id="groupBtn" label="+ / -" click="addUserGroups()"/>
+							</mx:HBox>
+						</mx:FormItem-->
+			 		</mx:Form>	
+		 		</mx:HBox>
+	 		</mx:ViewStack>		 				 		
+	 	</mx:VBox>
+	</mx:ApplicationControlBar>	
+
+</mx:VDividedBox>
+

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CharacterLog">
+	<typeAlias alias="CharacterLog" type="com.pearl.o2o.pojo.Character"/>
+	<resultMap class="CharacterLog" id="selectResult">
+		<result property="logId" column="ID"/>
+		<result property="id" column="CHARACTER_ID"/>
+		<result property="runSpeed" column="RUN_SPEED"/>
+		<result property="walkSpeed" column="WALK_SPEED"/>
+		<result property="crouchSpeed" column="CROUCH_SPEED"/>
+		<result property="accelSpeed" column="ACCEL_SPEED"/>
+		<result property="jumpSpeed" column="JUMP_SPEED"/>
+		<result property="throwSpeed" column="THROW_SPEED"/>
+		<result property="resourceP" column="RESOURCE_P"/>
+		<result property="resourceT" column="RESOURCE_T"/>
+		<result property="gender" column="GENDER"/>
+		<result property="isDefault" column="IS_DEFAULT"/>
+		<result property="cost" column="COST"/>
+		<result property="logVersion" column="VERSION"/>
+		<result property="logTime" column="CREATED_TIME"/>
+	</resultMap>
+	<select id="select"  resultMap="selectResult" parameterClass="java.lang.Integer">
+		select * from SYS_CHARACTER_LOG where CHARACTER_ID=#value# order by VERSION desc;
+	</select>
+	<select id="selectVersion"  resultClass="java.lang.Integer" parameterClass="java.lang.Integer">
+		select ifnull(max(VERSION),0) from SYS_CHARACTER_LOG sil where sil.CHARACTER_ID=#id#;
+	</select>
+	<insert id="insert"  parameterClass="com.pearl.o2o.pojo.CharacterLog">
+		insert into SYS_CHARACTER_LOG(
+			CHARACTER_ID,
+			RUN_SPEED,
+			WALK_SPEED,
+			CROUCH_SPEED,
+				ACCEL_SPEED,
+			JUMP_SPEED,
+			THROW_SPEED,
+			RESOURCE_P,
+			RESOURCE_T,
+			GENDER,
+			IS_DEFAULT,
+			COST,
+			VERSION,
+			CREATED_TIME
+		) values(
+			#character.id#,
+			#character.runSpeed#,
+			#character.walkSpeed#,
+			#character.crouchSpeed#,
+			#character.accelSpeed#,
+			#character.jumpSpeed#,
+			#character.throwSpeed#,
+			#character.resourceP#,
+			#character.resourceT#,
+			#character.gender#,
+			#character.isDefault#,
+			#character.cost#,
+			#logVersion#,
+			now()
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+</sqlMap>

@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+	<display-name>OhTwoOh</display-name>
+	<description>OhTwoOh Service</description>
+
+	<!-- Spring ContextLoaderListener -->
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+		<!--
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+		-->
+	</context-param>
+	
+
+
+    <!-- Http Flex Session attribute and binding listener support -->
+    <listener>
+        <listener-class>flex.messaging.HttpFlexSession</listener-class>
+    </listener>	
+	
+
+    <context-param>
+        <param-name>flex.class.path</param-name>
+        <param-value>/WEB-INF/flex/jars</param-value>
+    </context-param>
+
+    	
+
+
+    <!-- MessageBroker Servlet -->
+    <servlet>
+        <servlet-name>MessageBrokerServlet</servlet-name>
+        <display-name>MessageBrokerServlet</display-name>
+        <servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>
+        <init-param>
+            <param-name>services.configuration.file</param-name>
+            <param-value>/WEB-INF/flex/services-config.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>MessageBrokerServlet</servlet-name>
+        <url-pattern>/messagebroker/*</url-pattern>
+    </servlet-mapping>
+
+
+
+
+	<!-- Servlet Mapping-->
+	<servlet>
+		<servlet-name>initServlet</servlet-name>
+		<display-name>initServlet</display-name>
+		<load-on-startup>0</load-on-startup>
+		<servlet-class>com.pearl.o2o.servlet.server.InitServlet</servlet-class>
+        <init-param>
+            <param-name>proxy.host</param-name>
+            <param-value>192.168.5.1</param-value>
+        </init-param>
+        <init-param>
+            <param-name>proxy.port</param-name>
+            <param-value>9003</param-value>
+        </init-param>	                		
+	</servlet>		
+	
+	<servlet>
+		<servlet-name>s_login</servlet-name>
+		<display-name>s_login</display-name>
+		<servlet-class>com.pearl.o2o.servlet.server.Login</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>s_login</servlet-name>
+		<url-pattern>/s_login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>s_proxy_config</servlet-name>
+		<display-name>s_proxy_config</display-name>
+		<servlet-class>com.pearl.o2o.servlet.server.ProxyConfig</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>s_proxy_config</servlet-name>
+		<url-pattern>/s_proxy_config</url-pattern>
+	</servlet-mapping>	
+	
+		
+	
+	<!--================================= Player ==========================-->
+    <servlet>    
+        <servlet-name>s_getPlayer</servlet-name>
+        <display-name>s_getPlayer</display-name>
+        <servlet-class>com.pearl.o2o.servlet.server.GetPlayer</servlet-class>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>s_getPlayer</servlet-name>
+        <url-pattern>/s_get_character_info</url-pattern>
+    </servlet-mapping>   	
+
+    <servlet>    
+        <servlet-name>c_getPlayer</servlet-name>
+        <display-name>c_getPlayer</display-name>
+        <servlet-class>com.pearl.o2o.servlet.client.GetPlayer</servlet-class>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>c_getPlayer</servlet-name>
+        <url-pattern>/c_personal</url-pattern>
+    </servlet-mapping>  
+    <servlet>
+		<servlet-name>c_getPlayerInfo</servlet-name>
+		<display-name>c_getPlayerInfo</display-name>
+		<servlet-class>com.pearl.o2o.servlet.client.GetPlayerInfo</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>c_getPlayerInfo</servlet-name>
+		<url-pattern>/c_personal_info</url-pattern>
+	</servlet-mapping>
+    <servlet>    
+        <servlet-name>c_getPlayerAvatar</servlet-name>
+        <display-name>c_getPlayerAvatar</display-name>
+        <servlet-class>com.pearl.o2o.servlet.client.GetPlayerAvatar</servlet-class>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>c_getPlayerAvatar</servlet-name>
+        <url-pattern>/c_personal_avatar</url-pattern>
+    </servlet-mapping>     
+    <servlet-mapping>
+        <servlet-name>c_getPlayerAvatar</servlet-name>
+        <url-pattern>/l_player_get</url-pattern>
+    </servlet-mapping>      
+
+	<servlet>
+		<servlet-name>c_getPlayerList</servlet-name>
+		<display-name>c_getPlayerList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetPlayerList
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>c_getPlayerList</servlet-name>
+		<url-pattern>/l_player_list</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>c_fuzzyGetPlayerList</servlet-name>
+		<display-name>c_fuzzyGetPlayerList</display-name>
+		<servlet-class>com.pearl.o2o.servlet.client.FuzzyGetPlayerList</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>c_fuzzyGetPlayerList</servlet-name>
+		<url-pattern>/c_friends_search_list</url-pattern>
+	</servlet-mapping>	
+
+	<servlet>
+		<servlet-name>c_createPlayer</servlet-name>
+		<display-name>c_createPlayer</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.CreatePlayer
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>c_createPlayer</servlet-name>
+		<url-pattern>/l_player_create</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>c_deletePlayer</servlet-name>
+		<display-name>c_deletePlayer</display-name>
+		<servlet-class>com.pearl.o2o.servlet.client.DeletePlayer</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>c_deletePlayer</servlet-name>
+		<url-pattern>/l_player_delete</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>c_getPlayerListDefault</servlet-name>
+		<display-name>c_getPlayerListDefault</display-name>
+		<servlet-class>com.pearl.o2o.servlet.client.GetPlayerListDefault</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>c_getPlayerListDefault</servlet-name>
+		<url-pattern>/l_player_list_default</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!--================================= Friend ==========================-->	
+	<servlet>
+		<servlet-name>c_getFriendList</servlet-name>
+		<display-name>c_getFriendList</display-name>
+		<servlet-class>com.pearl.o2o.servlet.client.GetFriendList</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>c_getFriendList</servlet-name>
+		<url-pattern>/c_friends_list</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>c_getFriendBlackList</servlet-name>
+		<display-name>c_getFriendBlackList</display-name>
+		<servlet-class>com.pearl.o2o.servlet.client.GetFriendBlackList</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>c_getFriendBlackList</servlet-name>
+		<url-pattern>/c_friends_blacks_list</url-pattern>
+	</servlet-mapping>		
+	
+	<servlet>
+		<servlet-name>c_updateFriend</servlet-name>
+		<display-name>c_updateFriend</display-name>
+		<servlet-class>com.pearl.o2o.servlet.client.UpdateFriend</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>c_updateFriend</servlet-name>
+		<url-pattern>/c_friends_menu</url-pattern>
+	</servlet-mapping>		
+	
+	
+	<!--================================= Channel ==========================-->	
+	<servlet>
+		<servlet-name>c_getChannelList</servlet-name>
+		<display-name>c_getChannelList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetChannelList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getChannelList</servlet-name>
+		<url-pattern>/c_channel_list</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>s_updateChannel</servlet-name>
+		<display-name>s_updateChannel</display-name>
+		<servlet-class>	com.pearl.o2o.servlet.server.UpdateChannel</servlet-class>
+	</servlet>		
+	<servlet-mapping>
+		<servlet-name>s_updateChannel</servlet-name>
+		<url-pattern>/s_channel_update</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>s_updateLocation</servlet-name>
+		<display-name>s_updateLocation</display-name>
+		<servlet-class>	com.pearl.o2o.servlet.server.UpdateLocation</servlet-class>
+	</servlet>		
+	<servlet-mapping>
+		<servlet-name>s_updateLocation</servlet-name>
+		<url-pattern>/s_update_locations</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!--================================= Server ==========================-->	
+	<servlet>
+		<servlet-name>c_getServerList</servlet-name>
+		<display-name>c_getServerList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetServerList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getServerList</servlet-name>
+		<url-pattern>/c_server_list</url-pattern>
+	</servlet-mapping>
+	<!--================================= Rank ==========================-->
+	<servlet>
+		<servlet-name>l_getRankList</servlet-name>
+		<display-name>l_getRankList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetRankList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>l_getRankList</servlet-name>
+		<url-pattern>/l_rank_list</url-pattern>
+	</servlet-mapping>
+	
+	<!--================================= team ==========================-->
+	<servlet>
+		<servlet-name>c_validateTeamName</servlet-name>
+		<display-name>c_validateTeamName</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.ValidateTeamName
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_validateTeamName</servlet-name>
+		<url-pattern>/c_team_name_validate</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_createTeamPre</servlet-name>
+		<display-name>c_createTeamPre</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.CreateTeamPre
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_createTeamPre</servlet-name>
+		<url-pattern>/c_team_pre_create</url-pattern>
+	</servlet-mapping>
+		
+	<servlet>
+		<servlet-name>c_createTeam</servlet-name>
+		<display-name>c_createTeam</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.CreateTeam
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_createTeam</servlet-name>
+		<url-pattern>/c_team_create</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_getTeam</servlet-name>
+		<display-name>c_getTeam</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetTeam
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getTeam</servlet-name>
+		<url-pattern>/c_team_info_get</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_upgradeTeam</servlet-name>
+		<display-name>c_upgradeTeam</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.UpgradeTeam
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_upgradeTeam</servlet-name>
+		<url-pattern>/c_team_upgrade</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_disMissTeam</servlet-name>
+		<display-name>c_disMissTeam</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.DisMissTeam
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_disMissTeam</servlet-name>
+		<url-pattern>/c_team_dismiss</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>c_getTeamMember</servlet-name>
+		<display-name>c_getTeamMember</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetTeamMember
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getTeamMember</servlet-name>
+		<url-pattern>/c_team_member_list</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>c_getTeamAlly</servlet-name>
+		<display-name>c_getTeamAlly</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetTeamAlly
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getTeamAlly</servlet-name>
+		<url-pattern>/c_team_ally_list</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>c_team_ally_op</servlet-name>
+		<display-name>c_team_ally_op</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.TeamAllyOp
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_team_ally_op</servlet-name>
+		<url-pattern>/c_team_ally_op</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>c_getTeamHistoryList</servlet-name>
+		<display-name>c_getTeamHistoryList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetTeamHistoryList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getTeamHistoryList</servlet-name>
+		<url-pattern>/c_team_history_list</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_fuzzyGetTeam</servlet-name>
+		<display-name>c_fuzzyGetTeam</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.FuzzyGetTeam
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_fuzzyGetTeam</servlet-name>
+		<url-pattern>/c_team_search_list</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	<servlet>
+		<servlet-name>c_team_request_list</servlet-name>
+		<display-name>c_team_request_list</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetTeamRequestList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_team_request_list</servlet-name>
+		<url-pattern>/c_team_request_list</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>c_team_request_op</servlet-name>
+		<display-name>c_team_request_op</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.TeamRequestOp
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_team_request_op</servlet-name>
+		<url-pattern>/c_team_request_op</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	<servlet>
+		<servlet-name>c_team_update_op</servlet-name>
+		<display-name>c_team_update_op</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.TeamUpdateOp
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_team_update_op</servlet-name>
+		<url-pattern>/c_team_update_op</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>c_getMyTeamInfo</servlet-name>
+		<display-name>c_getMyTeamInfo</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetMyTeamInfo
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getMyTeamInfo</servlet-name>
+		<url-pattern>/c_team_info</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!--================================= SysItem ==========================-->		
+	<servlet>
+		<servlet-name>c_getSysItemList</servlet-name>
+		<display-name>c_getSysItemList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetSysItemList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getSysItemList</servlet-name>
+		<url-pattern>/c_storage_shop_list</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_getSysItem</servlet-name>
+		<display-name>c_getSysItem</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetSysItem
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getSysItem</servlet-name>
+		<url-pattern>/c_storage_shop_weapon_info</url-pattern>
+	</servlet-mapping>
+	<!--  <servlet>
+		<servlet-name>c_getWeaponByPart</servlet-name>
+		<display-name>c_getWeaponByPart</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetWeaponByPart
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getWeaponByPart</servlet-name>
+		<url-pattern>/c_storage_preview_part_info</url-pattern>
+	</servlet-mapping>-->
+	<!--================================= PlayerItem ==========================-->	
+	<servlet>
+		<servlet-name>c_getPlayerItemList</servlet-name>
+		<display-name>c_getPlayerItemList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetPlayerItemList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getPlayerItemList</servlet-name>
+		<url-pattern>/c_storage_storage_list</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_getRoomPlayerItemList</servlet-name>
+		<display-name>c_getRoomPlayerItemList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetRoomPlayerItemList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getRoomPlayerItemList</servlet-name>
+		<url-pattern>/c_storage_room_item_list</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_getPlayerItem</servlet-name>
+		<display-name>c_getPlayerItem</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetPlayerItem
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getPlayerItem</servlet-name>
+		<url-pattern>/c_storage_storage_weapon_info</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>c_createPlayerItem</servlet-name>
+		<display-name>c_createPlayerItem</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.CreatePlayerItem
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_createPlayerItem</servlet-name>
+		<url-pattern>/c_storage_req_buy</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>c_createPackEquipment</servlet-name>
+		<display-name>c_createPackEquipment</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.CreatePackEquipment
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_createPackEquipment</servlet-name>
+		<url-pattern>/c_storage_req_equipt</url-pattern>
+	</servlet-mapping>
+ 
+	<servlet>
+		<servlet-name>c_deletePackEquipment</servlet-name>
+		<display-name>c_deletePackEquipment</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.DeletePackEquipment
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_deletePackEquipment</servlet-name>
+		<url-pattern>/c_storage_req_unpack</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_getWeaponPackList</servlet-name>
+		<display-name>c_getWeaponPackList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetWeaponPackList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getWeaponPackList</servlet-name>
+		<url-pattern>/c_storage_pack_weapon_list</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_getAvatarPackList</servlet-name>
+		<display-name>c_getAvatarPackList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetAvatarPackList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getAvatarPackList</servlet-name>
+		<url-pattern>/c_storage_pack_avatar_list</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_getPlayerPartList</servlet-name>
+		<display-name>c_getPlayerPartList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetPlayerPartList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getPlayerPartList</servlet-name>
+		<url-pattern>/c_storage_req_part_list</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_getItemModePreview</servlet-name>
+		<display-name>c_getItemModePreview</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetItemModePreview
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getItemModePreview</servlet-name>
+		<url-pattern>/c_storage_req_equipt_part_preview</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_usePlayerItem</servlet-name>
+		<display-name>c_usePlayerItem</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.UsePlayerItem
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_usePlayerItem</servlet-name>
+		<url-pattern>/c_storage_item_use</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>c_fixPlayerItem</servlet-name>
+		<display-name>c_fixPlayerItem</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.FixPlayerItem
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_fixPlayerItem</servlet-name>
+		<url-pattern>/c_storage_fix</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_deletePlayerItem</servlet-name>
+		<display-name>c_deletePlayerItem</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.DeletePlayerItem
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_deletePlayerItem</servlet-name>
+		<url-pattern>/c_storage_destroy</url-pattern>
+	</servlet-mapping>
+	<!--================================= PlayerPackage ==========================-->	
+	<servlet>
+		<servlet-name>c_getPackList</servlet-name>
+		<display-name>c_getPackList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetPackList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getPackList</servlet-name>
+		<url-pattern>/c_storage_pack_list</url-pattern>
+	</servlet-mapping>
+
+
+	<!--================================= Item Mod ==========================-->
+	<servlet>
+		<servlet-name>c_createItemMod</servlet-name>
+		<display-name>c_createItemMod</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.CreateItemMod
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_createItemMod</servlet-name>
+		<url-pattern>/c_storage_req_equipt_part</url-pattern>
+	</servlet-mapping>
+	
+	<!-- <servlet>
+		<servlet-name>c_deleteItemMod</servlet-name>
+		<display-name>c_deleteItemMod</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.DeleteItemMod
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_deleteItemMod</servlet-name>
+		<url-pattern>/c_storage_req_unpack_part</url-pattern>
+	</servlet-mapping>	 -->
+			
+	<!--================================= Message ==========================-->	
+	<servlet>
+		<servlet-name>c_createMessage</servlet-name>
+		<display-name>c_createMessage</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.CreateMessage
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_createMessage</servlet-name>
+		<url-pattern>/c_email_create</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>c_getMessageList</servlet-name>
+		<display-name>c_getMessageList</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetMessageList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getMessageList</servlet-name>
+		<url-pattern>/c_email_list</url-pattern>
+	</servlet-mapping>	
+	<servlet>
+		<servlet-name>c_getMessage</servlet-name>
+		<display-name>c_getMessage</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetMessage
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getMessage</servlet-name>
+		<url-pattern>/c_email_get</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>c_deleteMessage</servlet-name>
+		<display-name>c_deleteMessage</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.DeleteMessage
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_deleteMessage</servlet-name>
+		<url-pattern>/c_email_delete</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_createMessageItem</servlet-name>
+		<display-name>c_createMessageItem</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.CreateMessageItem
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_createMessageItem</servlet-name>
+		<url-pattern>/c_email_gift</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>c_getMessageItem</servlet-name>
+		<display-name>c_getMessageItem</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.GetMessageItem
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_getMessageItem</servlet-name>
+		<url-pattern>/c_email_detach</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>s_sdo_login</servlet-name>
+		<display-name>s_sdo_login</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.server.SDOLogin
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>s_sdo_login</servlet-name>
+		<url-pattern>/s_sdo_login</url-pattern>
+	</servlet-mapping>
+	
+	<!-- ========================stage clear==========================-->
+	
+	<servlet>
+		<servlet-name>s_stage_clear</servlet-name>
+		<display-name>s_stage_clear</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.server.StageClear
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>s_stage_clear</servlet-name>
+		<url-pattern>/s_stage_clear</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>s_stage_quit</servlet-name>
+		<display-name>s_stage_quit</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.server.StageQuit
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>s_stage_quit</servlet-name>
+		<url-pattern>/s_stage_quit</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>c_stage_clear</servlet-name>
+		<display-name>c_stage_clear</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.StageClear
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_stage_clear</servlet-name>
+		<url-pattern>/c_stage_clear</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>c_stage_quit</servlet-name>
+		<display-name>c_stage_quit</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.client.StageQuit
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>c_stage_quit</servlet-name>
+		<url-pattern>/c_stage_quit</url-pattern>
+	</servlet-mapping>
+	
+	<!-- ========================stage clear========================== -->
+	
+	
+	<servlet>
+		<servlet-name>s_characterOffline</servlet-name>
+		<display-name>s_characterOffline</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.server.CharacterOffline
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>s_characterOffline</servlet-name>
+		<url-pattern>/s_character_offline</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>s_characterOnline</servlet-name>
+		<display-name>s_characterOnline</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.server.CharacterOnline
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>s_characterOnline</servlet-name>
+		<url-pattern>/s_character_online</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	<servlet>
+		<servlet-name>s_get_level_info</servlet-name>
+		<display-name>s_get_level_info</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.server.LevelInfo
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>s_get_level_info</servlet-name>
+		<url-pattern>/s_get_level_info</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>s_get_level_list</servlet-name>
+		<display-name>s_get_level_list</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.server.LevelList
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>s_get_level_list</servlet-name>
+		<url-pattern>/s_get_level_list</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	<servlet>
+		<servlet-name>config</servlet-name>
+		<display-name>config</display-name>
+		<servlet-class>
+			com.pearl.o2o.servlet.server.Configuration
+		</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>config</servlet-name>
+		<url-pattern>/config</url-pattern>
+	</servlet-mapping>
+	<!-- ==========================filter ============================ -->
+	
+	<filter>   
+        <filter-name>charasetFilter</filter-name>      
+        <filter-class>com.pearl.o2o.filter.CharasetFilter</filter-class>   
+    </filter>   
+    <filter-mapping>   
+        <filter-name>charasetFilter</filter-name>   
+        <url-pattern>/*</url-pattern>   
+    </filter-mapping>  
+	
+	
+	
+	<filter>   
+        <filter-name>performanceFilter</filter-name>      
+        <filter-class>com.pearl.o2o.filter.MonitorFilter</filter-class>   
+    </filter>   
+    <filter-mapping>   
+        <filter-name>performanceFilter</filter-name>   
+        <url-pattern>/*</url-pattern>   
+    </filter-mapping>  
+	
+	
+	<filter>   
+        <filter-name>loginFilter</filter-name>      
+        <filter-class>com.pearl.o2o.filter.LoginFilter</filter-class>   
+    </filter>   
+    <filter-mapping>   
+        <filter-name>loginFilter</filter-name>   
+        <url-pattern>/s_login</url-pattern>   
+    </filter-mapping>    
+	
+</web-app>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="448" height="678" xmlns:component="component.*"
+	label="Select the SYSITEM" title="Choose items"
+	showCloseButton="true" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import event.BoxClickEvent;
+			import mx.events.DataGridEvent;
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import common.Constants;
+			import mx.events.ListEvent;
+			import mx.controls.CheckBox;
+			import event.ItemDeleteEvent;
+			import mx.events.ItemClickEvent;
+			import mx.managers.PopUpManager;
+			import mx.collections.ArrayCollection;
+			import vo.SysItem;
+			[Bindable]
+			public var sysItemList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public var selectedSysItemList:ArrayCollection=new ArrayCollection();
+			public var 	_sysItem:SysItem;
+			[Bindable]
+			public function set sysItem(sysItem:SysItem):void{
+				this._sysItem=sysItem;
+			}
+			public function get sysItem():SysItem{
+				return this._sysItem;
+			} 
+			public function init():void{
+				unit.text='1';
+				unitType.text='2';
+			}
+			public function selectHandler(e:ListEvent):void{
+				sysItem=sysItemNameDatagrid.selectedItem as SysItem;
+				var cb:CheckBox=e.itemRenderer as CheckBox
+				if(cb){
+					if(cb.selected){
+						sysItem.selected=true;
+					}else{
+						sysItem.selected=false;
+					}
+		 		}
+			}
+			public var alertText = "是否保存已选择物品，选YES保存，选NO将清空";
+			public function dataChange():void{
+				
+				var a:Alert = Alert.show(alertText, "Comfirm", Alert.YES|Alert.NO,this, confirmHandler, null, Alert.NO);
+			}
+			private function confirmHandler(evt:CloseEvent):void{
+				if(evt.detail == Alert.YES){
+					save.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+				}
+					var e:BoxClickEvent=new BoxClickEvent(BoxClickEvent.BOX_CLICK,comboBox.selectedItem.data);
+					this.dispatchEvent(e);
+					
+			}
+			private function selectedAll():void{
+				if(selectAll.selected){
+					for each(var si:SysItem in sysItemList){
+						si.selected=true;
+					}
+					this.sysItemNameDatagrid.dataProvider=sysItemList;
+				}else{
+					for each(var si2:SysItem in sysItemList){
+						si2.selected=false;
+					}
+					this.sysItemNameDatagrid.dataProvider=sysItemList;
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox  height="628" width="410">
+		
+		<mx:VBox height="461" width="391">
+		<mx:ComboBox id="comboBox" dataProvider="{Constants.typeArray}" change="dataChange()">
+			
+		</mx:ComboBox>
+		<mx:ApplicationControlBar  height="421" width="380">	
+			<component:MyDataGrid id="sysItemNameDatagrid"  itemClick="selectHandler(event)" dataProvider="{sysItemList}"
+				width="365" height="100%" editable="false">
+			</component:MyDataGrid>
+		</mx:ApplicationControlBar>
+		</mx:VBox>
+		<mx:VBox width="388">
+			<mx:Form width="374">
+				<mx:FormItem label="Amt：" width="302">
+					 <mx:TextInput id="unit" text="" width="50" />
+				</mx:FormItem>
+				<mx:FormItem label="SpendMethod(0:Forever，1：Unit，2：Time)：" width="301">
+					<mx:TextInput id="unitType" text="" width="50" />
+				</mx:FormItem>
+			</mx:Form>
+		<mx:ControlBar>
+			<mx:Button id="save" label="Save"/>
+			<mx:Button id="cancel" label="Quit"/>
+			<mx:CheckBox id="selectAll" label="Choose All" change="selectedAll()">
+			</mx:CheckBox>
+		</mx:ControlBar>	
+		</mx:VBox>
+		
+	</mx:VBox>
+</mx:TitleWindow>

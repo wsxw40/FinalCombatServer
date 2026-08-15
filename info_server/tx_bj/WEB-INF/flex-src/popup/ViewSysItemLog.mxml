@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" fontSize="12" layout="absolute" 
+	xmlns:component="component.*" title="History Version"   height="400" creationComplete="init()"
+	showCloseButton="true" close="PopUpManager.removePopUp(this)">
+	<mx:Script>
+		<![CDATA[
+			import vo.GmUser;
+			import event.DataRefreshEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import utils.ColumnFactory;
+			import common.Constants;
+			import mx.managers.PopUpManager;
+			import event.LogSelectEvent;
+			import mx.controls.Alert;
+			import mx.events.CollectionEvent;
+			import mx.collections.ArrayCollection;
+			import vo.SysItem;
+			public var sysItemLog:SysItem;
+			public var _sysItemLogs:ArrayCollection;
+			public var selectedItems:ArrayCollection = new ArrayCollection(); //保存选中行
+			public var logView:LogDifferenceView;
+//			public var selectedLog:;
+			private var model:O2oModel = O2oModel.getInstance();
+			[Bindable]
+			public var type:int;
+			[Bindable]
+			public function set sysItemLogs(sysItemLogList:ArrayCollection):void{
+				this._sysItemLogs=sysItemLogList;
+			}
+			public function get sysItemLogs():ArrayCollection{
+				return this._sysItemLogs;
+			}  
+			private function init():void{
+//				sysItemLogs.addEventListener(CollectionEvent.COLLECTION_CHANGE,onChange);
+			this.addEventListener(LogSelectEvent.LOG_SELECT,onLogSelected);
+			}
+			 
+		public function onLogSelected(evt:LogSelectEvent):void{
+			selectedItems=evt.selectedItems as ArrayCollection;
+		}
+		private function showLogDifference():void{
+			if(selectedItems.length==2){
+				logView=LogDifferenceView(PopUpManager.createPopUp(this,LogDifferenceView,true));
+				if(this.type!=1){
+			  	 		logView.width=1200;
+			  	 	}
+			  	var columns:Array=	ColumnFactory.getLogColumnArray(this.type-1,true);
+			  	columns.splice(0,1);
+			  	logView.sysItemLogDG.columns=	columns;
+				logView.sysItemLogs=selectedItems as ArrayCollection;
+				logView.close.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(logView);});
+				PopUpManager.centerPopUp(logView);
+			}else{
+				Alert.show("请选择两条日志进行比对。");
+			}
+		}
+		private function rollBackClick():void{
+			if(sysItemLog==null){
+				Alert.show("请选择一条日志进行回滚。");
+			}else{
+				var logList:ArrayCollection=new ArrayCollection();
+				sysItemLog.isChange=1;
+				logList.addItem(sysItemLog);
+				updateRo.updateSysItem(model.gmUser,logList);
+			}
+		}
+		private function selectHandler():void{
+//		 		player=playerDataGrid.selectedItem as Player;
+				sysItemLog=sysItemLogDG.selectedItem as SysItem;
+		}
+		private function defaultFaultHandle(evt:FaultEvent):void{
+		 	Alert.show(evt.fault.faultString);
+		}
+		private function updateSysItemHandler(evt:ResultEvent):void{
+			this.dispatchEvent(new DataRefreshEvent(DataRefreshEvent.REFREASH_DATA));
+			PopUpManager.removePopUp(this);
+		}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateSysItem" result="updateSysItemHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>	
+	<mx:VBox width="100%" height="100%">
+	<mx:ApplicationControlBar  height="100%" width="100%">	
+		<component:MyDataGrid id="sysItemLogDG" dataProvider="{sysItemLogs}"  lockedColumnCount="10" 
+				width="100%"	 height="80%" editable="false" itemClick="selectHandler()"/>
+	</mx:ApplicationControlBar>
+	<mx:ControlBar>
+		<mx:Button label="退出" id="close" />
+		<mx:Button label="比对版本参数" id="difference" click="showLogDifference()"/>
+		<mx:Button label="回滚" id="rollback" click="rollBackClick()"/>
+	</mx:ControlBar>
+	</mx:VBox>
+</mx:TitleWindow>

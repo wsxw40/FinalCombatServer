@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import mx.validators.StringValidator;
+			import mx.events.CloseEvent;
+			import event.BoxClickEvent;
+			import mx.events.ListEvent;
+			import view.SysItemNameList2;
+			import vo.SysItem;
+			import mx.managers.PopUpManager;
+			import view.SysItemNameList;
+			import mx.controls.Alert;
+			import utils.ColumnFactory;
+			import utils.DatagridValidateFactory;
+			import mx.utils.StringUtil;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.validators.NumberValidator;
+			import mx.events.DataGridEvent;
+			import vo.Player;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import vo.GmUser;
+			import utils.*;
+			private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+			[Bindable]
+			public var playerList:ArrayCollection=new ArrayCollection();
+			//[Bindable]
+			//public var searchList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public var player:Player=new Player();
+			[Bindable]
+			private var weapons:ArrayCollection;
+			private function init():void{
+				initBtn();
+				playerDataGrid.columns=ColumnFactory.getPlayerColumns(false);
+				//getRo.getPlayerList();
+			}
+			private function initBtn():void{
+		 		playerDataGrid.selectable=true;
+		 		/*tabType.selectedIndex=0;*/
+			}
+			private function onSearchBtnClick():void{
+				this.player = new Player();
+				//this.searchList= new ArrayCollection();
+				if(StringUtil.trim(playerId.text)){
+					var result:int = ValidateUtils.validateInt(StringUtil.trim(playerId.text));
+					if(result == 2){
+						Alert.show("Player Id应为整数");
+						return;
+					} else if(result == 0){
+						getRo.getPlayerById(StringUtil.trim(playerId.text));
+					}
+					playerName.text="";
+				} else if(StringUtil.trim(playerName.text) == "*"){
+					//searchList = playerList;
+					//getRo.getPlayerList();
+					getRo.fuzzySelectByName(StringUtil.trim(""));
+				}else{
+					getRo.fuzzySelectByName(StringUtil.trim(playerName.text));
+				}
+			}
+			private function fuzzySelectByNameHandler(evt:ResultEvent):void{
+			 	this.playerList=evt.result as ArrayCollection;
+			 	if(null == this.playerList){
+		 			this.playerListPanel.title = "玩家列表(共0项)";
+		 		} else {
+		 			this.playerListPanel.title = "玩家列表(共" + this.playerList.length + "项)";
+		 		}
+			}
+			private function onSaveBtnClick():void{
+				updateRo.updatePlayer(this.playerList);
+				initBtn();
+				playerDataGrid.editable=false;
+				
+			}
+			private function onEditBtnClick():void{
+				playerDataGrid.editable=true;
+			}
+			private function onCancelBtnClick():void{
+				initBtn();
+				playerDataGrid.editable=false;
+				onSearchBtnClick();
+			}
+			private function getPlayerListHandler(evt:ResultEvent):void{
+				playerList=evt.result as ArrayCollection;
+			}
+			private function updatePlayerListHandler(evt:ResultEvent):void{
+				onSearchBtnClick()
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+			private function selectHandler():void{
+		 		var tempId:int = (playerDataGrid.selectedItem as Player).id;
+		 		getRo.getPlayerById1(tempId.toString());
+		 	}
+		 	private function checkIt(event:Event):void
+			{
+				playerDataGrid.invalidateList();
+			}
+			private var datagridValidate:Validator;
+			private function endEdit(e:DataGridEvent):void{
+		 		var dataField:String = e.dataField;
+				var fCell:Array=[e.columnIndex,e.rowIndex];
+				var source:Object=e.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(e.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = e.currentTarget.editedItemRenderer.data[e.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+               		var validate:Validator=DatagridValidateFactory.getCharacterValidater(dataField,source);
+               		if(validate!=null){
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			playerDataGrid.selectable=false;
+	               			this.player.isChange=1;
+	               			var array:Array=new Array();
+	               			array.push(dataField);
+	               			callLater(maintainFocus1,array);
+	               			
+	               		}else{
+	               			e.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		}
+               		}else{
+               			callLater(maintainFocus);
+               		}
+               	}else{
+               		callLater(maintainFocus);
+               	}
+               	
+		 	}
+		 	private function maintainEdit(colIndex:int,rowIndex:int,source:Object):void
+			{
+				var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+				if(playerDataGrid.editedItemPosition==null)
+				{
+	   				playerDataGrid.editedItemPosition = editCell;
+					callLater(validateCurrentEditor);
+	   			}
+			}
+			private function validateCurrentEditor():void{
+				datagridValidate.source=playerDataGrid.itemEditorInstance;
+				datagridValidate.validate();
+			}
+			private function maintainFocus1(str:String):void
+			{
+				if(str=="exp"){
+					getRo.getPlayerTitle(this.player.exp);
+				}
+				if(str=="rank"){
+					getRo.getPlayerExp(this.player.rank);
+				}	
+			}
+			private function maintainFocus():void
+			{
+	   			playerDataGrid.editedItemPosition = null;
+			}
+			private function getPlayerTitleHandler(evt:ResultEvent):void{
+				var title:int=evt.result as int;
+				this.player.rank=title;
+				playerDataGrid.selectable=true;
+				playerDataGrid.editedItemPosition = null;
+			
+			}
+			private function getPlayerExpHandler(evt:ResultEvent):void{
+				var exp:int=evt.result as int;
+				this.player.exp=exp;
+				if(player.id != 0){
+					var updateList:ArrayCollection = new ArrayCollection();
+					updateList.addItem(player);
+					updateRo.updatePlayer(gmUser,updateList);
+				}
+			
+			}
+			private function changList(e:BoxClickEvent):void{
+				getRo.getSysItemList(e._data);
+			}
+			private var sysItemNameView:SysItemNameList2;
+			private function getSysItemListHandler(evt:ResultEvent):void{
+			 this.weapons=evt.result as ArrayCollection;
+			 if(sysItemNameView==null){
+				 sysItemNameView=SysItemNameList2(PopUpManager.createPopUp(this,SysItemNameList2,true));
+				 PopUpManager.centerPopUp(sysItemNameView);
+				 sysItemNameView.sysItemNameDatagrid.columns=ColumnFactory.getSysItemName2(false);
+				
+				 sysItemNameView.save.addEventListener(MouseEvent.CLICK,presentGift);
+				 sysItemNameView.addEventListener(BoxClickEvent.BOX_CLICK,changList);
+				 sysItemNameView.addEventListener(CloseEvent.CLOSE,function():void{
+				 	PopUpManager.removePopUp(sysItemNameView);
+				 	sysItemNameView=null;});
+				 sysItemNameView.cancel.addEventListener(MouseEvent.CLICK,function():void{
+				 	PopUpManager.removePopUp(sysItemNameView);
+				 	sysItemNameView=null;});
+			 }
+			  sysItemNameView.sysItemList=this.weapons;
+			}
+			private function presentGift(e:MouseEvent):void{
+				var list:ArrayCollection=sysItemNameView.sysItemList;
+				var selectedList:ArrayCollection=new ArrayCollection();
+				for each(var si:SysItem in list){
+					if(si.selected){
+						selectedList.addItem(si);
+					}
+				}
+				if(selectedList.length!=0){
+					createRo.presentToPlayer(gmUser,selectedList,this.player.userName,this.player.id);
+				}
+			}
+			private function defaultHandler(event:ResultEvent):void{
+			}
+			private function onShowPlayerItemView(e:Event):void{
+				var btn:Button = e.currentTarget as Button;
+				if(deletedPlayerItemView.visible){
+					deletedPlayerItemView.visible = false;
+					deletedPlayerItemView.height  = 0;
+					btn.label 		= "查看仓库";
+				}else{
+					deletedPlayerItemView.visible = true;
+					deletedPlayerItemView.height = 208;
+					btn.label 		= "隐藏仓库";
+				}
+			}
+			private function onRefreshBtnClick():void{
+				initBtn();
+				this.player = new Player();
+				if(StringUtil.trim(playerId.text)){
+					getRo.getPlayerById(StringUtil.trim(playerId.text));
+					playerName.text="";
+				}/*else if(StringUtil.trim(playerName.text) == "*"){
+					getRo.fuzzySelectByName(StringUtil.trim(""));
+				}*/else if(StringUtil.trim(playerName.text)){
+					getRo.fuzzySelectByName(StringUtil.trim(playerName.text));
+				} else {
+					player = new Player();
+					deletedPlayerItemView.playerId = 0;
+					deletedPlayerItemView.playerItemList = new ArrayCollection();
+					playerList = new ArrayCollection();
+				}
+			}
+			
+			private function onKickPlayerBtnClick():void{
+				var tempPlayer:Player = playerDataGrid.selectedItem as Player;
+				if(null != tempPlayer && tempPlayer.id != 0){
+					var tempId:int = tempPlayer.id
+					createRo.kickPlayer(gmUser,tempId);
+				}else {
+					Alert.show("请选择一位玩家操作");
+				}
+			}
+			private function onResetPlayerWeapon():void{
+				var tempPlayer:Player = playerDataGrid.selectedItem as Player;
+				if(null != tempPlayer && tempPlayer.id != 0){
+					var tempId:int = tempPlayer.id
+					updateRo.resetPlayerWeapon(gmUser,tempId);
+				}else {
+					Alert.show("请选择一位玩家操作");
+				}
+			}
+			private function onCheckPlayerData():void{
+				var tempPlayer:Player = playerDataGrid.selectedItem as Player;
+				if(null != tempPlayer && tempPlayer.id != 0){
+					var tempId:int = tempPlayer.id
+					getRo.checkPlayerData(gmUser,tempId);
+				}else {
+					Alert.show("请选择一位玩家操作");
+				}
+			}
+			
+			
+			private function getPlayerByIdHandler(evt:ResultEvent):void{
+				this.playerList=evt.result as ArrayCollection;
+				if(this.playerList != null && playerList.length > 0){
+					this.player = (evt.result as ArrayCollection).getItemAt(0) as Player;
+					/* deletedPlayerItemView.playerId=player.id;
+		 			deletedPlayerItemView.init(); */
+		 			/*saveChangeBtn.enabled=true;*/
+		 		} else {
+		 			this.player = new Player();
+		 			this.playerList = new ArrayCollection();
+		 		}
+		 		if(null == this.playerList){
+		 			this.playerListPanel.title = "玩家列表(共0项)";
+		 		} else {
+		 			this.playerListPanel.title = "玩家列表(共" + this.playerList.length + "项)";
+		 		}
+			}
+			
+			private function getPlayerByIdHandler1(evt:ResultEvent):void{
+				this.player = (evt.result as ArrayCollection).getItemAt(0) as Player;
+				if(this.player.isOnline==1){
+					this.pp.title="玩家信息[在线]";
+				}else{
+					this.pp.title="玩家信息(离线)";
+				}
+				if(player != null && player.id != 0){
+					
+					deletedPlayerItemView.playerId=player.id;
+					deletedPlayerItemView.init();
+					deletedPlayerItemView.fatherWindow = this;
+					
+		 		}
+			}
+			private function checkPlayerDataHandler(evt:ResultEvent):void{
+				var a:Alert = Alert.show(evt.result.toString(),"玩家数据检测",4);
+				a.setStyle("backgroundColor", 0xffffff);
+				a.setStyle("backgroundAlpha", 0.50);
+				a.setStyle("color", 0x000000);
+				
+			}
+			/*private function changeTab(e:ItemClickEvent):void{
+				
+				if(e.index==1){
+					playerDefaultItemView.playerId=player.id;
+					playerDefaultItemView.init();
+					playerDefaultItemView.fatherWindow = this;
+				}else if(e.index==0){
+					deletedPlayerItemView.playerId=player.id;
+					deletedPlayerItemView.init();
+					deletedPlayerItemView.fatherWindow = this;
+				}else{
+					Alert.show("exception happen: e.index="+e.index);
+				}
+			}*/
+			
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="fuzzySelectByName" result="fuzzySelectByNameHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getPlayerList" result="getPlayerListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getPlayerById" result="getPlayerByIdHandler(event)" fault=""/>
+		<mx:method name="getPlayerById1" result="getPlayerByIdHandler1(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getPlayerTitle" result="getPlayerTitleHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getPlayerExp" result="getPlayerExpHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getSysItemList" result="getSysItemListHandler(event)"/>
+		<mx:method name="checkPlayerData" result="checkPlayerDataHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create" showBusyCursor="true">
+		<mx:method name="presentToPlayer" result="defaultHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update" showBusyCursor="true">
+		<mx:method name="updatePlayer" result="updatePlayerListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="resetPlayerWeapon" result="updatePlayerListHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox height="100%" width="100%">
+	<mx:VBox  height="100%" width="100%">
+		<mx:HBox width="100%">
+			<mx:ApplicationControlBar width="100%" >	
+					<mx:Label text="Player ID"/>
+					<mx:TextInput id="playerId" />
+					<mx:Label text="{resourceManager.getString('Language','label.CharacterName')}"/>
+					<mx:TextInput id="playerName" />
+					<mx:Button id="searchBtn"  label="{resourceManager.getString('Language','button.Search')}"  click="onSearchBtnClick()"/>	
+					<!--<mx:Button id="showdeletedPlayerItemView" click="onShowdeletedPlayerItemView(event)" label="隐藏仓库"/>	-->	
+		        	<mx:Button id="refreshBtn"  label="{resourceManager.getString('Language','button.Refresh')}"  click="onRefreshBtnClick()"/>
+		     </mx:ApplicationControlBar>
+		</mx:HBox>
+		<mx:HBox height="100%" width="100%">
+			<mx:Panel title="{resourceManager.getString('Language','playerList')}" width="362" height="100%" id="playerListPanel">
+				<component:MyDataGrid id="playerDataGrid" dataProvider="{playerList}" itemClick="selectHandler()" lockedColumnCount="3" 
+				  width="100%" height="100%" editable="false" change="checkIt(event)" itemEditEnd="endEdit(event)">
+				</component:MyDataGrid>
+			</mx:Panel>
+			<mx:VBox width="1215" height="762">
+			<mx:HBox width="1196" height="157">
+				<mx:Panel title="{resourceManager.getString('Language','label.PlayerInfo')}" height="122" width="640" id="pp">
+						<!--<mx:Form>
+							<mx:FormItem label="玩家ID:">
+								<mx:Label id="pid" text="{player.id}"/>
+							</mx:FormItem>
+						</mx:Form>-->
+						<mx:Form width="603" height="72">
+							<mx:FormItem label="{resourceManager.getString('Language','label.LastLogout')}:">
+								<mx:Label text="{player.lastLogout}"/>
+							</mx:FormItem>
+							<mx:FormItem label="{resourceManager.getString('Language','label.LastLogin')}:">
+								<mx:Label text="{player.lastLogin}"/>
+							</mx:FormItem>
+						</mx:Form>					
+						
+					</mx:Panel>
+				</mx:HBox>
+			<mx:VBox width="100%" height="575">
+				<mx:ViewStack id="subTab" width="100%" height="592" >
+						<mx:Panel label="{resourceManager.getString('Language','label.PlayerStorage')}" title="玩家已删除物品列表(共0项)" height="100%" width="100%" id="playerItemList">
+							<view:DeletedPlayerItemView id="deletedPlayerItemView" visible="true" height="540" width="1176"/>
+						</mx:Panel>
+				</mx:ViewStack>
+			</mx:VBox>
+			</mx:VBox>
+		</mx:HBox>
+	 </mx:VBox>
+	 </mx:HBox>
+</mx:VBox>

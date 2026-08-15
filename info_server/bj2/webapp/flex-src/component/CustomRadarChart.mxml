@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+		  xmlns:boost="boost.charts.*" title="Radar Chart" creationComplete="init()">	
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			import boost.charts.RadarSeries;
+			import mx.events.CollectionEventKind;
+			import mx.events.CollectionEvent;
+			import mx.controls.Alert;
+			import mx.containers.HBox;
+			import common.Calculator;
+			import mx.containers.Box;
+			import mx.rpc.events.ResultEvent;
+			import vo.SysItem;
+			import mx.collections.ICollectionView;
+			import common.Constants;
+			import event.RadarChartItemChangeEvent;
+			import mx.collections.ArrayCollection;
+			import boost.charts.RadarChartSeriesEvent;
+			
+			[Bindable]
+			public var sysItems:ArrayCollection = new ArrayCollection();
+			
+			private var axisAC:ArrayCollection 				= new ArrayCollection();
+			private var seriesAC:ArrayCollection			= new ArrayCollection();
+			private var subType:Number = 0;
+			private var colors:Array = [0x257BB6, 0xB7247C, 0xCCC012, 0x41C04F, 0x296997, 0x26B69B, 0xCF5F0B, 0xA041C1];
+			
+			private function init():void{
+//				getRo.getUndeletedSysItemList(1, Constants.BOOLEAN_YES);
+				addEventListener(RadarChartItemChangeEvent.EVENT_ITEM_CHANGE, onRadarChartItemChangeHandler);		
+			}
+			
+			private function getUndeletedSysItemListHandler(e:ResultEvent):void{
+				sysItems = e.result as ArrayCollection;				
+			}
+			
+			private function hasChartSeries():Boolean{
+				var result:Boolean = false;
+				var series:Array = radarChart.series;
+				if(series && series.length > 0){
+					result = true;
+				}
+				return result;
+			}
+			
+			private function removeAllSeries():void{
+				if(hasChartSeries()){
+					for each(var si:SysItem in seriesAC){					
+						radarChart.removeSeries(si.displayName);									
+					}
+					colors = [0x257BB6, 0xB7247C, 0xCCC012, 0x41C04F, 0x296997, 0x26B69B, 0xCF5F0B, 0xA041C1];
+					legend.removeAllChildren();
+					clearAllValueLab();
+				}				
+			}
+			
+			private function onSelectAxisBtnClick(e:Event):void{				
+				var target:Button = e.currentTarget as Button;
+				removeAllAxis();
+				if(target.id == "selectAxisBtn"){
+					setAllAxisCB(true);
+					if(seriesAC.length > 0){						
+						removeAllSeries();
+						showAllAxis();
+						for(var i:int = 0; i < seriesAC.length; i++){
+							var s:SysItem = seriesAC.getItemAt(i) as SysItem;
+							addSeries(s);
+						}
+					}else{				
+						showAllAxis();
+					}						
+				}else{
+					setAllAxisCB(false);
+					removeAllSeries();					
+				}
+			}
+			
+			private function removeAllAxis():void{
+				removeAllSeries();
+				deleteAllAxis();
+				axisAC = new ArrayCollection();	
+			}
+			
+			private function deleteAllAxis():void{
+				if(axisAC && axisAC.length > 0){
+					for each(var n:String in axisAC){
+						radarChart.removeAxis(n);				
+					}				
+				}
+			}
+			
+			private function setAllAxisCB(b:Boolean):void{
+				recoilCB.selected 				= b;
+				accuracyCB.selected 			= b;				
+				firingRangeCB.selected 			= b;				
+				firingRateCB.selected 			= b;				
+				speedChangeGunCB.selected 		= b;				
+				speedChangeMagazineCB.selected 	= b;				
+				bulletCapacityCB.selected 		= b;				
+				powerCB.selected 				= b;
+				
+				if(b){
+					addAllAxisToAxisAC();
+				}else{
+					axisAC = new ArrayCollection();
+				}
+			}
+			
+			private function addAllAxisToAxisAC():void{
+				axisAC.addItem("accuracy");
+				axisAC.addItem("recoil");
+				axisAC.addItem("firingRange");
+				axisAC.addItem("firingRate");
+				axisAC.addItem("bulletCapacity");
+				axisAC.addItem("power");
+				axisAC.addItem("speedChangeGun");
+				axisAC.addItem("speedChangeMagazine");
+			}
+			
+			private function showAllAxis():void{
+				radarChart.addAxis("accuracy", 				Constants.accuracy);
+				radarChart.addAxis("recoil", 				Constants.recoil);
+				radarChart.addAxis("firingRange", 			Constants.firing_range);
+				radarChart.addAxis("firingRate", 			Constants.firing_rate);
+				radarChart.addAxis("bulletCapacity", 		Constants.bullet_capacity);
+				radarChart.addAxis("power", 				Constants.power);
+				radarChart.addAxis("speedChangeGun", 		Constants.speed_change_gun);
+				radarChart.addAxis("speedChangeMagazine", 	Constants.speed_change_magazine);
+			}
+			
+			private function onAxisChange(e:Event):void{
+				var target:CheckBox = e.currentTarget as CheckBox;
+				
+				if(target.id == "recoilCB"){
+					changeAxis(target, "recoil", Constants.recoil);
+				}
+				
+				if(target.id == "accuracyCB"){
+					changeAxis(target, "accuracy", Constants.accuracy);
+				}
+				
+				if(target.id == "firingRangeCB"){
+					changeAxis(target, "firingRange", Constants.firing_range);
+				}
+				
+				if(target.id == "firingRateCB"){
+					changeAxis(target, "firingRate", Constants.firing_rate);
+				}
+				
+				if(target.id == "bulletCapacityCB"){
+					changeAxis(target, "bulletCapacity", Constants.bullet_capacity);
+				}
+				
+				if(target.id == "powerCB"){
+					changeAxis(target, "power", Constants.power);
+				}
+				
+				if(target.id == "speedChangeGunCB"){
+					changeAxis(target, "speedChangeGun", Constants.speed_change_gun);
+				}
+				
+				if(target.id == "speedChangeMagazineCB"){
+					changeAxis(target, "speedChangeMagazine", Constants.speed_change_magazine);
+				}
+			}
+			
+			private function changeAxis(cb:CheckBox, name:String, label:String):void{
+				if(seriesAC.length > 0){
+					removeAllSeries();				
+					modifyAxis(cb, name, label);
+					if(axisAC.length > 0){
+						for(var i:int = 0; i< seriesAC.length; i++){
+							var s:SysItem = seriesAC.getItemAt(i) as SysItem;
+							addSeries(s);
+						}						
+					}
+				}else{
+					modifyAxis(cb, name, label);
+				}				
+			}
+			
+			private function modifyAxis(cb:CheckBox, name:String, label:String):void{
+				if(cb.selected){
+					radarChart.addAxis(name, label);
+					axisAC.addItem(name);
+				}else{
+					radarChart.removeAxis(name);
+					if(axisAC && axisAC.length > 0){
+						for(var i:int = 0; i < axisAC.length; i++){
+							var data:String = axisAC.getItemAt(i) as String;
+							if(data == name){
+								axisAC.removeItemAt(i);
+							}
+						}
+					}					
+				}
+			}
+			
+			private function onSeriesClick(e:RadarChartSeriesEvent):void{
+				
+			}
+			
+			private function onRadarChartItemChangeHandler(e:RadarChartItemChangeEvent):void{
+				var sysItem:SysItem 	= e._data as SysItem;
+				modifySeriesAC(sysItem);	
+										
+				if(axisAC && axisAC.length > 0){
+					if(sysItem.radarSelected){
+						addSeries(sysItem);
+					}else{
+						deleteSeries(sysItem);
+					}
+				}		
+			}
+			
+			private function modifySeriesAC(sysItem:SysItem):void{
+				if(sysItem.radarSelected){
+					seriesAC.addItem(sysItem);
+				}else{
+					deleteDataFromSeriesAC(sysItem);
+				}
+			}
+			
+			private function addSeries(sysItem:SysItem):void{
+				var valueArray:Array	= new Array();
+				var object:Object 		= new Object();
+				var areaNum:Number		= 0;
+				var lengthSum:Number	= 0;
+//				var recoilNum:Number			  = Calculator.getRecoil(sysItem);
+//				var accuracyNum:Number			  = Calculator.getAccuracy(sysItem);
+//				var powerNum:Number				  = Calculator.getPower(sysItem);
+//				var firingRangeNum:Number		  = Calculator.getFiringRange(sysItem);
+//				var firingRateNum:Number		  = Calculator.getFiringRate(sysItem);
+//				var bulletCapacityNum:Number	  = Calculator.getBulletCapacity(sysItem);
+//				var speedChangeMagazineNum:Number = Calculator.getSpeedChangeMagazine(sysItem);
+//				var speedChangeGunNum:Number	  = Calculator.getSpeedChangeGun(sysItem);
+				
+				var recoilNum:Number			  = Calculator.getHouzuo(sysItem);
+				var accuracyNum:Number			  = Calculator.getJindu(sysItem);
+				var powerNum:Number				  = Calculator.getWeili(sysItem);
+				var firingRangeNum:Number		  = Calculator.getShecheng(sysItem);
+				var firingRateNum:Number		  = Calculator.getShesu(sysItem);
+				var bulletCapacityNum:Number	  = Calculator.getDanliang(sysItem);
+				var speedChangeMagazineNum:Number = Calculator.getHuandansudu(sysItem);
+				var speedChangeGunNum:Number	  = Calculator.getHuanqiangsudu(sysItem);
+				
+				for(var i:int = 0; i < axisAC.length; i++){
+					var axisName:String = axisAC.getItemAt(i) as String;							
+					if(axisName == "recoil"){
+						object.recoil = recoilNum;
+						valueArray.push(recoilNum);
+					}
+					if(axisName == "accuracy"){
+						object.accuracy = accuracyNum;
+						valueArray.push(accuracyNum);
+					}
+					if(axisName == "power"){
+						object.power = powerNum;
+						valueArray.push(powerNum);
+					}
+					if(axisName == "firingRange"){
+						object.firingRange = firingRangeNum;
+						valueArray.push(firingRangeNum);
+					}
+					if(axisName == "firingRate"){
+						object.firingRate = firingRateNum;
+						valueArray.push(firingRateNum);
+					}
+					if(axisName == "bulletCapacity"){
+						object.bulletCapacity = bulletCapacityNum;
+						valueArray.push(bulletCapacityNum);
+					}
+					if(axisName == "speedChangeMagazine"){
+						object.speedChangeMagazine = speedChangeMagazineNum;
+						valueArray.push(speedChangeMagazineNum);
+					}
+					if(axisName == "speedChangeGun"){
+						object.speedChangeGun = speedChangeGunNum;
+						valueArray.push(speedChangeGunNum);
+					}
+				}
+				var color:String = getColor();
+				radarChart.addSeries(sysItem.displayName, object, color);
+				areaNum = Calculator.getArea(valueArray);
+				lengthSum = Calculator.getSum(valueArray);
+				var hBox:HBox = createLegend(sysItem, color, areaNum, lengthSum);
+//				legend.addChild(hBox);
+				var index:int = getAddedIndex(sysItem, lengthSum);
+				legend.addChildAt(hBox, index);
+			}
+			
+			private function getAddedIndex(sysItem:SysItem, lengthSum:Number):int{
+				var index:int = 0;
+				var children:Array = legend.getChildren();
+				
+				if(children && children.length > 0){
+					index =children.length;
+					for(var i:int = 0; i < children.length; i++){
+						var hb:HBox = legend.getChildAt(i) as HBox;
+						var lab:Label = hb.getChildAt(3) as Label;
+						var num:Number = Number(lab.text);
+						if(lengthSum >= num){
+							index = i;	
+							break;						
+						}
+					}
+				}
+				return index;
+			}
+			
+			private function deleteSeries(sysItem:SysItem):void{
+				radarChart.removeSeries(sysItem.displayName);
+				if(legend.getChildren() && legend.getChildren().length > 0){
+					var hb:HBox = legend.getChildByName(sysItem.id.toString()) as HBox;
+					var box:Box	  = hb.getChildByName(sysItem.id.toString()) as Box;
+					var addedColor:String = getBoxBackgroundColor(box);
+					colors.unshift(addedColor);
+					var hbox:HBox = legend.getChildByName(sysItem.id.toString()) as HBox;
+					if(isUISelected(hbox)){
+						clearAllValueLab();
+					}
+		 			legend.removeChild(hbox);		 			
+		 		}
+			}
+			
+			private function deleteDataFromSeriesAC(sysItem:SysItem):void{
+				if(seriesAC && seriesAC.length > 0){
+		 			for(var j:int = 0; j < seriesAC.length; j++){
+		 				var data:SysItem = seriesAC.getItemAt(j) as SysItem;
+		 				if(data.id == sysItem.id){
+		 					seriesAC.removeItemAt(j);
+		 					break;
+		 				}
+		 			}
+		 		}
+			}
+			
+			private function getColor():String{
+				if(colors.length == 0){
+					colors = [0x257BB6, 0xB7247C, 0xCCC012, 0x41C04F, 0x296997, 0x26B69B, 0xCF5F0B, 0xA041C1];
+				}
+				return colors.shift();
+			}
+			
+			private function getBoxBackgroundColor(box:Box):String{
+				return box.getStyle(Constants.background_color);
+			}
+			
+			private function createLegend(item:SysItem, color:String, area:Number, lengthSum:Number):HBox{
+		 		var hb:HBox = new HBox();
+		 		hb.name = item.id.toString();
+		 		hb.addEventListener(MouseEvent.CLICK, showPointValue);
+		 		
+		 		var name:Label = new Label();
+		 		name.text = item.displayName;
+		 		name.width	= 80;
+		 		
+		 		var box:Box = new Box();
+		 		box.name = item.id.toString();
+		 		box.width = 40;
+		 		box.height = 20;
+		 		box.setStyle(Constants.background_color, color);
+		 		
+		 		var label:Label = new Label();
+		 		label.text = area.toString();
+		 		label.width = 70;
+		 		
+		 		var sumLabel:Label = new Label();
+		 		sumLabel.text = lengthSum.toString();
+		 		sumLabel.width = 70;
+		 		
+		 		hb.addChild(name);
+		 		hb.addChild(box);
+		 		hb.addChild(label);
+		 		hb.addChild(sumLabel);
+		 		
+		 		return hb;
+		 	}
+			
+			private function onWeaponCategoryChange(e:Event):void{
+				var target:ComboBox = e.currentTarget as ComboBox;
+				subType = target.selectedItem.data;
+				updateWeaponFilter()
+			}
+			
+			private function updateWeaponFilter():void{
+				var weaponCollection:ICollectionView = weaponList.dataProvider as ICollectionView;
+				if(weaponCollection.filterFunction == null){
+					weaponCollection.filterFunction = weaponFilter;
+				}
+				weaponCollection.refresh();
+			}
+			
+			private function weaponFilter(item:Object):Boolean{
+				var si:SysItem = item as SysItem;
+				var b:Boolean = true;
+				if(subType != 0){
+					if(si.subType != subType){
+						b =false;
+					}
+				}				
+				return b;
+			}
+			
+			private function onSelectAllWeaponBtnClick():void{
+				weaponList.dataProvider = null;
+				if(sysItems && sysItems.length > 0){
+					for each(var s:SysItem in sysItems){
+						s.radarSelected = true;
+					}
+					weaponList.dataProvider = sysItems;
+				}
+			}
+			
+			private function onClearAllWeaponBtnClick():void{
+				
+			}
+			
+			private function onRefreshWeaponBtnClick():void{
+				getRo.getUndeletedSysItemList(1, Constants.BOOLEAN_NO);
+				category.selectedIndex = 0;
+				removeAllSeries();
+				seriesAC = new ArrayCollection();
+			}
+			
+			private function showPointValue(e:MouseEvent):void{
+				var hb:HBox = e.currentTarget as HBox;
+				if(!isUISelected(hb)){
+					setLegendChidrenDefault();
+					setSelectedStyle(hb);	
+					
+					var id:int = int(Number(hb.name));
+					var sysItem:SysItem = getSysItemById(id);
+					
+					if(sysItem){
+//						recoilLab.text			  	= Calculator.getRecoil(sysItem).toString();
+//						accuracyLab.text			= Calculator.getAccuracy(sysItem).toString();
+//						powerLab.text			  	= Calculator.getPower(sysItem).toString();
+//						firingRangeLab.text		  	= Calculator.getFiringRange(sysItem).toString();
+//						firingRateLab.text		  	= Calculator.getFiringRate(sysItem).toString();
+//						bulletCapacityLab.text	  	= Calculator.getBulletCapacity(sysItem).toString();
+//						speedChangeMagazineLab.text = Calculator.getSpeedChangeMagazine(sysItem).toString();
+//						speedChangeGunLab.text	  	= Calculator.getSpeedChangeGun(sysItem).toString();
+						
+						recoilLab.text			  	= Calculator.getHouzuo(sysItem).toString();
+						recoilVal.text				= Calculator.numberFormat(sysItem.WNormalUpMax).toString() + " / " + Calculator.numberFormat(sysItem.WNormalLateralMax).toString();
+						accuracyLab.text			= Calculator.getJindu(sysItem).toString();
+						accuracyVal.text			= Calculator.numberFormat(sysItem.WNormalDirChange).toString();
+						powerLab.text				= Calculator.getWeili(sysItem).toString();
+						powerVal.text				= Calculator.numberFormat(sysItem.WDamage).toString();
+						firingRangeLab.text		  	= Calculator.getShecheng(sysItem).toString();
+						firingRangeVal.text			= Calculator.numberFormat(sysItem.WRangeEnd).toString();
+						firingRateLab.text		  	= Calculator.getShesu(sysItem).toString();
+						firingRateVal.text			= Calculator.numberFormat(sysItem.WFireTime).toString();
+						bulletCapacityLab.text	  	= Calculator.getDanliang(sysItem).toString();
+						bulletCapacityVal.text		= Calculator.numberFormat(sysItem.WAmmoOneClip).toString();
+						speedChangeMagazineLab.text = Calculator.getHuandansudu(sysItem).toString();
+						speedChangeMagazineVal.text = Calculator.numberFormat(sysItem.WReloadTime).toString();
+						speedChangeGunLab.text	  	= Calculator.getHuanqiangsudu(sysItem).toString();
+						speedChangeGunVal.text		= Calculator.numberFormat(sysItem.WChangeInTime).toString();
+					}			
+				}
+			}
+			
+			private function getSysItemById(id:int):SysItem{
+				var result:SysItem = null;
+				if(seriesAC && seriesAC.length > 0){
+					for each(var s:SysItem in seriesAC){
+						if(s.id == id){
+							result = s;
+							break;
+						}
+					}
+				}
+				
+				return result;
+			}
+			
+			private function isUISelected(o:Object):Boolean{
+				var border:String = o.getStyle("borderStyle");
+				if(border == "none"){
+					return false;
+				}else{
+					return true;
+				}
+			}
+			
+			private function setDefaultStyle(o:Object):void{
+				o.setStyle("borderStyle", "none");
+				o.setStyle("borderColor", "0xB7BABC");
+			}
+			
+			private function setSelectedStyle(o:Object):void{
+				o.setStyle("borderStyle", "solid");
+				o.setStyle("borderColor", "0xB7247C");
+			}
+			
+			private function setLegendChidrenDefault():void{
+				if(seriesAC && seriesAC.length > 0){
+					for each(var s:SysItem in seriesAC){
+						var hbox:HBox = legend.getChildByName(s.id.toString()) as HBox;
+						setDefaultStyle(hbox);
+					}
+				}
+			}
+			
+			private function clearAllValueLab():void{
+				recoilLab.text			  	= "";
+				accuracyLab.text			= "";
+				powerLab.text			  	= "";
+				firingRangeLab.text		  	= "";
+				firingRateLab.text		  	= "";
+				bulletCapacityLab.text	  	= "";
+				speedChangeMagazineLab.text = "";
+				speedChangeGunLab.text	  	= "";
+			}
+		]]>
+	</mx:Script>	
+	
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getUndeletedSysItemList" result="getUndeletedSysItemListHandler(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:HDividedBox width="100%" height="100%">
+		<mx:VBox height="100%">
+			<mx:HBox>
+				<mx:Button id="selectAxisBtn" label="全选" click="onSelectAxisBtnClick(event)"/>
+				<mx:Button id="clearAxisBtn" label="清除" click="onSelectAxisBtnClick(event)"/>
+			</mx:HBox>
+			
+			<mx:HBox horizontalAlign="left">
+				<mx:CheckBox id="recoilCB" label="后坐力" width="80" change="onAxisChange(event)"/>
+				<mx:Label id="recoilLab" width="80"/>
+				<mx:Label id="recoilVal" width="60"/>
+			</mx:HBox>		
+			<mx:HBox horizontalAlign="left">
+				<mx:CheckBox id="accuracyCB" label="精度" width="80" change="onAxisChange(event)"/>
+				<mx:Label id="accuracyLab" width="80"/>
+				<mx:Label id="accuracyVal" width="60"/>
+			</mx:HBox>
+			<mx:HBox horizontalAlign="left">
+				<mx:CheckBox id="firingRangeCB" label="射程" width="80" change="onAxisChange(event)"/>
+				<mx:Label id="firingRangeLab" width="80"/>
+				<mx:Label id="firingRangeVal" width="60"/>
+			</mx:HBox>
+			<mx:HBox horizontalAlign="left">
+				<mx:CheckBox id="firingRateCB" label="射速" width="80" change="onAxisChange(event)"/>	
+				<mx:Label id="firingRateLab" width="80"/>
+				<mx:Label id="firingRateVal" width="60"/>
+			</mx:HBox>	
+			<mx:HBox horizontalAlign="left">
+				<mx:CheckBox id="speedChangeGunCB" label="换枪速度" width="80" change="onAxisChange(event)"/>
+				<mx:Label id="speedChangeGunLab" width="80"/>
+				<mx:Label id="speedChangeGunVal" width="60"/>
+			</mx:HBox>	
+			<mx:HBox horizontalAlign="left">
+				<mx:CheckBox id="speedChangeMagazineCB" label="换弹速度" width="80" change="onAxisChange(event)"/>	
+				<mx:Label id="speedChangeMagazineLab" width="80"/>
+				<mx:Label id="speedChangeMagazineVal" width="60"/>
+			</mx:HBox>	
+			<mx:HBox horizontalAlign="left">
+				<mx:CheckBox id="bulletCapacityCB" label="弹量" width="80" change="onAxisChange(event)"/>
+				<mx:Label id="bulletCapacityLab" width="80"/>
+				<mx:Label id="bulletCapacityVal" width="60"/>
+			</mx:HBox>	
+			<mx:HBox horizontalAlign="left">
+				<mx:CheckBox id="powerCB" label="威力" width="80" change="onAxisChange(event)"/>
+				<mx:Label id="powerLab" width="80"/>
+				<mx:Label id="powerVal" width="60"/>
+			</mx:HBox>			
+		</mx:VBox>
+		
+		<mx:Panel id="legend" title="图例" height="100%"/>
+		<boost:RadarChart id="radarChart" width="100%" height="100%"/>		
+		<mx:VBox id="rightVBox" height="100%">
+			<!--mx:HBox>
+				<mx:Button id="selectAllWeaponBtn" label="全选" click="onSelectAllWeaponBtnClick()"/>
+				<mx:Button id="clearAllWeaponBtn" label="清除" click="onClearAllWeaponBtnClick()"/>				
+			</mx:HBox-->
+			<mx:List id="weaponList" dataProvider="{sysItems}" itemRenderer="renderer.RadarChartCheckBoxRenderer" width="100%" height="100%"/>
+			<mx:HBox>
+				<mx:ComboBox id="category" dataProvider="{Constants.category}" change="onWeaponCategoryChange(event)"/>
+				<mx:Button id="refreshWeaponBtn" label="刷新" click="onRefreshWeaponBtnClick()"/>
+			</mx:HBox>				
+		</mx:VBox>		
+	</mx:HDividedBox>
+</mx:Panel>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ChargeLog">
+	<typeAlias alias="ChargeLog" type="com.pearl.manager.pojo.ChargeLog"/>
+	<resultMap id="selectResult" class="ChargeLog">
+		<result property="id" column="ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="orderId" column="ORDER_ID"/>	
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="rmb" column="RMB"/>
+		<result property="amount" column="AMOUNT"/>
+		<result property="discount" column="DISCOUNT"/>	
+		<result property="createTime" column="CREATE_TIME"/>	
+		<result property="type" column="TYPE"/>	
+		
+	</resultMap>
+	
+	<select id="getFirstCharge" parameterClass="java.util.Map" resultMap="selectResult">
+		select * from (select * from ITEM_ORDER where type=1 group by PLAYER_ID) temp 
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="start">
+			CREATE_TIME <![CDATA[ >= ]]> #start#
+			</isNotNull>
+			<isNotNull prepend="and" property="end">
+				CREATE_TIME <![CDATA[ < ]]> #end#
+			</isNotNull>
+		</dynamic>
+	</select>
+	<select id="getMonthCharge" parameterClass="java.util.Map" resultMap="selectResult">
+		select i.ID,i.USER_ID,i.ORDER_ID,i.PLAYER_ID, i.RMB,i.AMOUNT,i.DISCOUNT,i.CREATE_TIME,i.TYPE from ITEM_ORDER as i where i.type=1 
+		<dynamic>
+			<isNotNull prepend="and" property="start">
+			CREATE_TIME <![CDATA[ >= ]]> #start#
+			</isNotNull>
+			<isNotNull prepend="and" property="end">
+				CREATE_TIME <![CDATA[ < ]]> #end#
+			</isNotNull>
+		</dynamic>
+	</select>
+	<select id="getChargeByDayOnUsr" parameterClass="java.util.Map" resultMap="selectResult">
+		SELECT ID,USER_ID,ORDER_ID,PLAYER_ID,SUM(RMB) AS RMB,AMOUNT,DISCOUNT,CREATE_TIME,TYPE FROM
+			(select * from  ITEM_ORDER WHERE TYPE=1
+				<dynamic>
+					<isNotNull prepend="and" property="start">
+					CREATE_TIME <![CDATA[ >= ]]> #start#
+					</isNotNull>
+					<isNotNull prepend="and" property="end">
+					CREATE_TIME <![CDATA[ < ]]> #end#
+					</isNotNull>
+				</dynamic>) temp
+		group by PLAYER_ID
+	</select>
+	
+	<select id="getChargeByDayOnRmb" parameterClass="java.util.Map" resultMap="selectResult">
+		SELECT * FROM ITEM_ORDER WHERE TYPE=1
+		<dynamic>
+			<isNotNull prepend="and" property="start">
+			TO_DAYS(CREATE_TIME) <![CDATA[ >= ]]> TO_DAYS(#start#)
+			</isNotNull>
+			<isNotNull prepend="and" property="end">
+			TO_DAYS(CREATE_TIME) <![CDATA[ < ]]> TO_DAYS(#end#)
+			</isNotNull>
+		</dynamic>	
+	</select>
+</sqlMap>

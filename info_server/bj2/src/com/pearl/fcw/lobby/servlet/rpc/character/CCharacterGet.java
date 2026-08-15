@@ -1,0 +1,62 @@
+package com.pearl.fcw.lobby.servlet.rpc.character;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.pearl.fcw.core.service.Servletable;
+import com.pearl.fcw.lobby.service.CharacterService;
+import com.pearl.fcw.utils.Smarty4jConverter;
+import com.pearl.o2o.exception.BaseException;
+import com.pearl.o2o.servlet.client.BaseClientServlet;
+import com.pearl.o2o.utils.ExceptionMessage;
+
+/**
+ * 获取玩家角色信息
+ */
+@Service("fcw_c_character_get")
+public class CCharacterGet extends BaseClientServlet implements Servletable {
+
+    private static final long serialVersionUID = 4417320232441245049L;
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    @Resource
+    private CCharacterGet fcw_c_character_get;
+    @Resource
+    private CharacterService characterService;
+
+    @Override
+    protected String[] paramNames() {
+        return new String[] { "pid", "cid" };
+    }
+
+    @Override
+    protected String innerService(String... strings) {
+        try {
+            return fcw_c_character_get.rpc(strings);
+        } catch (Exception e) {
+            logger.error("c_character_get has error : " + getLockedKey(strings), e);
+        }
+        return Smarty4jConverter.error(ExceptionMessage.ERROR_MESSAGE_ALL);
+    }
+
+    @Override
+    public String rpc(String... args) throws Exception {
+        int playerId = Integer.parseInt(args[0]);
+        int sysCharacterId = Integer.parseInt(args[1]);
+        try {
+            return characterService.getCharacter(playerId, sysCharacterId);
+        } catch (BaseException e) {
+            return Smarty4jConverter.error(e.getMessage());
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Override
+    public String getLockedKey(String... args) {
+        return args[0];
+    }
+
+}

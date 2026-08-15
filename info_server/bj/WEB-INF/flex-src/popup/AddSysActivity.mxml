@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:timePicker="common.*" 
+	fontSize="12" width="564" height="356" xmlns:vo="vo.*" label="添加活动" title="添加活动"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.CheckBox;
+			import event.BoxClickEvent;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import vo.SysActivity;
+			import mx.controls.Alert;
+			[Bindable]
+            public var startDate:Date = new Date();
+           	[Bindable]
+           	public var endDate:Date = new Date();
+			[Bindable]
+			public var actions:ArrayCollection;
+             public var types:ArrayCollection= new ArrayCollection(
+                [ 
+                  {label:"0", data:0},
+                  {label:"1", data:1}, 
+                ]);;
+			[Bindable] private var startTimeInteger:int = new Date().time/1000;
+            [Bindable] private var endTimeInteger:int = new Date().time/1000;
+			[Bindable]
+			public function set sysActivity(rc:SysActivity):void{
+				 this._sysActivity=rc;
+				 picker.selectedDate=startDate;
+				 picker1.selectedDate=endDate;
+			}
+			public function get sysActivity():SysActivity{
+				 return this._sysActivity;
+			}
+			 private function slectAction(evt:Event):void {
+                if(evt.target.selectedItem.data == 1){
+                	rank.visible=true;
+                }
+            }  
+            private function setAward():void {
+                Alert.show("设置礼物");
+            }
+		]]>
+	</mx:Script>
+	<vo:SysActivity id="_sysActivity" startTime="{new Date(startTimeInteger)}" endTime="{new Date(endTimeInteger)}"/>
+
+<mx:HBox >
+	<mx:Form width="536" height="308">
+		<mx:FormItem label="动作类型：">
+			<mx:HBox>
+				<mx:ComboBox  dataProvider="{actions}"  close="slectAction(event);" id="action"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<!--<mx:FormItem label="活动标题：">
+			<mx:HBox>
+				<mx:TextArea id="aName" text="{sysActivity.name}" height="70" width="373"/>
+			</mx:HBox>
+		</mx:FormItem>-->
+		<mx:FormItem label="开始时间：" width="500" height="39">
+		        <timePicker:DateTimePicker id="picker" change="this.startTimeInteger = (picker.selectedDate.time/1000)" minuteIncrement="1" backgroundColor="#FFFFFF"/>
+		</mx:FormItem>
+		<mx:FormItem label="结束时间：" height="34" width="501">
+		        <timePicker:DateTimePicker id="picker1" change="this.endTimeInteger = (picker1.selectedDate.time/1000)" minuteIncrement="1" backgroundColor="#FFFFFF"/>    
+		</mx:FormItem>
+		<mx:FormItem label="等级：" visible="false" id="rank">
+		        <mx:TextInput id="_rank" />     
+		</mx:FormItem>
+		<mx:FormItem>
+		<mx:ControlBar>
+			<mx:Button id="award" label="设置奖品" click="setAward();"/>
+			<mx:Button id="save" label="保存"/>
+			<mx:Button id="close" label="取消"/>
+		</mx:ControlBar>	
+		</mx:FormItem>
+	</mx:Form>
+			
+</mx:HBox>		
+</mx:TitleWindow>

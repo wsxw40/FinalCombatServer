@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.ItemCostDao">
+	
+	
+	<resultMap id="StatisticResultMap" type="com.pde.info.analyser.pojo.ItemCostStatistic">
+		<result column="STATISTIC_DATE" property="statisticDate" jdbcType="VARCHAR" />
+		<result column="ITEM_ID" property="itemId" jdbcType="INTEGER" />
+		<result column="ITEM_NAME" property="itemName" jdbcType="INTEGER" />
+		<result column="ITEM_TYPE" property="itemType" jdbcType="INTEGER" />
+		<result column="PEOPLEAMOUNT" property="peopleAmount" jdbcType="INTEGER" />
+		<result column="NUMAMOUNT" property="numberAmount" jdbcType="INTEGER" />
+		<result column="MONEYAMOUNT" property="moneyAmount" jdbcType="INTEGER" />
+		<result column="PAY_TYPE" property="payType" jdbcType="INTEGER" />
+		<result column="PAY_USE" property="payUse" jdbcType="INTEGER" />
+		
+	</resultMap>
+	
+	<insert id="addItemCostInfo"  parameterType="com.pde.info.analyser.pojo.ItemCostInfo"  useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `INFO_ITEM_COST` (`PLAYER_ID`,`ITEM_ID`, `ITEM_NAME`, `ITEM_TYPE`,`COST`,`PAY_UNIT`,`PAY_UNITTYPE`,`PAY_TYPE`,`PAY_USE`,`CREATE_DATE`)
+		VALUES ( #{playerId}, #{itemId},#{itemName}, #{itemType},#{cost},#{payUnit},#{payUnitType},#{payType}, #{payUse},NOW());
+	</insert>
+	
+	
+	<select id="getStatistic" resultMap="StatisticResultMap" parameterType="java.util.Map">
+		SELECT `STATISTIC_DATE`,`ITEM_ID`,`ITEM_NAME`,`ITEM_TYPE`,`PEOPLEAMOUNT`,`NUMAMOUNT`,`MONEYAMOUNT`,`PAY_TYPE`,`PAY_USE`
+		FROM `INFO_REPORT_ITEM_COST`
+		WHERE `STATISTIC_DATE` BETWEEN #{startDate} AND #{endDate}
+    	ORDER BY `STATISTIC_DATE` DESC
+	</select>
+	
+	
+
+</mapper>

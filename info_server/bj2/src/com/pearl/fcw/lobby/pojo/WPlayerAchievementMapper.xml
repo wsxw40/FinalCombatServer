@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerAchievementMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayerAchievement" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="SYS_ACHIEVEMENT_IDS" property="sysAchievementIds" jdbcType="VARCHAR" />
+    <result column="LEVEL" property="level" jdbcType="INTEGER" />
+    <result column="NUMBER" property="number" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="TOTAL_LEVEL" property="totalLevel" jdbcType="INTEGER" />
+    <result column="GROUP" property="group" jdbcType="INTEGER" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, SYS_ACHIEVEMENT_IDS, LEVEL, NUMBER, STATUS, PLAYER_ID, TOTAL_LEVEL, `GROUP`, BACK_UP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerAchievement" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_ACHIEVEMENT${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerAchievement" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_ACHIEVEMENT${tableSuffix}
+    where PLAYER_ID = #{shareId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PLAYER_ACHIEVEMENT${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayerAchievement" >
+    insert into PLAYER_ACHIEVEMENT${tableSuffix} (ID, SYS_ACHIEVEMENT_IDS, LEVEL, 
+      NUMBER, STATUS, PLAYER_ID, 
+      TOTAL_LEVEL, `GROUP`, BACK_UP
+      )
+    values (#{id,jdbcType=INTEGER}, #{sysAchievementIds,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, 
+      #{number,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, 
+      #{totalLevel,jdbcType=INTEGER}, #{group,jdbcType=INTEGER}, #{backUp,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerAchievement" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into PLAYER_ACHIEVEMENT${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="sysAchievementIds != null" >
+        SYS_ACHIEVEMENT_IDS,
+      </if>
+      <if test="level != null" >
+        LEVEL,
+      </if>
+      <if test="number != null" >
+        NUMBER,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="totalLevel != null" >
+        TOTAL_LEVEL,
+      </if>
+      <if test="group != null" >
+        `GROUP`,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysAchievementIds != null" >
+        #{sysAchievementIds,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="totalLevel != null" >
+        #{totalLevel,jdbcType=INTEGER},
+      </if>
+      <if test="group != null" >
+        #{group,jdbcType=INTEGER},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerAchievement" >
+    update PLAYER_ACHIEVEMENT${tableSuffix}
+    <set >
+      <if test="sysAchievementIds != null" >
+        SYS_ACHIEVEMENT_IDS = #{sysAchievementIds,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        LEVEL = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        NUMBER = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="totalLevel != null" >
+        TOTAL_LEVEL = #{totalLevel,jdbcType=INTEGER},
+      </if>
+      <if test="group != null" >
+        `GROUP` = #{group,jdbcType=INTEGER},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerAchievement" >
+    update PLAYER_ACHIEVEMENT${tableSuffix}
+    set SYS_ACHIEVEMENT_IDS = #{sysAchievementIds,jdbcType=VARCHAR},
+      LEVEL = #{level,jdbcType=INTEGER},
+      NUMBER = #{number,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=INTEGER},
+      PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      TOTAL_LEVEL = #{totalLevel,jdbcType=INTEGER},
+      `GROUP` = #{group,jdbcType=INTEGER},
+      BACK_UP = #{backUp,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

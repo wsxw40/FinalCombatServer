@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:window="window.*" xmlns:view="view.*" width="100%" height="100%">
+	<mx:TabBar dataProvider="{subTab}"/>
+	<mx:ViewStack id="subTab" width="100%" height="100%">
+		<window:PlayerManageWindow id="players" label="{resourceManager.getString('Language','label.AccountQuery')}"/>
+		<window:PlayerLogManagerWindow id="playerLog" label="{resourceManager.getString('Language','label.PlayerLog')}"/>
+		<window:GMMailManageWindow id="gmMail" label="{resourceManager.getString('Language','label.GMail')}"/>
+		<view:PayLogManageView label="{resourceManager.getString('Language','label.PamentLog')}" width="100%" height="100%"/>
+		<view:TopUpView label="{resourceManager.getString('Language','label.ChargeLog')}" width="100%" height="100%"/>
+		<window:TransferPlayer id="tranfer" label="{resourceManager.getString('Language','label.AccountRemove')}"/>
+		<window:RecoveryItemWindow id="recovery_item" label="Recovery Item"/>
+		<window:ModifyItemWindow id="modify_item" label="Modify Item"/>
+	</mx:ViewStack>
+</mx:VBox>

@@ -1,0 +1,12 @@
+eclipse.preferences.version=1
+encoding//src/config/application.properties=UTF-8
+encoding//src/i18n/messages.properties=UTF-8
+encoding//webapp/bj2/gm/header.jsp=UTF-8
+encoding//webapp/bj2/gm/menu.jsp=UTF-8
+encoding//webapp/bj2/gm/ribbon.jsp=UTF-8
+encoding//webapp/bj2/gm/views/import.jsp=UTF-8
+encoding//webapp/bj2/gm/views/sysItem.jsp=UTF-8
+encoding//webapp/bj2/gm/views/sysItemType.jsp=UTF-8
+encoding//webapp/bj2/login.jsp=UTF-8
+encoding//webapp/bj2/roleError.jsp=UTF-8
+encoding/<project>=UTF-8

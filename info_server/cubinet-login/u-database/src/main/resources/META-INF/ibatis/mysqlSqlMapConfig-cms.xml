@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings useStatementNamespaces="true" />
+	
+	<!-- 新闻资讯 -->
+	<sqlMap resource="META-INF/ibatis/cms/AbstractCmsNews.xml" />
+	<sqlMap resource="META-INF/ibatis/cms/CmsNews.xml" />
+
+	<!-- 新闻资讯栏目 -->
+	<sqlMap resource="META-INF/ibatis/cms/AbstractCmsNewsColumn.xml" />
+	<sqlMap resource="META-INF/ibatis/cms/CmsNewsColumn.xml" />
+
+</sqlMapConfig>

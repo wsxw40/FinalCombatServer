@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()" width="1500">
+<mx:Script>
+	<![CDATA[
+		import mx.validators.Validator;
+		import utils.DatagridValidateFactory;
+		import mx.utils.StringUtil;
+		import mx.controls.TextInput;
+		import view.CreateChannelView;
+		import mx.core.IFlexDisplayObject;
+		import mx.managers.PopUpManager;
+		import view.CreateServerView;
+		import mx.events.DataGridEvent;
+		import vo.Channel;
+		import vo.Server;
+		import mx.rpc.events.ResultEvent;
+		import mx.events.ResizeEvent;
+		import mx.collections.ArrayCollection;
+		import mx.controls.Alert;
+		import mx.rpc.events.FaultEvent;
+		import vo.GmUser;
+		private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+		[Bindable]
+		private var serverList:ArrayCollection=new ArrayCollection();
+		[Bindable]
+		private var channelList:ArrayCollection=new ArrayCollection();
+		[Bindable]
+		private var server:Server;
+		[Bindable]
+		private var channel:Channel;
+		
+		private var isCopy:Boolean=false;
+		private function init():void{
+			initBtn();
+			getRo.getServersList();
+		}
+		private function initBtn():void{
+				newBtn.enabled=true;
+				copyBtn.enabled=true;
+				saveBtn.enabled=false;
+		 		deleteBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		newBtn1.enabled=true;
+				copyBtn1.enabled=true;
+				saveBtn1.enabled=false;
+		 		deleteBtn1.enabled=true;
+		 		editBtn1.enabled=true;
+		 		cancelBtn1.enabled=false;
+		}
+		private function closeServerPanel(evt:MouseEvent):void{
+		 		PopUpManager.removePopUp(serverView);
+		}
+		private function getServerListHandler(evt:ResultEvent):void{
+			serverList= evt.result as ArrayCollection;
+		}
+		private function getChannelListHandler(evt:ResultEvent):void{
+			channelList= evt.result as ArrayCollection;
+		}
+		private function onServerSelect():void{
+			this.server=serverDataGrid.selectedItem as Server;
+			getRo.getChannelsList(server.id);
+		}
+		private function onChannelSelect():void{
+			this.channel=channelDataGrid.selectedItem as Channel;
+		}
+		private function checkIt(event:Event):void
+		{
+			serverDataGrid.validateDisplayList();
+		}
+		private var datagridValidate:Validator;
+		private function endEdit(evt:DataGridEvent):void
+		{
+				var dataField:String = evt.dataField;
+				var fCell:Array=[evt.columnIndex,evt.rowIndex];
+				var source:Object=evt.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(evt.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = evt.currentTarget.editedItemRenderer.data[evt.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+               		var validate:Validator=DatagridValidateFactory.getServerValidater(dataField,source);
+               		if(validate!=null){
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.server.isChange=1;
+	               			callLater(maintainFocus);
+	               			
+	               		}else{
+	               			evt.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		}
+               		}else{
+               			callLater(maintainFocus);
+               		}
+               	}else{
+               		callLater(maintainFocus);
+               	}
+		}
+		private function maintainFocus():void
+		{
+   			serverDataGrid.editedItemPosition = null;
+		}
+		private function maintainEdit(colIndex:int,rowIndex:int,source:Object):void
+		{
+			
+			var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+			if(serverDataGrid.editedItemPosition==null)
+			{
+   				serverDataGrid.editedItemPosition = editCell;
+				callLater(validateCurrentEditor);
+   			}
+		}
+		private function validateCurrentEditor():void{
+			datagridValidate.source=serverDataGrid.itemEditorInstance;
+			datagridValidate.validate();
+		}
+		private var serverView:CreateServerView;
+		private function onNewBtnClick():void{
+			serverView=CreateServerView(PopUpManager.createPopUp(this,CreateServerView,true));
+	 		if(isCopy){
+	 			serverView.server=this.server;
+	 		}else{
+	 			serverView.server=new Server();
+	 		}
+	 		serverView.close.addEventListener(MouseEvent.CLICK,closeServerPanel);
+	 		serverView.save.addEventListener(MouseEvent.CLICK,createServer);
+			PopUpManager.centerPopUp(serverView);
+		}
+		public function createServer(evt:MouseEvent):void{
+		 		createRo.createServer(gmUser, serverView.server);
+		 		PopUpManager.removePopUp(serverView);
+		 	}
+		private function onCopyBtnClick():void{
+			this.server=serverDataGrid.selectedItem as Server;
+		}
+		private function onSaveBtnClick():void{
+				updateRo.updateServerList(gmUser, this.serverList);
+				newBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		copyBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		deleteBtn.enabled=true;
+		 		saveBtn.enabled=false;
+		 		serverDataGrid.editable=false;
+		}
+		private function onDeleteBtnClick():void{
+			if(this.server==null){
+					Alert.show("Pls choose a server.");
+				}else{
+		 			deleteRo.deleteServerById(this.gmUser, this.server);
+		 		}
+		}
+		private function onEditBtnClick():void{
+				this.serverDataGrid.editable=true;
+				newBtn.enabled=false;
+		 		deleteBtn.enabled=false;
+		 		editBtn.enabled=false;
+		 		copyBtn.enabled=false;
+		 		cancelBtn.enabled=true;
+		 		saveBtn.enabled=true;
+		}
+		private function onCancelBtnClick():void{
+				newBtn.enabled=true;
+		 		deleteBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		copyBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		saveBtn.enabled=false;
+		 		serverDataGrid.editable=false;
+		}
+		
+		//channel
+		private function closeChannelPanel(evt:MouseEvent):void{
+		 		PopUpManager.removePopUp(channelView);
+		 	}
+		private function checkIt1(event:Event):void
+		{
+			channelDataGrid.validateDisplayList();
+		}
+		private function endEdit1(evt:DataGridEvent):void
+		{
+				var dataField:String = evt.dataField;
+				var fCell:Array=[evt.columnIndex,evt.rowIndex];
+				var source:Object=evt.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(evt.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = evt.currentTarget.editedItemRenderer.data[evt.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+               		var validate:Validator=DatagridValidateFactory.getServerValidater(dataField,source);
+               		if(validate!=null){
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.channel.isChange=1;
+	               			callLater(maintainFocus1);
+	               			
+	               		}else{
+	               			evt.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit1,fCell);
+	               		}
+               		}else{
+               			callLater(maintainFocus1);
+               		}
+               	}else{
+               		callLater(maintainFocus1);
+               	}
+		}
+		private function maintainFocus1():void
+		{
+   			channelDataGrid.editedItemPosition = null;
+		}
+		private function maintainEdit1(colIndex:int,rowIndex:int,source:Object):void
+		{
+			
+			var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+			if(channelDataGrid.editedItemPosition==null)
+			{
+   				channelDataGrid.editedItemPosition = editCell;
+				callLater(validateCurrentEditor1);
+   			}
+		}
+		private function validateCurrentEditor1():void{
+			datagridValidate.source=channelDataGrid.itemEditorInstance;
+			datagridValidate.validate();
+		}
+		private var channelView:CreateChannelView;
+		private function onNewBtn1Click():void{
+			channelView=CreateChannelView(PopUpManager.createPopUp(this,CreateChannelView,true));
+	 		if(isCopy){
+	 			channelView.channel=this.channel;
+	 		}else{
+	 			channelView.channel=new Channel();
+	 		}
+	 		channelView.close.addEventListener(MouseEvent.CLICK,closeChannelPanel);
+	 		channelView.save.addEventListener(MouseEvent.CLICK,createChannel);
+			PopUpManager.centerPopUp(channelView);
+		}
+		public function createChannel(evt:MouseEvent):void{
+			createRo.createChannel(gmUser, channelView.channel);
+		 	PopUpManager.removePopUp(channelView);
+		}
+		private function onCopyBtn1Click():void{
+			this.channel=channelDataGrid.selectedItem as Channel;
+		}
+		private function onSaveBtn1Click():void{
+			updateRo.updateChannelList(gmUser, this.channelList);
+			newBtn1.enabled=true;
+	 		editBtn1.enabled=true;
+	 		copyBtn1.enabled=true;
+	 		cancelBtn1.enabled=false;
+	 		deleteBtn1.enabled=true;
+	 		saveBtn1.enabled=false;
+	 		channelDataGrid.editable=false;
+		}
+		private function onDeleteBtn1Click():void{
+			if(this.channel==null){
+					Alert.show("Pls choose a channel.");
+			}else{
+		 			deleteRo.deleteChannelById(gmUser, this.channel);
+		 	}
+		}
+		private function onEditBtn1Click():void{
+			this.channelDataGrid.editable=true;
+				newBtn1.enabled=false;
+		 		deleteBtn1.enabled=false;
+		 		editBtn1.enabled=false;
+		 		copyBtn1.enabled=false;
+		 		cancelBtn1.enabled=true;
+		 		saveBtn1.enabled=true;
+		}
+		private function onCancelBtn1Click():void{
+			newBtn1.enabled=true;
+		 		deleteBtn1.enabled=true;
+		 		editBtn1.enabled=true;
+		 		copyBtn1.enabled=true;
+		 		cancelBtn1.enabled=false;
+		 		saveBtn1.enabled=false;
+		 		channelDataGrid.editable=false;
+		}
+		
+		
+		private function createServerHandler(evt:ResultEvent):void{
+			getRo.getServersList();
+		}
+		private function createChannelHandler(evt:ResultEvent):void{
+			if(this.server!=null){
+				getRo.getChannelsList(this.server.id);
+			}
+		}
+		private function defaultFaultHandle(evt:FaultEvent):void{
+			Alert.show(evt.fault.faultString);
+		}
+		private function deleteServerByIdHandle(evt:ResultEvent):void{
+			getRo.getServersList();
+			channelList = new ArrayCollection();
+		}
+	]]>
+</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getServersList" result="getServerListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getChannelsList" result="getChannelListHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createServer" result="createServerHandler(event)" fault="defaultFaultHandle(event)" />
+		<mx:method name="createChannel" result="createChannelHandler(event)" fault="defaultFaultHandle(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteServerById" result="deleteServerByIdHandle(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="deleteChannelById" result="createChannelHandler(event)" fault="defaultFaultHandle(event)" />
+	</mx:RemoteObject>
+		<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateServerList" result="createServerHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="updateChannelList" result="createChannelHandler(event)" fault="defaultFaultHandle(event)" />
+	</mx:RemoteObject>	
+	<mx:VBox width="1500">
+	<mx:VDividedBox width="100%" height="70%">
+		<mx:VBox width="65%">
+			<mx:ApplicationControlBar>				
+	        	<mx:Button id="newBtn"  label="{resourceManager.getString('Language','button.New')}" click="onNewBtnClick()"/>
+	        	<mx:Button id="copyBtn" label="{resourceManager.getString('Language','button.Paste')}" click="onCopyBtnClick()"/>
+	        	<mx:Button id="saveBtn"  label="{resourceManager.getString('Language','button.Save')}"  click="onSaveBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="{resourceManager.getString('Language','button.Delete')}" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="editBtn"  label="{resourceManager.getString('Language','button.Edit')}" click="onEditBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="{resourceManager.getString('Language','button.Cancel')}"  click="onCancelBtnClick()"/>
+		     </mx:ApplicationControlBar>
+	    
+			<mx:DataGrid id="serverDataGrid" dataProvider="{serverList}" itemClick="onServerSelect()" 
+					 height="100%" editable="false" change="checkIt(event)"
+					itemEditEnd="endEdit(event)"  width="950">
+				<mx:columns>
+					 <mx:DataGridColumn width="20" dataField="id" headerText="{resourceManager.getString('Language','label.ServerId')}"  editable="false"/>
+					 <mx:DataGridColumn width="50" dataField="name" headerText="{resourceManager.getString('Language','label.ServerName')}"/>
+					 <mx:DataGridColumn width="50" dataField="max" headerText="{resourceManager.getString('Language','label.GoToTopest')}" />
+					 <mx:DataGridColumn width="50" dataField="min" headerText="{resourceManager.getString('Language','label.GoToShortest')}" />
+					 <mx:DataGridColumn width="50" dataField="maxTeam" headerText="{resourceManager.getString('Language','label.GoToTeamTopest')}" />
+					 <mx:DataGridColumn width="50" dataField="minTeam" headerText="{resourceManager.getString('Language','label.GoToTeamShortest')}" />
+					 <mx:DataGridColumn width="50" dataField="maxOnline" headerText="{resourceManager.getString('Language','label.MaxOnline')}" />
+					 <mx:DataGridColumn width="50" dataField="isNew" headerText="{resourceManager.getString('Language','label.IsNew')}" />
+					 <mx:DataGridColumn width="50" dataField="minFightNum" headerText="{resourceManager.getString('Language','label.Smallest')}" />
+					 <mx:DataGridColumn width="80" dataField="gameType" headerText="gameType(pattern:normal;commend;New;New com)" />
+				</mx:columns>
+			</mx:DataGrid>
+		 </mx:VBox>
+		 <mx:VBox width="55%">
+			<mx:ApplicationControlBar>				
+	        	<mx:Button id="newBtn1"  label="{resourceManager.getString('Language','button.New')}" click="onNewBtn1Click()"/>
+	        	<mx:Button id="copyBtn1" label="{resourceManager.getString('Language','button.Paste')}" click="onCopyBtn1Click()"/>
+	        	<mx:Button id="saveBtn1"  label="{resourceManager.getString('Language','button.Save')}"  click="onSaveBtn1Click()"/>
+	        	<mx:Button id="deleteBtn1" label="{resourceManager.getString('Language','button.Delete')}" click="onDeleteBtn1Click()"/>
+	        	<mx:Button id="editBtn1"  label="{resourceManager.getString('Language','button.Edit')}" click="onEditBtn1Click()"/>
+	        	<mx:Button id="cancelBtn1"  label="{resourceManager.getString('Language','button.Cancel')}"  click="onCancelBtn1Click()"/>
+	     	</mx:ApplicationControlBar>
+			<mx:DataGrid id="channelDataGrid" dataProvider="{channelList}" itemClick="onChannelSelect()" 
+					width="100%" height="100%" editable="false" change="checkIt1(event)"
+					itemEditEnd="endEdit1(event)">
+				<mx:columns>
+					 <mx:DataGridColumn dataField="channelId" headerText="{resourceManager.getString('Language','label.ChannelId')}" width="100"/>
+					 <mx:DataGridColumn dataField="serverId" headerText="{resourceManager.getString('Language','label.ServerId')}" width="100"/>
+					 <mx:DataGridColumn dataField="name" headerText="{resourceManager.getString('Language','label.ChannelName')}" width="100"/>
+					 <mx:DataGridColumn dataField="max" headerText="{resourceManager.getString('Language','label.GoToTopest')}" width="100"/>
+					 <mx:DataGridColumn dataField="min" headerText="{resourceManager.getString('Language','label.GoToShortest')}" width="100"/>
+					 <mx:DataGridColumn dataField="maxTeam" headerText="{resourceManager.getString('Language','label.GoToTeamTopest')}" width="100" />
+					 <mx:DataGridColumn dataField="minTeam" headerText="{resourceManager.getString('Language','label.GoToTeamShortest')}" width="100"/>
+					 <mx:DataGridColumn dataField="maxOnline" headerText="{resourceManager.getString('Language','label.MaxOnline')}" width="100"/>
+					 <mx:DataGridColumn dataField="isTcp" headerText="{resourceManager.getString('Language','label.IsTcp')}" width="100"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:VBox>
+		</mx:VDividedBox>
+	</mx:VBox>
+	
+</mx:VBox>

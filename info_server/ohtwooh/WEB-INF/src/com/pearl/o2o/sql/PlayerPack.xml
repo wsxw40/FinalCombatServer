@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerPack">
+	<typeAlias alias="PlayerItem" type="com.pearl.o2o.pojo.PlayerItem"/> 	
+	<resultMap id="selectPlayerItemResult" class="PlayerItem">
+		<result property="id" column="ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="itemId" column="ITEM_ID"/>		
+		<result property="validDate" column="VALID_TIME"/>			
+		<result property="expireDate" column="EXPIRE_TIME"/>
+		<result property="modifiedDesc" column="MODIFIED_DESC"/>
+		<result property="playerItemCurrency" column="P_CURRENCY" />
+		<result property="playerItemUnitType" column="P_UNIT_TYPE" />
+		<result property="quantity" column="QUANTITY" />
+		<result property="durable" column="DURABLE"/>
+		<result property="pack" column="PACK_ID"/>
+		<result property="seq" column="SEQ"/>
+		<result property="isBind" column="IS_BIND"/>
+		<result property="isDefault" column="IS_DEFAULT"/>
+						
+	</resultMap>  
+	
+	<insert id="createWeaponPack" parameterClass="java.util.Map">
+		INSERT INTO PLAYER_PACK(USER_ID,PLAYER_ID,PACK_ID,SEQ,TYPE,PLAYER_ITEM_ID,EXPIRE_TIME) values(#uid#,#cid#,#packNo#,#seq#,'W',#itemId#,#expireTime#)
+	</insert>
+	
+	<update id="updateWeaponPackExpiredTime" parameterClass="java.util.Map">
+		update PLAYER_PACK
+				set EXPIRE_TIME = #expireTime#
+			where PACK_ID = #packId# and PLAYER_ID = #playerId# and USER_ID = #userId#
+	</update>
+	
+	<update id="clearExpiredWeaponPack" parameterClass="java.util.Map">
+		update 	PLAYER_PACK set PLAYER_ITEM_ID = NULL 
+			where PLAYER_ID= #playerId# and PACK_ID =#packId# and TYPE = 'W' and SEQ != 3
+	</update>
+	
+	
+	<delete id="deleteWeaponPack" parameterClass="java.util.Map">
+		delete from PLAYER_PACK where USER_ID = #uid# and PLAYER_ID = #cid# and TYPE = 'W' and PACK_ID = #packNo#		
+	</delete>
+	
+	<select id="select" parameterClass="java.util.Map" resultMap="PlayerItem.selectPlayerItemResult">
+		select 		
+   	 		pi.ID,
+   	 		pi.USER_ID,
+   	 		pi.PLAYER_ID,
+   	 		pi.ITEM_ID,
+   	 		pi.VALID_TIME,
+   	 		pi.EXPIRE_TIME ,
+   	 		pi.MODIFIED_DESC,
+   	 		pi.IS_BIND,
+   	 		pi.IS_DEFAULT,
+   	 		pi.DURABLE,
+   	 		pi.CURRENCY as P_CURRENCY,
+   	 		pi.UNIT_TYPE as P_UNIT_TYPE,
+   	 		pi.QUANTITY,
+	   	 		ifnull(pp.PACK_ID,0) as PACK_ID,
+          	ifnull(pp.SEQ,0) as SEQ,
+   	 			si.MODIFIED_DESC as S_MODIFIED_DESC,
+   	 			si.*,
+				0 as PARENT_ITEM_ID ,
+				0 as BUFF	,
+				((unix_timestamp(pi.EXPIRE_TIME)-unix_timestamp(now())) div 60) as TIME_LEFT		
+	   	from PLAYER_PACK pp
+	   	 left outer join
+	     PLAYER_ITEM pi on pp.PLAYER_ITEM_ID= pi.id and
+		     ((pi.UNIT_TYPE=1)
+			 or  (pi.UNIT_TYPE=2 and pi.DURABLE>0 )
+			or (pi.UNIT_TYPE=3 and  pi.QUANTITY > 0)
+			or (pi.UNIT_TYPE=4 and pi.EXPIRE_TIME >= now())
+			) and pi.IS_DELETED="N"  
+	     left outer join
+    	   SYS_ITEM si on si.Id = pi.ITEM_ID
+	 	where pp.PLAYER_ID=#playerId# and (pp.EXPIRE_TIME is null or pp.EXPIRE_TIME > now())
+	 	<dynamic>
+		 	<isNotNull prepend="and" property="packId">
+					pp.PACK_ID =  #packId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+					pp.USER_ID =  #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="side">
+					pp.SIDE =  #side#
+			</isNotNull>
+			<isNotNull prepend="and" property="packType">
+					pp.TYPE =  #packType#
+			</isNotNull>
+		</dynamic>	 
+	 	order by pp.SEQ;		
+	</select>
+	
+	
+	<update id="updatePackEquipment" parameterClass="java.util.Map">
+		update PLAYER_PACK pp
+		set pp.PLAYER_ITEM_ID=#playerItemId#
+		where 	
+				pp.USER_ID=#userId# 
+			and pp.PLAYER_ID=#playerId#
+			and pp.SEQ=#seq#
+			and pp.TYPE=#type#
+		<dynamic>
+			<isNotNull prepend="and" property="side">
+				pp.SIDE =  #side#
+			</isNotNull>
+			<isNotNull prepend="and" property="packId">
+				pp.PACK_ID =  #packId#
+			</isNotNull>
+		</dynamic>;
+	</update>
+	
+	<update id="delete" parameterClass="java.util.Map">
+		update PLAYER_PACK pp
+		set pp.PLAYER_ITEM_ID=null
+		where 	
+				pp.USER_ID=#userId# 
+			and pp.PLAYER_ID=#playerId#
+			and pp.TYPE=#type#
+		<dynamic>
+			<isNotNull prepend="and" property="seq">
+				pp.SEQ =  #seq#
+			</isNotNull>
+			<isNotNull prepend="and" property="side">
+				pp.SIDE =  #side#
+			</isNotNull>
+			<isNotNull prepend="and" property="packId">
+				pp.PACK_ID =  #packId#
+			</isNotNull>
+		</dynamic>; 
+	</update>
+	<parameterMap class="java.util.Map" id="paramMap">
+
+		<parameter property="packNum" jdbcType="INTEGER" javaType="java.lang.Integer" mode="IN"/>
+		<parameter property="seqNum" jdbcType="INTEGER" javaType="java.lang.Integer" mode="IN"/>
+		<parameter property="cPackNum" jdbcType="INTEGER" javaType="java.lang.Integer" mode="IN"/>
+		<parameter property="cSeqNum" jdbcType="INTEGER" javaType="java.lang.Integer" mode="IN"/>
+		<parameter property="playerId" jdbcType="INTEGER" javaType="java.lang.Integer" mode="IN"/>
+		<parameter property="userId" jdbcType="INTEGER" javaType="java.lang.Integer" mode="IN"/> 
+	</parameterMap> 	 
+	
+	<procedure id="insert"  parameterMap="paramMap">  
+		{call createPlayerPack(?,?,?,?,?,?)}      
+	</procedure>
+</sqlMap>

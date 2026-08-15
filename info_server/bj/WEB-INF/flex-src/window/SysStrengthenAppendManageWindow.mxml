@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()"  horizontalAlign="center">
+<mx:Script>
+	<![CDATA[
+		import mx.controls.TextInput;
+		import vo.StrengthenAppend;
+		import mx.events.ListEvent;
+		import mx.events.DataGridEvent;
+		import mx.events.CloseEvent;
+		import vo.GmUser;
+		import vo.SysItem;
+		import mx.managers.PopUpManager;
+		import view.SysItemSelectOneView;
+		import mx.collections.ICollectionView;
+		import mx.validators.Validator;
+		import mx.collections.ArrayCollection;
+		import vo.OnlineAward;
+		import mx.controls.Alert;
+		import mx.rpc.events.ResultEvent;
+		private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+		private var newObj:StrengthenAppend=new StrengthenAppend();
+		[Bindable]
+		private var streList:ArrayCollection;
+		[Bindable]
+		private var isEditable:Boolean=false;
+		private function init():void{
+			getRo.getStrengthenAppendList();
+		}
+		
+		private function getStrengthAppendListHandler(e:ResultEvent):void{
+			streList=e.result as ArrayCollection;
+		}
+		
+		private function add():void{
+			initForm(newObj);
+			isEditable=true;
+		}
+		
+		private function edit():void{
+			var obj:Object=dg.selectedItem;
+			if(null==obj){
+				Alert.show("请先选择一条记录");
+				return;
+			}
+			initForm(obj);
+			isEditable=true;
+			
+		}
+		
+		private function remove():void{
+			if(dg.selectedIndex<0){
+				Alert.show("请先选择要删除的条目");
+				return ;
+			}
+			Alert.show("确认删除？","提示",Alert.YES|Alert.NO,this,removeHandler);
+		}
+		
+		private function removeHandler(e:CloseEvent):void{
+			if(e.detail==Alert.YES){
+				deleteRo.deleteStrengthenAppend(gmUser,dg.selectedItem.id);
+				isEditable=false;
+				initForm(newObj);
+			}
+		}
+		private function save():void{
+			var result:Array=Validator.validateAll(validateArray);
+			if(result.length>0)return;
+			var obj:StrengthenAppend;
+			if(aid.text=="0"){
+				obj=new StrengthenAppend();
+				obj.level				=parseInt(level.text);
+				obj.type				=parseInt(type.text);
+				obj.property1			=parseFloat(property1.text);
+				obj.property2			=parseFloat(property2.text);
+				obj.streNum				=parseInt(streNum.text);
+				obj.streGR				=parseInt(streGR.text);
+				obj.winRate				=parseFloat(winRate.text);
+				obj.falseKeepRate		=parseFloat(falseKeepRate.text);
+				obj.falseFallRate		=parseFloat(falseFallRate.text);
+				obj.falseRuinRate		=parseFloat(falseRuinRate.text);
+				obj.holeWinRate			=parseFloat(holeWinRate.text);
+				obj.switchFallRate		=parseFloat(switchFallRate.text);
+				obj.property1_db		=parseFloat(property1_db.text);
+				obj.property2_db		=parseFloat(property2_db.text);
+				createRo.createStrengthenAppend(gmUser,obj);
+			}else{
+				obj=dg.selectedItem as StrengthenAppend;
+				obj.level				=parseInt(level.text);
+				obj.type				=parseInt(type.text);
+				obj.property1			=parseFloat(property1.text);
+				obj.property2			=parseFloat(property2.text);
+				obj.streNum				=parseInt(streNum.text);
+				obj.streGR				=parseInt(streGR.text);
+				obj.winRate				=parseFloat(winRate.text);
+				obj.falseKeepRate		=parseFloat(falseKeepRate.text);
+				obj.falseFallRate		=parseFloat(falseFallRate.text);
+				obj.falseRuinRate		=parseFloat(falseRuinRate.text);
+				obj.holeWinRate			=parseFloat(holeWinRate.text);
+				obj.switchFallRate		=parseFloat(switchFallRate.text);
+				obj.property1_db		=parseFloat(property1_db.text);
+				obj.property2_db		=parseFloat(property2_db.text);
+				updateRo.updateStrengthenAppend(gmUser,obj);
+			}
+			isEditable=false;
+			initForm(newObj);
+		}
+		
+		private function resetStreAppList(e:ResultEvent):void{
+			init();
+		}
+		
+		private function initForm(obj:Object):void{
+			aid.text				=StrengthenAppend(obj).id.toString();
+			level.text				=StrengthenAppend(obj).level.toString();
+			type.text				=StrengthenAppend(obj).type.toString();
+			property1.text			=StrengthenAppend(obj).property1.toString();
+			property2.text			=StrengthenAppend(obj).property2.toString();
+			streNum.text			=StrengthenAppend(obj).streNum.toString();
+			streGR.text				=StrengthenAppend(obj).streGR.toString();
+			winRate.text			=StrengthenAppend(obj).winRate.toString();
+			falseKeepRate.text		=StrengthenAppend(obj).falseKeepRate.toString();
+			falseFallRate.text		=StrengthenAppend(obj).falseFallRate.toString();
+			falseRuinRate.text		=StrengthenAppend(obj).falseRuinRate.toString();
+			holeWinRate.text		=StrengthenAppend(obj).holeWinRate.toString();
+			switchFallRate.text		=StrengthenAppend(obj).switchFallRate.toString();
+			property1_db.text		=StrengthenAppend(obj).property1_db.toString();
+			property2_db.text		=StrengthenAppend(obj).property2_db.toString();
+		}
+		
+		private function onChange(event:ListEvent):void{
+			var obj:Object=dg.selectedItem;
+			if(obj!=null && isEditable){
+				initForm(obj);
+			}
+		}
+		
+		private function reset():void{
+			updateRo.resetStrengthenAppend(gmUser);
+		}
+	]]>
+</mx:Script>
+<mx:RemoteObject id="getRo" destination="ro.get">
+	<mx:method name="getStrengthenAppendList" result="getStrengthAppendListHandler(event)"/>
+</mx:RemoteObject>
+<mx:RemoteObject id="createRo" destination="ro.create">
+	<mx:method name="createStrengthenAppend" result="resetStreAppList(event)"/>
+</mx:RemoteObject>
+<mx:RemoteObject id="updateRo" destination="ro.update">
+	<mx:method name="updateStrengthenAppend" result="resetStreAppList(event)"/>
+	<mx:method name="resetStrengthenAppend" result="resetStreAppList(event)"/>
+</mx:RemoteObject>
+<mx:RemoteObject id="deleteRo" destination="ro.delete">
+	<mx:method name="deleteStrengthenAppend" result="resetStreAppList(event)"/>
+</mx:RemoteObject>
+<mx:Array id="validateArray">
+		<mx:NumberValidator source="{level}" property="text" allowNegative="false" domain="int" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{type}" property="text" allowNegative="false" domain="int" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{property1}" property="text" allowNegative="false" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{property2}" property="text" allowNegative="false" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{streNum}" property="text" allowNegative="false" domain="int" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{streGR}" property="text" allowNegative="false" domain="int" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{winRate}" property="text" allowNegative="false" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{falseKeepRate}" property="text" allowNegative="false" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{falseFallRate}" property="text" allowNegative="false" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{falseRuinRate}" property="text" allowNegative="false" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{switchFallRate}" property="text" allowNegative="false" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{holeWinRate}" property="text" allowNegative="false" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{property1_db}" property="text" allowNegative="false" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+		<mx:NumberValidator source="{property2_db}" property="text" allowNegative="false" required="true"
+		invalidCharError="请输入数字" negativeError="请输入正数" invalidFormatCharsError="请输入正确数字"/>
+</mx:Array>
+	<mx:VBox>
+		<mx:HBox>
+			<mx:Button label="{resourceManager.getString('Language','button.New')}" click="add()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Edit')}" click="edit()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Delete')}" click="remove()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Save')}" click="save()" enabled="{isEditable}"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Sychoronizion')}" click="reset()"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Form>
+				<mx:FormItem label="ID" >
+					<mx:Label id="aid"/>
+				</mx:FormItem>
+				<mx:FormItem label="level" required="true">
+					<mx:TextInput id="level" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="type" required="true">
+					<mx:TextInput id="type" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Property1')}" required="true">
+					<mx:TextInput id="property1" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Property2')}" required="true">
+					<mx:TextInput id="property2" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.StreNum')}" required="true">
+					<mx:TextInput id="streNum" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.StreGR')}" required="true">
+					<mx:TextInput id="streGR" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Form>
+				<mx:FormItem label="{resourceManager.getString('Language','label.WinRate')}" required="true">
+					<mx:TextInput id="winRate" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.FalseKeepRate')}" required="true">
+					<mx:TextInput id="falseKeepRate" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.FalseFallRate')}" required="true">
+					<mx:TextInput id="falseFallRate" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.FalseRuinRate')}" required="true">
+					<mx:TextInput id="falseRuinRate" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.HoleWinRate')}" required="true">
+					<mx:TextInput id="holeWinRate" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.SwitchFallRate')}" required="true">
+					<mx:TextInput id="switchFallRate" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="property1_db" required="true">
+					<mx:TextInput id="property1_db" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="property2_db" required="true">
+					<mx:TextInput id="property2_db" width="100" editable="{isEditable}"/>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:HBox>
+		<mx:Label text="{resourceManager.getString('Language','label.StreList')}"/>
+		<mx:DataGrid id="dg" dataProvider="{streList}" rowCount="20" editable="false" change="onChange(event)">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="ID" width="50"/>
+				<mx:DataGridColumn dataField="level" headerText="level" width="50"/>
+				<mx:DataGridColumn dataField="type" headerText="{resourceManager.getString('Language','label.TypeWeaponOrOthers')}" width="150"/>
+				<mx:DataGridColumn dataField="property1" headerText="{resourceManager.getString('Language','label.Property1')}"/>
+				<mx:DataGridColumn dataField="property2" headerText="{resourceManager.getString('Language','label.Property2')}"/>
+				<mx:DataGridColumn dataField="streNum" headerText="{resourceManager.getString('Language','label.StreNum')}"/>
+				<mx:DataGridColumn dataField="streGR" headerText="{resourceManager.getString('Language','label.StreGR')}"/>
+				<mx:DataGridColumn dataField="winRate" headerText="{resourceManager.getString('Language','label.WinRate')}"/>	
+				<mx:DataGridColumn dataField="falseKeepRate" headerText="{resourceManager.getString('Language','label.FalseKeepRate')}"/>
+				<mx:DataGridColumn dataField="falseFallRate" headerText="{resourceManager.getString('Language','label.FalseFallRate')}"/>
+				<mx:DataGridColumn dataField="falseRuinRate" headerText="{resourceManager.getString('Language','label.FalseRuinRate')}"/>
+				<mx:DataGridColumn dataField="holeWinRate" headerText="{resourceManager.getString('Language','label.HoleWinRate')}"/>
+				<mx:DataGridColumn dataField="switchFallRate" headerText="{resourceManager.getString('Language','label.SwitchFallRate')}"/>
+				<mx:DataGridColumn dataField="property1_db" headerText="property1_db"/>
+				<mx:DataGridColumn dataField="property2_db" headerText="property2_db"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:VBox>
+</mx:VBox>

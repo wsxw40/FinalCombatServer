@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerAchievement">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PlayerAchievement" type="com.pearl.o2o.pojo.PlayerAchievement"/> 	
+	
+	<resultMap id="selectPlayerAchievementResult" class="PlayerAchievement">
+		<result property="id" column="ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="sysAchievementId" column="SYS_ACHIEVEMENT_ID"/>							
+	</resultMap>  
+	
+	<select id="select" parameterClass="java.lang.Integer" resultMap="selectPlayerAchievementResult">
+   	 	select 		
+   	 		pa.ID,
+   	 		pa.PLAYER_ID,
+   	 		pa.SYS_ACHIEVEMENT_ID
+    	from PLAYER_ACHIEVEMENT pa
+    	where pa.PLAYER_ID = #value#
+	</select>				    
+</sqlMap>

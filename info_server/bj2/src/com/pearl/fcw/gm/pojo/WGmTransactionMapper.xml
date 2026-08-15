@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WGmTransactionMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WGmTransaction" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="LOG_ID" property="logId" jdbcType="INTEGER" />
+    <result column="GM_USER_ID" property="gmUserId" jdbcType="INTEGER" />
+    <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR" />
+    <result column="MODEL_ID" property="modelId" jdbcType="INTEGER" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.pearl.fcw.gm.pojo.WGmTransaction" extends="BaseResultMap" >
+    <result column="HISTORY" property="history" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LOG_ID, GM_USER_ID, MODEL_NAME, MODEL_ID, CREATE_TIME
+  </sql>
+  <sql id="Blob_Column_List" >
+    HISTORY
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from GM_TRANSACTION
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="ResultMapWithBLOBs" parameterType="com.pearl.fcw.gm.pojo.WGmTransaction" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from GM_TRANSACTION
+    where 1=1 
+     <if test="id != null">
+    and ID >=  #{id,jdbcType=INTEGER}
+    </if>
+     <if test="logId != null">
+    and LOG_ID =  #{logId,jdbcType=INTEGER}
+    </if>
+     <if test="modelName != null">
+    and MODEL_NAME =  #{modelName,jdbcType=VARCHAR}
+    </if>
+     <if test="modelId != null">
+    and MODEL_ID =  #{modelId,jdbcType=INTEGER}
+    </if>
+    order by ID desc
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    t.ID, t.LOG_ID, t.GM_USER_ID, t.MODEL_NAME, t.MODEL_ID, t.CREATE_TIME, t.HISTORY, u.USER_NAME
+    from GM_TRANSACTION t,GM_USER u where t.GM_USER_ID = u.ID
+    <if test="searchValue != null">
+    and (t.ID like '${searchValue}%' or t.GM_USER_ID like '${searchValue}%' or t.MODEL_NAME like '${searchValue}%' or t.MODEL_ID like '${searchValue}%' or u.USER_NAME like '${searchValue}%')
+    </if>
+    <if test="specialSearch != null">
+    	<if test="specialSearch.logId != null and specialSearch.logId != 0">
+    	and `LOG_ID` = ${specialSearch.logId}
+    	</if>
+	     <if test="specialSearch.modelName != null">
+	    and MODEL_NAME =  #{specialSearch.modelName,jdbcType=VARCHAR}
+	    </if>
+	     <if test="specialSearch.modelId != null and specialSearch.modelId != 0">
+	    and MODEL_ID =  #{specialSearch.modelId,jdbcType=INTEGER}
+	    </if>
+    </if>
+    <if test="orderColumn != null">
+    order by t.${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from GM_TRANSACTION where 1=1
+  	<if test="searchValue != null">
+    and (ID like '${searchValue}%' or GM_USER_ID like '${searchValue}%' or MODEL_NAME like '${searchValue}%' or MODEL_ID like '${searchValue}%' )
+ 	 </if>
+    <if test="specialSearch != null">
+    	<if test="specialSearch.logId != null and specialSearch.logId != 0">
+    	and `LOG_ID` = ${specialSearch.logId}
+    	</if>
+	     <if test="specialSearch.modelName != null">
+	    and MODEL_NAME =  #{specialSearch.modelName,jdbcType=VARCHAR}
+	    </if>
+	     <if test="specialSearch.modelId != null and specialSearch.modelId != 0">
+	    and MODEL_ID =  #{specialSearch.modelId,jdbcType=INTEGER}
+	    </if>
+    </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from GM_TRANSACTION
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WGmTransaction" >
+    insert into GM_TRANSACTION (ID, LOG_ID, GM_USER_ID, 
+      MODEL_NAME, MODEL_ID, CREATE_TIME, 
+      HISTORY)
+    values (#{id,jdbcType=INTEGER}, #{logId,jdbcType=INTEGER}, #{gmUserId,jdbcType=INTEGER}, 
+      #{modelName,jdbcType=VARCHAR}, #{modelId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{history,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WGmTransaction" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into GM_TRANSACTION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="logId != null" >
+        LOG_ID,
+      </if>
+      <if test="gmUserId != null" >
+        GM_USER_ID,
+      </if>
+      <if test="modelName != null" >
+        MODEL_NAME,
+      </if>
+      <if test="modelId != null" >
+        MODEL_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="history != null" >
+        HISTORY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="logId != null" >
+        #{logId,jdbcType=INTEGER},
+      </if>
+      <if test="gmUserId != null" >
+        #{gmUserId,jdbcType=INTEGER},
+      </if>
+      <if test="modelName != null" >
+        #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        #{modelId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="history != null" >
+        #{history,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WGmTransaction" >
+    update GM_TRANSACTION
+    <set >
+      <if test="logId != null" >
+        LOG_ID = #{logId,jdbcType=INTEGER},
+      </if>
+      <if test="gmUserId != null" >
+        GM_USER_ID = #{gmUserId,jdbcType=INTEGER},
+      </if>
+      <if test="modelName != null" >
+        MODEL_NAME = #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        MODEL_ID = #{modelId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="history != null" >
+        HISTORY = #{history,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.pearl.fcw.gm.pojo.WGmTransaction" >
+    update GM_TRANSACTION
+    set LOG_ID = #{logId,jdbcType=INTEGER},
+      GM_USER_ID = #{gmUserId,jdbcType=INTEGER},
+      MODEL_NAME = #{modelName,jdbcType=VARCHAR},
+      MODEL_ID = #{modelId,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      HISTORY = #{history,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WGmTransaction" >
+    update GM_TRANSACTION
+    set LOG_ID = #{logId,jdbcType=INTEGER},
+      GM_USER_ID = #{gmUserId,jdbcType=INTEGER},
+      MODEL_NAME = #{modelName,jdbcType=VARCHAR},
+      MODEL_ID = #{modelId,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

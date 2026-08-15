@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- regist -->
+	<bean name="/nologin/partner/regist.htm" class="com.pde.uweb.web.controller.partner.PartnerRegistController">
+		<property name="partnerUserService" ref="partnerUserService_biz" />
+		<property name="partnerService" ref="partnerService_biz" />
+	</bean>
+	
+	<!-- modify pw -->
+	<bean name="/nologin/partner/modifyPW.htm" class="com.pde.uweb.web.controller.partner.PartnerModifyPwController">
+		<property name="partnerUserService" ref="partnerUserService_biz" />
+		<property name="partnerService" ref="partnerService_biz" />
+	</bean>
+
+	<!-- user login -->
+	<bean name="/nologin/partner/login.htm" class="com.pde.uweb.web.controller.partner.PartnerLoginController">
+		<property name="partnerUserService" ref="partnerUserService_biz" />
+		<property name="partnerService" ref="partnerService_biz" />
+		<!-- <property name="methodNameResolver" ref="methodNameResolver" /> -->
+	</bean>
+
+</beans>

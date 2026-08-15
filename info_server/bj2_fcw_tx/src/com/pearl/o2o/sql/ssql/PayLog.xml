@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PayLog">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PayLog" type="com.pearl.o2o.pojo.PayLog"/> 	
+
+	<resultMap id="selectResult" class="PayLog">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="playerId" column="PLAYER_ID" />
+		<result property="itemId" column="ITEM_ID" />
+		<result property="itemName" column="ITEM_NAME" />
+		<result property="itemType" column="ITEM_TYPE" />
+		<result property="leftMoney" column="LEFT_MONEY" />
+		<result property="payType" column="PAY_TYPE" />
+		<result property="payAmount" column="PAY_AMOUNT" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="payUse" column="PAY_USE" />
+	</resultMap>
+	<select id="select"  parameterClass="java.util.Map" resultMap="selectResult">
+		select * from PAY_LOG
+		<!-- <dynamic>
+	    	<isNotNull prepend="and" property="createTime">
+	    		pi.IS_GIFT=#isGift#
+	    	</isNotNull>
+	   	
+	    </dynamic>	
+	      -->
+	</select>
+	
+	<select id="selectByPlayerId"  parameterClass="java.util.Map" resultMap="selectResult">
+		select * from PAY_LOG
+		where PLAYER_ID=#playerId#
+	</select>
+	
+	<insert id="insert" parameterClass="PayLog">
+		insert into PAY_LOG (
+			USER_ID,
+			PLAYER_ID,
+			ITEM_ID,
+			ITEM_NAME,
+			PAY_TYPE,
+			PAY_AMOUNT,
+			CREATE_TIME,
+			ITEM_TYPE,
+			LEFT_MONEY,
+			PAY_USE
+			 )
+		values (
+			#userId#,
+			#playerId#,
+			#itemId#,
+			#itemName#,
+			#payType#,
+			#payAmount#,
+			#createTime#,
+			#itemType#,
+			#leftMoney#,
+			#payUse#
+			);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>	
+	</insert>
+	
+			
+</sqlMap>

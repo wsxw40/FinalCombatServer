@@ -1,0 +1,46 @@
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MeltingAward">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="MeltingAward" type="com.pearl.o2o.pojo.MeltingAward" />
+		
+	<resultMap id="selectPlayerMeltingResult" class="MeltingAward">
+		<result property="id" 					column="ID" />
+		<result property="type" 				column="TYPE" />
+		<result property="totalRate" 			column="TOTAL_RATE" />
+		<result property="itemId" 				column="ITEM_ID" />
+		<result property="unit" 				column="UNIT" />
+		<result property="unitType" 			column="UNIT_TYPE" />
+	</resultMap>
+			
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerMeltingResult">
+		select ID,TYPE,TOTAL_RATE,ITEM_ID,UNIT,UNIT_TYPE
+		from MELTING_AWARD p
+	</select>	
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="MeltingAward">
+		insert into MELTING_AWARD (TYPE,TOTAL_RATE,ITEM_ID,UNIT,UNIT_TYPE)
+		values (#type#,#totalRate#,#itemId#,#unit#,#unitType#)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="MeltingAward">
+		update MELTING_AWARD p 
+		set p.ID = #id# ,
+	        p.TYPE = #type#,
+	        p.TOTAL_RATE = #totalRate#,
+	        p.ITEM_ID = #itemId#,
+	        p.UNIT = #unit#,
+	        p.UNIT_TYPE = #unitType#
+		where p.ID = #id#
+	</update>
+</sqlMap>

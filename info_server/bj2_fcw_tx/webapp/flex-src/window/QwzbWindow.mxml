@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import common.Constants;
+			import popup.*;
+			import vo.*;
+			import event.*;
+			import mx.controls.DataGrid;
+			import utils.*;
+			import mx.managers.PopUpManager;
+			import view.*;
+			import mx.utils.StringUtil;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.events.CloseEvent;
+			
+			private function init():void{
+				qwRo.removeEventListener(ResultEvent.RESULT,close_account);
+				qwRo.getUserList();
+				qwRo.addEventListener(ResultEvent.RESULT,getUserList_1);
+				
+			}
+			private function getUserList_1(evt:ResultEvent):void{
+				var userList:ArrayCollection =ArrayCollection(evt.result);
+				detaGrid.dataProvider=userList;
+			}
+		
+			private function close_accountHandler():void{
+				var datestr1:String = StringUtil.trim(this.date1.text);
+				var datestr2:String = StringUtil.trim(this.date2.text);
+				if(datestr1.length==0||datestr2.length==0){
+						Alert.show("请输入");
+						return;
+				}
+				qwRo.close_account(datestr1,datestr2);
+				qwRo.addEventListener(ResultEvent.RESULT,close_account);
+				this.date1.getFocus();
+				this.date2.getFocus();
+			}
+			private function close_account(evt:ResultEvent):void{
+				Alert.show(String(evt.result));
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="qwRo" destination="ro.qw" showBusyCursor="true">
+	</mx:RemoteObject>
+	<mx:HBox width="100%" height="100%">
+	<mx:VDividedBox  height="100%" width="100%">
+	<mx:HBox width="100%" height="50%">
+		<mx:Panel height="370" width="60%" title="枪王排行榜">	
+			<mx:DataGrid id="detaGrid"  width="1549" height="100%">
+				<mx:columns>
+					<mx:DataGridColumn dataField="detaGrid" headerText="data" width="50"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:Button label="刷新" click="init()"/>
+		</mx:Panel>
+	</mx:HBox>
+	<mx:HBox width="100%" height="50%">
+		<mx:Panel height="370" width="30%" title="枪王比赛结算(发送物品跟清理枪王的数据)">	
+			<mx:Label  text="输入当前时间格式参考为：2016-01-20 16" /><mx:TextInput id="date1"/>
+			<mx:Label  text="输入当前时间格式参考为：2016-01-20" /><mx:TextInput id="date2"/>
+			<mx:ControlBar>	
+	        	<mx:Button label="枪王比赛结算按钮" click="close_accountHandler()"/>
+	    	</mx:ControlBar>
+		</mx:Panel>
+	</mx:HBox>
+	</mx:VDividedBox>	
+	</mx:HBox>
+</mx:VBox>

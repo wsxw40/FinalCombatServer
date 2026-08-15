@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="baseDao" abstract="true">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="baseMappingDao" abstract="true">
+		<property name="mcc" ref="memcachedClient" />
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	
+	<bean id="baseMappingDaoInstance" class="com.pearl.o2o.dao.impl.nonjoin.BaseMappingDao" parent="baseMappingDao"/>
+	
+	<bean id="sysItemLogDao" class="com.pearl.o2o.dao.impl.nonjoin.SysItemLogDao" parent="baseDao"/>
+	<bean id="sysCharacterLogDao" class="com.pearl.o2o.dao.impl.nonjoin.SysCharacterLogDao" parent="baseDao"/>
+	<bean id="sysBioCharacterDao" class="com.pearl.o2o.dao.impl.nonjoin.SysBioCharacterDao" parent="baseMappingDao"/>
+	<bean id="rankDao" class="com.pearl.o2o.dao.impl.nonjoin.RankDao" parent="baseMappingDao"/>
+	<bean id="sysIconDao" class="com.pearl.o2o.dao.impl.nonjoin.SysIconDao" parent="baseMappingDao"/>
+	<bean id="sysAchievementDao" class="com.pearl.o2o.dao.impl.nonjoin.SysAchievementDao" parent="baseMappingDao"/>
+	<bean id="playerAchievementDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerAchievementDao" parent="baseMappingDao"/>
+		
+	<bean id="itemModDao" class="com.pearl.o2o.dao.impl.nonjoin.ItemModDao" parent="baseMappingDao"/>
+	<bean id="playerInfoDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerInfoDao" parent="baseMappingDao"/>
+	<bean id="playerDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerDao" parent="baseMappingDao"/>
+	<bean id="sysItemDao" class="com.pearl.o2o.dao.impl.nonjoin.SysItemDao" parent="baseMappingDao"/>
+	<bean id="playerItemDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerItemDao" parent="baseMappingDao"/>
+	<bean id="playerPackDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerPackDao" parent="baseMappingDao"/>
+	<bean id="playerBuffDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerBuffDao" parent="baseMappingDao"/>
+	<bean id="teamDao" class="com.pearl.o2o.dao.impl.nonjoin.TeamDao" parent="baseMappingDao"/>
+	
+	<bean id="teamProclamationDao" class="com.pearl.o2o.dao.impl.nonjoin.TeamProclamationDao" parent="baseMappingDao"/>
+	<bean id="sysTeamBuffDao" class="com.pearl.o2o.dao.impl.nonjoin.SysTeamBuffDao" parent="baseMappingDao"/>
+	<bean id="teamBuffDao" class="com.pearl.o2o.dao.impl.nonjoin.TeamBuffDao" parent="baseMappingDao"/>
+	<bean id="teamRecordDao" class="com.pearl.o2o.dao.impl.nonjoin.TeamRecordDao" parent="baseMappingDao"/>
+	
+	
+	<bean id="allyDao" class="com.pearl.o2o.dao.impl.nonjoin.AllyDao" parent="baseMappingDao"/>	
+	<bean id="playerTeamDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerTeamDao" parent="baseMappingDao"/>
+	<bean id="sysCharacterDao" class="com.pearl.o2o.dao.impl.nonjoin.SysCharacterDao" parent="baseMappingDao"/>
+	<bean id="sysLevelDao" class="com.pearl.o2o.dao.impl.nonjoin.SysLevelDao" parent="baseMappingDao"/>
+	<bean id="friendDao" class="com.pearl.o2o.dao.impl.nonjoin.FriendDao" parent="baseMappingDao"/>
+	<bean id="serverDao" class="com.pearl.o2o.dao.impl.nonjoin.ServerDao" parent="baseMappingDao"/>
+	<bean id="characterDataDao" class="com.pearl.o2o.dao.impl.nonjoin.CharacterDataDao" parent="baseMappingDao"/>
+	<bean id="paymentDao" class="com.pearl.o2o.dao.impl.nonjoin.PaymentDao" parent="baseMappingDao"/>
+	<bean id="messageDao" class="com.pearl.o2o.dao.impl.nonjoin.MessageDao" parent="baseDao"/>
+	<bean id="sysNoticeDao" class="com.pearl.o2o.dao.impl.nonjoin.SysNoticeDao" parent="baseMappingDao"/>
+	<bean id="sysActivityDao" class="com.pearl.o2o.dao.impl.nonjoin.SysActivityDao" parent="baseMappingDao"/>
+	<bean id="systemDao" class="com.pearl.o2o.dao.impl.usejoin.SystemDao" parent="baseDao"/>
+	
+	<bean id="keyWordsDao" class="com.pearl.o2o.dao.impl.usejoin.KeyWordsDao" parent="baseDao"/>
+	<bean id="teamHistoryDao" class="com.pearl.o2o.dao.impl.usejoin.TeamHistoryDao" parent="baseDao"/>
+	<bean id="sysModeConfigDao" class="com.pearl.o2o.dao.impl.usejoin.SysModeConfigDao" parent="baseDao"/>
+	<bean id="payLogDao" class="com.pearl.o2o.dao.impl.nonjoin.PayLogDao" parent="baseDao"/>
+	<bean id="blackIPDao" class="com.pearl.o2o.dao.impl.nonjoin.BlackIPDao" parent="baseDao"/>
+	<bean id="blackWhiteListDao" class="com.pearl.o2o.dao.impl.nonjoin.BlackWhiteListDao" parent="baseDao"/>
+	<bean id="xunleiOrderLogDao" class="com.pearl.o2o.dao.impl.nonjoin.XunleiOrderLogDao" parent="baseDao"/>
+	<bean id="bannedWordDao" class="com.pearl.o2o.dao.impl.nonjoin.BannedWordDao" parent="baseMappingDao"/>
+	
+	<bean id="gmUserDao" class="com.pearl.o2o.dao.impl.nonjoin.GmUserDao" parent="baseDao"/>
+	<bean id="gmLogDao" class="com.pearl.o2o.dao.impl.nonjoin.GmLogDao" parent="baseDao"/>
+	<bean id="gmGroupDao" class="com.pearl.o2o.dao.impl.nonjoin.GmGroupDao" parent="baseDao"/>
+	<bean id="gmPrivilegeDao" class="com.pearl.o2o.dao.impl.nonjoin.GmPrivilegeDao" parent="baseDao"/>
+	<bean id="gmGroupPrivilegeDao" class="com.pearl.o2o.dao.impl.nonjoin.GmGroupPrivilegeDao" parent="baseDao"/>
+	
+	<bean id="gmUserGroupDao" class="com.pearl.o2o.dao.impl.nonjoin.GmUserGroupDao" parent="baseDao"/>
+	<bean id="sysMissionDao" class="com.pearl.o2o.dao.impl.nonjoin.SysMissionDao" parent="baseMappingDao"/>
+	<bean id="playerMissionDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerMissionDao" parent="baseMappingDao"/>
+	<bean id="playerActivityDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerActivityDao" parent="baseMappingDao"/>
+	<bean id="interfaceRecordDao" class="com.pearl.o2o.dao.impl.nonjoin.InterfaceRecordDao" parent="baseDao"/>
+	<bean id="unSpeakerDao" class="com.pearl.o2o.dao.impl.nonjoin.UnSpeakerDao" parent="baseDao"/>
+	<bean id="sysChestDao" class="com.pearl.o2o.dao.impl.nonjoin.SysChestDao" parent="baseMappingDao"/>
+	<bean id="playerChestDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerChestDao" parent="baseMappingDao"/>
+	<bean id="onlineAwardDao" class="com.pearl.o2o.dao.impl.nonjoin.OnlineAwardDao" parent="baseMappingDao"/>
+	<bean id="sysGrowthMissionDao" class="com.pearl.o2o.dao.impl.nonjoin.SysGrowthMissionDao" parent="baseMappingDao"/>
+	<bean id="playerGrowthMissionDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerGrowthMissionDao" parent="baseMappingDao"/>
+	<bean id="strengthenAppendDao" class="com.pearl.o2o.dao.impl.nonjoin.StrengthenAppendDao" parent="baseDao"/>
+	<bean id="playerMeltingDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerMeltingDao" parent="baseMappingDao"/>
+	<bean id="meltingAwardDao" class="com.pearl.o2o.dao.impl.nonjoin.MeltingAwardDao" parent="baseMappingDao"/>
+	
+	<bean id="battleFieldRobDailyDao" class="com.pearl.o2o.dao.impl.nonjoin.BattleFieldRobDailyDao" parent="baseMappingDao"/>
+	
+	<bean id="teamItemDao" class="com.pearl.o2o.dao.impl.nonjoin.TeamItemDao" parent="baseMappingDao"/>
+	<bean id="teamTechnologyDao" class="com.pearl.o2o.dao.impl.nonjoin.TeamTechnologyDao" parent="baseMappingDao"/>
+	<bean id="teamLevelDao" class="com.pearl.o2o.dao.impl.nonjoin.TeamLevelDao" parent="baseMappingDao"/>
+	<bean id="buyItemRecordDao" class="com.pearl.o2o.dao.impl.nonjoin.BuyItemRecordDao" parent="baseMappingDao"/>
+	<bean id="playerTrackDao" class="com.pearl.o2o.dao.impl.nonjoin.PlayerTrackDao" parent="baseMappingDao"/>
+	
+	
+	<bean id="transferDataToDc" class="com.pearl.o2o.utils.TransferDataToDC" >
+		<property name="dcLogger" ref="dcLogger" />
+	</bean>	
+	<!-- //zlm2015-10-9-匹配 -->
+	<bean id="sysMatchPDao" class="com.pearl.o2o.dao.impl.nonjoin.SysMatchPDao" parent="baseMappingDao"/>
+	<!-- //zlm2015-10-9-匹配 -->
+</beans>

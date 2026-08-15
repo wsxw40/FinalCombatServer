@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" fontSize="12" 
+	label="Add black or white list" title="Add Black Or White List" showCloseButton="true" width="454" height="296" xmlns:vo="vo.*"
+	close="PopUpManager.removePopUp(this)" textAlign="center">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import vo.BlackWhiteList;
+			[Bindable]
+			public function set bWList(list:BlackWhiteList):void{
+			    this._bWList=list;
+			}
+			public function get bWList():BlackWhiteList{
+			    return this._bWList;
+			}
+			[Bindable]
+            public var items:ArrayCollection = new ArrayCollection(
+                [ {label:"Yes", data:"Y"}, 
+                  {label:"No", data:"N"}]);
+            import mx.controls.Alert;      
+            private function closeHandler(event:Event):void {
+            }  
+		]]>
+	</mx:Script>
+	<vo:BlackWhiteList id="_bWList"/>
+		<mx:Form width="100%" height="170" textAlign="center">
+		</mx:Form>
+		<mx:ApplicationControlBar width="100%" textAlign="center">
+			<mx:Button label="退出" id="cancel"/>
+			<mx:Button label="清空" id="clear" click="{this.bWList=new BlackWhiteList();}"/>
+			<mx:Button label="保存" id="save"/>
+		</mx:ApplicationControlBar>
+</mx:TitleWindow>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:widget="widget.*" xmlns:views="views.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import com.esria.samples.dashboard.view.Pod;
+		]]>
+	</mx:Script>
+	<views:Index width="100%" height="100%">
+		<views:cans>
+		<mx:Canvas id="canvas" width="100%" height="100%" backgroundColor="0xFFFFFF">
+			<widget:MonthPayMoney1 id="monthPayMoney1" width="100%" height="100%" windowState="{Pod.WINDOW_STATE_DEFAULT}" monthPayMoneyDistribution="{this}"/>
+			<widget:MonthPayMoney2 id="monthPayMoney2" width="100%" height="100%" windowState="{Pod.WINDOW_STATE_DEFAULT}" monthPayMoneyDistribution="{this}"/>
+			<widget:MonthPayMoney3 id="monthPayMoney3" width="100%" height="100%" windowState="{Pod.WINDOW_STATE_DEFAULT}" monthPayMoneyDistribution="{this}"/>
+			<widget:MonthPayMoney4 id="monthPayMoney4" width="100%" height="100%" windowState="{Pod.WINDOW_STATE_DEFAULT}" monthPayMoneyDistribution="{this}"/>
+			<widget:MonthPayMoney5 id="monthPayMoney5" width="100%" height="100%" windowState="{Pod.WINDOW_STATE_DEFAULT}" monthPayMoneyDistribution="{this}"/>
+			<widget:MonthPayMoney6 id="monthPayMoney6" width="100%" height="100%" windowState="{Pod.WINDOW_STATE_DEFAULT}" monthPayMoneyDistribution="{this}"/>
+		</mx:Canvas>
+		</views:cans>
+	</views:Index> 	
+</mx:VBox>

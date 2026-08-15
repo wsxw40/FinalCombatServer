@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" fontSize="12" 
+	label="Add Character" title="Add Character" showCloseButton="true" width="520" height="576" xmlns:vo="vo.*"
+	close="PopUpManager.removePopUp(this)">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import vo.Character;
+			[Bindable]
+			public function set character(character:Character):void{
+			    this._character=character;
+			}
+			public function get character():Character{
+			    return this._character;
+			}
+		]]>
+	</mx:Script>
+	<vo:Character 
+		id="_character" 
+		crouchSpeed="{parseFloat(crouchSpeed.text)}" 
+		jumpSpeed="{parseFloat(jumpSpeed.text)}"  
+		runSpeed="{parseFloat(runSpeed.text)}" 
+		accelSpeed="{parseFloat(accelSpeed.text)}"
+		throwSpeed="{parseFloat(throwSpeed.text)}" 
+		walkSpeed="{parseFloat(walkSpeed.text)}" 
+		costumeResource="{costumeResource.text}"  
+		isDefault="{isDefault.text}" 
+		cost="{parseInt(cost.text)}" 
+		nameCN="{sname.text}"
+		maxHp="{parseInt(maxHp.text)}" 
+		exHp="{parseInt(exHp.text)}" 
+		defaultLevel="{parseInt(level.text)}"
+		isFired="{parseInt(isFired.text)}" 
+		resourceName="{resourceName.text}"
+		/>
+	<mx:VBox height="507" width="481">
+		<mx:Form width="472" height="447">
+			<mx:FormHeading label="Please add a character" textAlign="left"/>
+			<mx:FormItem label="name" width="366">
+				<mx:TextInput  width="100%" text="{character.nameCN}" id="sname"/>
+			</mx:FormItem>
+			<mx:FormItem label="maxHp" width="366">
+				<mx:TextInput  width="100%" text="{character.maxHp}" id="maxHp"/>
+			</mx:FormItem>
+			<mx:FormItem label="exHp" width="366">
+				<mx:TextInput  width="100%" text="{character.exHp}" id="exHp"/>
+			</mx:FormItem>
+			<mx:FormItem label="level" width="366">
+				<mx:TextInput  width="100%" text="{character.defaultLevel}" id="level"/>
+			</mx:FormItem>
+			<mx:FormItem label="RunSpeed" width="366">
+				<mx:TextInput width="100%" id="runSpeed" text="{character.runSpeed}"/>
+			</mx:FormItem>
+			<mx:FormItem label="WalkSpeed" width="367">
+				<mx:TextInput  width="100%" id="walkSpeed" text="{character.walkSpeed}"/>
+			</mx:FormItem>
+			<mx:FormItem label="CrouchSpeed" width="366">
+				<mx:TextInput  width="100%" id="crouchSpeed" text="{character.crouchSpeed}"/>
+			</mx:FormItem>
+			<mx:FormItem label="AccelSpeed" width="366">
+				<mx:TextInput  width="100%" id="accelSpeed" text="{character.accelSpeed}"/>
+			</mx:FormItem>
+			<mx:FormItem label="JumpSpeed" width="366">
+				<mx:TextInput  width="100%" text="{character.jumpSpeed}" id="jumpSpeed"/>
+			</mx:FormItem>
+			<mx:FormItem label="ThrowSpeed" width="366">
+				<mx:TextInput  width="100%" text="{character.throwSpeed}" id="throwSpeed"/>
+			</mx:FormItem>
+			<mx:FormItem label="costumeResource" width="366">
+				<mx:TextInput  width="100%" text="{character.costumeResource}" id="costumeResource"/>
+			</mx:FormItem>
+			
+			<mx:FormItem label="isDefault" width="366">
+				<mx:TextInput  width="100%" text="{character.isDefault}" id="isDefault"/>
+			</mx:FormItem>
+			<mx:FormItem label="cost" width="366">
+				<mx:TextInput  width="100%" text="{character.cost}" id="cost"/>
+			</mx:FormItem>
+			<mx:FormItem label="isFired" width="366">
+				<mx:TextInput  width="100%" text="{character.isFired}" id="isFired"/>
+			</mx:FormItem>
+			<mx:FormItem label="resourceName" width="366">
+				<mx:TextInput  width="100%" text="{character.resourceName}" id="resourceName"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ApplicationControlBar width="469" textAlign="center">
+				<mx:Button label="退出" id="cancel"/>
+				<mx:Button label="保存" id="save"/>
+				<mx:Button label="清空" id="clear" click="{this.character=new Character();}" textAlign="center"/>
+		</mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:TitleWindow>

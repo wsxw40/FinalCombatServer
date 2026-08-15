@@ -1,0 +1,112 @@
+<project name="ohtwooh" default="dist" basedir=".">
+    <description>
+    	OhTwoOh Service
+    </description>
+    
+  <!-- set global properties for this build -->
+  <property name="FLEX_HOME" value="D:/Program Files/Adobe/Flex Builder 3 Plug-in/sdks/3.2.0"/>	
+  <property name="src" location="WEB-INF/src"/>	
+  <property name="build" location="build"/>
+  <property name="classes" location="${build}/WEB-INF/classes"/>  	
+  <property name="dist"  location="dist"/>
+
+  <path id="java.lib.path">
+    <fileset dir="WEB-INF/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+	
+  <path id="java.class.path">
+    <fileset dir="${build}/WEB-INF/classes">
+      <include name="**/*.class"/>
+    </fileset>
+  </path>	
+	
+  	<taskdef resource="flexTasks.tasks" classpath="${basedir}/WEB-INF/flex/jars/flexTasks.jar" />	
+	
+	
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${classes}"/>
+    <mkdir dir="${dist}"/>  	
+  </target>
+
+  <target name="compile" depends="init"
+  		description="compile the source" >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${classes}" encoding="UTF-8">
+      <classpath refid="java.lib.path"/>
+    </javac>
+  	
+  	<copy todir="${build}">
+  		<fileset dir="${basedir}">
+  			<include name="META-INF/**"/>
+  			<include name="template/**"/>
+  		</fileset>
+  	</copy>    	  
+  	
+  	<copy todir="${build}/WEB-INF">
+  	    <fileset dir="WEB-INF">
+  	      <include name="lib/**"/>
+  	      <include name="flex/*.xml"/>
+  	      <include name="*.xml"/>
+  	      <include name="*.properties"/> 
+  	      <include name="SDOA4Billing_1.2.0.501_Linux2.6_Gcc4.1_X86_X64/*"/> 	      
+  		</fileset>
+  	</copy>   	
+  	
+  	<copy todir="${classes}">
+  	    <fileset dir="${src}">
+  	      <include name="**/*.xml"/>
+  	      <include name="**/*.properties"/>
+  		</fileset>
+  	</copy>  	  	
+  </target>
+  <target name="compile_flex">
+	    <mxmlc file="WEB-INF/flex-src/index.mxml" output="${build}/index.swf"
+	    	services="WEB-INF/flex/services-config.xml"
+	    	context-root="ohtwooh"
+	    	locale="en_US,zh_CN"
+	    	keep-generated-actionscript="false">
+	      <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+	      <source-path path-element="${FLEX_HOME}/frameworks"/>
+	      <source-path path-element="WEB-INF/flex-src/resource/locale/{locale}"/>
+	    	
+	      <compiler.library-path dir="WEB-INF/flex" append="true">
+	        <include name="libs/*.swc" />
+	      </compiler.library-path>    	
+	    	
+	      <include-resource-bundles bundle="Language"/>
+	  	</mxmlc>
+	</target>
+	<target name="wrapper">
+	    <html-wrapper 
+	      title="Welcome to OhTwoOh System"
+	      file="index.html"
+	      height="100%"
+	      width="100%"
+	      bgcolor="red"
+	      application="ohtwooh"
+	      swf="index"
+	      version-major="9"
+	      version-minor="0"
+	      version-revision="0"
+	      history="true"
+	      template="express-installation"
+	      output="${build}"/>
+	  </target>	
+  <target name="dist" depends="clean,compile, compile_flex, wrapper"
+        description="generate the distribution" >
+    <!-- Put everything in ${build} into the normandy.war file -->
+  	<war destfile="${dist}/ohtwooh.war" basedir="${build}" needxmlfile="false"/>
+  </target>
+	
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>

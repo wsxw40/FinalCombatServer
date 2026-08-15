@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerItem">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PlayerItem" type="com.pearl.manager.pojo.PlayerItem"/> 	
+	<resultMap id="selectPlayerItemResult" class="PlayerItem">
+		<result property="id" column="ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="itemId" column="ITEM_ID"/>		
+		<result property="validDate" column="VALID_TIME"/>			
+		<result property="expireDate" column="EXPIRE_TIME"/>
+		<result property="modifiedDesc" column="MODIFIED_DESC"/>
+		<result property="playerItemCurrency" column="P_CURRENCY" />
+		<result property="playerItemUnitType" column="P_UNIT_TYPE" />
+		<result property="quantity" column="QUANTITY" />
+		<result property="durable" column="DURABLE"/>
+		<result property="isBind" column="IS_BIND"/>
+		<result property="isDefault" column="IS_DEFAULT"/>
+		<result property="isGift" column="IS_GIFT"/>
+		<result property="isDeleted" column="IS_DELETED"/>
+		<result property="timeLeft" column="TIME_LEFT"/>
+		<result property="gunProperty1" column="GUN_PROPERTY1" />
+		<result property="gunProperty2" column="GUN_PROPERTY2" />
+		<result property="gunProperty3" column="GUN_PROPERTY3" />
+		<result property="gunProperty4" column="GUN_PROPERTY4" />
+		<result property="gunProperty5" column="GUN_PROPERTY5" />
+		<result property="gunProperty6" column="GUN_PROPERTY6" />
+		<result property="gunProperty7" column="GUN_PROPERTY7" />
+		<result property="leftSeconds" column="LEFT_SECONDS" />
+		<result property="level" column="LEVEL" />
+	</resultMap>  		
+
+	
+	<!--==========
+	pi.PLAYER_ID,
+   	 		pi.ITEM_ID,
+   	 		pi.VALID_TIME,
+   	 		pi.EXPIRE_TIME,
+   	 		pi.MODIFIED_DESC,
+   	 		pi.IS_BIND,
+   	 		pi.IS_DEFAULT,
+   	 		pi.IS_GIFT,
+   	 		pi.DURABLE,	pi.QUANTITY,
+	
+	======================================== Select ==================================================-->	
+	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerItemResult">
+   	 	select 		
+   	 		pi.ID,
+   	 		pi.CURRENCY as P_CURRENCY,
+   	 		pi.UNIT_TYPE as P_UNIT_TYPE,
+   	 		pi.*,
+   	 		0 as TIME_LEFT
+    	from PLAYER_ITEM$tableSuffix$ pi    	   
+    	where  pi.PLAYER_ID =  #fid# and
+    	((pi.UNIT_TYPE=0)
+		 or (pi.UNIT_TYPE=1 and  pi.QUANTITY > 0) or (pi.UNIT_TYPE=2)
+		)
+    		   and pi.IS_DELETED='N'
+	</select>	
+	
+	
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="PlayerItem">
+		insert into PLAYER_ITEM$tableSuffix$(
+   	 		PLAYER_ID,
+   	 		ITEM_ID,
+   	 		EXPIRE_TIME,
+   	 		VALID_TIME,
+   	 		DURABLE,
+   	 		CURRENCY,
+   	 		UNIT_TYPE,
+   	 		QUANTITY,
+   	 		MODIFIED_DESC,
+   	 		IS_BIND,
+   	 		IS_GIFT,
+   	 		IS_DEFAULT,GUN_PROPERTY1,GUN_PROPERTY2,GUN_PROPERTY3,GUN_PROPERTY4,GUN_PROPERTY5,GUN_PROPERTY6,GUN_PROPERTY7,IS_DELETED,LEFT_SECONDS,
+		 	LEVEL
+		) values (
+			#playerId#,
+			#itemId#,
+			#expireDate#,#validDate#,
+			#durable#,
+			#playerItemCurrency#,
+			#playerItemUnitType#,
+			#quantity#,
+			#modifiedDesc#,
+			#isBind#,
+			#isGift#,
+			#isDefault#,
+			#gunProperty1#,#gunProperty2#,#gunProperty3#,#gunProperty4#,#gunProperty5#,#gunProperty6#,#gunProperty7#,#isDeleted#,#leftSeconds#,
+			#level#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<update id="update" parameterClass="PlayerItem">
+		update PLAYER_ITEM$tableSuffix$  
+		set PLAYER_ID=#playerId#,
+   	 		ITEM_ID=#itemId#,
+   	 		EXPIRE_TIME=#expireDate#,
+   	 		VALID_TIME=#validDate#,
+   	 		DURABLE=#durable#,
+   	 		CURRENCY=#playerItemCurrency#,
+   	 		UNIT_TYPE=#playerItemUnitType#,
+   	 		QUANTITY=#quantity#,
+   	 		MODIFIED_DESC=#modifiedDesc#,
+   	 		IS_BIND=#isBind#,
+   	 		IS_GIFT=#isGift#,
+   	 		IS_DEFAULT=#isDefault#,
+   	 		GUN_PROPERTY1=#gunProperty1#,
+			GUN_PROPERTY2=#gunProperty2#,
+			GUN_PROPERTY3=#gunProperty3#,
+			GUN_PROPERTY4=#gunProperty4#,
+			GUN_PROPERTY5=#gunProperty5#,
+			GUN_PROPERTY6=#gunProperty6#,
+			GUN_PROPERTY7=#gunProperty7#,
+			IS_DELETED=#isDeleted#,
+			LEFT_SECONDS=#leftSeconds#,
+			LEVEL=#level#
+		where   ID=#id#;
+	</update>
+	<update id="delete" parameterClass="PlayerItem">
+		update PLAYER_ITEM$tableSuffix$  
+		set IS_DELETED="Y"
+		where   ID=#id#;
+	</update>
+</sqlMap>

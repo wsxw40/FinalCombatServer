@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="OnlineAward">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="OnlineAward" type="com.pearl.manager.pojo.OnlineAward"/> 	
+	<resultMap id="selectResult" class="OnlineAward">
+		<result property="id"      column="ID"/>
+		<result property="itemId"   column="SYS_ITEM_ID"/>
+		<result property="level"    column="LEVEL"/>
+		<result property="type"     column="TYPE"/>
+		<result property="unit"     column="UNIT"/>
+		<result property="unitType" column="UNIT_TYPE"/>
+		<result property="weight" column="WEIGHT"/>
+		<result property="music" column="MUSIC"/>
+	</resultMap>
+	
+	
+	<!--================================================== Select ==================================================-->
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+  		SELECT a.ID,
+  				a.SYS_ITEM_ID,
+  				a.LEVEL,
+  				a.UNIT,
+  				a.UNIT_TYPE,
+  				a.TYPE,
+  				a.WEIGHT,
+  				a.MUSIC
+		FROM SYS_ONLINE_AWARD a
+  	</select>
+  	
+  	  	
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+  	<insert id="insert" parameterClass="OnlineAward">
+	  	insert into SYS_ONLINE_AWARD(
+			SYS_ITEM_ID,
+			LEVEL,
+			UNIT,
+			UNIT_TYPE,
+			TYPE,
+			WEIGHT,
+			MUSIC
+  		) values(
+  			#itemId#, 
+  			#level#,
+  			#unit#,
+  			#unitType#,
+  			#type#,
+  			#weight#,
+  			#music#	
+  			)
+  			<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+			</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterClass="OnlineAward">
+  		update SYS_ONLINE_AWARD
+  		set SYS_ITEM_ID  = #itemId#,
+  			LEVEL        = #level#,
+  			UNIT		 = #unit#,
+  			UNIT_TYPE	 = #unitType#,
+  			TYPE 		 = #type#,
+  			WEIGHT		 = #weight#,
+  			MUSIC        = #music#
+  		where ID         = #id#
+  	</update>
+  	
+  	<delete id="delete" parameterClass="OnlineAward">
+	  	delete from  SYS_ONLINE_AWARD 
+  		where ID = #id# 
+  	</delete>
+</sqlMap>

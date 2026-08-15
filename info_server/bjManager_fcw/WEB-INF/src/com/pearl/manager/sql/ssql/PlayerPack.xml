@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerPack">
+	<typeAlias alias="PlayerPack" type="com.pearl.manager.pojo.PlayerPack"/>
+	<resultMap id="selectPlayerPackResult" class="PlayerPack">
+		<result property="id" column="ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="playerItemId" column="PLAYER_ITEM_ID"/>
+		<result property="type" column="TYPE"/>		
+		<result property="packId" column="PACK_ID"/>			
+		<result property="seq" column="SEQ"/>
+		<result property="expireTime" column="EXPIRE_TIME" />
+		<result property="sysCharacterId" column="SYS_CHARACTER_ID" />		
+						
+	</resultMap>  	
+	
+	 
+	<typeAlias alias="PlayerItem" type="com.pearl.manager.pojo.PlayerItem"/> 	
+	<resultMap id="selectPlayerItemResult" class="PlayerItem">
+		<result property="id" column="ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="itemId" column="ITEM_ID"/>		
+		<result property="validDate" column="VALID_TIME"/>			
+		<result property="expireDate" column="EXPIRE_TIME"/>
+		<result property="modifiedDesc" column="MODIFIED_DESC"/>
+		<result property="playerItemCurrency" column="P_CURRENCY" />
+		<result property="playerItemUnitType" column="P_UNIT_TYPE" />
+		<result property="quantity" column="QUANTITY" />
+		<result property="durable" column="DURABLE"/>
+		<result property="pack" column="PACK_ID"/>
+		<result property="seq" column="SEQ"/>
+		<result property="isBind" column="IS_BIND"/>
+		<result property="isDefault" column="IS_DEFAULT"/>	
+	</resultMap>  
+	 <insert id="insert" parameterClass="PlayerPack">
+		INSERT INTO PLAYER_PACK$tableSuffix$(
+			PLAYER_ID,
+			PLAYER_ITEM_ID,
+			TYPE,
+			PACK_ID,
+			SEQ,
+			SYS_CHARACTER_ID) 
+		values(
+			#playerId#,
+			#playerItemId#,
+			#type#,
+			#packId#,
+			#seq#,
+			#sysCharacterId#)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>	
+	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerPackResult">
+		select *
+	   	from PLAYER_PACK$tableSuffix$ pp
+	 	where pp.PLAYER_ID =  #fid# and (pp.EXPIRE_TIME is null or pp.EXPIRE_TIME > now()) 
+	 	<dynamic>
+			<isNotNull prepend="and" property="userId">
+					pp.USER_ID =  #userId#
+			</isNotNull>
+		</dynamic>	 
+	 	order by pp.SEQ;		
+	</select>	
+	
+	
+	<update id="update" parameterClass="PlayerPack">
+		update PLAYER_PACK$tableSuffix$ pp
+			set pp.PLAYER_ITEM_ID=#playerItemId#
+		where 	ID = #id#
+	</update>
+	
+	
+<!-- 
+	<update id="delete" parameterClass="java.util.Map">
+		update PLAYER_PACK pp
+			set pp.PLAYER_ITEM_ID=null
+		where 	
+			pp.ID = #id#
+	</update>	<update id="clearExpiredWeaponPack" parameterClass="java.util.Map">
+		update 	PLAYER_PACK set PLAYER_ITEM_ID = NULL 
+			where PLAYER_ID= #playerId# and PACK_ID =#packId# and TYPE = 'W' and SEQ != 3
+	</update>
+	<delete id="deleteWeaponPack" parameterClass="java.util.Map">
+		delete from PLAYER_PACK where USER_ID = #uid# and PLAYER_ID = #cid# and TYPE = 'W' and PACK_ID = #packNo#		
+	</delete>
+
+	 
+	<parameterMap class="java.util.Map" id="paramMap">
+		<parameter property="packNum" jdbcType="INTEGER" javaType="java.lang.Integer" mode="IN"/>
+		<parameter property="seqNum" jdbcType="INTEGER" javaType="java.lang.Integer" mode="IN"/>
+		<parameter property="playerId" jdbcType="INTEGER" javaType="java.lang.Integer" mode="IN"/>
+	</parameterMap> 
+		 
+	<procedure id="createWeaponPlayerPack"  parameterMap="paramMap">  
+		{call createWeaponPlayerPack(?,?,?)}      
+	</procedure>
+	<procedure id="createCostumePlayerPack"  parameterMap="paramMap">  
+		{call createCostumePlayerPack(?,?,?)}      
+	</procedure>
+	<procedure id="initWeaponPack"  parameterMap="paramMap">  
+		{call initWeaponPack(?,?,?)}      
+	</procedure>
+	<procedure id="initCostumePack"  parameterMap="paramMap">  
+		{call initCostumePack(?,?,?)}      
+	</procedure>
+	 -->
+</sqlMap>

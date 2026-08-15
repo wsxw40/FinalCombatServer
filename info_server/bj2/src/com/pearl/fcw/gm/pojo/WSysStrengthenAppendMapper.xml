@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysStrengthenAppendMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysStrengthenAppend" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="LEVEL" property="level" jdbcType="INTEGER" />
+    <result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="PROPERTY1" property="property1" jdbcType="REAL" />
+    <result column="PROPERTY2" property="property2" jdbcType="REAL" />
+    <result column="STRE_NUM" property="streNum" jdbcType="INTEGER" />
+    <result column="STRE_GR" property="streGr" jdbcType="INTEGER" />
+    <result column="WIN_RATE" property="winRate" jdbcType="REAL" />
+    <result column="FALSE_KEEP_RATE" property="falseKeepRate" jdbcType="REAL" />
+    <result column="FALSE_FALL_RATE" property="falseFallRate" jdbcType="REAL" />
+    <result column="FALSE_RUIN_RATE" property="falseRuinRate" jdbcType="REAL" />
+    <result column="HOLE_WIN_RATE" property="holeWinRate" jdbcType="REAL" />
+    <result column="SWITCH_FALL_RATE" property="switchFallRate" jdbcType="REAL" />
+    <result column="PROPERTY1_DB" property="property1Db" jdbcType="REAL" />
+    <result column="PROPERTY2_DB" property="property2Db" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LEVEL, TYPE, PROPERTY1, PROPERTY2, STRE_NUM, STRE_GR, WIN_RATE, FALSE_KEEP_RATE, 
+    FALSE_FALL_RATE, FALSE_RUIN_RATE, HOLE_WIN_RATE, SWITCH_FALL_RATE, PROPERTY1_DB, PROPERTY2_DB
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysStrengthenAppend" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_STRENGTHEN_APPEND
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysStrengthenAppend" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_STRENGTHEN_APPEND
+    where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_STRENGTHEN_APPEND where 1 = 1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_STRENGTHEN_APPEND where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_STRENGTHEN_APPEND
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysStrengthenAppend" >
+    insert into SYS_STRENGTHEN_APPEND (ID, LEVEL, TYPE, 
+      PROPERTY1, PROPERTY2, STRE_NUM, 
+      STRE_GR, WIN_RATE, FALSE_KEEP_RATE, 
+      FALSE_FALL_RATE, FALSE_RUIN_RATE, HOLE_WIN_RATE, 
+      SWITCH_FALL_RATE, PROPERTY1_DB, PROPERTY2_DB)
+    values (#{id,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{type,jdbcType=BIT}, 
+      #{property1,jdbcType=REAL}, #{property2,jdbcType=REAL}, #{streNum,jdbcType=INTEGER}, 
+      #{streGr,jdbcType=INTEGER}, #{winRate,jdbcType=REAL}, #{falseKeepRate,jdbcType=REAL}, 
+      #{falseFallRate,jdbcType=REAL}, #{falseRuinRate,jdbcType=REAL}, #{holeWinRate,jdbcType=REAL}, 
+      #{switchFallRate,jdbcType=REAL}, #{property1Db,jdbcType=REAL}, #{property2Db,jdbcType=REAL})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_STRENGTHEN_APPEND (ID, LEVEL, TYPE, 
+      PROPERTY1, PROPERTY2, STRE_NUM, 
+      STRE_GR, WIN_RATE, FALSE_KEEP_RATE, 
+      FALSE_FALL_RATE, FALSE_RUIN_RATE, HOLE_WIN_RATE, 
+      SWITCH_FALL_RATE, PROPERTY1_DB, PROPERTY2_DB)
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+    (#{item.id,jdbcType=INTEGER}, #{item.level,jdbcType=INTEGER}, #{item.type,jdbcType=BIT}, 
+      #{item.property1,jdbcType=REAL}, #{item.property2,jdbcType=REAL}, #{item.streNum,jdbcType=INTEGER}, 
+      #{item.streGr,jdbcType=INTEGER}, #{item.winRate,jdbcType=REAL}, #{item.falseKeepRate,jdbcType=REAL}, 
+      #{item.falseFallRate,jdbcType=REAL}, #{item.falseRuinRate,jdbcType=REAL}, #{item.holeWinRate,jdbcType=REAL}, 
+      #{item.switchFallRate,jdbcType=REAL}, #{item.property1Db,jdbcType=REAL}, #{item.property2Db,jdbcType=REAL})
+		</foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysStrengthenAppend" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_STRENGTHEN_APPEND
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="level != null" >
+        LEVEL,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="property1 != null" >
+        PROPERTY1,
+      </if>
+      <if test="property2 != null" >
+        PROPERTY2,
+      </if>
+      <if test="streNum != null" >
+        STRE_NUM,
+      </if>
+      <if test="streGr != null" >
+        STRE_GR,
+      </if>
+      <if test="winRate != null" >
+        WIN_RATE,
+      </if>
+      <if test="falseKeepRate != null" >
+        FALSE_KEEP_RATE,
+      </if>
+      <if test="falseFallRate != null" >
+        FALSE_FALL_RATE,
+      </if>
+      <if test="falseRuinRate != null" >
+        FALSE_RUIN_RATE,
+      </if>
+      <if test="holeWinRate != null" >
+        HOLE_WIN_RATE,
+      </if>
+      <if test="switchFallRate != null" >
+        SWITCH_FALL_RATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=BIT},
+      </if>
+      <if test="property1 != null" >
+        #{property1,jdbcType=REAL},
+      </if>
+      <if test="property2 != null" >
+        #{property2,jdbcType=REAL},
+      </if>
+      <if test="streNum != null" >
+        #{streNum,jdbcType=INTEGER},
+      </if>
+      <if test="streGr != null" >
+        #{streGr,jdbcType=INTEGER},
+      </if>
+      <if test="winRate != null" >
+        #{winRate,jdbcType=REAL},
+      </if>
+      <if test="falseKeepRate != null" >
+        #{falseKeepRate,jdbcType=REAL},
+      </if>
+      <if test="falseFallRate != null" >
+        #{falseFallRate,jdbcType=REAL},
+      </if>
+      <if test="falseRuinRate != null" >
+        #{falseRuinRate,jdbcType=REAL},
+      </if>
+      <if test="holeWinRate != null" >
+        #{holeWinRate,jdbcType=REAL},
+      </if>
+      <if test="switchFallRate != null" >
+        #{switchFallRate,jdbcType=REAL},
+      </if>
+      <if test="property1Db != null" >
+        #{property1Db,jdbcType=REAL},
+      </if>
+      <if test="property2Db != null" >
+        #{property2Db,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysStrengthenAppend" >
+    update SYS_STRENGTHEN_APPEND
+    <set >
+      <if test="level != null" >
+        LEVEL = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=BIT},
+      </if>
+      <if test="property1 != null" >
+        PROPERTY1 = #{property1,jdbcType=REAL},
+      </if>
+      <if test="property2 != null" >
+        PROPERTY2 = #{property2,jdbcType=REAL},
+      </if>
+      <if test="streNum != null" >
+        STRE_NUM = #{streNum,jdbcType=INTEGER},
+      </if>
+      <if test="streGr != null" >
+        STRE_GR = #{streGr,jdbcType=INTEGER},
+      </if>
+      <if test="winRate != null" >
+        WIN_RATE = #{winRate,jdbcType=REAL},
+      </if>
+      <if test="falseKeepRate != null" >
+        FALSE_KEEP_RATE = #{falseKeepRate,jdbcType=REAL},
+      </if>
+      <if test="falseFallRate != null" >
+        FALSE_FALL_RATE = #{falseFallRate,jdbcType=REAL},
+      </if>
+      <if test="falseRuinRate != null" >
+        FALSE_RUIN_RATE = #{falseRuinRate,jdbcType=REAL},
+      </if>
+      <if test="holeWinRate != null" >
+        HOLE_WIN_RATE = #{holeWinRate,jdbcType=REAL},
+      </if>
+      <if test="switchFallRate != null" >
+        SWITCH_FALL_RATE = #{switchFallRate,jdbcType=REAL},
+      </if>
+      <if test="property1Db != null" >
+        PROPERTY1_DB = #{property1Db,jdbcType=REAL},
+      </if>
+      <if test="property2Db != null" >
+        PROPERTY2_DB = #{property2Db,jdbcType=REAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysStrengthenAppend" >
+    update SYS_STRENGTHEN_APPEND
+    set LEVEL = #{level,jdbcType=INTEGER},
+      TYPE = #{type,jdbcType=BIT},
+      PROPERTY1 = #{property1,jdbcType=REAL},
+      PROPERTY2 = #{property2,jdbcType=REAL},
+      STRE_NUM = #{streNum,jdbcType=INTEGER},
+      STRE_GR = #{streGr,jdbcType=INTEGER},
+      WIN_RATE = #{winRate,jdbcType=REAL},
+      FALSE_KEEP_RATE = #{falseKeepRate,jdbcType=REAL},
+      FALSE_FALL_RATE = #{falseFallRate,jdbcType=REAL},
+      FALSE_RUIN_RATE = #{falseRuinRate,jdbcType=REAL},
+      HOLE_WIN_RATE = #{holeWinRate,jdbcType=REAL},
+      SWITCH_FALL_RATE = #{switchFallRate,jdbcType=REAL},
+      PROPERTY1_DB = #{property1Db,jdbcType=REAL},
+      PROPERTY2_DB = #{property2Db,jdbcType=REAL}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

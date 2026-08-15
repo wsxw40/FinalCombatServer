@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:timePicker="common.*" layout="absolute" 
+	fontSize="12" width="564" height="362" xmlns:vo="vo.*" label="更新公告" title="更新公告"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import vo.SysNotice;
+			import mx.controls.Alert;
+			[Bindable]
+			public var ac:ArrayCollection= new ArrayCollection(
+                [ 
+                  {label:"定时公告 / Timely", data:1}, 
+                  {label:"循环公告 / Loop", data:2} ]);
+            [Bindable]
+            public var startDate:Date = new Date();
+           	[Bindable]
+           	public var endDate:Date = new Date();
+			[Bindable]
+			public function set sysNotice(rc:SysNotice):void{
+				 this._sysNotice=rc;
+				 if(sysNotice.type==1)
+				 {
+				 	this.type.selectedIndex = 0;
+				 }
+				 else if(sysNotice.type==2) 
+				 {
+				 	this.type.selectedIndex = 1;
+				 }
+				 
+				 startDate.time=sysNotice.startTime*1000;
+				 endDate.time=sysNotice.endTime*1000;
+				 picker.selectedDate=startDate;
+				 picker1.selectedDate=endDate;
+			}
+			public function get sysNotice():SysNotice{
+				 return this._sysNotice;
+			}
+			
+			[Bindable] private var startTimeInteger:int;
+            [Bindable] private var endTimeInteger:int;
+		]]>
+	</mx:Script>
+	<vo:SysNotice id="_sysNotice" type="{type.selectedItem.data}" startTime="{startTimeInteger}" endTime="{endTimeInteger}" content="{content.text}" noticeTime="{parseInt(noticeTime.text)}"/>
+
+<mx:HBox >
+	<mx:Form width="536" height="313">
+		<mx:FormItem label="公告类型：" width="208">
+			<mx:HBox>
+				<mx:ComboBox  dataProvider="{ac}" id="type" width="121"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="公告内容：">
+			<mx:HBox>
+				<mx:TextArea id="content" text="{sysNotice.content}" width="373" height="81"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="开始时间：" width="486" height="35">
+		        <timePicker:DateTimePicker id="picker" change="this.startTimeInteger = (picker.selectedDate.time/1000)" minuteIncrement="1" backgroundColor="#FFFFFF"/>
+		</mx:FormItem>
+		<mx:FormItem label="结束时间：" height="34" width="487">
+		        <timePicker:DateTimePicker id="picker1" change="this.endTimeInteger = (picker1.selectedDate.time/1000)" minuteIncrement="1" backgroundColor="#FFFFFF"/>    
+		</mx:FormItem>
+		<mx:FormItem label="间隔时间：">
+			<mx:HBox>
+				<mx:TextInput id="noticeTime" text="{sysNotice.noticeTime}"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem>
+		<mx:ControlBar>
+			<mx:Button id="save" label="保存"/>
+			<mx:Button id="close" label="取消"/>
+		</mx:ControlBar>	
+		</mx:FormItem>
+	</mx:Form>
+			
+</mx:HBox>		
+</mx:TitleWindow>

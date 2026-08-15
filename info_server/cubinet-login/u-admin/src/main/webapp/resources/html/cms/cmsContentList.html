@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+<title>73u CMS内容列表页面</title>
+<meta charset="utf-8">
+<script type="text/javascript" src="/u-admin/resources/js/jquery-1.8.3.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/u-admin/resources/jqueryui/css/jquery-ui.css"/>
+</head>
+<body>
+	<h1>73u CMS内容列表</h1>
+	<hr />
+    <!-- search begin -->
+    查询条件
+    <br /><br />
+    标题：<input type="text" id="headline" />
+    <br />
+    资讯类型：<select id="type">
+    			<option value="0">全部</option>
+    			<option value="1">CMS</option>
+            	<option value="2">游戏</option>
+                <option value="3">媒体</option>
+            </select>
+    <br />
+    资讯状态：<select id="status">
+    			<option value="-1">全部</option>
+            	<option value="1">显示</option>
+                <option value="0">不显示</option>
+            </select>
+	<br />
+    创建时间范围&nbsp;&nbsp;&nbsp;
+    起始时间：<input id="from" size="10" type="text" />&nbsp;&nbsp;
+    结束时间：<input id="to" size="10" type="text" />
+    <br />
+    作者：<input type="text" id="author" />
+	<br />
+    <button id="btnSearch">查询</button>
+    <button id="btnCreate">发布新闻</button>
+    <!-- search end -->
+    <hr />
+	<div class="wrapper col3" id="lv3">
+		<div class="container">
+			<div class="content" id="cmsContent">
+				<div id="latestnews">
+					<!-- ##### start display context ##### -->
+					<!-- ##### end display context ##### -->
+				</div>
+				<div id="next"></div>
+			</div>
+			<br class="clear" />
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="/u-admin/resources/js/73u.common.js"></script>
+<script type="text/javascript" src="/u-admin/resources/js/jquery.pagination.js"></script>
+<script type="text/javascript" src="/u-admin/resources/js/73u.cms.index.js"></script>
+<script type="text/javascript" src="/u-admin/resources/jqueryui/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="/u-admin/resources/jqueryui/jquery.ui.datepicker.min.js"></script>
+<script type="text/javascript" src="/u-admin/resources/jqueryui/jquery.ui.datepicker-zh-CN.js"></script>
+</html>

@@ -1,0 +1,6 @@
+PRICE={
+	type=#$costs[0]#,
+	buyCD=#$costs[1]#,
+	fullCD=#$costs[2]#,
+	fccost=#$costs[3]#
+}

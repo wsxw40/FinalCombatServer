@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysConfig" >
+    <id column="KEY" property="key" jdbcType="VARCHAR" />
+    <result column="VALUE" property="value" jdbcType="LONGVARCHAR" />
+    <result column="CONF_NAME" property="confName" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    `KEY`, `VALUE`, CONF_NAME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysConfig" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_CONFIG
+    where `KEY` = #{key,jdbcType=VARCHAR}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysConfig" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_CONFIG
+    where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_CONFIG where 1=1
+    <if test="searchValue != null">
+    and ( `KEY` like '${searchValue}%' or CONF_NAME like '${searchValue}%' )
+    </if>
+    <if test="specialSearch != null">
+    	<if test="specialSearch.type != null and specialSearch.type != 0">
+    	and `TYPE` = ${specialSearch.type}
+    	</if>
+    	<if test="specialSearch.subType != null and specialSearch.subType != 0">
+    	and `SUB_TYPE` = ${specialSearch.subType}
+    	</if>
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_CONFIG where 1=1
+  	<if test="searchValue != null">
+    and ( `KEY` like '${searchValue}%' or CONF_NAME like '${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SYS_CONFIG
+    where `KEY` = #{key,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysConfig" >
+    insert into SYS_CONFIG (`KEY`, `VALUE`, CONF_NAME
+      )
+    values (#{key,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, #{confName,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_CONFIG (`KEY`, `VALUE`, CONF_NAME
+      )
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+    (#{item.key,jdbcType=VARCHAR}, #{item.value,jdbcType=VARCHAR}, #{item.confName,jdbcType=LONGVARCHAR}
+      )
+		</foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysConfig" >
+  	<selectKey keyProperty="key" resultType="java.lang.String" order="AFTER">
+  	SELECT @@IDENTITY AS `KEY`
+  	</selectKey>
+    insert into SYS_CONFIG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="key != null" >
+        `KEY`,
+      </if>
+      <if test="value != null" >
+        `VALUE`,
+      </if>
+      <if test="confName != null" >
+        CONF_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="key != null" >
+        #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="confName != null" >
+        #{confName,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysConfig" >
+    update SYS_CONFIG
+    <set >
+      <if test="value != null" >
+        `VALUE` = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="confName != null" >
+        CONF_NAME = #{confName,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where `KEY` = #{key,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysConfig" >
+    update SYS_CONFIG
+    set `VALUE` = #{value,jdbcType=VARCHAR},
+      CONF_NAME = #{confName,jdbcType=LONGVARCHAR}
+    where `KEY` = #{key,jdbcType=VARCHAR}
+  </update>
+</mapper>

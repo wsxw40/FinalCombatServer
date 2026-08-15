@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+
+    <base href="${request.contextPath}/">
+
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="Pragma" CONTENT="no-cache">
+    <meta http-equiv="Cache-Control" CONTENT="no-cache">
+    <meta http-equiv="Expires" CONTENT="0">
+
+    <link rel="stylesheet" type="text/css" href="resources/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="resources/easyui/themes/icon.css">
+    <script type="text/javascript" src="resources/jquery-1.7.2.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/easyui/jquery.easyui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/easyui/locale/easyui-lang-zh_CN.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/js/utils.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/js/cdkeymanager.js" charset="UTF-8"></script>
+</head>
+<body style="overflow: hidden;">
+<div id="tt" class="easyui-tabs" fit="true">
+    <div title="cdkey查询" data-options="selected:true" style="overflow:hidden;padding: 5px 5px;">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west',border:false,split:true" style="width:400px;overflow: hidden;">
+                <table id="cdkey_query_dg"></table>
+                <div id="cdkey_query_dg_tb" style="padding:5px;height: auto;">
+                    <div>
+                        cdkey:<input id="cdkeyvb" class="easyui-validatebox" size="16" maxlength="12" data-options="required:true,validType:'length[12,12]'"/>
+                        <a id="cdkeybtn" onclick="queryCdKey()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a>
+                    </div>
+                </div>
+            </div>
+
+            <div data-options="region:'center',border:false" style="overflow: hidden;">
+                <table id="cdkeyList"></table>
+                <div id="cdkeyListtb" style="padding:5px;height: auto;">
+                    <div>
+                        区服: <input id="cdkeyList_channelcbg" style="width:100px;"></select>
+                        CDKEY用途: <input id="cdkeyList_gameCdKeyTyptcbg" style="width:100px;"></select>
+                        <a onclick="queryCdKeyByGameCdKeyChannel()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div title="cdkey管理" data-options="" style="overflow:hidden;padding: 5px 5px;">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west',border:false,split:true" style="width:350px;overflow: hidden;">
+                <table id="allCdKeyTypedg"></table>
+            </div>
+            <div data-options="region:'center',border:false" style="overflow: hidden;">
+                <table id="allCdKeyChanneldg"></table>
+            </div>
+        </div>
+    </div>
+
+    <div title="cdkey生成" data-options="" style="overflow:hidden;padding: 5px 5px;">
+        <table id="cdkey_make_dg" class="easyui-datagrid"></table>
+        <div id="cdkey_make_dg_tb" style="padding:5px;height: auto;">
+            <div>
+                区服: <input id="cdkey_make_channelcbg" style="width:100px;">
+                CDKEY用途: <input id="cdkey_make_gameCdKeyTyptcbg" style="width:100px;">
+                有效期至: <input id="gameCdkeyMakeExpireDate" class="easyui-datetimebox" data-options="required:true" style="width:150px">
+                数量: <input id="gameCdkeyMakeNum" class="easyui-numberspinner" style="width:80px;" required="required" data-options="min:1,editable:true,value:100">
+                是否可用: <input id="gameCdkeyMakeEnable" type="checkbox" checked>
+                <a href="javascript:cdkey_make_tab.cdkeyMake()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">生成</a>
+            </div>
+        </div>
+    </div>
+    <div title="cdkey统计" data-options="" style="overflow:hidden;padding: 5px 5px;">
+
+    </div>
+</div>
+</body>
+</html>
+
+

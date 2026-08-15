@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+<mx:Script>
+	<![CDATA[
+		import mx.controls.Alert;
+		import mx.events.ValidationResultEvent;
+		import mx.validators.Validator;
+		import utils.DatagridValidateFactory;
+		import mx.collections.ArrayCollection;
+		import mx.managers.PopUpManager;
+		import popup.GunPropertyView;
+		import vo.GunProperty;
+		import vo.SysItem;
+		private var _sysItem:SysItem;
+		[Bindable]
+		public function set sysItem(value:SysItem):void{
+			this._sysItem=value;
+		}
+		public function get sysItem():SysItem{
+			return this._sysItem;
+		}
+		
+		private var gunPropertyView:GunPropertyView;
+		private var currGunTarget:TextInput;
+		private function showGunProperty(e:Event):void{
+			var gunPropertys:ArrayCollection=new ArrayCollection();
+			currGunTarget=e.currentTarget as TextInput;
+			var values:String=currGunTarget.text;
+			if(values!=null&&values!=""){
+				var array:Array=values.split(",");
+				for(var i:int=0;i<array.length;i=i+4){
+					var gunProperty:GunProperty=new GunProperty();
+					gunProperty.id=array[i];
+					gunProperty.value1=array[i+1];
+					gunProperty.value2=array[i+2];
+					gunProperty.time=array[i+3];
+					gunPropertys.addItem(gunProperty);
+				}
+			}
+			gunPropertyView=GunPropertyView(PopUpManager.createPopUp(this,GunPropertyView,true));
+			gunPropertyView.gunPropertys=gunPropertys;
+			gunPropertyView.save.addEventListener(MouseEvent.CLICK,onEndEdit);
+			PopUpManager.centerPopUp(gunPropertyView);
+		}
+		
+		private function onEndEdit(evt:MouseEvent):void{
+			var gunPropertylist:ArrayCollection=gunPropertyView.gunPropertys;
+			var value:String="";
+			for(var i:int=0;i<gunPropertylist.length;i++){
+				var gunProperty:GunProperty=gunPropertylist.getItemAt(i) as GunProperty;
+				value+=gunProperty.id+","+gunProperty.value1+","+gunProperty.value2+","+gunProperty.time+",";
+			}
+			value=value.substr(0,value.length-1);
+			currGunTarget.text=value;
+			PopUpManager.removePopUp(gunPropertyView);
+			var validate:Validator=DatagridValidateFactory.getSysitemValidator(currGunTarget.id,currGunTarget);
+			var val:ValidationResultEvent=validate.validate();
+			if(val.type=="valid"){
+				sysItem[currGunTarget.id]=value;
+			}else
+			validateArray.push(validate);
+			sysItem.isChange=1;
+		}
+		public var validateArray:Array=new Array();
+		private function validateTextInput(e:Event):void{
+			var source:TextInput=e.currentTarget as TextInput;
+			var dataField:String=source.id;
+			var pattern:RegExp = / /g;
+			var value:String=source.text.replace(pattern,"");
+			var validate:Validator=DatagridValidateFactory.getSysitemValidator(dataField,source);
+			var val:ValidationResultEvent=validate.validate();
+			if(val.type=="valid"){
+				if(dataField=="Name"){
+					dataField="name";
+				}
+				if(sysItem[dataField] is String){
+					sysItem[dataField]=value;
+				}else if(sysItem[dataField] is Number){
+					sysItem[dataField]=parseFloat(value);
+				}else{
+					sysItem[dataField]=value;
+				}
+			}else{
+				validateArray.push(validate);
+			}
+			sysItem.isChange=1;
+		}
+		
+	]]>
+</mx:Script>
+	<mx:VBox width="40%" borderStyle="solid" verticalGap="0">
+		<mx:Label text="基本信息"/>
+		<mx:HBox width="100%">
+			<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+				<mx:FormItem label="物品ID">
+					<mx:Label text="{sysItem.id}"/>
+				</mx:FormItem>
+				<mx:FormItem label="资源名">
+					<mx:TextInput  change="validateTextInput(event)" width="150" id="Name" text="{sysItem.name}"/>
+				</mx:FormItem>
+				<mx:FormItem label="名称">
+					<mx:TextInput  change="validateTextInput(event)" width="150" id="displayNameCN" text="{sysItem.displayNameCN}"/>
+				</mx:FormItem>
+				<mx:FormItem label="维修价格">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="WFixPrice" text="{sysItem.WFixPrice}"/>
+				</mx:FormItem>
+				<mx:FormItem label="序列号">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="itemIndex" text="{sysItem.itemIndex}"/>
+				</mx:FormItem>
+				<mx:FormItem label="WId">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="WId" text="{sysItem.WId}"/>
+				</mx:FormItem>
+				<mx:FormItem label="resourceStable">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="resourceStable" text="{sysItem.resourceStable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="resourceChangeable">
+					<mx:TextInput  change="validateTextInput(event)" width="150" id="resourceChangeable" text="{sysItem.resourceChangeable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="isStrengthen">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="isStrengthen" text="{sysItem.isStrengthen}"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+				<mx:FormItem label="type">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="type" text="{sysItem.type}"/>
+				</mx:FormItem>
+				<mx:FormItem label="subType">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="subType" text="{sysItem.subType}"/>
+				</mx:FormItem>
+				<mx:FormItem label="gunProperty1">
+					<mx:TextInput  width="150" id="gunProperty1" editable="false" text="{sysItem.gunProperty1}" click="showGunProperty(event)"/>
+				</mx:FormItem>
+				<mx:FormItem label="gunProperty2">
+					<mx:TextInput  width="150" id="gunProperty2" editable="false" text="{sysItem.gunProperty2}" click="showGunProperty(event)"/>
+				</mx:FormItem>
+				<mx:FormItem label="gunProperty3">
+					<mx:TextInput  width="150" id="gunProperty3" editable="false" text="{sysItem.gunProperty3}" click="showGunProperty(event)"/>
+				</mx:FormItem>
+				<mx:FormItem label="gunProperty4">
+					<mx:TextInput  width="150" id="gunProperty4" editable="false" text="{sysItem.gunProperty4}" click="showGunProperty(event)"/>
+				</mx:FormItem>
+				<mx:FormItem label="gunProperty5">
+					<mx:TextInput  width="150" id="gunProperty5" editable="false" text="{sysItem.gunProperty5}" click="showGunProperty(event)"/>
+				</mx:FormItem>
+				<mx:FormItem label="gunProperty6">
+					<mx:TextInput  width="150" id="gunProperty6" editable="false" text="{sysItem.gunProperty6}" click="showGunProperty(event)"/>
+				</mx:FormItem>
+				<mx:FormItem label="gunProperty7">
+					<mx:TextInput  width="150" id="gunProperty7" editable="false" text="{sysItem.gunProperty7}" click="showGunProperty(event)"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+				<mx:FormItem label="level">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="level" text="{sysItem.level}"/>
+				</mx:FormItem>
+				<mx:FormItem label="战斗力">
+					<mx:TextInput change="validateTextInput(event)"  width="50" id="fightNum" text="{sysItem.fightNum}"/>
+				</mx:FormItem>
+				<mx:FormItem label="稀有率">
+					<mx:TextInput change="validateTextInput(event)"  width="50" id="rareLevel" text="{sysItem.rareLevel}"/>
+				</mx:FormItem>
+				<mx:FormItem label="价值评估">
+					<mx:TextInput change="validateTextInput(event)"  width="70" id="EvaluateRmb" text="{sysItem.evaluateRmb}"/>
+				</mx:FormItem>
+				<mx:FormItem label="强化等级">
+					<mx:TextInput change="validateTextInput(event)"  width="50" id="strengthLevel" text="{sysItem.strengthLevel}"/>
+				</mx:FormItem>
+				<mx:FormItem label="IsVip">
+					<mx:TextInput change="validateTextInput(event)"  width="50" id="isVip" text="{sysItem.isVip}"/>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:HBox>
+	</mx:VBox>
+	<mx:VBox width="30%" borderStyle="solid" verticalGap="0">
+		<mx:Label text="手枪参数和摄影机抖动"/>
+		<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+			<mx:FormItem label="wCrossOffset">
+				<mx:TextInput  change="validateTextInput(event)" width="50" id="wCrossOffset" text="{sysItem.wCrossOffset}"/>
+			</mx:FormItem>
+			<mx:FormItem label="WAccuracyDivisor">
+				<mx:TextInput  change="validateTextInput(event)" width="50" id="WAccuracyDivisor" text="{sysItem.WAccuracyDivisor}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wAccuracyOffset">
+				<mx:TextInput  change="validateTextInput(event)" width="50" id="wAccuracyOffset" text="{sysItem.wAccuracyOffset}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wMaxInaccuracy">
+				<mx:TextInput  change="validateTextInput(event)" width="50" id="wMaxInaccuracy" text="{sysItem.wMaxInaccuracy}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wNormalOffset">
+				<mx:TextInput  change="validateTextInput(event)" width="50" id="wNormalOffset" text="{sysItem.wNormalOffset}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wNormalFactor">
+				<mx:TextInput  change="validateTextInput(event)" width="50" id="wNormalFactor" text="{sysItem.wNormalFactor}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wOnairOffset">
+				<mx:TextInput  change="validateTextInput(event)" width="50" id="wOnairOffset" text="{sysItem.wOnairOffset}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wMoveOffset">
+				<mx:TextInput  change="validateTextInput(event)" width="50" id="wMoveOffset" text="{sysItem.wMoveOffset}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wMoveFactor">
+				<mx:TextInput  change="validateTextInput(event)" width="50" id="wMoveFactor" text="{sysItem.wMoveFactor}"/>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:VBox>
+	<mx:VBox width="30%">
+		<mx:VBox width="100%" borderStyle="solid" verticalGap="0">
+			<mx:Label text="准心相关参数"/>
+			<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+				<mx:FormItem label="wCrossLengthBase">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="wCrossLengthBase" text="{sysItem.wCrossLengthBase}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wCrossLengthFactor">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="wCrossLengthFactor" text="{sysItem.wCrossLengthFactor}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wCrossDistanceBase">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="wCrossDistanceBase" text="{sysItem.wCrossDistanceBase}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wCrossDistanceFactor">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="wCrossDistanceFactor" text="{sysItem.wCrossDistanceFactor}"/>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:VBox>
+		<mx:VBox width="100%" borderStyle="solid" verticalGap="0">
+			<mx:Label text="狙击开镜精准相关参数"/>
+			<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+				<mx:FormItem label="wSightNormalOffset">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="wSightNormalOffset" text="{sysItem.wSightNormalOffset}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wSightOnairOffset">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="wSightOnairOffset" text="{sysItem.wSightOnairOffset}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wSightMoveOffset">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="wSightMoveOffset" text="{sysItem.wSightMoveOffset}"/>
+				</mx:FormItem>
+				<mx:FormItem label="WSightInfo">
+					<mx:TextInput  change="validateTextInput(event)" width="50" id="WSightInfo" text="{sysItem.WSightInfo}"/>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:VBox>
+	</mx:VBox>
+</mx:HBox>

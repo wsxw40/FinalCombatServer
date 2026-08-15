@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()" xmlns:common="common.*" >
+	<mx:Script>
+		<![CDATA[
+			import vo.PlayerLog;
+			import mx.events.ItemClickEvent;
+
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			[Bindable]
+			public var playerId:int=0;
+			[Bindable]
+			public var playerName:String;
+			[Bindable]
+			private var playerLogList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			private var selectedPayType:int = -1;
+			[Bindable]
+			private var selectedUseType:int = -1;
+			[Bindable] private var startTimeInteger:int = new Date().time/1000;
+            [Bindable] private var endTimeInteger:int = new Date().time/1000;
+			public function init():void{
+				initButtons();
+				if(playerId!=0){
+					getRo.getPlayerLogList(playerId,playerName);
+				}
+			}
+			private function initButtons():void{
+				playerLogDatagrid.editable=false;
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+
+
+			private function onSaveBtnClick():void{
+				initButtons();
+			}
+			private function onCanelBtnClick():void{
+				initButtons();
+			}
+			private function getPlayerLogListHandler(evt:ResultEvent):void{
+			playerLogList = evt.result as ArrayCollection;
+			playerLogList.filterFunction=typeFilter;
+			playerLogList.refresh();
+		}
+		private function typeFilter(item:Object):Boolean{
+				var log:PlayerLog = item as PlayerLog;
+				if(this.selectedPayType == -1 && this.selectedUseType==-1 )
+					return true;
+				if(log.type==this.selectedPayType||this.selectedPayType==-1)			
+					return true;
+				else 
+					return false;
+			}
+		private function doPayTypeFilter(evt:Event):void{
+			this.selectedPayType  = evt.target.selectedItem.data;
+        	playerLogList.filterFunction=typeFilter;
+        	playerLogList.refresh();
+		}
+		private function doTimeFilter():void{
+        	playerLogList.filterFunction=timeFilter;
+        	playerLogList.refresh();
+		}
+		private function timeFilter(item:Object):Boolean{
+				var log:PlayerLog = item as PlayerLog;
+				if(log.time>this.startTimeInteger&&log.time<this.endTimeInteger )
+					return true;
+				else 
+					return false;
+			}
+		[Bindable]
+		public var payTypes:ArrayCollection = new ArrayCollection(
+                [ {label:"------所有------", data:-1}, 
+                  {label:"登陆频道", data:0}, 
+                  {label:"进入房间", data:1},
+                  {label:"被杀数", data:2},
+                  {label:"杀敌数", data:3},
+                  {label:"获得经验", data:4},
+                  {label:"获得CAL", data:5},
+                  {label:"获得雷点", data:6},
+                  {label:"消耗CAL", data:7},
+                  {label:"消耗雷点", data:8},
+                  {label:"购买道具", data:9},
+                  {label:"消耗抵用券", data:10}
+                ]);
+        
+        private function defaultFaultHandler(evt:FaultEvent):void{
+        	Alert.show(evt.fault.faultString);
+        	
+        }
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getPlayerLogList" result="getPlayerLogListHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:VBox>
+	<mx:HBox width="100%" >
+		<mx:ApplicationControlBar width="100%" >	
+				<mx:Label text="{resourceManager.getString('Language','label.PlayerLogType')}:" />
+				<mx:ComboBox  dataProvider="{payTypes}" close="doPayTypeFilter(event)"/>
+				<mx:Label text="{resourceManager.getString('Language','label.StartTime')}:" />
+				<mx:VBox horizontalAlign="center" verticalAlign="top">
+			        <mx:VBox horizontalAlign="center" verticalAlign="middle" >
+			           <common:DateTimePicker id="picker" change="this.startTimeInteger = (picker.selectedDate.time/1000)" minuteIncrement="1" backgroundColor="#FFFFFF"/>
+			           <!--<mx:DateField id="start" selectedDate="{new Date()}" formatString="YYYY年MM月DD日"/>-->
+			        </mx:VBox>
+		    	</mx:VBox>
+				<mx:Label text="{resourceManager.getString('Language','label.EndTime')}:"/>
+				<mx:VBox horizontalAlign="center" verticalAlign="top">
+			        <mx:VBox horizontalAlign="center" verticalAlign="middle">
+			            <common:DateTimePicker id="picker1" change="this.endTimeInteger = (picker1.selectedDate.time/1000)" minuteIncrement="1" backgroundColor="#FFFFFF"/> 
+			            <!--<mx:DateField id="end" selectedDate="{new Date()}" formatString="YYYY年MM月DD日"/>-->
+			        </mx:VBox>
+		    	</mx:VBox>
+		    	<mx:Button click="doTimeFilter()" label="{resourceManager.getString('Language','label.PerColateTime')}"/>
+		</mx:ApplicationControlBar>
+	</mx:HBox>
+	<mx:DataGrid id="playerLogDatagrid" dataProvider="{playerLogList}" width="100%">
+		<mx:columns>
+		<mx:DataGridColumn dataField="timeStr" headerText="{resourceManager.getString('Language','label.LogTime')}" width="100"/>
+			<mx:DataGridColumn dataField="playerId" headerText="{resourceManager.getString('Language','label.PlayerId')}" width="100"/>
+			<mx:DataGridColumn dataField="playerName" headerText="{resourceManager.getString('Language','label.CharacterName')}" width="100"/>
+			<mx:DataGridColumn dataField="content" headerText="{resourceManager.getString('Language','label.Detail')}" width="200"/>
+		</mx:columns>
+	</mx:DataGrid>
+	</mx:VBox>
+</mx:HBox>

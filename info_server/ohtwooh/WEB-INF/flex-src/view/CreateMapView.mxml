@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" fontSize="12" 
+	label="Add levelInfo" title="Add Map" showCloseButton="true" width="452" height="436" xmlns:vo="vo.*"
+	close="PopUpManager.removePopUp(this)">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import vo.LevelInfo;
+			[Bindable]
+			public function set levelInfo(level:LevelInfo):void{
+			    this._levelInfo=level;
+			}
+			public function get levelInfo():LevelInfo{
+			    return this._levelInfo;
+			}
+		]]>
+	</mx:Script>
+	<vo:LevelInfo id="_levelInfo"  type="{parseInt(type.text)}" name="{mapName.text}" startPoints="{startPoints.text}"
+		blastPoints="{blastPoints.text}" flagPoints="{flagPoints.text}" weaponPoints="{weaponPoints.text}" supplyPoints="{supplyPoints.text}" supplies="{supplies.text}"
+		/>
+	<mx:VBox width="389" height="356">
+		<mx:Form width="100%" height="302">
+			<mx:FormHeading label="Please add a Level" textAlign="left"/>
+			<mx:FormItem label="type" width="241">
+				<mx:TextInput width="100%" id="type" text="{levelInfo.type}"/>
+			</mx:FormItem>
+			<mx:FormItem label="name" width="241">
+				<mx:TextInput  width="100%" id="mapName"  text="{levelInfo.name}"/>
+			</mx:FormItem>
+			<mx:FormItem label="startPoints" width="340">
+				<mx:TextInput  width="225" id="startPoints" text="{levelInfo.startPoints}"/>
+			</mx:FormItem>
+			<mx:FormItem label="blastPoints" width="340">
+				<mx:TextInput  width="225" id="blastPoints" text="{levelInfo.blastPoints}"/>
+			</mx:FormItem>
+			<mx:FormItem label="flagPoints" width="340">
+				<mx:TextInput  width="225" text="{levelInfo.flagPoints}" id="flagPoints"/>
+			</mx:FormItem>
+			<mx:FormItem label="weaponPoints" width="340">
+				<mx:TextInput  width="225" text="{levelInfo.weaponPoints}" id="weaponPoints"/>
+			</mx:FormItem>
+			<mx:FormItem label="supplyPoints" width="340">
+				<mx:TextInput  width="225" text="{levelInfo.supplyPoints}" id="supplyPoints"/>
+			</mx:FormItem>
+			<mx:FormItem label="supplies" width="340">
+				<mx:TextInput  width="225" text="{levelInfo.supplies}" id="supplies"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ApplicationControlBar width="376">
+			<mx:Button label="退出" id="cancel"/>
+			<mx:Button label="保存" id="save"/>
+			<mx:Button label="清空" id="clear" click="{this.levelInfo=new LevelInfo();}"/>
+		</mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:TitleWindow>

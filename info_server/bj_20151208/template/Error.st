@@ -1,0 +1,1 @@
+#if ($msg!=null)# error = "#$msg#" #/if#

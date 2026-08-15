@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="baseService"  class="com.pearl.o2o.service.BaseService">
+    	<property name="mcc" ref="memcachedClient" />
+    	<property name="xunleiOrderLogDao" ref="xunleiOrderLogDao"/>
+		<property name="playerDao" ref="playerDao" />
+		<property name="playerTrackDao" ref="playerTrackDao" />
+		<property name="friendDao" ref="friendDao" />
+		<property name="serverDao" ref="serverDao" />
+		<property name="sysItemDao" ref="sysItemDao" />
+		<property name="sysItemLogDao" ref="sysItemLogDao" />
+		<property name="playerItemDao" ref="playerItemDao" />
+		<property name="playerInfoDao" ref="playerInfoDao" />
+		<property name="playerPackDao" ref="playerPackDao" />
+		<property name="messageDao" ref="messageDao" />
+		<property name="sysCharacterDao" ref="sysCharacterDao" />
+		<property name="sysBioCharacterDao" ref="sysBioCharacterDao" />
+		<property name="sysCharacterLogDao" ref="sysCharacterLogDao" />
+		<property name="rankDao" ref="rankDao" />	
+		<property name="paymentDao" ref="paymentDao" />	
+		<property name="teamDao" ref="teamDao" />
+		<property name="keyWordsDao" ref="keyWordsDao" />
+		<property name="sysLevelDao" ref="sysLevelDao" />
+		<property name="sysActivityDao" ref="sysActivityDao" />
+		<property name="playerTeamDao" ref="playerTeamDao" />
+		<property name="teamHistoryDao" ref="teamHistoryDao" />
+		<property name="sysModeConfigDao" ref="sysModeConfigDao" />
+		<property name="systemDao" ref="systemDao"/>
+		<property name="playerBuffDao" ref="playerBuffDao" />
+		<property name="soClient" ref="socketClientNew" />
+		<property name="getService" ref="getService" /> 
+		<property name="allyDao" ref="allyDao" />
+		<property name="characterDataDao" ref="characterDataDao" />
+		<property name="nosqlService" ref="nosqlService"/>
+		<property name="sysNoticeDao" ref="sysNoticeDao" />
+		<property name="sysIconDao" ref="sysIconDao" />
+		<property name="blackIPDao" ref="blackIPDao" />
+		<property name="blackWhiteListDao" ref="blackWhiteListDao" />
+		<property name="bannedWordDao" ref="bannedWordDao" />
+		<property name="sysAchievementDao" ref="sysAchievementDao" />
+		<property name="playerAchievementDao" ref="playerAchievementDao" />
+		<property name="payLogDao" ref="payLogDao" />
+	
+		<property name="gmUserDao" ref="gmUserDao"/>
+		<property name="gmLogDao" ref="gmLogDao"/>
+		<property name="gmGroupDao" ref="gmGroupDao"/>
+		<property name="gmPrivilegeDao" ref="gmPrivilegeDao"/>
+		<property name="gmGroupPrivilegeDao" ref="gmGroupPrivilegeDao"/>
+		<property name="gmUserGroupDao" ref="gmUserGroupDao"/>
+		<property name="sysMissionDao" ref="sysMissionDao"/>
+		<property name="playerMissionDao" ref="playerMissionDao"/>
+		<property name="playerActivityDao" ref="playerActivityDao"/>
+		<property name="unSpeakerDao" ref="unSpeakerDao"/>
+		<property name="sysChestDao" ref="sysChestDao"/>
+		<property name="playerChestDao" ref="playerChestDao"/>
+		<property name="onlineAwardDao" ref="onlineAwardDao"/>
+		<property name="sysGrowthMissionDao" ref="sysGrowthMissionDao"/>
+		<property name="playerGrowthMissionDao" ref="playerGrowthMissionDao"/>
+		<property name="strengthenAppendDao" ref="strengthenAppendDao"/>
+		<property name="playerMeltingDao" ref="playerMeltingDao"/>
+		<property name="meltingAwardDao" ref="meltingAwardDao"/>
+		<property name="teamProclamationDao" ref="teamProclamationDao"/>
+		<property name="sysTeamBuffDao" ref="sysTeamBuffDao"/>
+		<property name="teamBuffDao" ref="teamBuffDao"/>
+		<property name="teamRecordDao" ref="teamRecordDao"/>		
+		<property name="infoLogger" ref="infoLogger"/>
+		<property name="transferDataToDc" ref="transferDataToDc"/>
+		<property name="battleFieldRobDailyDao" ref="battleFieldRobDailyDao"/>
+		<property name="teamLevelDao" ref="teamLevelDao"/>
+		<property name="teamItemDao" ref="teamItemDao"/>
+		<property name="teamTechnologyDao" ref="teamTechnologyDao"/>
+		<property name="buyItemRecordDao" ref="buyItemRecordDao"/>
+		<!-- //zlm2015-10-9-匹配 -->
+		<property name="sysMatchPDao" ref="sysMatchPDao" />
+		<!-- //zlm2015-10-9-匹配 -->
+		
+		
+	</bean>
+	<!-- GM Tool Log -->
+    <bean id="gmLogInterceptor" class="com.pearl.o2o.filter.GmLogInterceptor">
+     	<property name="gmLogDao" ref="gmLogDao"/>
+    </bean>
+    <bean id="gmWriteInterceptor" class="com.pearl.o2o.filter.GmWriteInterceptor">
+    </bean>
+	<bean id="getService" class="com.pearl.o2o.service.GetService" parent="baseService">
+		<property name="messageService" ref="messageService" />
+	</bean>
+	
+	<bean id="resetService" class="com.pearl.o2o.service.ResetService" parent="baseService">
+		<property name="messageService" ref="messageService" />	
+	</bean>
+	
+	<bean id="createService" class="com.pearl.o2o.service.CreateService" parent="baseService">
+		<property name="messageService" ref="messageService" />
+		
+	</bean>
+	
+	<bean id="deleteService" class="com.pearl.o2o.service.DeleteService" parent="baseService">
+		<property name="messageService" ref="messageService" />	
+	</bean>
+	
+	<bean id="updateService" class="com.pearl.o2o.service.UpdateService" parent="baseService">
+		<property name="createService" ref="createService" />
+		<property name="messageService" ref="messageService" />
+		<property name="resetService" ref="resetService" />
+		
+	</bean>	
+	<bean id="nosqlService" class="com.pearl.o2o.service.NosqlService">
+		<property name="nosql" ref="nosql"/>
+		<property name="xunleiLogger" ref="xunleiLogger"/>
+	</bean>
+	<bean id="nosqlMetaService" class="com.pearl.o2o.service.NosqlService">
+		<property name="nosql" ref="nosqlMeta"/>
+	</bean>
+	<bean id="flexGetService" class="com.pearl.o2o.service.flexservice.FlexGetService" parent="getService">
+	</bean>	
+	
+	<bean id="flexCreateService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		 <property name="proxyTargetClass" value="true"/>
+         <property name="target" ref ="flexRealCreateService" />
+         <property name="interceptorNames">
+	         <list>
+	         	<value>gmLogInterceptor</value>
+	         	<value>gmWriteInterceptor</value>
+	         </list>
+         </property>
+	</bean>	
+	<bean id="flexDeleteService" class="org.springframework.aop.framework.ProxyFactoryBean">	
+		 <property name="proxyTargetClass" value="true"/>
+         <property name="target" ref ="flexRealDeleteService" />
+         <property name="interceptorNames">
+	         <list>
+	         	<value>gmLogInterceptor</value>
+	         	<value>gmWriteInterceptor</value>
+	         </list>
+         </property>
+	</bean>	
+	<bean id="flexUpdateService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		 <property name="proxyTargetClass" value="true"/>
+         <property name="target" ref ="flexRealUpdateService" />
+         <property name="interceptorNames">
+	         <list>
+	         	<value>gmLogInterceptor</value>
+	         	<value>gmWriteInterceptor</value>
+	         </list>
+         </property>
+	</bean>	
+	
+	<bean id="flexRealCreateService" class="com.pearl.o2o.service.flexservice.FlexCreateService" parent="createService">
+	</bean>	
+	<bean id="flexRealDeleteService" class="com.pearl.o2o.service.flexservice.FlexDeleteService" parent="deleteService">	
+	</bean>	
+	<bean id="flexRealUpdateService" class="com.pearl.o2o.service.flexservice.FlexUpdateService" parent="updateService">
+	</bean>	
+	<bean id="flexRealNosqlService" class="com.pearl.o2o.service.flexservice.FlexNosqlService" parent="nosqlService">
+	</bean>
+	<bean id="flexQwInfo" class="com.pearl.o2o.service.flexservice.FlexQwInfo" >
+	</bean>
+	<bean id="messageService" class="com.pearl.o2o.service.MessageService" parent="baseService">
+		<property name="createService" ref="createService" />
+	</bean>	
+	
+	<bean id="teamService"   class="com.pearl.o2o.service.TeamService" parent="baseService">
+		<property name="messageService" ref="messageService" />
+	</bean>
+ 		
+	
+ 	<bean id="baseClientServlet" class="com.pearl.o2o.servlet.client.BaseClientServlet" init-method="init">
+ 		<property name="mcc" ref="memcachedClient" /> 		
+ 		<property name="getService" ref="getService" />
+ 		<property name="createService" ref="createService" />
+ 		<property name="updateService" ref="updateService" />
+ 		<property name="deleteService" ref="deleteService" />
+ 		<property name="nosqlService" ref="nosqlService" />
+ 		<property name="messageService" ref="messageService" />
+ 		<property name="soClient" ref="socketClientNew" />
+ 		<property name="teamService" ref="teamService"/>
+ 		<property name="infoLogger" ref="infoLogger"/>
+ 		<property name="transferDataToDc" ref="transferDataToDc"/>
+ 	</bean> 	
+ 	
+ 	<bean id="baseServerServlet" class="com.pearl.o2o.servlet.server.BaseServerServlet" init-method="init">
+ 		 
+ 		<property name="mcc" ref="memcachedClient" /> 		
+ 		<property name="getService" ref="getService" />
+ 		<property name="createService" ref="createService" />
+ 		<property name="updateService" ref="updateService" />
+ 		<property name="deleteService" ref="deleteService" />
+ 		<property name="messageService" ref="messageService" />
+ 		<property name="nosqlService" ref="nosqlService" />
+ 		<property name="soClient" ref="socketClientNew" />
+ 		<property name="teamService" ref="teamService"/>
+ 		<property name="infoLogger" ref="infoLogger"/>
+ 		<property name="transferDataToDc" ref="transferDataToDc"/>
+ 		
+ 	</bean>  	 		
+	
+	<bean id="socketClientNew" class="com.pearl.o2o.socket.SocketClientNew"/>
+ 	
+ 	<bean id="playerGPointPushTask" class="com.pearl.o2o.schedule.PlayerGPointPushTask">
+ 		<property name="transferDataToDc" ref="transferDataToDc"/>
+ 	</bean>
+</beans>

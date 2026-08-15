@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 注册操作 -->
+	<bean name="/nologin/ma/userReg.htm" class="com.pde.uweb.web.controller.ma.UserRegisterController">
+		<property name="memberService" ref="memberService_biz" />
+		<property name="bbsuCenterClient" ref="bbsUCenterClient_biz" />
+	</bean>
+
+	<!-- 登录操作 -->
+	<bean name="/nologin/ma/userLogin.htm" class="com.pde.uweb.web.controller.ma.UserLoginController">
+		<property name="memberService" ref="memberService_biz" />
+		<property name="bbsuCenterClient" ref="bbsUCenterClient_biz" />
+	</bean>
+
+	<!-- 启动游戏 -->
+	<bean name="/login/ma/userSelectGame.htm" class="com.pde.uweb.web.controller.ma.UserSelectGameController">
+		<property name="cgcRequestUrl" value="${uweb.cgcRequestUrl}" />
+	</bean>
+
+	<!-- 退出操作 -->
+	<bean name="/login/ma/userLogout.htm" class="com.pde.uweb.web.controller.ma.UserLogoutController">
+		<property name="bbsuCenterClient" ref="bbsUCenterClient_biz" />
+	</bean>
+	
+	<!-- 修改密码操作 -->
+	<bean name="/login/ma/modifyUserPw.htm" class="com.pde.uweb.web.controller.ma.UserModifyPasswordController">
+		<property name="memberService" ref="memberService_biz" />
+		<property name="bbsuCenterClient" ref="bbsUCenterClient_biz" />
+	</bean>
+	
+	<!-- 手机绑定操作 -->
+	<bean name="/login/ma/bindMobile.htm" class="com.pde.uweb.web.controller.ma.UserBindMobileController">
+		<property name="memberService" ref="memberService_biz" />
+		<property name="userBindMobilePage" value="ma/bindMobile.vm" />
+		<property name="userCenterPage" value="ma/userCenterIndex.vm" />
+		<property name="staticResourceService" ref="staticResourceService_uwebcache" />
+	</bean>
+	
+	<!-- 邮箱绑定操作 -->
+	<bean name="/login/ma/bindEmail.htm" class="com.pde.uweb.web.controller.ma.UserBindEmailController">
+		<property name="memberService" ref="memberService_biz" />
+		<property name="userBindEmailPage" value="ma/bindEmail.vm" />
+		<property name="userCenterPage" value="ma/userCenterIndex.vm" />
+		<property name="staticResourceService" ref="staticResourceService_uwebcache" />
+	</bean>
+
+	<!-- 防沉迷认证操作 -->
+	<bean name="/login/ma/addicate.htm" class="com.pde.uweb.web.controller.ma.UserAddicateController">
+		<property name="memberService" ref="memberService_biz" />
+		<property name="userAddicatePage" value="ma/addicate.vm" />
+		<property name="userCenterPage" value="ma/userCenterIndex.vm" />
+		<property name="staticResourceService" ref="staticResourceService_uwebcache" />
+	</bean>
+
+	<!-- 设置安全问题操作 -->
+	<bean name="/login/ma/question.htm" class="com.pde.uweb.web.controller.ma.UserQuestionController">
+		<property name="memberService" ref="memberService_biz" />
+		<property name="userQuestionPage" value="ma/question.vm" />
+		<property name="userCenterPage" value="ma/userCenterIndex.vm" />
+		<property name="staticResourceService" ref="staticResourceService_uwebcache" />
+	</bean>
+	
+	<!-- 查询登录状态 -->
+	<bean name="/query/ma/isLogin.htm" class="com.pde.uweb.web.controller.ma.UserLoginStatusController"/>
+
+</beans>

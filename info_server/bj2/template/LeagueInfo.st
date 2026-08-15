@@ -1,0 +1,14 @@
+apply_start = "#$apply_start#"
+apply_end = "#$apply_end#"
+game_start = "#$game_start#"
+game_end = "#$game_end#"
+remark_1 = "#$remark_1#"
+remark_2 = "#$remark_2#"
+teamName = "#$teamName#"
+haveTeam = #$haveTeam#
+job = #$job#
+apply = #$apply#
+start = #$start#
+timeDiff = #$timeDiff#
+timeDiffType = #$timeDiffType#
+gameType = #$gameType#

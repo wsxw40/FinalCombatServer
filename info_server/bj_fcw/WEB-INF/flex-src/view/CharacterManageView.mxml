@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" fontSize="12" 
+	 height="100%"
+	creationComplete="init()" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.StringUtil;
+			import mx.controls.TextInput;
+			import utils.ColumnFactory;
+			import popup.ViewCharacterLog;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.ValidationResult;
+			import mx.validators.Validator;
+			import utils.DatagridValidateFactory;
+			import mx.managers.PopUpManager;
+			import view.CreateCharacterView;
+			import mx.controls.Alert;
+			import component.MyDataGridColumn;
+			import vo.Character;
+			import mx.events.DataGridEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import vo.GmUser;
+			private var model:O2oModel = O2oModel.getInstance();
+			[Bindable]
+			private var characterList:ArrayCollection;
+			
+			private var characterLog:ArrayCollection;
+			[Bindable]
+			private var character:Character=null;
+			private var characterView:CreateCharacterView;
+			private var characterLogView:ViewCharacterLog;
+			private var isCopy:Boolean=false;
+			private function init():void{
+				initBtn();				
+				characterDataGrid.columns=ColumnFactory.getCharacterColumns(false);
+				getRo.getSysCharacterList();
+			}
+			
+			private function initBtn():void{
+				newBtn.enabled=true;
+				copyBtn.enabled=true;
+				saveBtn.enabled=false;
+		 		deleteBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+			}
+			
+			
+			private function checkIt(event:Event):void
+			{
+				characterDataGrid.invalidateList();
+			}
+			private function onNewBtnClick():void{
+				characterView=CreateCharacterView(PopUpManager.createPopUp(this,CreateCharacterView,true));
+				if(isCopy){
+					characterView.character=this.character;
+				}else{
+					characterView.character=new Character();
+				}
+				characterView.cancel.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(characterView);});
+				characterView.save.addEventListener(MouseEvent.CLICK,onValidate);
+				PopUpManager.centerPopUp(characterView);
+			}
+			private function onCopyBtnClick():void{
+				if(this.character==null){
+					Alert.show(resourceManager.getString('Language','label.ChooseCharacter'));
+				}else{
+					isCopy=true;
+				}
+			}
+			private function onValidate(evt:MouseEvent):void{
+				var validators:Array=DatagridValidateFactory.getCharacterValidateArray(characterView);
+				var validateResult:Array=Validator.validateAll(validators);
+				if(validateResult.length>0){
+					return;
+				}else{
+					saveCharacter();
+				}
+			}
+			private function onSaveBtnClick():void{
+				updateRo.updateSysCharacter(model.gmUser, this.characterList);
+				initBtn();
+				characterDataGrid.editable=false;
+				
+			}
+			private function onDeleteBtnClick():void{
+				if(this.character==null){
+					Alert.show(resourceManager.getString('Language','label.ChooseCharacter'));
+				}else
+				{
+				deleteRo.deleteSysCharacter(model.gmUser, this.character);
+				getRo.getSysCharacterList();
+				}
+			}
+			private function onEditBtnClick():void{
+				characterDataGrid.editable=true;
+				newBtn.enabled=false;
+		 		deleteBtn.enabled=false;
+		 		editBtn.enabled=false;
+		 		copyBtn.enabled=false;
+		 		cancelBtn.enabled=true;
+		 		saveBtn.enabled=true;
+			}
+			private function onCancelBtnClick():void{
+				initBtn();
+				characterDataGrid.editable=false;
+				getRo.getSysCharacterList();
+			}
+			private function onShowBtnClick():void{
+				if(this.character==null){
+					Alert.show(resourceManager.getString('Language','label.ChooseCharacter'));
+				}else
+				{
+					getRo.getSysCharacterLog(this.character.id);
+				}
+			}
+			private function saveCharacter():void{
+				createRo.createSysCharacter(model.gmUser, characterView.character);
+				PopUpManager.removePopUp(characterView);
+				getRo.getSysCharacterList();
+			}
+			private var datagridValidate:Validator;
+			private function endEdit(event:DataGridEvent):void{
+		 		var dataField:String = event.dataField;
+				var fCell:Array=[event.columnIndex,event.rowIndex];
+				var source:Object=event.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(event.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = event.currentTarget.editedItemRenderer.data[event.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+               		
+               		var validate:Validator=DatagridValidateFactory.getCharacterValidater(dataField,source);
+               		if(validate!=null){
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.character.isChange=1;
+	               			callLater(maintainFocus);
+	               			
+	               		}else{
+	               			event.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		}
+               		}else{
+               			callLater(maintainFocus);
+               		}
+               	}else{
+               		callLater(maintainFocus);
+               	}
+               	
+		 	}
+		 	private function maintainEdit(colIndex:int,rowIndex:int,source:Object):void
+			{
+				
+				var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+				if(characterDataGrid.editedItemPosition==null)
+				{
+	   				characterDataGrid.editedItemPosition = editCell;
+					callLater(validateCurrentEditor);
+	   			}
+			}
+			private function validateCurrentEditor():void{
+				datagridValidate.source=characterDataGrid.itemEditorInstance;
+				datagridValidate.validate();
+			}
+			private function maintainFocus():void
+			{
+	   			characterDataGrid.editedItemPosition = null;
+			}
+			
+			//handler
+			private function getSysCharacterListHandler(evt:ResultEvent):void{
+				characterList=evt.result as ArrayCollection;
+			}
+			private function getSysCharacterLogHandler(evt:ResultEvent):void{
+				characterLog=evt.result as ArrayCollection;
+				characterLogView=ViewCharacterLog(PopUpManager.createPopUp(this,ViewCharacterLog,true));
+		  	 
+		  	 	characterLogView.characterLogDG.columns=ColumnFactory.getCharacterLogColumns(false);
+		  	 	
+		  	 	characterLogView.characterLogs=this.characterLog;
+		  	 	characterLogView.close.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(characterLogView);});
+		  	 	PopUpManager.centerPopUp(characterLogView);
+			}
+			private function createSysCharacterHandler(evt:ResultEvent):void{
+				getRo.getSysCharacterList();
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+				
+			}
+			private function selectHandler():void{
+		 		character=characterDataGrid.selectedItem as Character;
+		 	}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getSysCharacterList" result="getSysCharacterListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getSysCharacterLog" result="getSysCharacterLogHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createSysCharacter" result="createSysCharacterHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteSysCharacter" result="createSysCharacterHandler(event)"/>
+	</mx:RemoteObject>
+		<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateSysCharacter" result="createSysCharacterHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox  height="100%" width="100%">
+	
+	<mx:VBox  height="100%" width="100%">
+	<mx:HBox>
+		<mx:ApplicationControlBar width="100%" >				
+	        	<mx:Button id="newBtn"  label="{resourceManager.getString('Language','button.New')}" click="onNewBtnClick()"/>
+	        	<mx:Button id="copyBtn" label="{resourceManager.getString('Language','button.Paste')}" click="onCopyBtnClick()"/>
+	        	<mx:Button id="saveBtn"  label="{resourceManager.getString('Language','button.Save')}"  click="onSaveBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="{resourceManager.getString('Language','button.Delete')}" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="editBtn"  label="{resourceManager.getString('Language','button.Edit')}" click="onEditBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="{resourceManager.getString('Language','button.Cancel')}"  click="onCancelBtnClick()"/>
+	        	<mx:Button id="showLog"  label="{resourceManager.getString('Language','button.ShowLog')}"  click="onShowBtnClick()"/>
+	     </mx:ApplicationControlBar>
+	</mx:HBox>
+		<mx:Panel title="{resourceManager.getString('Language','label.CharacterList')}" width="100%" height="100%">
+		<!--<mx:ApplicationControlBar  height="100%" width="100%">	-->
+			<component:MyDataGrid id="characterDataGrid" dataProvider="{characterList}" itemClick="selectHandler()" lockedColumnCount="6" 
+				width="100%" height="100%" editable="false" change="checkIt(event)"
+				itemEditEnd="endEdit(event)">
+			</component:MyDataGrid>
+		<!--</mx:ApplicationControlBar>-->
+		</mx:Panel>
+		</mx:VBox>
+	</mx:HBox>	
+</mx:VBox>

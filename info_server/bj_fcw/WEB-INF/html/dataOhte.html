@@ -1,0 +1,92 @@
+<html>
+<head>
+<title>CHILDREN GM TOOLS</title>
+</head>
+<script type="text/javascript">
+		var elm=$("#uploadName");
+			var startPos = $(elm).offset().top;
+			$.event.add(window,"scroll",function(){
+				var p = $(window).scrollTop();
+				if(!$.browser.msie)
+					$(elm).css('top',p-p+300);
+				else
+					$(elm).css('top',p+300);
+			});
+
+		
+		var tName=null;
+		$(document).ready(function(){
+		var page=0;
+			$.ajax({
+					type:'post',
+					dataType:'json',
+					url:'cindex/dataOhte',
+					data:'{}',
+					cache:true, 
+					success:function(msg) 
+					{ 
+						var con="<table width='88%' align='center' border='0'><tr><td>&nbsp;</td></tr><tr>";
+						var i = 1;
+						for(var key in msg){   
+							con+="<td><label class='butto' style='width:260px;height:40px;color:white;border:0px;font-size:18px' align='left' id='"+key+"'><b style='font-size:28'>"+key.substring(0,1)+"</b>"+key.substring(1)+"</label></br></td>";
+							
+							// if(i++%5==0)
+							// {
+								con+="</tr><tr>";
+							// }
+						}
+						con+="<td>&nbsp;</td></tr></table>";
+						$("#tableName").html(con);
+						
+						$(".butto").mouseover(function(){
+							if($(this).attr("name")!='windowsLabel')
+								$(this).css("color","black");
+						}).mouseout(function(){
+							if($(this).attr("name")!='windowsLabel')
+								$(this).css("color","white");
+						}).click(function(){
+							$(this).fadeOut().html($(this).attr("id")).fadeIn(100).css("color","crimson").attr("name","windowsLabel");
+							tName = $(this).attr("id"); 
+							$("#uploadName").load("cindex?action=excelOhte",function(){
+								$("#uploadName").fadeIn(0);
+								tbName=tName;
+								setWindowName(tName);
+							});
+						}).css("cursor","hand");
+							
+					},error:function(XMLHttpRequest,textStatus,errorThrown){alert("service timeout! , status:"+XMLHttpRequest.status+" , readyState:"+XMLHttpRequest.readyState+" , textStatus:"+textStatus);}
+			});
+		});
+	</script>
+<style>
+.mainDiv {
+	border: 1px solid #CCC;
+}
+
+.button {
+	border: 1px solid white;
+	height: 20px;
+	font-size: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+	background: white;
+	color: black
+}
+
+#uploadName {
+	font-size: 12px;
+	background: white;
+}
+</style>
+<body>
+	<div id="uploadName"
+		style="width: 680px; color: white; background: #CCC repeat-x bootom; -moz-opacity: 0.8; opacity: 0.8; filter: alpha(opacity = 46); position: fixed; _position: absolute; left: 26%; top: 300px; z-index: 1000; padding: 7px; -webkit-border-radius: 15px; -moz-border-radius: 15px; border-radius: 15px; display: none;">
+
+	</div>
+	<!-- <div id="uploadName">
+			
+		</div> -->
+
+	<div id='tableName'></div>
+</body>
+</html>

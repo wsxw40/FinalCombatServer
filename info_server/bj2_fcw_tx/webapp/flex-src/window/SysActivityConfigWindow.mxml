@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.ObjectUtil;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import vo.SysActivity;
+			import mx.events.CloseEvent;
+			import event.BoxClickEvent;
+			import mx.events.ListEvent;
+			import view.SysItemNameList2;
+			import vo.SysItem;
+			import mx.managers.PopUpManager;
+			import view.SysItemNameList;
+			import mx.controls.Alert;
+			import utils.ColumnFactory;
+			import utils.DatagridValidateFactory;
+			import mx.utils.StringUtil;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import vo.Player;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			private var activityBackup:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public var activityList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public var activity:SysActivity=new SysActivity();
+			
+			private function init():void{
+				initBtn();
+				getRo.getActivityList();
+			}
+			private function initBtn():void{
+				newBtn.enabled=true;
+				saveBtn.enabled=true;
+		 		cancelBtn.enabled=true;
+		 		activityDataGrid.editable=false;
+		 		activityDataGrid.selectable=true;
+			}
+			private function onNewBtnClick():void{
+				var newObj:SysActivity=new SysActivity();
+				newObj.id=0;
+//				newObj.startTime=new Date();
+//				newObj.endTime=new Date();
+				activityList.addItem(newObj);
+				activityDataGrid.editable=true;
+			}
+			private function onSaveBtnClick():void{
+				var newList:ArrayCollection=new ArrayCollection();
+				for each (var act:SysActivity in activityList){
+					if(act.weaponName!=""){
+						newList.addItem(act);
+						if(act.selected){
+							act.isDeleted="Y";
+						}else{
+							act.isDeleted="N";
+						}
+					}
+				}
+				updateRo.updateActivityList(newList,this.activityBackup);
+				initBtn();
+			}
+			private function onCancelBtnClick():void{
+				initBtn();
+				var tl:ArrayCollection=ObjectUtil.copy(this.activityBackup) as ArrayCollection;
+				this.activityList=this.activityBackup;
+				this.activityBackup=tl;
+				activityDataGrid.editable=false;
+			}
+			private function getActivityListHandler(evt:ResultEvent):void{
+				activityList=evt.result as ArrayCollection;
+				for each(var activity:SysActivity in activityList){
+					if(activity.isDeleted=="Y"){
+						activity.selected=true;
+					}
+				}
+				activityBackup=ObjectUtil.copy(this.activityList) as ArrayCollection;
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+			private function selectHandler():void{
+		 		activity=activityDataGrid.selectedItem as SysActivity;
+		 	}
+		]]>
+		
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getActivityList" result="getActivityListHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update" showBusyCursor="true">
+		<mx:method name="updateActivityList" result="getActivityListHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:DateFormatter id="dateFormatter" formatString="month: MM, day: DD, year: YYYY"/>
+	<mx:HBox  height="100%" width="100%">
+		<mx:VBox  height="100%" width="100%">
+		
+		<mx:HBox>
+			<mx:ControlBar width="100%" >				
+		        	<mx:Button id="newBtn"  label="新建" click="onNewBtnClick()"/>
+		        	<mx:Button id="saveBtn"  label="保存"  click="onSaveBtnClick()"/>
+		        	<mx:Button id="cancelBtn"  label="取消"  click="onCancelBtnClick()"/>
+		     </mx:ControlBar>
+		</mx:HBox>
+		<mx:Label text="武器不能重复" color="red"/>
+		<mx:ApplicationControlBar  height="100%">	
+			<mx:DataGrid id="activityDataGrid" dataProvider="{activityList}" itemClick="selectHandler()" lockedColumnCount="3" 
+				 height="100%" editable="false" >
+				<mx:columns>
+					<mx:DataGridColumn  headerText="isDeleted" width="50">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:HBox>
+							<mx:Script>
+							<![CDATA[
+							private	function dataChanged():void{
+									if(cb.selected){
+										this.data.selected=true;
+									}else{
+										this.data.selected=false;
+									}
+								}
+							]]>
+							</mx:Script>
+								<mx:CheckBox id="cb" selected="{this.data.selected}" change="dataChanged()"/>
+							</mx:HBox>
+						</mx:Component>
+					</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn dataField="weaponName" headerText="weaponName" width="150">
+					</mx:DataGridColumn>
+					<mx:DataGridColumn  headerText="startTime" dataField="startTime" width="150" editable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:HBox>
+							<mx:Script>
+							<![CDATA[
+							private	function dateChanged(date:Date):void{
+									this.data.startTime=date;
+								}
+							]]>
+							</mx:Script>
+								<mx:DateField 
+									disabledRanges="{[new Date(),{rangeEnd: new Date()}]}" 
+									selectedDate="{this.data.startTime}" change="dateChanged(DateField(event.target).selectedDate)">
+								</mx:DateField>
+							</mx:HBox>
+						</mx:Component>
+					</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="endTime" dataField="endTime" width="150" editable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:HBox>
+							<mx:Script>
+							<![CDATA[
+							private	function dateChanged(date:Date):void{
+									this.data.endTime=date;
+								}
+							]]>
+							</mx:Script>
+								<mx:DateField 
+									disabledRanges="{[new Date(),{rangeEnd: new Date()}]}" 
+									selectedDate="{this.data.endTime}" change="dateChanged(DateField(event.target).selectedDate)">
+								</mx:DateField>
+							</mx:HBox>
+						</mx:Component>
+					</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:ApplicationControlBar>
+		</mx:VBox>
+	</mx:HBox>	
+</mx:VBox>

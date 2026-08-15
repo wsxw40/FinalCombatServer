@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerItem">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PlayerItem" type="com.pearl.o2o.pojo.PlayerItem"/> 	
+	
+	<resultMap id="selectPlayerItemResult" class="PlayerItem">
+		<result property="id" column="ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="itemId" column="ITEM_ID"/>		
+		<result property="validDate" column="VALID_TIME"/>			
+		<result property="expireDate" column="EXPIRE_TIME"/>
+		<result property="modifiedDesc" column="MODIFIED_DESC"/>
+		<result property="playerItemCurrency" column="P_CURRENCY" />
+		<result property="playerItemUnitType" column="P_UNIT_TYPE" />
+		<result property="quantity" column="QUANTITY" />
+		<result property="durable" column="DURABLE"/>
+		<result property="pack" column="PACK_ID"/>
+		<result property="buff" column="BUFF"/>
+		<result property="seq" column="SEQ"/>
+		<result property="isBind" column="IS_BIND"/>
+		<result property="isDefault" column="IS_DEFAULT"/>
+		<result property="timeLeft" column="TIME_LEFT"/>
+
+		<!-- join from table sysitem -->
+		<result property="sModifiedDesc" column="S_MODIFIED_DESC" />
+		<result property="name" column="NAME" />
+		<result property="resourceStable" column="RESOURCE_STABLE" />
+		<result property="resourceChangeable" column="RESOURCE_CHANGEABLE" />
+		<result property="type" column="TYPE" />
+		<result property="subType" column="SUB_TYPE" />
+		<result property="currency" column="CURRENCY" />
+		<result property="unitType" column="UNIT_TYPE" />
+		<result property="cost1" column="COST1" />
+		<result property="unit1" column="unit1" />
+		<result property="cost2" column="COST2" />
+		<result property="unit2" column="unit2" />
+		<result property="cost3" column="COST3" />
+		<result property="unit3" column="unit3" />
+		<result property="cost4" column="COST4" />
+		<result property="unit4" column="unit4" />
+		<result property="cost5" column="COST5" />
+		<result property="unit5" column="unit5" />
+		<result property="wId" column="W_ID" />
+		<result property="wChangeInTime" column="W_CHANGE_IN_TIME" />
+		<result property="wMoveSpeedOffset" column="W_MOVE_SPEED_OFFSET" />
+		<result property="wCrossOffset" column="W_CROSS_OFFSET" />
+		<result property="wAccuracyDivisor" column="W_ACCURACY_DIVISOR" />
+		<result property="wAccuracyOffset" column="W_ACCURACY_OFFSET" />
+		<result property="wMaxInaccuracy" column="W_MAX_INACCURACY" />
+		<result property="wPenetration" column="W_PENETRATION" />
+		<result property="wDamage" column="W_DAMAGE" />
+		<result property="wRangeModifier" column="W_RANGE_MODIFIER" />
+		<result property="wFireTime" column="W_FIRE_TIME" />
+		<result property="wReloadTime" column="W_RELOAD_TIME" />
+		<result property="wZoomTime" column="W_ZOOM_TIME" />
+		<result property="wZoomValue" column="W_ZOOM_VALUE" />
+		<result property="wAmmoOneClip" column="W_AMMO_ONE_CLIP" />
+		<result property="wAmmoCount" column="W_AMMO_COUNT" />
+		<result property="wAutoFire" column="W_AUTO_FIRE" />
+		<result property="wTimeToIdle" column="W_TIME_TO_IDLE" />
+		<result property="wNormalOffset" column="W_NORMAL_OFFSET" />
+		<result property="wNormalFactor" column="W_NORMAL_FACTOR" />
+		<result property="wOnairOffset" column="W_ONAIR_OFFSET" />
+		<result property="wOnairFactor" column="W_ONAIR_FACTOR" />
+		<result property="wMoveOffset" column="W_MOVE_OFFSET" />
+		<result property="wMoveFactor" column="W_MOVE_FACTOR" />
+		<result property="wNormalUpBase" column="W_NORMAL_UP_BASE" />
+		<result property="wNormalLateralBase" column="W_NORMAL_LATERAL_BASE" />
+		<result property="wNormalUpModifier" column="W_NORMAL_UP_MODIFIER" />
+		<result property="wNormalLateralModifier" column="W_NORMAL_LATERAL_MODIFIER" />
+		<result property="wNormalUpMax" column="W_NORMAL_UP_MAX" />
+		<result property="wNormalLateralMax" column="W_NORMAL_LATERAL_MAX" />
+		<result property="wNormalDirChange" column="W_NORMAL_DIR_CHANGE" />
+		<result property="wMoveUpBase" column="W_MOVE_UP_BASE" />
+		<result property="wMoveLateralBase" column="W_MOVE_LATERAL_BASE" />
+		<result property="wMoveUpModifier" column="W_MOVE_UP_MODIFIER" />
+		<result property="wMoveLateralModifier" column="W_MOVE_LATERAL_MODIFIER" />
+		<result property="wMoveUpMax" column="W_MOVE_UP_MAX" />
+		<result property="wMoveLateralMax" column="W_MOVE_LATERAL_MAX" />
+		<result property="wMoveDirChange" column="W_MOVE_DIR_CHANGE" />
+		<result property="wOnairUpBase" column="W_ONAIR_UP_BASE" />
+		<result property="wOnairLateralBase" column="W_ONAIR_LATERAL_BASE" />
+		<result property="wOnairUpModifier" column="W_ONAIR_UP_MODIFIER" />
+		<result property="wOnairLateralModifier" column="W_ONAIR_LATERAL_MODIFIER" />
+		<result property="wOnairUpMax" column="W_ONAIR_UP_MAX" />
+		<result property="wOnairLateralMax" column="W_ONAIR_LATERAL_MAX" />
+		<result property="wOnairDirChange" column="W_ONAIR_DIR_CHANGE" />
+		<result property="wCrouchUpBase" column="W_CROUCH_UP_BASE" />
+		<result property="wCrouchLateralBase" column="W_CROUCH_LATERAL_BASE" />
+		<result property="wCrouchUpModifier" column="W_CROUCH_UP_MODIFIER" />
+		<result property="wCrouchLateralModifier" column="W_CROUCH_LATERAL_MODIFIER" />
+		<result property="wCrouchUpMax" column="W_CROUCH_UP_MAX" />
+		<result property="wCrouchLateralMax" column="W_CROUCH_LATERAL_MAX" />
+		<result property="wCrouchDirChange" column="W_CROUCH_DIR_CHANGE" />
+		<result property="wUpModifier" column="W_UP_MODIFIER" />
+		<result property="wShootBulletCount" column="W_SHOOT_BULLET_COUNT" />
+		<result property="wSpread" column="W_SPREAD" />
+		<result property="wFireMaxSpeed" column="W_FIRE_MAX_SPEED" />
+		<result property="wFireStartSpeed" column="W_FIRE_START_SPEED" />
+		<result property="wFireAceleration" column="W_FIRE_ACELERATION" />
+		<result property="wFireResistance" column="W_FIRE_RESISTANCE" />
+		
+		<result property="wStabTime" column="W_STAB_TIME" />
+		<result property="wStabLightTime" column="W_STAB_LIGHT_TIME" />
+		<result property="wStabHurt" column="W_STAB_HURT" />
+		<result property="wStabLightHurt" column="W_STAB_LIGHT_HURT" />
+		<result property="wExplodeTime" column="W_EXPLODE_TIME" />
+		<result property="wReadyTime" column="W_READY_TIME" />
+		<result property="wThrowOutTime" column="W_THROW_OUT_TIME" />
+		<result property="wHurtRange" column="W_HURT_RANGE" />
+		<result property="wHurt" column="W_HURT" />
+		<result property="cSide" column="C_SIDE" />
+		<result property="cGender" column="C_GENDER" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="level" column="LEVEL" />
+		<result property="pSuitable" column="P_SUITABLE" />
+		<result property="description" column="DESCRIPTION" />
+		<result property="iBuffId" column="I_BUFF_ID" />
+		<result property="iId" column="I_ID" />
+		<result property="cId" column="C_ID" />
+		<result property="wRangeStart" column="W_RANGE_START" />
+		<result property="wRangeEnd" column="W_RANGE_END" />
+		<result property="wAccuracyTime" column="W_ACCURACY_TIME" />
+		<result property="wAccuracyTimeModefier" column="W_ACCURACY_TIME_MODIFIER" />
+		<result property="wMaxAccuracy" column="W_MAX_ACCURACY" />
+		<result property="wMinAccuracy" column="W_MIN_ACCURACY" />
+		<result property="wCrossLengthBase" column="W_CROSS_LENGTH_BASE" />
+		<result property="wCrossLengthFactor" column="W_CROSS_LENGTH_FACTOR" />
+		<result property="wCrossDistanceBase" column="W_CROSS_DISTANCE_BASE" />
+		<result property="wCrossDistanceFactor" column="W_CROSS_DISTANCE_FACTOR" />
+		<result property="wXOffset" column="W_X_OFFSET" />
+		<result property="wSightNormalOffset" column="W_SIGHT_NORMAL_OFFSET" />
+		<result property="wSightOnairOffset" column="W_SIGHT_ONAIR_OFFSET" />
+		<result property="wSightMoveOffset" column="W_SIGHT_MOVE_OFFSET" />
+		<result property="wStabDistance" column="W_STAB_DISTANCE" />
+		<result property="wStabLightDistance" column="W_STAB_LIGHT_DISTANCE" />
+		<result property="wStabWidth" column="W_STAB_WIDTH" />
+		<result property="wBackFactor" column="W_BACK_FACTOR" />
+		<result property="wFlashRangeStart" column="W_FLASH_RANGE_START" />
+		<result property="wFlashRangeEnd" column="W_FLASH_RANGE_END" />
+		<result property="wFlashBackFactor" column="W_FLASH_BACK_FACTOR" />
+		<result property="wTimeMax" column="W_TIME_MAX" />
+		<result property="wTimeFade" column="W_TIME_FADE" />
+		<result property="wTime" column="W_TIME" />
+		
+		<result property="parentItemId" column="PARENT_ITEM_ID" />	
+		<result property="wMaxLength" column="W_MAX_LENGTH" />
+		<result property="iValue" column="I_VALUE" />
+		 <!--  
+		<result property="parts" column="ID" select="PlayerItem.selectParts"/>
+		<result property="packages" column="ITEM_ID" select="SysItem.selectSysPackage"/>	
+		 -->
+	</resultMap>  	
+
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerItemResult">
+   	 	select 		
+   	 		pi.ID,
+   	 		ifnull(pb.ID,0) as BUFF,
+   	 		pi.USER_ID,
+   	 		pi.PLAYER_ID,
+   	 		pi.ITEM_ID,
+   	 		pi.VALID_TIME,
+   	 		pi.EXPIRE_TIME,
+   	 		pi.MODIFIED_DESC,
+   	 		pi.IS_BIND,
+   	 		pi.IS_DEFAULT,
+   	 		pi.DURABLE,
+   	 		pi.CURRENCY as P_CURRENCY,
+   	 		pi.UNIT_TYPE as P_UNIT_TYPE,
+   	 		pi.QUANTITY,
+   	 		ifnull(pp.PACK_ID,0) as PACK_ID,
+          	ifnull(pp.SEQ,0) as SEQ,
+   	 		si.MODIFIED_DESC as S_MODIFIED_DESC,
+   	 		si.*,
+   	 		ifnull(im.PARENT_ITEM_ID, 0) as PARENT_ITEM_ID,
+   	 		((unix_timestamp(pi.EXPIRE_TIME)-unix_timestamp(now())) div 60) as TIME_LEFT
+    	from PLAYER_ITEM pi
+    	left outer join 
+    		PLAYER_PACK  pp on (pi.ID=pp.PLAYER_ITEM_ID and (pp.EXPIRE_TIME is null or pp.EXPIRE_TIME > now()))
+    	left outer join 
+    		PLAYER_BUFF  pb on 	pi.ID=pb.PLAYER_ITEM_ID
+    	left outer join
+    	   	SYS_ITEM si on si.Id = pi.ITEM_ID
+      	left outer join
+         	ITEM_MOD im on im.CHILD_ITEM_ID = pi.ID    	   
+    	where  
+    	 ((pi.UNIT_TYPE=1)
+		 or  (pi.UNIT_TYPE=2 and pi.DURABLE>0 )
+		or (pi.UNIT_TYPE=3 and  pi.QUANTITY > 0)
+		or (pi.UNIT_TYPE=4 and pi.EXPIRE_TIME >= now())
+		)
+    		and pi.IS_DELETED="N"
+    	<dynamic>
+	    	<isNotNull prepend="and" property="isGift">
+	    		pi.IS_GIFT=#isGift#
+	    	</isNotNull>
+    		<isNotNull prepend="and" property="playerId">
+				pi.PLAYER_ID =  #playerId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+				pi.USER_ID =  #userId#
+			</isNotNull>
+    		<isNotNull prepend="and" property="itemType">
+				si.TYPE = #itemType#
+			</isNotNull>
+			<isNotNull prepend="and" property="subType">
+				si.SUB_TYPE = #subType#
+			</isNotNull>
+			<isNotNull prepend="and" property="iId">
+				si.I_ID = #iId#
+			</isNotNull>		
+			<isNotNull prepend="and" property="isBind">
+				pi.IS_BIND = #isBind#
+			</isNotNull>
+			<isNotNull prepend="and" property="playerItemId">
+				pi.ID = #playerItemId#
+			</isNotNull>	
+		</dynamic>
+    	order by si.TYPE,si.SUB_TYPE,pi.ID;
+	</select>
+	
+	
+	<select id="selectParts" parameterClass="java.util.Map" resultMap="selectPlayerItemResult">
+   	 	select 		
+   	 		pi.ID,
+   	 		pi.USER_ID,
+   	 		pi.PLAYER_ID,
+   	 		pi.ITEM_ID,
+   	 		pi.VALID_TIME,
+   	 		pi.EXPIRE_TIME,
+   	 		pi.MODIFIED_DESC,
+   	 		pi.IS_BIND,
+   	 		pi.IS_DEFAULT,
+   	 		pi.DURABLE,
+   	 		pi.CURRENCY as P_CURRENCY,
+   	 		pi.UNIT_TYPE as P_UNIT_TYPE,
+   	 		pi.QUANTITY,
+   	 		ifnull(pp.PACK_ID,0) as PACK_ID,
+          	ifnull(pp.SEQ,0) as SEQ,
+   	 		si.MODIFIED_DESC as S_MODIFIED_DESC,
+   	 		si.*,
+   	 		im.PARENT_ITEM_ID,
+   	 		0 as BUFF,
+   	 		((unix_timestamp(pi.EXPIRE_TIME)-unix_timestamp(now())) div 60) as TIME_LEFT
+    	from ITEM_MOD im 
+    	left outer join
+    		PLAYER_ITEM pi on pi.id = im.CHILD_ITEM_ID
+    	left outer join 
+    		PLAYER_PACK  pp on 	(pi.ID=pp.PLAYER_ITEM_ID and ( pp.EXPIRE_TIME is null or pp.EXPIRE_TIME > now()))
+    	left outer join
+    	   SYS_ITEM si on si.Id = pi.ITEM_ID
+    	where  
+    	((pi.UNIT_TYPE=1)
+		 or  (pi.UNIT_TYPE=2 and pi.DURABLE>0 )
+		or (pi.UNIT_TYPE=3 and  pi.QUANTITY > 0)
+		or (pi.UNIT_TYPE=4 and pi.EXPIRE_TIME >= now())
+		)
+    		and pi.IS_GIFT="N"
+    		and pi.IS_DELETED="N"
+    	  	<iterate prepend="AND im.PARENT_ITEM_ID in" property="partsList" open="(" close=")" conjunction=",">
+			   #partsList[]#
+			</iterate>
+    	order by pi.ID;
+	</select>
+	<select id="selectGifts" parameterClass="java.lang.Integer" resultClass="com.pearl.o2o.pojo.SysItem">
+		select * from SYS_ITEM where id=#value#;
+	</select>
+	
+	<select id="countPlayerItemSuitable" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		select count(*) from SYS_ITEM si, PLAYER_ITEM pi
+		where
+		 si.TYPE = #type#
+		 and si.SUB_TYPE = #subtype#
+		 and si.P_SUITABLE like concat('%',(select name from SYS_ITEM si where si.ID=#id#),'%')
+     	 and pi.PLAYER_ID = #playerId#
+     	 and pi.IS_DELETED="N"
+     	 and pi.QUANTITY > 0
+     	 and pi.ITEM_ID = si.ID;
+	</select>	
+	<select id="countPlayerItemForTeam" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		select count(*) from SYS_ITEM si
+		left outer join  PLAYER_ITEM pi on si.ID=pi.ITEM_ID
+		where
+		 si.TYPE = #type#
+		 and si.SUB_TYPE = #subType#
+		 and pi.USER_ID = #userId#
+     	 and pi.PLAYER_ID = #playerId#
+     	 and pi.IS_DELETED="N"
+     	 and pi.QUANTITY > 0
+     	 and si.I_ID=#iId#;
+	</select>	
+	
+	<select id="selectPlayerItemSuitable" parameterClass="java.util.Map" resultMap="selectPlayerItemResult">
+		select 	
+   	 		pi.ID,
+   	 		pi.USER_ID,
+   	 		pi.PLAYER_ID,
+   	 		pi.ITEM_ID,
+   	 		pi.VALID_TIME,
+   	 		pi.EXPIRE_TIME,
+   	 		pi.MODIFIED_DESC,
+   	 		pi.IS_BIND,
+   	 		pi.IS_DEFAULT,
+   	 		pi.DURABLE,
+   	 		pi.CURRENCY as P_CURRENCY,
+   	 		pi.UNIT_TYPE as P_UNIT_TYPE,
+   	 		pi.QUANTITY,
+   	 		ifnull(pp.PACK_ID,0) as PACK_ID,
+          	ifnull(pp.SEQ,0) as SEQ,
+   	 		si.MODIFIED_DESC as S_MODIFIED_DESC,
+   	 		si.*,
+   	 		ifnull(im.PARENT_ITEM_ID, 0) as PARENT_ITEM_ID,
+   	 		0 as BUFF,
+   	 		((unix_timestamp(pi.EXPIRE_TIME)-unix_timestamp(now())) div 60) as TIME_LEFT
+		from SYS_ITEM si, PLAYER_ITEM pi
+			left outer join 
+    			PLAYER_PACK  pp on 	(pi.ID=pp.PLAYER_ITEM_ID and (pp.EXPIRE_TIME is null or pp.EXPIRE_TIME > now()))
+	      	left outer join
+         		ITEM_MOD im on im.CHILD_ITEM_ID = pi.ID    		
+		where
+		 si.TYPE = #type#
+		 and si.SUB_TYPE = #subtype#
+		 and si.P_SUITABLE like concat('%',(select name from SYS_ITEM si where si.ID=#id#),'%')
+     	 and pi.PLAYER_ID = #playerId#
+     	 and pi.ITEM_ID = si.ID
+     	 and pi.IS_DELETED="N"
+     	 and ((pi.UNIT_TYPE=1)
+		 or  (pi.UNIT_TYPE=2 and pi.DURABLE>0 )
+		or (pi.UNIT_TYPE=3 and  pi.QUANTITY > 0)
+		or (pi.UNIT_TYPE=4 and pi.EXPIRE_TIME >= now())
+		)
+		limit #start#, #step#;
+	</select>		
+	<select id="getGiftPackageById" parameterClass="java.util.Map" resultMap="selectPlayerItemResult">
+		select 		
+   	 		pi.ID,
+   	 		pi.USER_ID,
+   	 		pi.PLAYER_ID,
+   	 		sp.ITEM_ID,
+   	 		pi.VALID_TIME,
+   	 		pi.EXPIRE_TIME,
+   	 		pi.MODIFIED_DESC,
+   	 		pi.IS_BIND,
+   	 		pi.IS_DEFAULT,
+   	 		pi.DURABLE,
+   	 		pi.CURRENCY as P_CURRENCY,
+   	 		pi.UNIT_TYPE as P_UNIT_TYPE,
+   	 		pi.QUANTITY,
+   	 		ifnull(pp.PACK_ID,0) as PACK_ID,
+          	ifnull(pp.SEQ,0) as SEQ,
+   	 		si.MODIFIED_DESC as S_MODIFIED_DESC,
+   	 		si.*,
+   	 		ifnull(im.PARENT_ITEM_ID, 0) as PARENT_ITEM_ID,
+   	 		0 as BUFF,
+   	 		((unix_timestamp(pi.EXPIRE_TIME)-unix_timestamp(now())) div 60) as TIME_LEFT
+    	from PLAYER_ITEM pi
+    	left outer join 
+    		PLAYER_PACK  pp on 	(pi.ID=pp.PLAYER_ITEM_ID and ( pp.EXPIRE_TIME is null or pp.EXPIRE_TIME > now()))
+    	left outer join
+    	   	SYS_ITEM si on si.Id = pi.ITEM_ID
+    	left outer join
+    		SYS_PACKAGE sp on sp.PACKAGE_ID=pi.ITEM_ID
+    	left outer join
+         	ITEM_MOD im on im.CHILD_ITEM_ID = pi.ID
+    	where   pi.IS_GIFT="Y"	
+    		and pi.IS_DELETED="N"
+    		and ((pi.UNIT_TYPE=1)
+		 or  (pi.UNIT_TYPE=2 and pi.DURABLE>0 )
+		or (pi.UNIT_TYPE=3 and  pi.QUANTITY > 0)
+		or (pi.UNIT_TYPE=4 and pi.EXPIRE_TIME >= now())
+		)
+    	<dynamic>
+    		<isNotNull prepend="and" property="playerId">
+				pi.PLAYER_ID =  #playerId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+				pi.USER_ID =  #userId#
+			</isNotNull>
+    		<isNotNull prepend="and" property="itemType">
+				si.TYPE = #itemType#
+			</isNotNull>		
+			<isNotNull prepend="and" property="isBind">
+				pi.IS_BIND = #isBind#
+			</isNotNull>
+			<isNotNull prepend="and" property="playerItemId">
+				pi.ID = #playerItemId#
+			</isNotNull>	
+		</dynamic>
+		order by pi.ID;
+	</select>
+	
+	<insert id="insert" parameterClass="PlayerItem">
+		insert into PLAYER_ITEM(
+   	 		USER_ID,
+   	 		PLAYER_ID,
+   	 		ITEM_ID,
+   	 		EXPIRE_TIME,
+   	 		VALID_TIME,
+   	 		DURABLE,
+   	 		CURRENCY,
+   	 		UNIT_TYPE,
+   	 		QUANTITY,
+   	 		MODIFIED_DESC,
+   	 		IS_BIND,
+   	 		IS_GIFT,
+   	 		IS_DEFAULT
+		) values (
+			#userId#,
+			#playerId#,
+			#itemId#,
+			DATE_ADD(now(),INTERVAL	#unit1# DAY),
+			now(),
+			#durable#,
+			#playerItemCurrency#,
+			#playerItemUnitType#,
+			#quantity#,
+			#modifiedDesc#,
+			#isBind#,
+			#isGift#,
+			#isDefault#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<insert id="insertWithDate" parameterClass="PlayerItem">
+		insert into PLAYER_ITEM(
+   	 		USER_ID,
+   	 		PLAYER_ID,
+   	 		ITEM_ID,
+   	 		EXPIRE_TIME,
+   	 		VALID_TIME,
+   	 		DURABLE,
+   	 		CURRENCY,
+   	 		UNIT_TYPE,
+   	 		QUANTITY,
+   	 		MODIFIED_DESC,
+   	 		IS_BIND,
+   	 		IS_GIFT,
+   	 		IS_DEFAULT
+		) values (
+			#userId#,
+			#playerId#,
+			#itemId#,
+			#expireDate#,#validDate#,
+			#durable#,
+			#playerItemCurrency#,
+			#playerItemUnitType#,
+			#quantity#,
+			#modifiedDesc#,
+			#isBind#,
+			#isGift#,
+			#isDefault#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<update id="updateModifiedDesc" parameterClass="java.util.Map">
+		update PLAYER_ITEM pi 
+		set pi.MODIFIED_DESC = #modifiedDesc# 
+		where pi.ID = #itemId#
+		and pi.USER_ID=#userId#
+		and pi.PLAYER_ID=#playerId#;
+	</update>
+	<update id="updatePlayerForItem" parameterClass="java.util.Map">
+		update PLAYER_ITEM pi 
+		set pi.USER_ID = #userId#,
+			pi.PLAYER_ID=#playerId#,
+			pi.IS_GIFT='N'
+		where pi.ID = #itemId#;
+	</update>
+	
+	<update id="decreaseWeaponDurable" parameterClass="java.util.Map">
+		update 
+			 PLAYER_ITEM p inner join PLAYER_PACK pp on (p.ID = pp.PLAYER_ITEM_ID and (pp.EXPIRE_TIME is null or  pp.EXPIRE_TIME > now()))
+				set p.DURABLE = p.DURABLE - #cost#
+			 where p.PLAYER_ID =#playerId# and  p.IS_DELETED = 'N' and TYPE = 'W' and p.UNIT_TYPE =2 
+			 	<dynamic>
+		    		<isNotNull prepend="and" property="packId">
+						pp.PACKID =  #packId#
+					</isNotNull>
+				</dynamic>
+	</update>
+	
+	<update id="update" parameterClass="java.util.Map">
+		update PLAYER_ITEM  
+		set $column$ = #value# 
+		where USER_ID = #userId#
+			and PLAYER_ID=#playerId#
+			and ID=#id#;
+	</update>
+	<delete id="delete" parameterClass="java.util.Map">
+		delete from PLAYER_ITEM  
+		where USER_ID = #userId#
+			and PLAYER_ID=#playerId#
+			and ID=#id#;
+	</delete>
+	<delete id="softDelete" parameterClass="java.util.Map">
+		update PLAYER_ITEM 
+		set IS_DELETED="Y" 
+		where USER_ID = #userId#
+			and PLAYER_ID=#playerId#
+			and ID=#id#;
+	</delete>
+	
+	
+</sqlMap>

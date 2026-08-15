@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration  -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+<!--                                                                -->
+<!-- For professional support please see                            -->
+<!--    http://www.qos.ch/shop/products/professionalSupport         -->
+<!--                                                                -->
+
+<configuration scan="true">
+  <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/fc.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/fc.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+
+  <appender name="exception" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>ERROR</level>
+    </filter>
+    <file>${catalina.base}/logs/fc_error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/fc_error.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy> 
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+
+  <appender name="nosql" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/nosql.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/nosql.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <append>true</append>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  
+  <appender name="stageclear" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/onawards/stage_clear.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/onawards/stage_clear.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>     
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  
+  <appender name="cmpthurt" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${catalina.base}/logs/onawards/cmpthurt.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/onawards/cmpthurt.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <encoder>
+      <pattern>%msg%n</pattern>
+      <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+
+  <appender name="request" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/fc_client_req.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/fc_client_req.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>     
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  
+  <appender name="syncache" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/sync_cache.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/sync_cache.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  
+   <appender name="createPersonTop" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/create_persontop.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/create_persontop.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  
+  <appender name="lottery" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/lottery.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/lottery.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="recharge" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/recharge.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/recharge.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="chargeback" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/chargeback.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/chargeback.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="mission" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/mission/mission.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/mission.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="missionComplete" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/mission/missionComplete.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/missionComplete.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  
+  <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <Target>System.out</Target>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>  
+  
+  <appender name="dailycheck" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/onawards/daily_check.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/onawards/daily_check.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  
+  <appender name="dailynum" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/onawards/daily_num.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/onawards/daily_num.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  
+  <appender name="vip_safecabinet" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/onawards/vip_safecabinet.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/onawards/vip_safecabinet.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="magic_box" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/onawards/magic_box.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/onawards/magic_box.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="shoot" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/onawards/shoot.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/onawards/shoot.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  
+  <appender name="combine_strength" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/combine/combine_strength.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/combine/combine_strength.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="combine_slot" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/combine/combine_slot.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/combine/combine_slot.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="combine_insert" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/combine/combine_insert.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/combine/combine_insert.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="combine_convert" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/combine/combine_convert.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/combine/combine_convert.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="combine_remove" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/combine/combine_remove.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/combine/combine_remove.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="growth_mission_err" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/growthMission/growth_mission_err.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/growth_mission_err.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="growth_mission_complete" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/growthMission/growth_mission_complete.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/growth_mission_complete.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="luckyPackage_get" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/luckyPackage/luckyPackage_get.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/luckyPackage/luckyPackage_get.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+   <appender name="playerLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/playerLog.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/playerLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+   <appender name="checkCharacterData" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/checkCharacterData.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/checkCharacterData.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+   <appender name="melting" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/melting.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/melting.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="teamCheck" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/teamCheck.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/teamCheck.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="xunleiLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/xunlei.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/xunlei.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <encoder>
+      <pattern>%msg%n</pattern>
+      <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+   <appender name="gmUpdateLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/gmUpdate.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/gmUpdate.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>    
+    <encoder>
+      <pattern>%msg%n</pattern>
+      <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+  <appender name="deleteFriend" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logs/deleteFriend.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logs/deleteFriend.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+		</encoder>
+	</appender>
+	<appender name="deletePlayerItem" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logs/deletePlayerItem.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logs/deletePlayerItem.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+		</encoder>
+	</appender>
+  <appender name="logserver" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logs/logserver.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logs/logserver.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+		</encoder>
+	</appender>
+	<appender name="competeBuyLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logs/onawards/competeBuy.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logs/onawards/competeBuy.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+		</encoder>
+	</appender>
+	<appender name="zyzdzStageClearLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logs/zyzdz/zyzdzStageClearLog.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logs/zyzdz/zyzdzStageClearLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+		</encoder>
+	</appender>
+	<appender name="zyzdzSendResLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logs/zyzdz/zyzdzSendResLog.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logs/zyzdz/zyzdzSendResLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+		</encoder>
+	</appender>
+	
+	<appender name="FlexCreateService" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logs/FlexCreateService.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logs/FlexCreateService.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+		</encoder>
+	</appender>
+
+<!--=======================  Logger Configuration ========================-->
+ 	<logger name="deletePlayerItem" level="INFO" additivity="true">
+		<appender-ref ref="deletePlayerItem" />
+	</logger>
+	<logger name="deleteFriend" level="INFO" additivity="true">
+		<appender-ref ref="deleteFriend" />
+	</logger>
+	<logger name="xunleiLog" level="INFO" additivity="true">
+		<appender-ref ref="xunleiLog" />
+	</logger>
+
+	<logger name="cmpthurt" level="INFO" additivity="true">
+		<appender-ref ref="cmpthurt" />
+	</logger>
+	<logger name="gmUpdateLog" level="INFO" additivity="true">
+		<appender-ref ref="gmUpdateLog" />
+	</logger>
+	<logger name="logserver" level="INFO" additivity="true">
+		<appender-ref ref="logserver" />
+	</logger>
+  <logger name="playerLog" level="INFO" additivity="false">
+    <appender-ref ref="playerLog"/>
+  </logger> 
+  <logger name="recharge" level="INFO" additivity="false">
+    <appender-ref ref="recharge"/>
+  </logger> 
+  <logger name="chargeback" level="INFO" additivity="false">
+    <appender-ref ref="chargeback"/>
+  </logger> 
+  <logger name="com.pearl.o2o" level="INFO" additivity="true">
+    <appender-ref ref="file"/>
+  </logger>  
+
+  <logger name="com.pearl.o2o.nosql" level="INFO" additivity="true">
+    <appender-ref ref="nosql"/>
+  </logger>
+  
+  <logger name="com.pearl.o2o.nosqlService" level="INFO" additivity="true">
+    <appender-ref ref="nosql"/>
+  </logger> 
+  
+  <logger name="dailycheck" level="INFO" additivity="false">
+    <appender-ref ref="dailycheck"/>
+  </logger>
+
+  <logger name="dailynum" level="INFO" additivity="false">
+    <appender-ref ref="dailynum"/>
+  </logger>
+  
+   <logger name="vipsafecabinet" level="INFO" additivity="false">
+    <appender-ref ref="vip_safecabinet"/>
+  </logger>
+  
+   <logger name="magicbox" level="INFO" additivity="false">
+    <appender-ref ref="magic_box"/>
+  </logger>
+
+   <logger name="shooting" level="DEBUG" additivity="false">
+    <appender-ref ref="shoot"/>
+  </logger>
+
+	<logger name="FlexCreateService" level="INFO" additivity="true">
+		<appender-ref ref="FlexCreateService" />
+	</logger>
+
+  <logger name="createpersontop" level="INFO" additivity="true">
+    <appender-ref ref="createPersonTop"/>
+  </logger>
+  
+  <logger name="syncache" level="INFO" additivity="true">
+    <appender-ref ref="syncache"/>
+  </logger>
+
+  <logger name="request" level="INFO" additivity="true">
+    <appender-ref ref="request"/>
+  </logger>
+
+  <logger name="stage_clear" level="INFO" additivity="true">
+    <appender-ref ref="stageclear"/>
+  </logger>
+
+  <logger name="nosql" level="INFO" additivity="true">
+    <appender-ref ref="nosql"/>
+  </logger>
+
+  <logger name="lottery" level="ERROR" additivity="true">
+    <appender-ref ref="lottery"/>
+  </logger>
+  
+  <logger name="mission" level="ERROR" additivity="true">
+    <appender-ref ref="mission"/>
+  </logger>
+  <logger name="missionComplete" level="INFO" additivity="false">
+    <appender-ref ref="missionComplete"/>
+  </logger>
+  
+   <logger name="Combine_strength" level="DEBUG" additivity="false">
+    <appender-ref ref="combine_strength"/>
+  </logger>
+  <logger name="Combine_slot" level="DEBUG" additivity="false">
+    <appender-ref ref="combine_slot"/>
+  </logger>
+  <logger name="Combine_insert" level="DEBUG" additivity="false">
+    <appender-ref ref="combine_insert"/>
+  </logger>
+  <logger name="Combine_convert" level="DEBUG" additivity="false">
+    <appender-ref ref="combine_convert"/>
+  </logger>
+  <logger name="Combine_remove" level="DEBUG" additivity="false">
+    <appender-ref ref="combine_remove"/>
+  </logger>
+  <logger name="GrowthMissionErr" level="DEBUG" additivity="false">
+    <appender-ref ref="growth_mission_err"/>
+  </logger>
+  <logger name="GrowthMissionComplete" level="DEBUG" additivity="false">
+    <appender-ref ref="growth_mission_complete"/>
+  </logger>
+  <logger name="GetLuckyPackage" level="DEBUG" additivity="false">
+    <appender-ref ref="luckyPackage_get"/>
+  </logger>
+ <logger name="CheckCharacterData" level="DEBUG" additivity="false">
+    <appender-ref ref="checkCharacterData"/>
+  </logger>
+ <logger name="melting" level="DEBUG" additivity="true">
+    <appender-ref ref="melting"/>
+  </logger>
+ <logger name="teamCheck" level="DEBUG" additivity="false">
+    <appender-ref ref="teamCheck"/>
+  </logger>
+ <logger name="CompeteBuy" level="DEBUG" additivity="false">
+    <appender-ref ref="competeBuyLog"/>
+  </logger>
+ <logger name="ZyzdzStageClear" level="INFO" additivity="false">
+    <appender-ref ref="zyzdzStageClearLog"/>
+  </logger>
+ <logger name="ZyzdzSendRes" level="INFO" additivity="false">
+    <appender-ref ref="zyzdzSendResLog"/>
+  </logger>
+  
+  
+  
+  
+   <appender name="teamRequestOpLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${catalina.base}/logs/teamRequestOpLog.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    	<fileNamePattern>${catalina.base}/logs/teamRequestOpLog.%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%-4relative, %d [%thread]|-%-5level %logger{35} - %msg%n</pattern>
+       <outputPatternAsPresentationHeader>false</outputPatternAsPresentationHeader>
+    </encoder>
+  </appender>
+   <logger name="teamRequestOpLog" level="DEBUG" additivity="false">
+    <appender-ref ref="teamRequestOpLog"/>
+  </logger>
+  
+  
+  
+  
+  
+  
+  
+<!--=============================  Root Logger ==============================-->
+  <logger name="java.sql.Connection" 						 level="ERROR"/>
+  <logger name="java.sql.PreparedStatement" 				 level="ERROR"/>
+  <logger name="java.sql.ResultSet" 						 level="ERROR"/>
+  <logger name="java.sql.Statement" 						 level="ERROR"/>
+
+  <logger name="org.springframework" 						 level="ERROR"/>    
+  <logger name="org.springframework.transaction" 			 level="ERROR"/>
+  <logger name="org.springframework.orm" 					 level="ERROR"/>
+
+  <logger name="com.ibatis" 								 level="ERROR"/>    
+  <logger name="com.ibatis.sqlmap.engine.cache.CacheModel" 	 level="ERROR"/>
+  <logger name="com.ibatis.sqlmap.engine.builder.xml.SqlMapParser" 		level="ERROR"/>
+  <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientImpl" 		level="ERROR"/>  
+  <logger name="com.ibatis.common.jdbc.SimpleDataSource" 				level="ERROR"/>    
+  <logger name="com.ibatis.common.util.StopWatch" 						level="ERROR"/>
+  
+  
+  <root level="INFO">
+    <appender-ref ref="exception"/>
+   <!-- <appender-ref ref="stdout"/>-->
+  </root>
+</configuration>

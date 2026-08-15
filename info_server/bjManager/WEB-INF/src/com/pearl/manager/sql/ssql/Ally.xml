@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Ally">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="Ally" type="com.pearl.manager.pojo.Ally"/> 	
+	<resultMap id="selectResult" class="Ally">
+		<result property="teamId" column="TEAM_ID"/>
+		<result property="allyId" column="ALLY_ID"/>
+	</resultMap>
+	
+	
+	<!--================================================== Select ==================================================-->
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+  		select TEAM_ID,
+			   ALLY_ID
+	    from ALLY a
+  		where a.TEAM_ID = #fid# 
+  	</select>
+  	
+  	  	
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+  	<insert id="insert" parameterClass="Ally">
+	  	insert into ALLY(
+  			TEAM_ID, 
+  			ALLY_ID
+  		) values(
+  			#teamId#, 
+  			#allyId#)
+  	</insert>
+  	
+  	<delete id="delete" parameterClass="Ally">
+	  	delete from  ALLY 
+  		where TEAM_ID = #teamId# 
+  			and ALLY_ID = #allyId#;
+  	</delete>
+</sqlMap>

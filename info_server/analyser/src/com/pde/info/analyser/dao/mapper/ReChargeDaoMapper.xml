@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.ReChargeDao">
+	
+
+	<resultMap id="StatisticResultMap" type="com.pde.info.analyser.pojo.ReChargeStatistic">
+		<result column="STATISTIC_DATE" property="statisticDate" jdbcType="VARCHAR" />
+		<result column="MONEY_AMOUNT" property="moneyAmount" jdbcType="INTEGER" />
+		<result column="PEOPLE_AMOUNT" property="peopleAmount" jdbcType="INTEGER" />
+		<result column="NEWER_AMOUNT" property="newerAmount" jdbcType="INTEGER" />
+		
+		<result property="fiveH" column="FIVE_H" jdbcType="INTEGER" />
+		<result property="tenH" column="TEN_H" jdbcType="INTEGER" />
+		<result property="twentyH" column="TWENTY_H" jdbcType="INTEGER" />
+		<result property="fiftyH" column="FIFTY_H" jdbcType="INTEGER" />
+		<result property="hundredH" column="HUNDRED_H" jdbcType="INTEGER" />
+		<result property="twoHundredH" column="TWO_HUNDRED_H" jdbcType="INTEGER" />
+		<result property="fiveHundredH" column="FIVE_HUNDRED_H" jdbcType="INTEGER" />
+		<result property="thousandH" column="THOUSAND_H" jdbcType="INTEGER" />
+		<result property="twoThousandH" column="TWO_THOUSAND_H" jdbcType="INTEGER" />
+		<result property="fiveThousandH" column="FIVE_THOUSAND_H" jdbcType="INTEGER" />
+		<result property="tenThousandH" column="TEN_THOUSAND_H" jdbcType="INTEGER" />
+		<result property="thousandsH" column="THOUSANDS_H" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<insert id="addReChargeInfo"  parameterType="com.pde.info.analyser.pojo.ReChargeInfo"  useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `INFO_RECHARGE` (`PLAYER_ID`,`PLAYER_USERNAME`, `PLAYER_NAME`, `PLAYER_RANK`,`RMB`,`IS_NEWER`,`CREATE_DATE`)
+		VALUES ( #{playerId}, #{playerUserName},#{playerName}, #{rmb},#{playerRank},#{isNewer}, NOW());
+	</insert>
+	
+	<select id="getStatistic" resultMap="StatisticResultMap" parameterType="java.util.Map">
+		SELECT `STATISTIC_DATE`,`MONEY_AMOUNT`,`PEOPLE_AMOUNT`,`NEWER_AMOUNT`,`FIVE_H`,`TEN_H`,`TWENTY_H`,`FIFTY_H`,`HUNDRED_H`,`TWO_HUNDRED_H`,
+  `FIVE_HUNDRED_H`,`THOUSAND_H`,`TWO_THOUSAND_H`,`FIVE_THOUSAND_H`,`TEN_THOUSAND_H`,`THOUSANDS_H`
+		FROM `INFO_REPORT_RECHARGE`
+		WHERE `STATISTIC_DATE` BETWEEN #{startDate} AND #{endDate}
+    	ORDER BY `STATISTIC_DATE` DESC
+	</select>
+	
+	
+
+</mapper>

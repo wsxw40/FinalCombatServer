@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TeamItem">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="TeamItem" type="com.pearl.o2o.pojo.TeamItem"/> 	
+	<resultMap id="selectResult" class="TeamItem">
+		<result property="id" column="ID"/>
+		<result property="teamId" column="TEAM_ID"/>
+		<result property="itemId" column="ITEM_ID"/>		
+		<result property="validTime" column="VALID_TIME"/>			
+		<result property="expireTime" column="EXPIRE_TIME"/>
+		<result property="modifiedDesc" column="MODIFIED_DESC"/>
+		<result property="currency" column="CURRENCY" />
+		<result property="unitType" column="UNIT_TYPE" />
+		<result property="quantity" column="QUANTITY" />
+		<result property="durable" column="DURABLE"/>
+		<result property="isBind" column="IS_BIND"/>
+		<result property="isDefault" column="IS_DEFAULT"/>
+		<result property="isGift" column="IS_GIFT"/>
+		<result property="isDeleted" column="IS_DELETED"/>
+		<result property="leftSeconds" column="LEFT_SECONDS"/>
+		<result property="gunProperty1" column="GUN_PROPERTY1" />
+		<result property="gunProperty2" column="GUN_PROPERTY2" />
+		<result property="gunProperty3" column="GUN_PROPERTY3" />
+		<result property="gunProperty4" column="GUN_PROPERTY4" />
+		<result property="gunProperty5" column="GUN_PROPERTY5" />
+		<result property="gunProperty6" column="GUN_PROPERTY6" />
+		<result property="gunProperty7" column="GUN_PROPERTY7" />
+		<result property="gunProperty8" column="GUN_PROPERTY8" />
+		<result property="leftSeconds" column="LEFT_SECONDS" />
+		<result property="level" column="LEVEL" />
+		<result property="backUp" column="BACK_UP" />	
+		
+		<result property="usedCount" column="USED_COUNT" />	
+		<result property="bullet" column="BULLET" />	
+		<result property="startUpTime" column="START_UP_TIME" />
+		<result property="lastBuildTime" column="LAST_BUILD_TIME" />	
+<!--		<result property="buildStatus" column="BUILD_STATUS" />	-->
+		
+	</resultMap>
+
+
+	<!--================================================== Select ==================================================-->
+		<select id="selectAll" parameterClass="java.util.Map" resultMap="selectResult">
+			select ti.* from TEAM_ITEM ti where ti.IS_DELETED='N';
+		</select>
+		
+		<select id="selectByTeamId" parameterClass="java.util.Map" resultMap="selectResult">
+			select ti.* 
+			from 
+				TEAM_ITEM ti 
+			where 
+				ti.IS_DELETED='N' AND ti.TEAM_ID=#teamId#;
+		</select>
+		
+		<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+			select ti.* 
+			from 
+				TEAM_ITEM ti 
+			where 
+				ti.IS_DELETED='N' AND ti.ID=#id#;
+		</select>
+  	  	<select id="selectAllItem" parameterClass="java.util.Map" resultMap="selectResult">
+  	  		select ti.*
+  	  		from 
+  	  			TEAM_ITEM ti
+  	  		where
+  	  			ti.TEAM_ID = #teamId#;
+  	  	</select>
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="TeamItem">
+		INSERT INTO TEAM_ITEM(
+			TEAM_ID,ITEM_ID,CURRENCY,UNIT_TYPE,
+			QUANTITY,DURABLE,VALID_TIME,EXPIRE_TIME,
+			IS_BIND,IS_DEFAULT,IS_GIFT,MODIFIED_DESC,
+			IS_DELETED,GUN_PROPERTY1,GUN_PROPERTY2,
+			GUN_PROPERTY3,GUN_PROPERTY4,GUN_PROPERTY5,
+			BACK_UP,LEFT_SECONDS,LEVEL,GUN_PROPERTY6,
+			GUN_PROPERTY7,GUN_PROPERTY8,USED_COUNT,BULLET,
+			START_UP_TIME,LAST_BUILD_TIME,BUILD_STATUS
+		)VALUES(
+			#teamId#,#itemId#,#currency#,#unitType#,
+			#quantity#,#durable#,#validTime#,#expireTime#,
+			#isBind#,#isDefault#,#isGift#,#modifiedDesc#,
+			#isDeleted#,#gunProperty1#,#gunProperty2#,
+			#gunProperty3#,#gunProperty4#,#gunProperty5#,
+			#backUp#,#leftSeconds#,#level#,#gunProperty6#,
+			#gunProperty7#,#gunProperty8#,#usedCount#,#bullet#,
+			#startUpTime#,#lastBuildTime#,#buildStatus#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>  	
+  	 
+  	<!-- 
+  	<update id = "updateTeamScore" parameterClass="com.pearl.o2o.pojo.TeamScoreIncrement">
+  	  	update TEAM
+  	   	set 
+  			`KILL` = `KILL` + #kill#,
+  			HEAD_SHOT = HEAD_SHOT + #headShot#,
+  			GAME_WIN = GAME_WIN + #gameWin#,
+  			GAME_TOTAL = GAME_TOTAL + 1,
+  			CHALLENGE_WIN =  CHALLENGE_WIN + #challengeWin#,
+  			CHALLENGE_TOTAL = CHALLENGE_TOTAL + #challengeTotal#,
+  			SCORE = SCORE + #score#,
+  			HIT_SCORE = HIT_SCORE + #number#
+  		where ID = #teamId#
+  	</update>
+  	 -->
+  	
+  	 
+  
+  	<delete id="delete" parameterClass="TeamItem">
+  		update TEAM_ITEM
+  			 SET IS_DELETED="Y"
+  		WHERE ID=#id#
+  	</delete>
+  	
+  	<update id="update" parameterClass="TeamItem">
+  		update TEAM_ITEM SET
+  		    TEAM_ID=#teamId#,
+			ITEM_ID=#itemId#,
+			VALID_TIME=#validTime#,		
+			EXPIRE_TIME=#expireTime#,
+			MODIFIED_DESC=#modifiedDesc#,
+			CURRENCY=#currency#,
+			UNIT_TYPE=#unitType#,
+			QUANTITY=#quantity#,
+			DURABLE=#durable#,
+			IS_BIND=#isBind#,
+			IS_DEFAULT=#isDefault#,
+			IS_GIFT=#isGift#,
+			IS_DELETED=#isDeleted#,
+			LEFT_SECONDS=#leftSeconds#,
+			GUN_PROPERTY1=#gunProperty1#,
+			GUN_PROPERTY2=#gunProperty2#,
+			GUN_PROPERTY3=#gunProperty3#,
+			GUN_PROPERTY4=#gunProperty4#,
+			GUN_PROPERTY5=#gunProperty5#,
+			GUN_PROPERTY6=#gunProperty6#,
+			GUN_PROPERTY7=#gunProperty7#,
+			GUN_PROPERTY8=#gunProperty8#,
+			LEFT_SECONDS=#leftSeconds#,
+			LEVEL=#level#,
+			BACK_UP=#backUp#,	
+			
+			USED_COUNT=#usedCount#,
+			BULLET=#bullet#,
+			BUILD_STATUS=#buildStatus#,
+			START_UP_TIME=#startUpTime#,
+			LAST_BUILD_TIME=#lastBuildTime#
+		WHERE ID=#id#
+  	</update>
+</sqlMap>

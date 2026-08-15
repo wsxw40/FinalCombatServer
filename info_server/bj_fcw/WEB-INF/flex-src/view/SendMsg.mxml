@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300">
+	
+	<mx:HBox >
+		<mx:Form width="376">
+			<mx:FormItem label="Key">
+				<mx:HBox>
+					<mx:TextInput id="key" text=""/>
+				</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem label="Key">
+				<mx:HBox>
+					<mx:TextInput id="key" text=""/>
+				</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem label="Value">
+				<mx:HBox>
+					<mx:TextInput id="value" text=""/>
+				</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem>
+			<mx:ControlBar>
+				<mx:Button id="save" label="Send"/>
+				<mx:Button id="close" label="Cancel"/>
+			</mx:ControlBar>	
+			</mx:FormItem>
+		</mx:Form>
+	</mx:HBox>
+</mx:TitleWindow>

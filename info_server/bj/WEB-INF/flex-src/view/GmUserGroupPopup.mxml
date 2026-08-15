@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+	creationComplete="init()" showCloseButton="true" close="closePopup()">
+	
+	<mx:Metadata>
+		[Event(name="boxClick", type="event.BoxClickEvent")]
+	</mx:Metadata>
+
+	<mx:Script source="../common/CommonScript.as"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import event.BoxClickEvent;
+			import mx.managers.PopUpManager;
+			import vo.GmGroup;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import vo.GmUser;
+			
+			private var model:O2oModel = O2oModel.getInstance();
+			
+			[Bindable]
+			private var groups:ArrayCollection = new ArrayCollection();
+			[Bindable]
+			public var userGroups:ArrayCollection;
+			[Bindable]
+			public var group:GmGroup;
+			
+			private function closePopup():void{
+				PopUpManager.removePopUp(this);
+			}
+			
+			private function init():void{
+				getRo.getGmGroups(gmUser);
+			}
+			
+			private function getGmGroupsHandler(e:ResultEvent):void{
+				groups = e.result as ArrayCollection;
+				
+				for each(var ug:GmGroup in userGroups){
+					for each(var g:GmGroup in groups){
+						if(ug.id == g.id){
+							g.selected = true;
+							break;
+						}
+					}
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getGmGroups" result="getGmGroupsHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:DataGrid dataProvider="{groups}" width="100%" height="100%">
+		<mx:columns>
+			<mx:DataGridColumn dataField="selected" headerText="" width="50">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:HBox horizontalAlign="center">
+							<mx:CheckBox id="selectCB" selected="{data.selected}" change="onChange()">
+								<mx:Script>
+									<![CDATA[
+										import event.BoxClickEvent;
+										
+										private function onChange():void{
+											if(selectCB.selected){
+												data.selected = true;
+											}else{
+												data.selected = false;
+											}
+											var e:BoxClickEvent = new BoxClickEvent(BoxClickEvent.BOX_CLICK, data, true, true);
+											dispatchEvent(e);
+										}
+									]]>
+								</mx:Script>
+							</mx:CheckBox>
+						</mx:HBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn dataField="name"/>
+			<mx:DataGridColumn dataField="code"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:ControlBar width="100%">
+		<mx:HBox width="100%" horizontalAlign="center">
+			<mx:Button label="Confirm" click="PopUpManager.removePopUp(this);"/>
+		</mx:HBox>
+	</mx:ControlBar>
+</mx:TitleWindow>

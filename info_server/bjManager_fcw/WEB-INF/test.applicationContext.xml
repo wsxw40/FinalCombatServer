@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<import resource="service.xml"/>
+	<import resource="dao.xml"/>
+	<import resource="interface.xml"/>
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
+	   <property name="locations"> 
+	    <list> 
+	     <value>classpath:application.properties</value> 
+	    </list> 
+	   </property> 
+	   <property name="fileEncoding" value="utf-8" /> 
+ 	 </bean> 
+	
+	<!--	XMemcached Configuration -->
+	<bean name="memcachedRealClient" class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean" destroy-method="shutdown">
+		<property name="servers" value="localhost:11211"/>
+        <property name="weights">                        
+        	<list>                                
+        		<value>1</value> 
+        	
+        	</list>                
+        </property>
+        
+		<!-- nio connection pool size -->                
+		<property name="connectionPoolSize" value="1"/>
+	
+		<!-- Use TextCommandFactory -->                
+		<property name="commandFactory">
+			<bean class="net.rubyeye.xmemcached.command.TextCommandFactory"></bean>                
+		</property>
+		
+		<!-- Distributed strategy -->                
+		<property name="sessionLocator">                        
+			<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"></bean>                
+		</property>		
+	</bean>
+	
+	<!-- enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<!-- PlatformTransactionManager -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+                
+    
+	<!-- DataSource: C3P0 Configuration-->	
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+   		<property name="url" value="jdbc:mysql://10.10.12.15/bj?characterEncoding=utf8&amp;autoReconnect=true&amp;noAccessToProcedureBodies=true" />
+		<property name="username" value="bj" />
+		<property name="password" value="123456" />  
+		<property name="initialSize" value="10" />  
+		<property name="maxActive" value="100" />
+		<property name="maxIdle" value="100" /> 		
+	</bean>
+
+	<!-- Connection Pool: iBatis Configuration -->
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="file:${ibatis.configLocation}" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="memcacheMethodInterceptor" class="com.pearl.manager.utils.MemcacheMethodInterceptor"/>
+    <bean id="memcachedClient"  class="org.springframework.aop.framework.ProxyFactoryBean">
+         <property name="proxyInterfaces" value="net.rubyeye.xmemcached.MemcachedClient"/>
+         <property name="target" ref = "memcachedRealClient" />
+         <property name="interceptorNames">
+	         <list>
+	         	<value>memcacheMethodInterceptor</value>
+	         </list>
+         </property>
+    </bean>
+	
+	<bean id="nosql" class="com.pearl.manager.nosql.impl.Redis" destroy-method="shutdown" init-method="init">
+	 	<property name="host" value="127.0.0.1"/>	
+		<property name="port" value="6379"/>
+	</bean>
+	<bean id="nosqlMeta" class="com.pearl.manager.nosql.impl.Redis" destroy-method="shutdown" init-method="init">
+		<!-- <property name="host" value="121.14.82.47"/> --><property name="host" value="127.0.0.1"/>
+		<property name="port" value="6379"/>
+	</bean>
+</beans>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:component="component.*" creationComplete="init()">
+<mx:Script>
+	<![CDATA[
+		import mx.core.BitmapAsset;
+		import mx.controls.Image;
+		import mx.controls.ComboBox;
+		import mx.utils.ArrayUtil;
+		import vo.LevelInfo;
+		import vo.DeadthPointVO;
+		import common.ImageEnum;
+		import common.MenuEnum;
+		import event.BoxClickEvent;
+		import renderer.DeadthPointItem;
+		import mx.collections.ArrayCollection;
+		import mx.rpc.events.FaultEvent;
+		import mx.controls.Alert;
+		import mx.rpc.events.ResultEvent;
+		
+		[Bindable]
+		private var deathPointList:ArrayCollection;
+		[Bindable]
+		public var backImage:Class;
+		[Bindable]
+		public var levelName:String;
+		
+		
+		[Bindable]
+		private var levelList:ArrayCollection;
+		[Bindable]
+		private var levelArray:ArrayCollection;
+		[Bindable]
+		private var modeArray:ArrayCollection;
+		[Bindable]
+		private var selectedVO:DeadthPointVO;
+		
+			private var xCenter:Number=0;
+			private var yCenter:Number=0;
+			private var xSize:Number=50;
+			private var ySize:Number=50;
+			[Bindable]
+			private var size:int=16;
+		private var typeArray:Array=[
+			{label:"团队竞技",data:0},
+			{label:"爆破",data:1},
+			{label:"夺旗",data:2},
+			{label:"生化",data:3},
+			{label:"团队死亡",data:4},
+			{label:"夺宝模式",data:5}];
+		private var teamCBArray:Array=[{label:"ALL",data:2},{label:"匪",data:0},{label:"警",data:1}];
+		private var typeCBArray:Array=[{label:"ALL",data:2},{label:"枪杀",data:0},{label:"刀杀",data:1}];
+		private function init():void{
+			this.addEventListener(BoxClickEvent.BOX_CLICK,boxClickHandler);
+			//getRo.getLevelList();
+		}
+		 private function boxClickHandler(e:BoxClickEvent):void{
+				selectedVO=e._data as DeadthPointVO;
+			}
+		private function getDeadthPointListHandler(e:ResultEvent):void{
+			var tempList:ArrayCollection=e.result as ArrayCollection;
+			initMapParam(levelName);
+			var temp:ArrayCollection=new ArrayCollection();
+			for each (var tPoint:DeadthPointVO in  tempList){
+				tPoint=transferPoint(tPoint);
+				if(tPoint.x<=1024&&tPoint.z<=1024&&tPoint.x>0&&tPoint.z>0)
+				{
+					temp.addItem(tPoint);
+				}
+			}
+			deathPointList=temp;
+		}
+		private function transferPoint(obj:DeadthPointVO):DeadthPointVO{
+		    	if(!obj.isFilter){
+					var intx:int=512-(obj.x-(xCenter))*(512/xSize);
+					var intz:int=512-(obj.z-(yCenter))*(512/ySize);
+					obj.x=Math.floor(intx/size)*size;
+					obj.z=Math.floor(intz/size)*size;
+					obj.isFilter=true;
+				}
+				return obj;
+		}
+		private function initMapParam(name:String):void{
+				var obj:Object=ImageEnum.getMapParams(name) as Object;
+				xCenter=obj.xCenter;
+				yCenter=obj.yCenter;
+				xSize=obj.xSize;
+				ySize=obj.ySize;
+				size=Math.min(xSize,ySize);
+				size=Math.floor(1024/size);
+		}
+		private function getLevelListHandler(e:ResultEvent):void{
+			levelList=e.result as ArrayCollection;
+			initComboBoxData();
+		}
+		private function initComboBoxData():void{
+			levelArray = levelList;
+			cb.selectedIndex=0;
+			var levelInfo:LevelInfo=cb.selectedItem as LevelInfo;
+			this.levelName=levelInfo.name;
+			backImage=ImageEnum.getLevelImage(levelInfo.name);
+			nosql.getDeathRecord(levelInfo.type,levelInfo.id);
+		}
+		
+		private function defaultFaultHandle(e:FaultEvent):void{
+			Alert.show(evt.fault.faultString);
+		}
+		
+		 private function comboBoxLabelFunction(item:Object):String{
+	     	var levelInfo:LevelInfo = item as LevelInfo;
+	     	return typeArray[levelInfo.type].label+":"+levelInfo.name;
+	     }	
+	     private function teamComboBoxLabelFunction(item:Object):String{
+	     	return item.label;
+	     }
+	     private function comboBoxChange(e:Event):void{
+	     	initSubComboBox();
+	     	var levelInfo:LevelInfo=(e.currentTarget as ComboBox).selectedItem as LevelInfo;
+	     	dmc.removeAllChildren();
+	     	this.levelName=levelInfo.name;
+	    	backImage=ImageEnum.getLevelImage(levelInfo.name);
+	     	nosql.getDeathRecord(levelInfo.type,levelInfo.id);
+	     }
+	     private function initSubComboBox():void{
+	     	teamCB.selectedIndex=0;
+	     }
+		 private function teamComboBoxChange(e:Event):void{
+	     	var obj:Object=(e.currentTarget as ComboBox).selectedItem as Object;
+	     	dmc.removeAllChildren();
+	     	var tempList:ArrayCollection=new ArrayCollection();
+	     	for(var i:int=0;i<deathPointList.length;i++){
+			    var point:DeadthPointVO=deathPointList.getItemAt(i) as DeadthPointVO;
+			    if(obj.data==1&&point.team==1){
+			    	tempList.addItem(point);
+			    }else if(obj.data==0&&point.team==0){
+			    	tempList.addItem(point);
+			    }else if(obj.data==2){
+			    	tempList.addItem(point);
+			    }
+	     	}
+	     	dmc.dataProvider=tempList;
+	     }
+	     private function typeComboBoxChange(e:Event):void{
+	     	var levelInfo:LevelInfo=(e.currentTarget as ComboBox).selectedItem as LevelInfo;
+	     	dmc.removeAllChildren();
+	    	backImage=ImageEnum.getLevelImage(levelInfo.name);
+	     	nosql.getDeathRecord(levelInfo.type,levelInfo.id);
+	     }
+	]]>
+</mx:Script>
+	<mx:RemoteObject id="nosql" destination="ro.nosql" showBusyCursor="true">
+		<mx:method name="getDeathRecord" result="getDeadthPointListHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getLevelList" result="getLevelListHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:HBox>
+		<mx:VBox width="300">
+			<mx:HBox >
+				<mx:ComboBox id="cb" dataProvider="{levelArray}"  labelFunction="comboBoxLabelFunction" change="comboBoxChange(event)"></mx:ComboBox>
+			</mx:HBox>
+			<mx:ComboBox id="teamCB" dataProvider="{teamCBArray}"  labelFunction="teamComboBoxLabelFunction"
+							change="teamComboBoxChange(event)"></mx:ComboBox>
+			<mx:ComboBox id="typeCB" dataProvider="{typeCBArray}"  labelFunction="teamComboBoxLabelFunction"></mx:ComboBox>
+			<mx:VBox width="100%">
+				<mx:Form borderStyle="solid">
+					<mx:FormItem label="x:" borderStyle="solid">
+						<mx:Label text="{selectedVO.x}" />
+					</mx:FormItem>
+					<mx:FormItem label="y:" borderStyle="solid">
+						<mx:Label text="{selectedVO.y}"/>
+					</mx:FormItem>
+					<mx:FormItem label="z:" borderStyle="solid">
+						<mx:Label text="{selectedVO.z}"/>
+					</mx:FormItem>
+						<!--<mx:FormItem label="type:" borderStyle="solid">
+					<mx:ComboBox id="typeCB" dataProvider="{levelArray}"  
+							labelFunction="comboBoxLabelFunction" change="comboBoxChange(event)"></mx:ComboBox>
+						<mx:Label text="{selectedVO.type}"/>
+					</mx:FormItem>-->
+					<mx:FormItem label="value:" borderStyle="solid">
+						<mx:Label text="{selectedVO.value}"/>
+					</mx:FormItem>
+				</mx:Form>
+			</mx:VBox>
+		</mx:VBox>
+		
+		<mx:VBox width="50%">
+			<component:DeadthMapComponent id="dmc" dataProvider="{deathPointList}" backImage="{backImage}" size="{this.size}" >
+			</component:DeadthMapComponent>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Canvas>
+				<mx:Box backgroundColor="0xff0000" width="16" height="16">
+				</mx:Box><mx:Label text="大于5人次">
+				</mx:Label>
+			</mx:Canvas>
+			<mx:Canvas>
+				<mx:Box backgroundColor="0x0066ff" width="16" height="16">
+				</mx:Box><mx:Label text="大于2人次小于5人">
+				</mx:Label>
+			</mx:Canvas>
+			<mx:Canvas>
+				<mx:Box backgroundColor="0x00ff33" width="16" height="16">
+				</mx:Box><mx:Label text="1人次">
+				</mx:Label>
+			</mx:Canvas>
+		</mx:VBox>
+	</mx:HBox>
+	
+</mx:VBox>

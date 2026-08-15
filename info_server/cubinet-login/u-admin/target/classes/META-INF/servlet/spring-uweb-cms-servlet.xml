@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 新闻资讯发布操作 -->
+	<bean name="/nologin/cms/cmsContentPublish.htm" class="com.pde.uweb.admin.controller.cms.CMSContentPublishController">
+		<property name="cmsService" ref="cmsService_biz" />
+	</bean>
+
+	<!-- 内容更新操作 -->
+	<bean name="/nologin/cms/cmsContentEdit.htm" class="com.pde.uweb.admin.controller.cms.CMSContentEditController">
+		<property name="cmsService" ref="cmsService_biz" />
+	</bean>
+
+	<!-- 内容发布分页与内容总数查询 -->
+	<bean name="/nologin/cms/cmsContentList.htm" class="com.pde.uweb.admin.controller.cms.CMSContentListController">
+		<property name="methodNameResolver" ref="methodNameResolver"/>
+		<property name="cmsService" ref="cmsService_biz"/>
+	</bean>
+	
+	<!-- ajax方式查看新闻资讯 -->
+	<bean name="/nologin/cms/cmsContentDisplay.htm" class="com.pde.uweb.admin.controller.cms.CMSContentDisplayController">
+		<property name="cmsService" ref="cmsService_biz" />
+	</bean>
+	
+	<!-- 编辑和发布页面的数据初始化 -->
+	<bean name="/nologin/cms/cmsContentInitData.htm" class="com.pde.uweb.admin.controller.cms.CMSContentInitDataController">
+		<property name="cmsService" ref="cmsService_biz" />
+	</bean>
+
+	<!-- 上传缩略图 -->
+	<bean name="/nologin/cms/cmsContentUpload.htm" class="com.pde.uweb.admin.controller.cms.CMSContentUploadController">
+		<property name="cmsService" ref="cmsService_biz" />
+	</bean>
+
+</beans>

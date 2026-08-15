@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<!-- =================================== database: dc ===================================== -->
+
+	<!-- INFO_LUCKY_PACKAGE -->
+	<bean id="luckyPackageDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.LuckyPackageDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="luckyPackageService" class="com.pde.info.analyser.service.impl.LuckyPackageServiceImpl">
+		<property name="luckyPackageDao" ref="luckyPackageDao"></property>
+	</bean>
+	
+	<!-- INFO_CHARACTER_AMOUNT -->
+	<bean id="characterAmountDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.CharacterAmountDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="characterAmountService" class="com.pde.info.analyser.service.impl.CharacterAmountServiceImpl">
+		<property name="characterAmountDao" ref="characterAmountDao"></property>
+	</bean>
+	
+	<!-- INFO_CHARACTER_KD -->
+	<bean id="characterKDDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.CharacterKDDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="characterKDService" class="com.pde.info.analyser.service.impl.CharacterKDServiceImpl">
+		<property name="characterKDDao" ref="characterKDDao"></property>
+	</bean>
+	
+	<!-- INFO_LEVEL_TYPE_AMOUNT -->
+	<bean id="levelTypeAmountDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.LevelTypeAmountDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="levelTypeAmountService" class="com.pde.info.analyser.service.impl.LevelTypeAmountServiceImpl">
+		<property name="levelTypeAmountDao" ref="levelTypeAmountDao"></property>
+	</bean>
+	
+	<!-- INFO_LEVEL_AMOUNT -->
+	<bean id="levelAmountDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.LevelAmountDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="levelAmountService" class="com.pde.info.analyser.service.impl.LevelAmountServiceImpl">
+		<property name="levelAmountDao" ref="levelAmountDao"></property>
+	</bean>
+	
+	<!-- INFO_MEDAL_COST -->
+	<bean id="medalExchangeDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.MedalExchangeDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="medalExchangeService" class="com.pde.info.analyser.service.impl.MedalExchangeServiceImpl">
+		<property name="medalExchangeDao" ref="medalExchangeDao"></property>
+	</bean>
+	
+	<!-- INFO_ITEM_COST -->
+	<bean id="itemCostDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.ItemCostDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="itemCostService" class="com.pde.info.analyser.service.impl.ItemCostServiceImpl">
+		<property name="itemCostDao" ref="itemCostDao"></property>
+	</bean>
+	
+	<!-- INFO_RECHARGE -->
+	<bean id="reChargeDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.ReChargeDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="reChargeService" class="com.pde.info.analyser.service.impl.ReChargeServiceImpl">
+		<property name="reChargeDao" ref="reChargeDao"></property>
+	</bean>
+
+	<!-- INFO_REPORT_GPOINT_TOTAL -->
+	<bean id="gPointTotalDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.GPointTotalDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="gPointTotalService" class="com.pde.info.analyser.service.impl.GPointTotalServiceImpl">
+		<property name="gPointTotalDao" ref="gPointTotalDao"></property>
+	</bean>
+
+	<!-- =================================== database: bj ===================================== -->
+
+	<!-- sys_level -->
+	<bean id="sysLevelDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.SysLevelDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory_bj"></property>
+	</bean>
+	<bean id="sysLevelService" class="com.pde.info.analyser.service.impl.SysLevelServiceImpl">
+		<property name="sysLevelDao" ref="sysLevelDao"></property>
+	</bean>
+
+	<!-- payment -->
+	<bean id="paymentDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pde.info.analyser.dao.PaymentDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory_bj"></property>
+	</bean>
+	<bean id="paymentService" class="com.pde.info.analyser.service.impl.PaymentServiceImpl">
+		<property name="paymentDao" ref="paymentDao"></property>
+	</bean>
+	
+	
+	<!-- ============================================= -->
+	<bean id="persistenceData" class="com.pde.info.analyser.persistence.PersistenceData">
+		<property name="medalExchangeService" ref="medalExchangeService"></property>
+		<property name="itemCostService" ref="itemCostService"></property>
+		<property name="reChargeService" ref="reChargeService"></property>
+		<property name="luckyPackageService" ref="luckyPackageService"></property>
+		<property name="gPointTotalService" ref="gPointTotalService"></property>
+		<property name="characterAmountService" ref="characterAmountService"></property>
+		<property name="characterKDService" ref="characterKDService"></property>
+		<property name="levelTypeAmountService" ref="levelTypeAmountService"></property>
+	</bean>
+</beans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.CharacterAmountDao">
+
+	<resultMap id="StatisticResultMap" type="com.pde.info.analyser.pojo.CharacterAmountStatistic">
+		<result column="STATISTIC_DATE" property="statisticDate" jdbcType="VARCHAR" />
+		<result column="CHARACTER_A" property="characterA" jdbcType="INTEGER" />
+		<result column="CHARACTER_B" property="characterB" jdbcType="INTEGER" />
+		<result column="CHARACTER_C" property="characterC" jdbcType="INTEGER" />
+		<result column="CHARACTER_D" property="characterD" jdbcType="INTEGER" />
+		<result column="CHARACTER_E" property="characterE" jdbcType="INTEGER" />
+		<result column="CHARACTER_F" property="characterF" jdbcType="INTEGER" />
+		<result column="CHARACTER_G" property="characterG" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="addCharacterAmount" parameterType="com.pde.info.analyser.pojo.CharacterAmount" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `INFO_CHARACTER_AMOUNT` (`CHARACTER_ID`,`USING_NUMBER`,`LEVEL_ID`,`STATISTIC_DATE`,`CREATE_DATE`)
+		VALUES ( #{characterId}, #{usingNumber}, #{levelId}, DATE_FORMAT(NOW(), '%Y-%m-%d'), NOW());
+	</insert>
+
+	<select id="getStatistic" statementType="CALLABLE" resultMap="StatisticResultMap" parameterType="java.util.Map" >
+    	{
+	    	CALL P_CHARACTER_AMOUNT_SHOW (
+				#{levelId, mode=IN, jdbcType=VARCHAR},
+				#{startDate, mode=IN, jdbcType=VARCHAR},
+				#{endDate, mode=IN, jdbcType=VARCHAR}
+			)
+		}
+  	</select>
+
+</mapper>

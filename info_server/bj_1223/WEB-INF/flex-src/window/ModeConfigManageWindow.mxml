@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*" creationComplete="init()"
+	 height="100%" width="100%"
+	 xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			[Bindable]
+			private var config:String;
+			private function init():void{
+				getRo.getConfig();
+			}
+			private function getConfigHandler(evt:ResultEvent):void{
+				this.config=evt.result as String;
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+			private function onSaveBtnClick():void{
+				updateRo.updateSysItem(this.config);
+			}
+			private function onResetBtnClick():void{
+				getRo.getConfig();
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getConfig" result="getConfigHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateConfig" result="getConfigHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>	
+	<mx:HBox  height="100%" width="100%">
+	<mx:VBox  height="100%" width="100%">
+		<mx:ApplicationControlBar  height="100%" width="100%">
+		<mx:VBox  height="100%" width="100%">	
+		<mx:TextArea text="{config}" width="1221" height="428" />
+		<mx:HBox>
+		<mx:ControlBar width="100%">				
+	        	<mx:Button id="saveBtn"  label="保存" click="onSaveBtnClick()"/>
+	        	<mx:Button id="resetBtn" label="重置" click="onResetBtnClick()"/>
+	        	<mx:Label text="请复制信息到XML编辑器进行编辑"></mx:Label>
+	     </mx:ControlBar>
+		</mx:HBox>
+		</mx:VBox>
+		</mx:ApplicationControlBar>
+	</mx:VBox>
+	</mx:HBox>	
+</mx:VBox>

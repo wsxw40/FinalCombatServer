@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import vo.PayLog;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import view.PayLogManageView;
+			public var fatherView:PayLogManageView = null;
+			[Bindable]
+			public var now:Date=new Date();
+			[Bindable]
+			public var playerId:int=0;
+			[Bindable]
+			public var payLogList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			private var selectedPayType:int = -1;
+			[Bindable]
+			private var selectedUseType:int = -1;
+			[Bindable]
+			private var startYear:int = now.getFullYear();
+			[Bindable]
+			private var startMonth:int = now.getMonth();
+			[Bindable]
+			private var startDay:int = now.getDate();
+			[Bindable]
+			private var endYear:int = now.getFullYear();
+			[Bindable]
+			private var endMonth:int = now.getMonth();
+			[Bindable]
+			private var endDay:int = now.getDate();
+			public function init():void{
+				initButtons();
+				if(playerId != 0){
+					getRo.getpayloListByPlayerId(playerId);
+				} else {
+					fatherView.payLogListPanel.title = "消费列表(共0项)";
+				}
+			}
+			private function initButtons():void{
+				payLogDatagrid.editable=false;
+			}
+			private function defaultFaultHandle(e:FaultEvent):void{
+				Alert.show(e.message.toString());
+			}
+
+
+			private function onSaveBtnClick():void{
+				initButtons();
+			}
+			private function onCanelBtnClick():void{
+				initButtons();
+			}
+			private function getPayLogListHandler(evt:ResultEvent):void{
+			payLogList = evt.result as ArrayCollection;
+			payLogList.filterFunction=typeFilter;
+			payLogList.refresh();
+			if(null != fatherView){
+				fatherView.payLogListPanel.title = "消费列表(共" + payLogList.length + "项)";
+			}
+		}
+		private function typeFilter(item:Object):Boolean{
+				var log:PayLog = item as PayLog;
+				
+				var createMonthStr:String = (log.createTime.getMonth() + 1) < 10 ? ("0" + (log.createTime.getMonth() + 1)) : (log.createTime.getMonth() + 1).toString();
+				var createDayStr:String = (log.createTime.getDate()) < 10 ? ("0" + log.createTime.getDate()) : (log.createTime.getDate()).toString();
+				var logCreateDateStr:String = log.createTime.getFullYear().toString() + createMonthStr + createDayStr;
+				
+				var startMonthStr:String = (this.startMonth + 1) < 10 ? ("0" + (this.startMonth + 1)) : (this.startMonth + 1).toString();
+				var startDayStr:String = (this.startDay) < 10 ? ("0" + this.startDay) : (this.startDay).toString();
+				var startDateStr:String = this.startYear.toString() + startMonthStr + startDayStr;
+				
+				var endMonthStr:String = (this.endMonth + 1) < 10 ? ("0" + (this.endMonth + 1)) : ((this.endMonth + 1).toString());
+				var endDayStr:String = (this.endDay) < 10 ? ("0" + this.endDay) : (this.endDay).toString();
+				var endDateStr:String = this.endYear.toString() + endMonthStr + endDayStr;
+				
+				var logCreateDateInteger:int = parseInt(logCreateDateStr);
+				var startDateInteger:int = parseInt(startDateStr);
+				var endDateInteger:int = parseInt(endDateStr);
+				
+				if(logCreateDateInteger > endDateInteger || logCreateDateInteger < startDateInteger){
+					return false;
+				}
+				
+				if(this.selectedPayType == -1 && this.selectedUseType==-1 )
+					return true;
+				if((log.payType==this.selectedPayType||this.selectedPayType==-1) && (log.itemType==this.selectedUseType||this.selectedUseType==-1))			
+					return true;
+				else 
+					return false;
+			}
+		private function doPayTypeFilter(evt:Event):void{
+			this.selectedPayType  = evt.target.selectedItem.data;
+	    	payLogList.filterFunction=typeFilter;
+	    	payLogList.refresh();
+	    	if(null != fatherView){
+				fatherView.payLogListPanel.title = "消费列表(共" + payLogList.length + "项)";
+			}
+		}
+		private function doUseTypeFilter(evt:Event):void{
+			this.selectedUseType  = evt.target.selectedItem.data;
+        	payLogList.filterFunction=typeFilter;
+        	payLogList.refresh();
+        	if(null != fatherView){
+				fatherView.payLogListPanel.title = "消费列表(共" + payLogList.length + "项)";
+			}
+		}
+		private function doDateFilter():void{
+			this.startYear = start.selectedDate.getFullYear();
+			this.startMonth = start.selectedDate.getMonth();
+			this.startDay = start.selectedDate.getDate();
+			
+			this.endYear = end.selectedDate.getFullYear();
+			this.endMonth = end.selectedDate.getMonth();
+			this.endDay = end.selectedDate.getDate();
+			
+        	payLogList.filterFunction=typeFilter;
+        	payLogList.refresh();
+        	if(null != fatherView){
+				fatherView.payLogListPanel.title = "消费列表(共" + payLogList.length + "项)";
+			}
+		}
+			[Bindable]
+		public var payTypes:ArrayCollection = new ArrayCollection(
+                [ {label:"------所有------", data:-1}, 
+                 {label:"游戏币", data:0}, 
+                  {label:"人民币", data:1},
+                  {label:"抵用券", data:2},
+                   {label:"勋章", data:3}  
+                ]);
+        
+        private function defaultFaultHandler(evt:Event):void{
+        	
+        }
+        [Bindable]
+        public var useTypes:ArrayCollection = new ArrayCollection(
+        		[
+        		{label:"------所有------", data:-1},
+            	{label:"武器", data:1},
+                {label:"服装", data:2},
+                {label:"配饰", data:3},
+                {label:"道具", data:4},
+                {label:"素材", data:5},
+                {label:"蓝图", data:6},
+                {label:"大礼包", data:7}
+            ]);
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getpayloListByPlayerId" result="getPayLogListHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:VBox width="80%">
+	<mx:HBox width="80%">
+		<mx:ControlBar width="100%" >	
+			<mx:Label text="付款方式：" />
+			<mx:ComboBox  dataProvider="{payTypes}" close="doPayTypeFilter(event)"/>
+			<mx:Label text="物品类型：" />
+			<mx:ComboBox  dataProvider="{useTypes}" close="doUseTypeFilter(event)"/>
+			<mx:Label text="起始日期：" />
+			<mx:DateField id="start" formatString="YYYY年MM月DD日" selectedDate="{now}" change="doDateFilter()"/>
+			<mx:Label text="结束日期：" />
+			<mx:DateField id="end" formatString="YYYY年MM月DD日" selectedDate="{now}" change="doDateFilter()"/>
+		</mx:ControlBar>
+	</mx:HBox>
+	<mx:DataGrid id="payLogDatagrid" dataProvider="{payLogList}" width="100%">
+		<mx:columns>
+						<mx:DataGridColumn dataField="id" headerText="消费记录ID" editable="false" width="100"/>
+						<mx:DataGridColumn dataField="playerId" headerText="玩家ID"/>
+						<mx:DataGridColumn dataField="userId" headerText="用户名"/>
+						<mx:DataGridColumn dataField="payType" headerText="付款方式">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:HBox>
+										<mx:Label id="bwLab">
+											<mx:Script>
+												<![CDATA[
+													import common.Constants;
+													
+													private var _data:Object;
+													
+													public override function get data():Object{
+														return _data;
+													}
+													[Bindable]
+													public override function set data(u:Object):void{
+														this._data = u;
+														if(u.payType == 1){
+															bwLab.text = "C币";
+														}else if(u.payType == 2){
+															bwLab.text = "FC点";
+														}else if(u.payType == 3){
+															bwLab.text = "抵用券";
+														}else if(u.payType == 4){
+															bwLab.text = "勋章";
+														}
+													}
+												]]>
+											</mx:Script>
+										</mx:Label>
+									</mx:HBox>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn dataField="itemName" headerText="物品"/>
+						<mx:DataGridColumn dataField="payAmount" headerText="价格"/>
+						<mx:DataGridColumn dataField="leftMoney" headerText="剩余"/>
+						<mx:DataGridColumn dataField="payUse" headerText="购买/续费/赠送"><!--1BUY2RENEW3GIFT-->
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:HBox>
+										<mx:Label id="bwLab1">
+											<mx:Script>
+												<![CDATA[
+													import common.Constants;
+													
+													private var _data:Object;
+													
+													public override function get data():Object{
+														return _data;
+													}
+													[Bindable]
+													public override function set data(u:Object):void{
+														this._data = u;
+														if(u.payUse == 1){
+															bwLab1.text = "购买";
+														}else if(u.payUse == 2){
+															bwLab1.text = "续费";
+														}else if(u.payUse == 3){
+															bwLab1.text = "赠送";
+														}
+													}
+												]]>
+											</mx:Script>
+										</mx:Label>
+									</mx:HBox>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn dataField="itemType" headerText="物品类型">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:HBox>
+										<mx:Label id="bwLab1">
+											<mx:Script>
+												<![CDATA[
+													import common.Constants;
+													
+													private var _data:Object;
+													
+													public override function get data():Object{
+														return _data;
+													}
+													[Bindable]
+													public override function set data(u:Object):void{
+														this._data = u;
+														if(u.itemType == 1){
+															bwLab1.text = "武器";
+														}else if(u.itemType == 2){
+															bwLab1.text = "服装";
+														}else if(u.itemType == 3){
+															bwLab1.text = "配饰";
+														}else if(u.itemType == 4){
+															bwLab1.text = "道具";
+														}else if(u.itemType == 5){
+															bwLab1.text = "素材";
+														}else if(u.itemType == 6){
+															bwLab1.text = "蓝图";
+														}else if(u.itemType == 7){
+															bwLab1.text = "大礼包";
+														}
+													}
+												]]>
+											</mx:Script>
+										</mx:Label>
+									</mx:HBox>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn dataField="createTimeStr" headerText="购买时间" width="120"/>
+		</mx:columns>
+	</mx:DataGrid>
+	</mx:VBox>
+</mx:HBox>

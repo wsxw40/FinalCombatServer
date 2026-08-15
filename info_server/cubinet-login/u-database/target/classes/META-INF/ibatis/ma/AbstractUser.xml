@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="AbstractUser">
+	<typeAlias alias="UserObject" type="com.pde.uweb.database.ma.user.UserPojo" />
+	<resultMap id="userResult" class="UserObject">
+		<result property="userId" column="USER_ID_B" jdbcType="NUMBER" />
+		<result property="userName" column="USER_NAME_V" jdbcType="VARCHAR" />
+		<result property="password" column="PASSWORD_V" jdbcType="VARCHAR" />
+		<result property="idName" column="ID_NAME_V" jdbcType="VARCHAR" />
+		<result property="idNumber" column="ID_NUMBER_V" jdbcType="VARCHAR" />
+		<result property="status" column="STATUS_T" jdbcType="NUMBER" />
+		<result property="balance" column="BALANCE_I" jdbcType="NUMBER" />
+		<result property="createDate" column="CREATE_DATE_D" jdbcType="DATETIME" />
+		<result property="lastModifyDate" column="LAST_MODIFY_DATE_D" jdbcType="DATETIME" />
+		<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+		<result property="email" column="EMAIL_V" jdbcType="VARCHAR" />
+		<result property="mobile" column="MOBILE_V" jdbcType="VARCHAR" />
+		<result property="emailStatus" column="EMAIL_STATUS_T" jdbcType="NUMBER" />
+		<result property="mobileStatus" column="MOBILE_STATUS_T" jdbcType="NUMBER" />
+		<result property="questionId" column="QUESTION_ID_B" jdbcType="NUMBER" />
+		<result property="answer" column="ANSWER_V" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="userVersion" class="java.lang.Long">
+		<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+	</resultMap>
+
+	<!-- insert -->
+	<insert id="insert" parameterClass="UserObject">
+	INSERT INTO USERS (USER_ID_B, CREATE_DATE_D, VERSION_B, EMAIL_STATUS_T, MOBILE_STATUS_T
+	<dynamic>
+		<isNotNull prepend="," property="userName">USER_NAME_V</isNotNull>
+	
+		<isNotNull prepend="," property="password">PASSWORD_V</isNotNull>
+	
+		<isNotNull prepend="," property="idName">ID_NAME_V</isNotNull>
+	
+		<isNotNull prepend="," property="idNumber">ID_NUMBER_V</isNotNull>
+	
+		<isNotNull prepend="," property="status">STATUS_T</isNotNull>
+	
+		<isNotNull prepend="," property="balance">BALANCE_I</isNotNull>
+	
+		<isNotNull prepend="," property="email">EMAIL_V</isNotNull>
+
+		<isNotNull prepend="," property="mobile">MOBILE_V</isNotNull>
+
+		<isNotNull prepend="," property="questionId">QUESTION_ID_B</isNotNull>
+
+		<isNotNull prepend="," property="answer">ANSWER_V</isNotNull>
+	</dynamic>
+	) VALUES (#userId#, NOW(), 1, 0, 0
+	<dynamic>
+		<isNotNull prepend="," property="userName">#userName#</isNotNull>
+
+		<isNotNull prepend="," property="password">#password#</isNotNull>
+
+		<isNotNull prepend="," property="idName">#idName#</isNotNull>
+
+		<isNotNull prepend="," property="idNumber">#idNumber#</isNotNull>
+
+		<isNotNull prepend="," property="status">#status#</isNotNull>
+
+		<isNotNull prepend="," property="balance">#balance#</isNotNull>
+
+		<isNotNull prepend="," property="email">#email#</isNotNull>
+
+		<isNotNull prepend="," property="mobile">#mobile#</isNotNull>
+
+		<isNotNull prepend="," property="questionId">#questionId#</isNotNull>
+
+		<isNotNull prepend="," property="answer">#answer#</isNotNull>
+	</dynamic>
+	)
+	</insert>
+
+	<!-- select -->
+	<select id="select" resultMap="userResult" parameterClass="java.lang.Long">
+	SELECT
+		USER_ID_B,
+		USER_NAME_V,
+		PASSWORD_V,
+		ID_NAME_V,
+		ID_NUMBER_V,
+		STATUS_T,
+		BALANCE_I,
+		CREATE_DATE_D,
+		LAST_MODIFY_DATE_D,
+		VERSION_B,
+		EMAIL_V,
+		MOBILE_V,
+		EMAIL_STATUS_T,
+		MOBILE_STATUS_T,
+		QUESTION_ID_B,
+		ANSWER_V
+	FROM USERS
+	WHERE USER_ID_B = #userId#
+	</select>
+
+	<!-- only update "not null" columns -->
+	<update id="updateForField" parameterClass="UserObject">
+	UPDATE USERS SET
+		VERSION_B = VERSION_B + 1,
+		LAST_MODIFY_DATE_D = NOW()
+		<dynamic>
+			<isNotNull prepend="," property="userName">USER_NAME_V = #userName#</isNotNull>
+
+			<isNotNull prepend="," property="password">PASSWORD_V = #password#</isNotNull>
+
+			<isNotNull prepend="," property="idName">ID_NAME_V = #idName#</isNotNull>
+
+			<isNotNull prepend="," property="idNumber">ID_NUMBER_V = #idNumber#</isNotNull>
+
+			<isNotNull prepend="," property="status">STATUS_T = #status#</isNotNull>
+
+			<isNotNull prepend="," property="balance">BALANCE_I = #balance#</isNotNull>
+
+			<isNotNull prepend="," property="email">EMAIL_V = #email#</isNotNull>
+
+			<isNotNull prepend="," property="mobile">MOBILE_V = #mobile#</isNotNull>
+
+			<isNotNull prepend="," property="emailStatus">EMAIL_STATUS_T = #emailStatus#</isNotNull>
+
+			<isNotNull prepend="," property="mobileStatus">MOBILE_STATUS_T = #mobileStatus#</isNotNull>
+
+			<isNotNull prepend="," property="questionId">QUESTION_ID_B = #questionId#</isNotNull>
+
+			<isNotNull prepend="," property="answer">ANSWER_V = #answer#</isNotNull>
+		</dynamic>
+	WHERE USER_ID_B = #userId# AND VERSION_B = #version#
+	</update>
+
+	<!-- get version -->
+	<select id="getVersion" resultMap="userVersion" parameterClass="java.lang.Long">
+		SELECT VERSION_B
+		FROM USERS
+		WHERE USER_ID_B = #userId#
+	</select>
+
+</sqlMap>

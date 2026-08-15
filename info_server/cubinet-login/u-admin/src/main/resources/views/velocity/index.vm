@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="Pragma" CONTENT="no-cache">
+    <meta http-equiv="Cache-Control" CONTENT="no-cache">
+    <meta http-equiv="Expires" CONTENT="0">
+
+    <title>73u后台管理系统</title>
+
+    <base href="${request.contextPath}/">
+
+    <link rel="stylesheet" type="text/css" href="resources/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="resources/easyui/themes/icon.css">
+    <script type="text/javascript" src="resources/jquery-1.7.2.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/easyui/jquery.easyui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/easyui/locale/easyui-lang-zh_CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#adminLoginDialog').dialog({
+                title:"管理员登录",
+                closable:false,
+                closed:true,
+                width:500,
+                height:300,
+                resizable:false,
+                shadow:true,
+                draggable:false,
+                model:true
+            });
+            $('#userQuery').click(data, function () {
+                $("#contentiframe").attr("src", "${pageContext.request.contextPath}/html/userManger.html");
+            });
+        });
+    </script>
+</head>
+<body id="73uManager" class="easyui-layout" fit="true">
+
+<div region="north" border="false" split="true" collapsed="true" title="73u后台管理系统" style="height:15px;background:#B3DFDA;padding:10px">
+
+</div>
+<div region="west" split="true" border="false" title="后台管理" style="width:200px;padding1:1px;overflow:hidden;">
+    <div class="easyui-accordion" fit="true" border="false">
+        <div title="用户管理" style="overflow:hidden;">
+            <ul id="userMangerUl">
+                <li>
+                    <span id="userQuery"> <a href="#">用户查询</a>  </span>
+                </li>
+                <li>
+                    <span> <a href="#">用户行为分析</a>  </span>
+                </li>
+                <li>
+                    <span> <a href="cdkey/cdkeyManager">激活码管理</a>  </span>
+                </li>
+            </ul>
+        </div>
+        <div id="gameRegionManger" title="游戏区服管理" style="overflow:hidden;">
+            <ul id="gameRegionMangerUl">
+                <li>
+                    <span> <a href="#">游戏区服查询</a>  </span>
+                </li>
+                <li>
+                    <span> <a href="#">游戏区服查询</a>  </span>
+                </li>
+
+            </ul>
+        </div>
+        <div title="权限管理" style="overflow:hidden;">
+
+        </div>
+    </div>
+</div>
+<!-- <div region="east" split="true" collapsed="true" title="East" style="width:250px;padding:10px;">
+    <div id="clock" style="width: 150px; height: 150px; margin: 0 0"></div>
+
+</div> -->
+
+<div region="center" title="操作中心" style="overflow: hidden;">
+    <iframe id='contentiframe' frameborder='no' style='width:100%;height:100%;overflow: hidden;' src='cdkey/cdkeyManager'></iframe>
+</div>
+
+
+<div id="adminLoginDialog" style="width:300px;height:160px;">
+    <table style="padding:10px 20px 10px 40px;">
+        <tr>
+            <td align="right">用户名:</td>
+            <td align="center"><input id="username" type="text"></td>
+        </tr>
+        <tr>
+            <td align="right">密码:</td>
+            <td align="center"><input id="password" type="password"></td>
+        </tr>
+
+        <tr>
+            <td align="center">
+                <button>取消</button>
+            </td>
+            <td align="center">
+                <button id="loginbtn">登录</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+

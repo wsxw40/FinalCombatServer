@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+<title>73u CMS 新闻资讯发布</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="/u-admin/resources/uploadify/uploadify.css" />
+<script type="text/javascript" src="/u-admin/resources/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/u-admin/resources/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+	<h1>73u CMS  新闻资讯发布</h1>
+	<hr />
+	<form id="cmsForm">
+		<div>
+			标题：<input id="headline" type="text" maxlength="50"/>（不超过50个字）
+		</div>
+		<div id="headlineError"></div>
+
+		<div>
+			栏目：<select name="newsColumnId" id="newsColumnId"></select>
+		</div>
+		
+		<div>
+			摘要 :以最简单的方式介绍这篇文章，内容不超过150个字。
+		</div>
+		<div>
+			<textarea id="subhead" rows="4" cols="115"></textarea>
+		</div>
+		<div id="subheadError"></div>
+		<br />
+		
+		<div>新闻缩略图（300K以内）：<img id="thumbnails" height="80" width="80">
+		<input type="file" name="uploadify" id="file_upload" />
+		</div>
+		
+		<div>
+        	作者：<input id="author" maxlength="32" />
+            &nbsp;&nbsp;
+                        显示优先级（数值越大越靠前）：
+            <select id="priorityLevel">
+            	<option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+            &nbsp;&nbsp;
+			内容状态：
+            <select id="status">
+            	<option value="1">发布</option>
+                <option value="0">屏蔽</option>
+            </select>
+            &nbsp;&nbsp;
+			资讯类型：<select id="type">
+    			<option value="1">CMS</option>
+            	<option value="2">游戏</option>
+                <option value="3">媒体</option>
+            </select>
+        </div>
+        <br />
+		
+		<div>
+			<input id="content" name="content" type="hidden" />
+			<iframe id="content___Frame" frameborder="0" height="500" scrolling="no" width="900" src="/u-admin/fckeditor/editor/fckeditor.html?InstanceName=content&amp;Toolbar=Default"></iframe>
+		</div>
+		
+		<div id="error"></div>
+		<br />
+		
+		<input id="btnSubmit" type="button" value="发布" />
+		<a href="/u-admin/resources/html/cms/cmsContentList.html">返回新闻列表</a>
+	</form>
+<script type="text/javascript" src="/u-admin/resources/js/73u.common.js"></script>
+<script type="text/javascript" src="/u-admin/resources/js/73u.cms.create.js"></script>
+</body>
+</html>

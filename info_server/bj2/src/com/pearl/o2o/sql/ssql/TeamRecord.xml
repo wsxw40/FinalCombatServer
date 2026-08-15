@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TeamRecord">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="TeamRecord" type="com.pearl.o2o.pojo.TeamRecord"/> 	
+	<resultMap id="teamRecordSelectResult" class="TeamRecord">
+		<result property="id" column="ID"/>
+		<result property="teamId" column="TEAM_ID"/>
+		<result property="bTeamId" column="B_TEAM_ID"/>	
+		<result property="score" column="SCORE"/>
+		<result property="bScore" column="B_SCORE"/>
+		<result property="levelId" column="LEVEL_ID"/>
+		<result property="result" column="RESULT"/>
+		<result property="createTime" column="CREATED_TIME"/>
+	</resultMap>
+  	<select id="select" resultMap="teamRecordSelectResult">
+  		select t.ID, t.TEAM_ID,t.B_TEAM_ID,t.SCORE,t.B_SCORE,t.LEVEL_ID,t.RESULT,t.CREATED_TIME from TEAM_RECORD t
+  		where t.TEAM_ID=#fid#;
+  	</select>
+  	<select id="selectBothByTeamId" parameterClass="java.util.Map" resultMap="teamRecordSelectResult">
+  		select t.ID, t.TEAM_ID,t.B_TEAM_ID,t.SCORE,t.B_SCORE,t.LEVEL_ID,t.RESULT,t.CREATED_TIME from TEAM_RECORD t
+  		where t.TEAM_ID=#fid# or t.B_TEAM_ID=#fid#;
+  	</select>	
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="TeamRecord">
+		insert into TEAM_RECORD(TEAM_ID,B_TEAM_ID,SCORE,B_SCORE,LEVEL_ID,RESULT,CREATED_TIME )
+		values(
+				#teamId#,
+				#bTeamId#,
+				#score#,
+				#bScore#,
+				#levelId#,
+				#result#,
+				#createTime#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>  	
+  	 <delete id="delete" parameterClass="TeamRecord">
+  		delete from TEAM_RECORD
+		where ID = #id#
+  	</delete>
+  	<update id="update" parameterClass="TeamRecord">
+		update TEAM_RECORD t 
+		set
+	        t.TEAM_ID = #teamId#,
+	        t.B_TEAM_ID = #bTeamId#,
+	        t.SCORE = #score#,
+	        t.B_SCORE = #bScore#,
+	        t.LEVEL_ID = #levelId#,
+	        t.RESULT = #result#,
+	        t.CREATED_TIME = #createTime#,
+		where t.ID = #id#
+	</update>
+</sqlMap>	
+  	
+ 
+  	

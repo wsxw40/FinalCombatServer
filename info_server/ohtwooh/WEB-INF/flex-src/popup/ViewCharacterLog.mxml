@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+	 showCloseButton="true" xmlns:component="component.*" creationComplete="init()" close="PopUpManager.removePopUp(this)">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			import utils.ColumnFactory;
+			import event.LogSelectEvent;
+			import mx.collections.ArrayCollection;
+			public var _characterLogs:ArrayCollection;
+			public var logView:ShowLogDifView;
+			public var selectedItems:ArrayCollection = new ArrayCollection(); //保存选中行
+			[Bindable]
+			public function set characterLogs(characterLogList:ArrayCollection):void{
+				this._characterLogs=characterLogList;
+			}
+			public function get characterLogs():ArrayCollection{
+				return this._characterLogs;
+			} 
+			
+			private function init():void{
+				this.addEventListener(LogSelectEvent.LOG_SELECT,onLogSelected);
+			}
+			private function onLogSelected(evt:LogSelectEvent):void{
+				selectedItems=evt.selectedItems as ArrayCollection;
+			}
+			private function showLogDifference():void{
+				if(selectedItems.length==2){
+					logView=ShowLogDifView(PopUpManager.createPopUp(this,ShowLogDifView,true));
+					
+				  	var columns:Array=	ColumnFactory.getCharacterLogColumns(true);
+				  	columns.splice(0,1);
+				 	logView.logDG.columns=columns;
+					logView.logs=selectedItems as ArrayCollection;
+					logView.close.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(logView);});
+					PopUpManager.centerPopUp(logView);
+				}else{
+					Alert.show("请选择两条日志进行比对。");
+				}
+			} 
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%">
+	<mx:ApplicationControlBar  height="100%" width="100%">	
+		<component:MyDataGrid id="characterLogDG" dataProvider="{characterLogs}"  
+				width="100%"	 height="80%" editable="false"/>
+	</mx:ApplicationControlBar>
+	<mx:ControlBar>
+		<mx:Button label="退出" id="close" />
+		<mx:Button label="比对版本参数" id="difference" click="showLogDifference()"/>
+	</mx:ControlBar>
+	</mx:VBox>
+</mx:TitleWindow>

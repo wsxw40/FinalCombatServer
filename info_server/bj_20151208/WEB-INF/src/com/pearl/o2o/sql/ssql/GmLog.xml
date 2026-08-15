@@ -1,0 +1,58 @@
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="GmLog">
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="GmLog" type="com.pearl.o2o.pojo.GmLog" />
+	
+	<select id="select" parameterClass="java.util.Map" resultClass="GmLog">
+		select	ID					as id,
+				GM_USER_ID			as gmUserId,
+				GM_USER_NAME		as gmUserName,
+				TYPE				as type,
+				METHOD_NAME			as methodName,
+				ARGS				as args,
+				RECORD_TIME			as recordTime
+		from GM_LOG 
+		<dynamic prepend="where">
+			<isNotEqual prepend="and" property="gmUserId" compareValue="0">
+				GM_USER_ID = #gmUserId#		
+			</isNotEqual>
+			<isNotEmpty prepend="and" property="gmUserName">
+				GM_USER_NAME like '$gmUserName$%'		
+			</isNotEmpty>
+			<isNotEqual prepend="and" property="type" compareValue="--ALL--">
+				TYPE = #type#	
+			</isNotEqual>
+			<isNotNull prepend="and" property="start">
+				RECORD_TIME <![CDATA[ >= ]]> #start#	
+			</isNotNull>
+			<isNotNull prepend="and" property="end">
+				RECORD_TIME <![CDATA[ <= ]]> #end#	
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<insert id="insert" parameterClass="GmLog">
+		insert into GM_LOG (	
+			GM_USER_ID,	
+			GM_USER_NAME,
+			TYPE,		
+			METHOD_NAME,
+			ARGS,
+			RECORD_TIME
+		) values (
+			#gmUserId#,
+			#gmUserName#,
+			#type#,
+			#methodName#,
+			#args#,
+			#recordTime#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+</sqlMap>
+	

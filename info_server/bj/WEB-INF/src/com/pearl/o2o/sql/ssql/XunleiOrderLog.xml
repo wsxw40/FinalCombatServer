@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="XunleiOrderLog">
+	<typeAlias alias="XunleiOrderLog" type="com.pearl.o2o.pojo.XunleiOrderLog"/>
+	
+	<resultMap id="selectResult" class="XunleiOrderLog">
+		<result property="id" column="ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="orderId" column="ORDER_ID"/>	
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="rmb" column="RMB"/>
+		<result property="amount" column="AMOUNT"/>
+		<result property="discount" column="DISCOUNT"/>	
+		<result property="createTime" column="CREATE_TIME"/>	
+		<result property="type" column="TYPE"/>	
+		
+	</resultMap>
+
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+		select *
+    	from ITEM_ORDER where ORDER_ID=#orderId# and USER_ID=#userId#;
+	</select>
+	
+	<select id="selectAddXunleiOrderForList" parameterClass="java.util.Map" resultMap="selectResult">
+		select *
+    	from ITEM_ORDER where PLAYER_ID=#playerId# AND TYPE = 1;
+	</select>
+	
+	<select id="selectReduceXunleiOrderForList" parameterClass="java.util.Map" resultMap="selectResult">
+		select *
+    	from ITEM_ORDER where PLAYER_ID=#playerId# AND TYPE = 2;
+	</select>
+	
+	<select id="duplicateXunleiOrder" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		select count(*)
+    	from ITEM_ORDER where ORDER_ID=#orderId#;
+	</select>
+	<update id="update" parameterClass="XunleiOrderLog">
+		update ITEM_ORDER 
+		set USER_ID=#userId#,
+				ORDER_ID=#orderId#,
+				PLAYER_ID=#playerId#,
+				RMB=#rmb#,
+				AMOUNT=#amount#,
+				DISCOUNT=#discount#,
+				CREATE_TIME=#createTime#
+		where ID=#id#;		
+	</update>
+	<delete id="delete" parameterClass="XunleiOrderLog">
+		delete from ITEM_ORDER where ID=#id#;
+	</delete>
+	<insert id="insert"  parameterClass="XunleiOrderLog">
+		insert into ITEM_ORDER(
+			ORDER_ID,
+			USER_ID,
+			PLAYER_ID,
+			RMB,
+			AMOUNT,
+			DISCOUNT,
+			CREATE_TIME,
+			TYPE
+		) values(
+			#orderId#,
+			#userId#,
+			#playerId#,
+			#rmb#,
+			#amount#,
+			#discount#,
+			#createTime#,
+			#type#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+</sqlMap>

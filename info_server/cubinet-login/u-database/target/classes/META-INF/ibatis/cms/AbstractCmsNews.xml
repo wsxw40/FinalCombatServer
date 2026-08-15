@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="AbstractCmsNews">
+	<typeAlias alias="CmsNewsObject" type="com.pde.uweb.database.cms.cmsnews.CmsNewsPojo" />
+	<resultMap id="cmsnewsResult" class="CmsNewsObject">
+		<result property="newsId" column="NEWS_ID_B" jdbcType="NUMBER" />
+		<result property="newsColumnId" column="NEWS_COLUMN_ID_B" jdbcType="NUMBER" />
+		<result property="headline" column="HEADLINE_V" jdbcType="VARCHAR" />
+		<result property="subhead" column="SUBHEAD_V" jdbcType="VARCHAR" />
+		<result property="content" column="CONTENT_T" jdbcType="TEXT" />
+		<result property="author" column="AUTHOR_V" jdbcType="VARCHAR" />
+		<result property="topLevel" column="TOP_LEVEL_I" jdbcType="NUMBER" />
+		<result property="priorityLevel" column="PRIORITY_LEVEL_I" jdbcType="NUMBER" />
+		<result property="headlineStatus" column="HEADLINE_STATUS_I" jdbcType="NUMBER" />
+		<result property="status" column="STATUS_I" jdbcType="NUMBER" />
+		<result property="type" column="TYPE_I" jdbcType="NUMBER" />
+		<result property="createDate" column="CREATE_DATE_D" jdbcType="DATETIME" />
+		<result property="lastModifyDate" column="LAST_MODIFY_DATE_D" jdbcType="DATETIME" />
+		<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+		<result property="thumbnails" column="THUMBNAILS_V" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="cmsnewsVersion" class="java.lang.Long">
+		<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+	</resultMap>
+
+	<!-- insert -->
+	<insert id="insert" parameterClass="CmsNewsObject">
+	insert into CMS_NEWS (NEWS_ID_B,CREATE_DATE_D,LAST_MODIFY_DATE_D,VERSION_B
+	<dynamic>
+		<isNotNull prepend="," property="newsColumnId">NEWS_COLUMN_ID_B</isNotNull>
+
+		<isNotNull prepend="," property="headline">HEADLINE_V</isNotNull>
+	
+		<isNotNull prepend="," property="subhead">SUBHEAD_V</isNotNull>
+
+		<isNotNull prepend="," property="content">CONTENT_T</isNotNull>
+
+		<isNotNull prepend="," property="author">AUTHOR_V</isNotNull>
+
+		<isNotNull prepend="," property="topLevel">TOP_LEVEL_I</isNotNull>
+
+		<isNotNull prepend="," property="priorityLevel">PRIORITY_LEVEL_I</isNotNull>
+
+		<isNotNull prepend="," property="headlineStatus">HEADLINE_STATUS_I</isNotNull>
+
+		<isNotNull prepend="," property="status">STATUS_I</isNotNull>
+		
+		<isNotNull prepend="," property="type">TYPE_I</isNotNull>
+		
+		<isNotNull prepend="," property="thumbnails">THUMBNAILS_V</isNotNull>
+	</dynamic>
+	) values(#newsId#, NOW(), NOW(), 1
+	<dynamic>
+		<isNotNull prepend="," property="newsColumnId">#newsColumnId#</isNotNull>
+	
+		<isNotNull prepend="," property="headline">#headline#</isNotNull>
+	
+		<isNotNull prepend="," property="subhead">#subhead#</isNotNull>
+	
+		<isNotNull prepend="," property="content">#content#</isNotNull>
+	
+		<isNotNull prepend="," property="author">#author#</isNotNull>
+	
+		<isNotNull prepend="," property="topLevel">#topLevel#</isNotNull>
+	
+		<isNotNull prepend="," property="priorityLevel">#priorityLevel#</isNotNull>
+	
+		<isNotNull prepend="," property="headlineStatus">#headlineStatus#</isNotNull>
+	
+		<isNotNull prepend="," property="status">#status#</isNotNull>
+		
+		<isNotNull prepend="," property="type">#type#</isNotNull>
+		
+		<isNotNull prepend="," property="thumbnails">#thumbnails#</isNotNull>
+	</dynamic>
+	)
+	</insert>
+
+	<!-- select -->
+	<select id="select" resultMap="cmsnewsResult" parameterClass="java.lang.Long">
+	SELECT
+		NEWS_ID_B,
+		NEWS_COLUMN_ID_B,
+		HEADLINE_V,
+		SUBHEAD_V,
+		CONTENT_T,
+		AUTHOR_V,
+		TOP_LEVEL_I,
+		PRIORITY_LEVEL_I,
+		HEADLINE_STATUS_I,
+		STATUS_I,
+		TYPE_I,
+		CREATE_DATE_D,
+		LAST_MODIFY_DATE_D,
+		VERSION_B,
+		THUMBNAILS_V
+	FROM CMS_NEWS
+	WHERE NEWS_ID_B = #id#
+	ORDER BY PRIORITY_LEVEL_I DESC, LAST_MODIFY_DATE_D DESC
+	</select>
+
+	<!-- update all columns -->
+	<update id="update" parameterClass="CmsNewsObject">
+	UPDATE CMS_NEWS SET
+		VERSION_B = VERSION_B + 1,
+		LAST_MODIFY_DATE_D = NOW(),
+		NEWS_COLUMN_ID_B = #newsColumnId#,
+		HEADLINE_V = #headline#,
+		SUBHEAD_V = #subhead#,
+		CONTENT_T = #content#,
+		AUTHOR_V = #author#,
+		TOP_LEVEL_I = #topLevel#,
+		PRIORITY_LEVEL_I = #priorityLevel#,
+		HEADLINE_STATUS_I = #headlineStatus#,
+		STATUS_I = #status#,
+		TYPE_I = #type#,
+		THUMBNAILS_V = #thumbnails#
+	WHERE NEWS_ID_B = #newsId# AND VERSION_B = #version#
+	</update>
+
+	<!-- only update "not null" columns -->
+	<update id="updateForField" parameterClass="CmsNewsObject">
+	UPDATE CMS_NEWS SET
+		VERSION_B = VERSION_B + 1,
+		LAST_MODIFY_DATE_D = NOW()
+	<dynamic>
+		<isNotNull prepend="," property="newsColumnId">NEWS_COLUMN_ID_B = #newsColumnId#</isNotNull>
+
+		<isNotNull prepend="," property="headline">HEADLINE_V = #headline#</isNotNull>
+
+		<isNotNull prepend="," property="subhead">SUBHEAD_V = #subhead#</isNotNull>
+
+		<isNotNull prepend="," property="content">CONTENT_T = #content#</isNotNull>
+
+		<isNotNull prepend="," property="author">AUTHOR_V = #author#</isNotNull>
+
+		<isNotNull prepend="," property="topLevel">TOP_LEVEL_I = #topLevel#</isNotNull>
+
+		<isNotNull prepend="," property="priorityLevel">PRIORITY_LEVEL_I = #priorityLevel#</isNotNull>
+
+		<isNotNull prepend="," property="headlineStatus">HEADLINE_STATUS_I = #headlineStatus#</isNotNull>
+
+		<isNotNull prepend="," property="status">STATUS_I = #status#</isNotNull>
+
+		<isNotNull prepend="," property="type">TYPE_I = #type#</isNotNull>
+		
+		<isNotNull prepend="," property="thumbnails">THUMBNAILS_V = #thumbnails#</isNotNull>
+	</dynamic>
+	WHERE NEWS_ID_B = #newsId# AND VERSION_B = #version#
+	</update>
+
+	<!-- delete -->
+	<delete id="delete" parameterClass="java.util.Map">
+		DELETE FROM CMS_NEWS
+		WHERE 	NEWS_ID_B = #id#
+				AND VERSION_B = #version#
+	</delete>
+
+	<!-- get version -->
+	<select id="getVersion" resultMap="cmsnewsVersion" parameterClass="java.lang.Long">
+		SELECT VERSION_B
+		FROM CMS_NEWS
+		WHERE NEWS_ID_B = #id#
+	</select>
+
+</sqlMap>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" xmlns:local="*">
+	
+	<mx:Script>
+		<![CDATA[
+			import event.GmUserLogoutEvent;			
+			import flash.net.navigateToURL;
+			
+			import mx.core.UIComponent;
+			import mx.core.IUIComponent;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.logging.LogEvent;
+			import mx.managers.PopUpManager;						
+			
+		
+			[Bindable]
+			private var _level1Tabs:Object;
+			
+			public function set level1Tabs(value: Object):void{
+				this._level1Tabs = value;				
+			}
+		
+			/**
+			 * Function to switch language between English and Chinese
+			 **/
+		    private function switchLang():void{
+		    	if(resourceManager.localeChain.toString() == "zh_CN,en_US"){
+		    		resourceManager.localeChain = ["en_US","zh_CN"];
+		    	}
+		    	else{
+		    		resourceManager.localeChain = ["zh_CN","en_US"];
+		    	}
+		    }
+		    
+		    private function onClickExitBtn():void{
+		    	
+//				confirm(resourceManager.getString("Language","alert.logout"),
+//			   		resourceManager.getString("Language","title.confirmation"), confirmLogoutFun);		   
+		    }		
+		    
+		    private function confirmLogoutFun(evt:CloseEvent):void{
+		    	
+		    	if(evt.detail == Alert.YES){
+			    	var u:URLRequest = new URLRequest("javascript:window.location.reload();"); 
+			    	navigateToURL(u, "_self");
+		    	}
+		    }	
+		   	
+		   	private function onClickUserPreference():void{
+//		   		var userPreferencePopup:UserPreferencePopup = UserPreferencePopup(PopUpManager.createPopUp(this, UserPreferencePopup));
+//		   		userPreferencePopup.userName = model.currUser.userName;
+//		   		PopUpManager.centerPopUp(userPreferencePopup);
+		   	}
+		   	public function onButtonClick():void{
+		 		this.dispatchEvent(new GmUserLogoutEvent(GmUserLogoutEvent.GM_USER_LOGOUT,true));
+		 	}
+		]]>
+	</mx:Script>
+	
+	<!--==========================
+	    Page Layout
+	  ===========================-->   	   
+	<mx:HBox width="100%">			
+		<mx:TabBar dataProvider="{_level1Tabs}"  fontWeight="bold" fontSize="14" fontStyle="normal">
+		</mx:TabBar>
+		<mx:LinkButton label="{resourceManager.getString('Language','lang')}" 
+			click="switchLang()"/>	
+		<mx:Spacer width="100%" height="10"/>
+		<mx:LinkButton label="{resourceManager.getString('Language','label.LogOff')}" click="onButtonClick()" />
+		<mx:Spacer width="10"/>	
+	</mx:HBox>
+	<mx:HBox height="5">
+		
+	</mx:HBox> 
+</mx:VBox>

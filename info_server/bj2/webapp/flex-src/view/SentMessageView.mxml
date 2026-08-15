@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.validators.ValidationResult;
+//			import vo.GmUser;
+			import mx.controls.Alert;
+			import mx.utils.StringUtil;
+			import mx.validators.Validator;
+			import common.Constants;
+			import mx.rpc.events.ResultEvent;
+			import vo.Message;
+			import mx.events.ListEvent;
+			import mx.collections.ArrayCollection;
+			import utils.*;
+			[Bindable]
+			private var messageList:ArrayCollection = new ArrayCollection();
+			[Bindable] private var currentMessage:Message;
+			private function init():void{
+				
+			}
+			private function onSearchBtnClick():void{
+				var playerid:String = StringUtil.trim(receiverid.text);
+				if(playerid){
+					if(parseInt(playerid).toString()=="NaN"){
+						Alert.show("playerId格式不正确");
+					} else {
+						getRo.getSysMessage(parseInt(playerid));
+					}
+				} else {
+					getRo.getSysMessage(0);
+				}
+			}
+			private function getMessageListHandler(evt:ResultEvent):void{
+				messageList = evt.result as ArrayCollection;
+				messageList.filterFunction=dataFilter;
+				messageList.refresh();
+			}
+			private function onItemClick(evt : Event):void{
+				this.currentMessage = messageData.selectedItem as Message;
+			}
+			
+			[Bindable]public var YNSelect:ArrayCollection = new ArrayCollection(
+                [ {label:"----所有----", data:null}, 
+                  {label:"Yes", data:"Y"}, 
+                  {label:"No", data:"N"} ]);
+            [Bindable]
+            private var attachedSelect:ArrayCollection = new ArrayCollection([
+            	{label:"----所有----", data:null}, 
+                {label:"Yes", data:1}, 
+                {label:"No", data:0}
+            	
+            ]);
+            	
+            [Bindable] private var isAttach:String=null;
+            [Bindable] private var isOpen:String=null;
+            private function dataFilter(obj:Message):Boolean{
+            	if(isAttach==null&&isOpen==null&&startTime.selectedDate==null&&endTime.selectedDate==null){
+            		return true;
+            	}
+            	if((isAttach==null||isAttach==obj.isAttached)&&(isOpen==null||obj.open==isOpen)){
+            		if((startTime.selectedDate==null || obj.createdTime>=startTime.selectedDate)  &&  (endTime.selectedDate==null || obj.createdTime<=endTime.selectedDate)){
+            			return true;
+            		}else {
+            			return false;
+            		}
+            	} else {
+            		return false;
+            	}
+            }
+            
+            private function attachCBClose(evt:Event):void{
+            	this.isAttach = evt.target.selectedItem.data;
+            	if(messageList!=null){
+            		messageList.filterFunction=dataFilter;
+					messageList.refresh();
+            	}
+            }
+             private function openCBClose(evt:Event):void{
+            	this.isOpen = evt.target.selectedItem.data;
+            	if(messageList!=null){
+            		messageList.filterFunction=dataFilter;
+					messageList.refresh();
+            	}
+            }
+            private function dateClose():void{
+            	if(startTime.selectedDate==null){
+            	} else {
+            		startTime.selectedDate.setHours(0);
+            		startTime.selectedDate.setMinutes(0);
+            		startTime.selectedDate.setSeconds(0);
+            	}
+            	if(endTime.selectedDate==null){
+            	} else {
+            		endTime.selectedDate.setHours(24);
+            		endTime.selectedDate.setMinutes(59);
+            		endTime.selectedDate.setSeconds(59);
+            	}
+            	if(messageList!=null){
+            		messageList.filterFunction=dataFilter;
+					messageList.refresh();
+            	}
+            }
+            private function clearBtnClick():void{
+            	startTime.selectedDate=null;
+            	endTime.selectedDate=null;
+            	if(messageList!=null){
+            		messageList.filterFunction=dataFilter;
+					messageList.refresh();
+            	}
+            }
+            private function refreshBtnClick():void{
+            	if(messageList.length>0){
+            		onSearchBtnClick();
+            	}
+            }
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getSysMessage" result="getMessageListHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox>
+		<mx:ApplicationControlBar width="100%">
+			<mx:Label text="{resourceManager.getString('Language','label.ReceiverId')}" /><mx:TextInput id="receiverid" />
+			<mx:Button label="{resourceManager.getString('Language','button.Search')}" click="onSearchBtnClick()"/>
+			<mx:Label text="{resourceManager.getString('Language','label.IsHasAttachment')}" /><mx:ComboBox id="isattached" dataProvider=" {attachedSelect}" close="attachCBClose(event);" />
+			<mx:Label text="{resourceManager.getString('Language','label.IsOpened')}" /><mx:ComboBox id="isopened" dataProvider=" {YNSelect}" close="openCBClose(event);"/>
+			<mx:Label text="{resourceManager.getString('Language','label.TimeFrom')}" /><mx:DateField id="startTime" selectedDate="{null}" maxYear="2050" minYear="2011" formatString="YYYY-MM-DD" change="dateClose();"/>
+			<mx:Label text="{resourceManager.getString('Language','label.TimeTo')}" /><mx:DateField id="endTime" selectedDate="{null}" maxYear="2050" minYear="2011" formatString="YYYY-MM-DD" change="dateClose();"/>
+			
+			<mx:Button label="{resourceManager.getString('Language','button.TimeReset')}" click="clearBtnClick()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Refresh')}" click="refreshBtnClick()"/>
+		</mx:ApplicationControlBar>
+	</mx:HBox>
+	<mx:DataGrid id="messageData" dataProvider="{messageList}" itemClick="onItemClick(event)" width="100%" height="100%">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="{resourceManager.getString('Language','label.EmailId')}"/>
+			<mx:DataGridColumn dataField="receiverId" headerText="{resourceManager.getString('Language','label.ReceiverId')}"/>
+			<mx:DataGridColumn dataField="subject" headerText="{resourceManager.getString('Language','label.Theme')}"/>
+			<mx:DataGridColumn dataField="content" headerText="{resourceManager.getString('Language','label.Content')}"/>
+			<mx:DataGridColumn dataField="open" headerText="{resourceManager.getString('Language','label.IsOpened')}" width="220"/>
+			<mx:DataGridColumn dataField="deleted" headerText="{resourceManager.getString('Language','label.IsDelete')}" width="220"/>
+			<mx:DataGridColumn dataField="isAttached" headerText="{resourceManager.getString('Language','label.IsAttachmenDetail')}" width="250"/>
+			<mx:DataGridColumn dataField="createdTimeStr" headerText="{resourceManager.getString('Language','label.SendTime')}"/>
+		</mx:columns>
+	</mx:DataGrid>
+</mx:VBox>

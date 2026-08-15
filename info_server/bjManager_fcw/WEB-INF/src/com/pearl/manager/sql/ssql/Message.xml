@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="Message">
+	<typeAlias alias="Message" type="com.pearl.manager.pojo.Message" />
+	<resultMap id="selectResult" class="Message">
+		<result property="id" column="ID"/>
+		<result property="receiverId" column="RECEIVER_ID"/>	
+		<result property="senderId" column="SENDER_ID"/>			
+		<result property="subject" column="SUBJECT"/>		
+		<result property="content" column="CONTENT"/>
+		<result property="createdTime" column="CREATED_TIME"/>
+		<result property="open" column="OPEN"/>	
+		<result property="sender" column="SENDER_NAME"/>
+		<result property="messageModeId" column="MESSAGE_MODE_ID"/>	
+		<result property="playerItemId" column="PLAYER_ITEM_ID"/>
+		<result property="deleted" column="IS_DELETED"/>
+		<result property="itemsUnitTypes" column="ITEM_UNITTYPES"/>
+		<result property="itemsUnits" column="ITEM_UNITS"/>
+		<result property="items" column="SYS_ITEMS"/>
+		<result property="isAttached" column="IS_ATTACHED"/>
+	</resultMap>
+	
+	<select id="selectFromInBox" parameterClass="java.util.Map" resultMap="selectResult">
+		select
+			m.ID,
+			m.SENDER_NAME,
+			m.SENDER_ID,
+			m.RECEIVER_ID,
+			m.SUBJECT,
+			m.CONTENT,
+			m.CREATED_TIME,
+			m.OPEN,
+			m.IS_DELETED,
+			m.ITEM_UNITTYPES,
+			m.ITEM_UNITS,
+			m.SYS_ITEMS,
+			m.IS_ATTACHED,
+      		mm.PLAYER_ITEM_ID as PLAYER_ITEM_ID,
+			0 as MESSAGE_MODE_ID
+		 from MESSAGE m
+		 left outer join  MESSAGE_ITEM mm on m.ID=mm.MESSAGE_ID
+		where m.IS_DELETED='N'
+		<dynamic>
+    		<isNotNull prepend="and" property="messageId">
+				m.ID =  #messageId#
+			</isNotNull>
+			<isNotNull prepend="and" property="receiverId">
+				m.RECEIVER_ID =  #receiverId#
+			</isNotNull>
+			<isNotNull prepend="and" property="senderName">
+				m.SENDER_NAME =  #senderName#
+			</isNotNull>
+		</dynamic>
+		and DATE_SUB(now(),INTERVAL 30 DAY) <![CDATA[ < ]]>m.CREATED_TIME
+		order by m.CREATED_TIME desc limit 0,50;
+	</select>
+	
+	<select id="selectFromOutBox" parameterClass="java.util.Map" resultMap="selectResult">
+		select
+			m.ID,
+			m.SENDER_NAME,
+			m.SENDER_ID,
+			m.RECEIVER_ID,
+			m.SUBJECT,
+			m.CONTENT,
+			m.CREATED_TIME,
+			m.OPEN,
+			m.IS_DELETED,
+			m.ITEM_UNITTYPES,
+			m.ITEM_UNITS,
+			m.SYS_ITEMS,
+			m.IS_ATTACHED,
+      		0 as PLAYER_ITEM_ID,
+			0 as MESSAGE_MODE_ID
+		 from MESSAGE m
+		<dynamic prepend="where">
+    		<isNotNull prepend="and" property="messageId">
+				m.ID =  #messageId#
+			</isNotNull>
+			<isNotNull prepend="and" property="receiverId">
+				m.RECEIVER_ID =  #receiverId#
+			</isNotNull>
+			<isNotNull prepend="and" property="senderName">
+				m.SENDER_NAME =  #senderName#
+			</isNotNull>
+		</dynamic>
+		order by m.CREATED_TIME desc;
+	</select>
+	
+    <insert id="insert" parameterClass="Message">
+    	insert into MESSAGE(
+    	RECEIVER_ID,
+    	SENDER_NAME,
+    	SUBJECT,
+    	CONTENT,
+    	ITEM_UNITTYPES,
+    	ITEM_UNITS,
+    	SYS_ITEMS,
+    	CREATED_TIME,
+    	SENDER_ID,IS_ATTACHED
+    	)
+    	values(
+   		#receiverId#,
+   		#sender#,
+   		#subject#,
+   		#content#,
+   		#itemsUnitTypes#,
+   		#itemsUnits#,
+   		#items#,
+   		now(),
+   		#senderId#,#isAttached#
+   		);
+   		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+    </insert>
+    <insert id="insertMessageItem" parameterClass="Message">
+    	insert into MESSAGE_ITEM(
+    	MESSAGE_ID,
+    	PLAYER_ITEM_ID
+    	)
+    	values(
+   		#id#,
+   		#playerItemId#
+   		);
+   		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+    </insert>
+    
+    <update id="deleteInbox" parameterClass="java.lang.Integer">
+   		update MESSAGE m set m.IS_DELETED='Y' where m.ID=#messageID#;
+    </update>
+    
+    <update id="updateMessageOpen" parameterClass="java.lang.Integer">
+   		update MESSAGE m set m.OPEN='Y' where m.ID=#messageID#;
+    </update>
+    <update id="updateMessageContent" parameterClass="java.util.Map">
+   		update MESSAGE m set m.CONTENT=#message#, m.SYS_ITEMS=#itemsId# ,m.ITEM_UNITTYPES = #unitType# ,m.ITEM_UNITS = #unit# where m.ID=#messageId#;
+    </update>
+    
+    <delete id="deleteMessageItem" parameterClass="java.lang.Integer">
+    	delete from MESSAGE_ITEM where MESSAGE_ID=#value#;
+    </delete>
+</sqlMap>

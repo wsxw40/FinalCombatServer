@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysMissionMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysMission" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="MISSIONTITLE" property="missiontitle" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="SIMPLE_TARGET" property="simpleTarget" jdbcType="INTEGER" />
+    <result column="NORMAL_TARGET" property="normalTarget" jdbcType="INTEGER" />
+    <result column="HARD_TARGET" property="hardTarget" jdbcType="INTEGER" />
+    <result column="COLOR" property="color" jdbcType="INTEGER" />
+    <result column="CHARACTER_ID" property="characterId" jdbcType="INTEGER" />
+    <result column="ACTION" property="action" jdbcType="INTEGER" />
+    <result column="STAT_TYPE" property="statType" jdbcType="INTEGER" />
+    <result column="NORMAL_ITEMS" property="normalItems" jdbcType="VARCHAR" />
+    <result column="VIP_ITEMS" property="vipItems" jdbcType="VARCHAR" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+    <result column="WEIGHT" property="weight" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, `NAME`, MISSIONTITLE, DESCRIPTION, TITLE, TYPE, SIMPLE_TARGET, NORMAL_TARGET, HARD_TARGET, 
+    COLOR, CHARACTER_ID, ACTION, STAT_TYPE, NORMAL_ITEMS, VIP_ITEMS, BACK_UP, WEIGHT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysMission" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_MISSION
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysMission" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_MISSION
+    where 1=1
+  </select>  
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_MISSION where 1=1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '${searchValue}%' or MISSIONTITLE like '${searchValue}%' or TITLE like '${searchValue}%')
+    </if>
+    <if test="orderColumn != null">
+    order by c.${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_MISSION where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '${searchValue}%' or MISSIONTITLE like '${searchValue}%' or TITLE like '${searchValue}%')
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_MISSION
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysMission" >
+    insert into SYS_MISSION (ID, `NAME`, MISSIONTITLE, 
+      DESCRIPTION, TITLE, TYPE, 
+      SIMPLE_TARGET, NORMAL_TARGET, HARD_TARGET, 
+      COLOR, CHARACTER_ID, ACTION, 
+      STAT_TYPE, NORMAL_ITEMS, VIP_ITEMS, 
+      BACK_UP, WEIGHT)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{missiontitle,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{simpleTarget,jdbcType=INTEGER}, #{normalTarget,jdbcType=INTEGER}, #{hardTarget,jdbcType=INTEGER}, 
+      #{color,jdbcType=INTEGER}, #{characterId,jdbcType=INTEGER}, #{action,jdbcType=INTEGER}, 
+      #{statType,jdbcType=INTEGER}, #{normalItems,jdbcType=VARCHAR}, #{vipItems,jdbcType=VARCHAR}, 
+      #{backUp,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_MISSION (ID, `NAME`, MISSIONTITLE, 
+      DESCRIPTION, TITLE, TYPE, 
+      SIMPLE_TARGET, NORMAL_TARGET, HARD_TARGET, 
+      COLOR, CHARACTER_ID, ACTION, 
+      STAT_TYPE, NORMAL_ITEMS, VIP_ITEMS, 
+      BACK_UP, WEIGHT)
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+    	(#{item.id,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, #{item.missiontitle,jdbcType=VARCHAR}, 
+      #{item.description,jdbcType=VARCHAR}, #{item.title,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+      #{item.simpleTarget,jdbcType=INTEGER}, #{item.normalTarget,jdbcType=INTEGER}, #{item.hardTarget,jdbcType=INTEGER}, 
+      #{item.color,jdbcType=INTEGER}, #{item.characterId,jdbcType=INTEGER}, #{item.action,jdbcType=INTEGER}, 
+      #{item.statType,jdbcType=INTEGER}, #{item.normalItems,jdbcType=VARCHAR}, #{item.vipItems,jdbcType=VARCHAR}, 
+      #{item.backUp,jdbcType=VARCHAR}, #{item.weight,jdbcType=VARCHAR})
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysMission" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_MISSION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        `NAME`,
+      </if>
+      <if test="missiontitle != null" >
+        MISSIONTITLE,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="title != null" >
+        TITLE,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="simpleTarget != null" >
+        SIMPLE_TARGET,
+      </if>
+      <if test="normalTarget != null" >
+        NORMAL_TARGET,
+      </if>
+      <if test="hardTarget != null" >
+        HARD_TARGET,
+      </if>
+      <if test="color != null" >
+        COLOR,
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID,
+      </if>
+      <if test="action != null" >
+        ACTION,
+      </if>
+      <if test="statType != null" >
+        STAT_TYPE,
+      </if>
+      <if test="normalItems != null" >
+        NORMAL_ITEMS,
+      </if>
+      <if test="vipItems != null" >
+        VIP_ITEMS,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+      <if test="weight != null" >
+        WEIGHT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="missiontitle != null" >
+        #{missiontitle,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="simpleTarget != null" >
+        #{simpleTarget,jdbcType=INTEGER},
+      </if>
+      <if test="normalTarget != null" >
+        #{normalTarget,jdbcType=INTEGER},
+      </if>
+      <if test="hardTarget != null" >
+        #{hardTarget,jdbcType=INTEGER},
+      </if>
+      <if test="color != null" >
+        #{color,jdbcType=INTEGER},
+      </if>
+      <if test="characterId != null" >
+        #{characterId,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=INTEGER},
+      </if>
+      <if test="statType != null" >
+        #{statType,jdbcType=INTEGER},
+      </if>
+      <if test="normalItems != null" >
+        #{normalItems,jdbcType=VARCHAR},
+      </if>
+      <if test="vipItems != null" >
+        #{vipItems,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysMission" >
+    update SYS_MISSION
+    <set >
+      <if test="name != null" >
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="missiontitle != null" >
+        MISSIONTITLE = #{missiontitle,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="simpleTarget != null" >
+        SIMPLE_TARGET = #{simpleTarget,jdbcType=INTEGER},
+      </if>
+      <if test="normalTarget != null" >
+        NORMAL_TARGET = #{normalTarget,jdbcType=INTEGER},
+      </if>
+      <if test="hardTarget != null" >
+        HARD_TARGET = #{hardTarget,jdbcType=INTEGER},
+      </if>
+      <if test="color != null" >
+        COLOR = #{color,jdbcType=INTEGER},
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID = #{characterId,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        ACTION = #{action,jdbcType=INTEGER},
+      </if>
+      <if test="statType != null" >
+        STAT_TYPE = #{statType,jdbcType=INTEGER},
+      </if>
+      <if test="normalItems != null" >
+        NORMAL_ITEMS = #{normalItems,jdbcType=VARCHAR},
+      </if>
+      <if test="vipItems != null" >
+        VIP_ITEMS = #{vipItems,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        WEIGHT = #{weight,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysMission" >
+    update SYS_MISSION
+    set `NAME` = #{name,jdbcType=VARCHAR},
+      MISSIONTITLE = #{missiontitle,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      TITLE = #{title,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=INTEGER},
+      SIMPLE_TARGET = #{simpleTarget,jdbcType=INTEGER},
+      NORMAL_TARGET = #{normalTarget,jdbcType=INTEGER},
+      HARD_TARGET = #{hardTarget,jdbcType=INTEGER},
+      COLOR = #{color,jdbcType=INTEGER},
+      CHARACTER_ID = #{characterId,jdbcType=INTEGER},
+      ACTION = #{action,jdbcType=INTEGER},
+      STAT_TYPE = #{statType,jdbcType=INTEGER},
+      NORMAL_ITEMS = #{normalItems,jdbcType=VARCHAR},
+      VIP_ITEMS = #{vipItems,jdbcType=VARCHAR},
+      BACK_UP = #{backUp,jdbcType=VARCHAR},
+      WEIGHT = #{weight,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

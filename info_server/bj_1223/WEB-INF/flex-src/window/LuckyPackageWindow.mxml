@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import common.Constants;
+			import popup.*;
+			import vo.*;
+			import event.*;
+			import mx.controls.DataGrid;
+			import utils.*;
+			import mx.managers.PopUpManager;
+			import view.*;
+			import mx.utils.StringUtil;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.events.CloseEvent;
+			private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+			[Bindable]private var fixedList:ArrayCollection;
+			[Bindable]private var randomList:ArrayCollection;
+			private var weapons : ArrayCollection = new ArrayCollection();
+			[Bindable]private var fixed:SysChest;
+			[Bindable]private var random:SysChest;
+			[Bindable]private var _levelInfo:LevelInfo = new LevelInfo();
+			[Bindable]
+			public function set levelInfo(lf:LevelInfo):void{
+				 this._levelInfo=lf;
+			}
+			public function get levelInfo():LevelInfo{
+				 return this._levelInfo;
+			}
+			
+			private function init():void{
+				getRo.getFixedList();
+				getRo.getRandomList();
+				getRo.getPlayerPtWeights();
+				getRo.getPlayerPtFlagWeights_1();
+				getRo.getPlayerPtFlagWeights_2();
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+			private function fixedSelected():void{
+				this.fixed = fixedDataGrid.selectedItem as SysChest;
+			}
+			private function randomSelected():void{
+				this.random = randomDataGrid.selectedItem as SysChest;
+			}
+			private function getFixedListHandler(evt:ResultEvent):void{
+				fixedList = evt.result as ArrayCollection;
+				this.fixed = null;
+			}
+			private function getRandomListHandler(evt:ResultEvent):void{
+				randomList = evt.result as ArrayCollection;
+				this.random = null;
+			}
+			private function getPlayerPtWtsHandler(evt:ResultEvent):void{
+				var weights:String = evt.result as String;
+				playerGetPTWt.text = weights;
+			}
+			private function getPlayerPtFgWts_1Handler(evt:ResultEvent):void{
+				var weights:String = evt.result as String;
+				playerPTFlagWtType1.text = weights;
+			}
+			private function getPlayerPtFgWts_2Handler(evt:ResultEvent):void{
+				var weights:String = evt.result as String;
+				playerPTFlagWtType2.text = weights;
+			}
+			private function fixedSaveBtnClick():void{
+			
+			}
+			private function randomSaveBtnClick():void{
+			
+			}
+			private var flag:int = 0;
+			private var editAwardView:SysItemSelectOneView;
+			private function setFixed():void{
+            	if(this.fixed != null && this.fixed.id >= 0){
+            		flag = 1;
+            		editAwardView=PopUpManager.createPopUp(this,SysItemSelectOneView,true) as SysItemSelectOneView;
+					PopUpManager.centerPopUp(editAwardView);
+					editAwardView.okBtn.addEventListener(MouseEvent.CLICK,chooseAward);
+            	} else {
+            		Alert.show("请选择一个幸运大礼包");
+            	}
+            }
+            private function setRandom():void{
+            	if(this.random != null && this.random.id >= 0){
+            		flag = 2;
+            		editAwardView=PopUpManager.createPopUp(this,SysItemSelectOneView,true) as SysItemSelectOneView;
+					PopUpManager.centerPopUp(editAwardView);
+					editAwardView.okBtn.addEventListener(MouseEvent.CLICK,chooseAward);
+            	} else {
+            		Alert.show("请选择一个随机收益");
+            	}
+            }
+            private function chooseAward(e:Event):void{
+            	var selectedSysItem:SysItem=editAwardView.dg.selectedItem as SysItem;
+				if(selectedSysItem==null){
+					Alert.show("请选择一个物品");
+					return;
+				}else{
+					if(flag==1){
+						this.fixed.sysItemId=selectedSysItem.id;
+						this.fixed.sysItemName=selectedSysItem.displayNameCN;
+					}else{
+						this.random.sysItemId=selectedSysItem.id;
+						this.random.sysItemName=selectedSysItem.displayNameCN;
+					}
+					PopUpManager.removePopUp(editAwardView);
+				}
+            }
+            [Bindable]
+			private var levelArray:ArrayCollection= new ArrayCollection(
+            [ 
+              {label:"铜", data:1},
+              {label:"银", data:2},
+              {label:"金", data:3},
+              {label:"白金", data:4}
+            ]);
+            [Bindable]
+            private var useTypeArray:ArrayCollection= new ArrayCollection(
+            [ 
+              {label:"永久",data:0},
+              {label:"个数消耗", data:1},
+              {label:"时间消耗", data:2}
+            ]);
+            [Bindable]
+           	private var isNotictArray:ArrayCollection= new ArrayCollection(
+            [ 
+              {label:"不公告", data:0},
+              {label:"公告", data:1}
+            ]);
+            private function cduOperationHandler(e:ResultEvent):void{
+				var result:int = e.result as int;
+				if(2 == result){
+					getRo.getRandomList();
+					this.random = null;
+					Alert.show("操作成功");
+				} else if(1 == result) {
+					getRo.getFixedList();
+					this.fixed = null;
+					Alert.show("操作成功");
+				} else {
+					Alert.show("操作失败");
+				}
+			}
+			private function refreshFixed():void{
+				getRo.getFixedList();
+			}
+			private function refreshRandom():void{
+				getRo.getRandomList();
+			}
+			private function createFixedBtnClick():void{
+				this.fixed = new SysChest();
+				this.fixed.type = 1;
+			}
+			private function saveFixed():void{
+				if(this.fixed != null){
+					this.fixed.price = parseInt(fixedPrice.text);
+					this.fixed.chipPrice = parseInt(fixedChipPrice.text);
+					this.fixed.level = this.fixedLevelSelect.selectedIndex + 1;
+					this.fixed.useType = this.fixedUseTypeSelect.selectedIndex;
+					this.fixed.number = parseInt(this.fixedNumber.text);
+					this.fixed.isDeleted = fixedIsDeleted.selectedIndex;
+					if(this.fixed.id == 0){
+						if(this.fixed.sysItemId <= 0){
+							Alert.show("固定收益未设定");
+						} else {
+							createRo.createSysChest(gmUser, this.fixed);
+						}
+					} if(this.fixed.id > 0){
+						if(this.fixed.sysItemId <= 0){
+							Alert.show("固定收益未设定");
+						} else {
+							updateRo.updateSysChest(gmUser, this.fixed);
+						}
+					}
+				}
+			}
+			
+			private function saveRandom():void{
+				if(this.random != null){
+					this.random.level = this.randomLevelSelect.selectedIndex + 1;
+					this.random.weight = parseInt(this.randomWeight.text);
+					this.random.weight1 = parseInt(this.randomWeight1.text);
+					this.random.number = parseInt(this.randomNumber.text);
+					this.random.useType = this.randomUseTypeSelect.selectedIndex;
+					this.random.isNotice = this.randomIsNoticeSelect.selectedIndex;
+					this.random.isDeleted = randomIsDeleted.selectedIndex;
+					if(this.random.id == 0){
+						if(this.random.sysItemId <= 0){
+							Alert.show("随机收益未设定");
+						} else {
+							createRo.createSysChest(gmUser, this.random);
+						}
+					} else if(this.random.id > 0){
+						if(this.random.sysItemId <= 0){
+							Alert.show("随机收益未设定");
+						} else {
+							updateRo.updateSysChest(gmUser, this.random);
+						}
+					}
+				}
+			}
+			private function savePlayerPtWts():void{
+				if(playerGetPTWt.text!=null && StringUtil.trim(playerGetPTWt.text).length>0){
+					updateRo.updatePlayerPtWeights(gmUser,1,StringUtil.trim(playerGetPTWt.text));
+				}
+				if(playerPTFlagWtType1.text!=null && StringUtil.trim(playerPTFlagWtType1.text).length>0){
+					updateRo.updatePlayerPtWeights(gmUser,2,StringUtil.trim(playerPTFlagWtType1.text));
+				}
+				if(playerPTFlagWtType2.text!=null && StringUtil.trim(playerPTFlagWtType2.text).length>0){
+					updateRo.updatePlayerPtWeights(gmUser,3,StringUtil.trim(playerPTFlagWtType2.text));
+				}
+			}
+			
+			private function createRandom():void{
+				this.random = new SysChest();
+				this.random.type = 2;
+			}
+			private function deleteSysChest(type:int):void{
+				if(type == 1){
+					if(this.fixed != null && this.fixed.id > 0){
+						deleteRo.deleteSysChest(gmUser, this.fixed);
+					}
+				} else if(type == 2){
+					if(this.random != null && this.random.id > 0){
+						deleteRo.deleteSysChest(gmUser, this.random);
+					}
+				}
+			}
+			private function test():void{
+				getRo.test();
+			}
+			private function testHandler(evt:ResultEvent):void{
+				var miliseconds : int = evt.result as int;
+				Alert.show(miliseconds.toString() + "ms");
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getFixedList" result="getFixedListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getRandomList" result="getRandomListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="test" result="testHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getPlayerPtWeights" result="getPlayerPtWtsHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getPlayerPtFlagWeights_1" result="getPlayerPtFgWts_1Handler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getPlayerPtFlagWeights_2" result="getPlayerPtFgWts_2Handler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateSysChest" result="cduOperationHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="updatePlayerPtWeights"  fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteSysChest" result="cduOperationHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createSysChest" result="cduOperationHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox width="100%" height="100%">
+	<mx:VDividedBox  height="100%" width="100%">
+	<mx:HBox width="100%" height="50%">
+		<mx:Panel height="370" width="60%" title="{resourceManager.getString('Language','label.BagList')}">	
+			<mx:DataGrid id="fixedDataGrid" dataProvider="{fixedList}" itemClick="fixedSelected()" width="100%" height="100%" editable="false" >
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="ID" width="50"/>
+				<mx:DataGridColumn dataField="level" headerText="{resourceManager.getString('Language','label.GradeLevel')}" width="100"/>
+				<mx:DataGridColumn dataField="price" headerText="{resourceManager.getString('Language','label.FCPrice')}" width="70"/>
+				<mx:DataGridColumn dataField="chipPrice" headerText="{resourceManager.getString('Language','label.ChipPrice')}" width="70"/>
+				<mx:DataGridColumn dataField="sysItemNameCN" headerText="{resourceManager.getString('Language','label.FixingIncome')}" width="100"/>
+				<mx:DataGridColumn dataField="number" headerText="{resourceManager.getString('Language','label.NumOrTime')}" width="100"/>
+				<mx:DataGridColumn dataField="useType" headerText="{resourceManager.getString('Language','label.ConsumeTypeDetail')}" width="100"/>
+				<mx:DataGridColumn dataField="isDeleted" headerText="{resourceManager.getString('Language','label.IsSoldOut')}" width="50"/>
+			</mx:columns>
+			</mx:DataGrid>
+		</mx:Panel>
+		<mx:Panel height="370" width="40%" title="{resourceManager.getString('Language','label.BigBag')}">
+			<mx:Form>
+				<mx:FormItem label="ID：">
+		        	<mx:Label text="{this.fixed.id}"/>     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Grade')}：">
+					<mx:HBox>
+						<mx:ComboBox  dataProvider="{levelArray}" id="fixedLevelSelect" selectedIndex="{this.fixed.level - 1}"/>
+					</mx:HBox>
+		        	<!--<mx:TextInput id="fixedLevel" text="{this.fixed.level}"/> -->    
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Price')}：">
+					<mx:HBox>
+						<mx:TextInput id="fixedPrice" text="{this.fixed.price}"/> 
+			        	<mx:Label text="{resourceManager.getString('Language','label.FC')}"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.ChipPrice')}：">
+					<mx:HBox>
+			        	<mx:TextInput id="fixedChipPrice" text="{this.fixed.chipPrice}"/>
+			        	<mx:Label text="({resourceManager.getString('Language','label.Chip')})"/>
+					</mx:HBox>    
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.SetFixedBenefit')}：">
+					<mx:HBox>
+						<mx:Label text="{this.fixed.sysItemName}" width="150"/>
+						<mx:Button label="{resourceManager.getString('Language','label.ClickSet')}" click="setFixed()"/>
+					</mx:HBox>
+		        	 
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.NumOrTime')}：">
+					<mx:HBox>
+			        	<mx:TextInput id="fixedNumber" text="{this.fixed.number}"/>
+			        	<mx:Label text="({resourceManager.getString('Language','label.NumOrDay')})"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.ConsumeType')}：">
+					<mx:HBox>
+						<mx:ComboBox  dataProvider="{useTypeArray}" id="fixedUseTypeSelect" selectedIndex="{this.fixed.useType}"/>
+					</mx:HBox>
+		        	<!--<mx:TextInput id="randomUseType" text="{this.random.useType}"/> -->    
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.IsSoldOut')}：">
+					<mx:ComboBox id="fixedIsDeleted" dataProvider="{Constants.isDeletedArray}" selectedIndex="{this.fixed.isDeleted}"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:ControlBar>	
+	        	<mx:Button id="createFixedBtn" label="{resourceManager.getString('Language','button.New')}" click="createFixedBtnClick()"/>
+	        	<mx:Button id="deleteFixedBtn" label="{resourceManager.getString('Language','button.Delete')}" click="deleteSysChest(1)"/>
+	        	<!--<mx:Button id="editFixedBtn" label="编辑{resourceManager.getString('Language','button.Save')}"/>-->
+	        	<mx:Button id="updateFixedBtn" label="{resourceManager.getString('Language','button.Save')}" click="saveFixed()"/>
+	        	<!--<mx:Button id="setFixedBtn" label="设置固定收益" click="setFixed();"/>-->
+	        	<mx:Button id="refreshFixedBtn" label="{resourceManager.getString('Language','button.Refresh')}" click="refreshFixed()"/>
+	    	</mx:ControlBar>
+		</mx:Panel>
+	</mx:HBox>
+	<mx:HBox width="100%" height="50%">
+		<mx:Panel height="370" width="60%" title="{resourceManager.getString('Language','label.RandomBenefitList')}">	
+			<mx:DataGrid id="randomDataGrid" dataProvider="{randomList}" itemClick="randomSelected()" width="100%" height="100%" editable="false">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="ID" width="50"/>
+				<mx:DataGridColumn dataField="level" headerText="{resourceManager.getString('Language','label.GradeLevel')}" width="100"/>
+				<mx:DataGridColumn dataField="weight" headerText="{resourceManager.getString('Language','label.Weight')}" width="80"/>
+				<mx:DataGridColumn dataField="weight1" headerText="{resourceManager.getString('Language','label.Weight')}1" width="80"/>
+				<mx:DataGridColumn dataField="sysItemName" headerText="{resourceManager.getString('Language','label.RandomBenefit')}" width="80"/>
+				<mx:DataGridColumn dataField="number" headerText="{resourceManager.getString('Language','label.NumOrTime')}" width="100"/>
+				<mx:DataGridColumn dataField="useType" headerText="{resourceManager.getString('Language','label.ConsumeTypeDetail')}" width="100"/>
+				<mx:DataGridColumn dataField="isNotice" headerText="{resourceManager.getString('Language','label.IsNotice')}" width="80"/>
+				<mx:DataGridColumn dataField="isDeleted" headerText="{resourceManager.getString('Language','label.IsSoldOut')}" width="50"/>
+			</mx:columns>
+			</mx:DataGrid>
+		</mx:Panel>
+		<mx:Panel height="370" width="40%" title="{resourceManager.getString('Language','label.RandomBenefit')}">	
+			<mx:Form>
+				<mx:FormItem label="ID：">
+		        	<mx:Label text="{this.random.id}"/>     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Grade')}：">
+					<mx:HBox>
+						<mx:ComboBox  dataProvider="{levelArray}" id="randomLevelSelect" selectedIndex="{this.random.level - 1}"/>
+					</mx:HBox>
+		        	<!--<mx:TextInput id="randomLevel" text="{this.random.level}"/> -->    
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Weight')}：">
+		        	<mx:TextInput id="randomWeight" text="{this.random.weight}"/>     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.Weight')}1：">
+		        	<mx:TextInput id="randomWeight1" text="{this.random.weight1}"/>     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.SetRandomBenefit')}：">
+					<mx:HBox>
+						<mx:Label width="150" text="{this.random.sysItemName}"/>
+						<mx:Button id="setRandomBtn" label="{resourceManager.getString('Language','label.ClickSet')}" click="setRandom()"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.NumOrTime')}：">
+					<mx:HBox>
+			        	<mx:TextInput id="randomNumber" text="{this.random.number}"/>
+			        	<mx:Label text="{resourceManager.getString('Language','label.NumOrDay')}"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.ConsumeType')}：">
+					<mx:HBox>
+						<mx:ComboBox  dataProvider="{useTypeArray}" id="randomUseTypeSelect" selectedIndex="{this.random.useType}"/>
+					</mx:HBox>
+		        	<!--<mx:TextInput id="randomUseType" text="{this.random.useType}"/> -->    
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.IsSoldOut')}：">
+					<mx:HBox>
+						<mx:ComboBox  dataProvider="{isNotictArray}" id="randomIsNoticeSelect" selectedIndex="{this.random.isNotice}"/>
+					</mx:HBox>
+		        	<!--<mx:TextInput id="randomNotice"  text="{this.random.isNotice}"/>-->     
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.IsSoldOut')}：">
+					<mx:ComboBox id="randomIsDeleted" dataProvider="{Constants.isDeletedArray}" selectedIndex="{this.random.isDeleted}"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:ControlBar>	
+	        	<mx:Button id="createRandomBtn" label="{resourceManager.getString('Language','button.New')}" click="createRandom()"/>
+	        	<mx:Button id="deleteRandomBtn" label="{resourceManager.getString('Language','button.Delete')}" click="deleteSysChest(2)"/>
+	        	<!--<mx:Button id="editRandomBtn" label="编辑{resourceManager.getString('Language','button.New')}"/>-->
+	        	<mx:Button id="updateRandomBtn" label="{resourceManager.getString('Language','button.Save')}" click="saveRandom()"/>
+	        	<!--<mx:Button id="setRandomBtn" label="设置随机收益{resourceManager.getString('Language','button.New')}" click="setRandom();"/>-->
+	        	<mx:Button id="refreshRandomBtn" label="{resourceManager.getString('Language','button.Refresh')}" click="refreshRandom()"/>
+	        	<mx:Button label="test" click="test()"/>
+	    	</mx:ControlBar>
+		</mx:Panel>
+		<mx:Panel height="370" width="30%" title="{resourceManager.getString('Language','label.PlayerPtConfs')}">	
+			<mx:Label text="{resourceManager.getString('Language','label.PlayerPtWts')}" /><mx:TextInput id="playerGetPTWt"/>
+			<mx:Label text="{resourceManager.getString('Language','label.PlayerPtFlagWts1')}" /><mx:TextInput id="playerPTFlagWtType1"/>
+			<mx:Label text="{resourceManager.getString('Language','label.PlayerPtFlagWts2')}" /><mx:TextInput id="playerPTFlagWtType2"/>
+			<mx:ControlBar>	
+	        	<mx:Button id="updateBtn" label="{resourceManager.getString('Language','button.Save')}" click="savePlayerPtWts()"/>
+	    	</mx:ControlBar>
+		</mx:Panel>
+	</mx:HBox>
+	</mx:VDividedBox>	
+	</mx:HBox>
+</mx:VBox>

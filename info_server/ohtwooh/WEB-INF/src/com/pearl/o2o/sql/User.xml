@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="User">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="User" type="com.pearl.o2o.pojo.User"/> 	
+
+	<resultMap id="selectUserResult" class="User">
+		<result property="id" column="ID"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="password" column="PASSWORD"/>	
+		<result property="deleted" column="DELETED"/>			
+	</resultMap>
+  
+	<select id="select" parameterClass="java.lang.String" resultMap="selectUserResult">
+   	 	select 
+   	 		u.ID,
+   	 		u.USER_NAME,
+   	 		u.PASSWORD,
+   	 		u.DELETED
+    	from USER u
+		where u.USER_NAME=#value#
+			and u.DELETED='N'
+	</select>  	
+	
+	<select id="selectById" parameterClass="java.lang.Integer" resultMap="selectUserResult">
+   	 	select 
+   	 		u.ID,
+   	 		u.USER_NAME,
+   	 		u.PASSWORD,
+   	 		u.DELETED
+    	from USER u
+		where u.ID=#value#
+			and u.DELETED='N'
+	</select>  
+	
+	<insert id="insert" parameterClass="User">
+		insert into USER
+			(ID,
+			USER_NAME,
+			PASSWORD,
+			DELETED)
+		values
+			(#id#,
+			#userName#,
+			#password#,
+			'N')
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>	
+	</insert>
+</sqlMap>

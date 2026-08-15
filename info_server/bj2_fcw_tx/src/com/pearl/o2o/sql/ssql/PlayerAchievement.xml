@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerAchievement">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PlayerAchievement" type="com.pearl.o2o.pojo.PlayerAchievement"/> 	
+	<resultMap id="selectPlayerAchievementResult" class="PlayerAchievement">
+		<result property="id" 				column="ID"/>
+		<result property="playerId" 		column="PLAYER_ID"/>
+		<result property="achievementId" 	column="ACHIEVEMENT_ID"/>		
+		<result property="status" 			column="STATUS"/>
+		<result property="number" 			column="NUMBER"/>
+		<result property="visible" 			column="VISIBLE"/>
+	</resultMap>  		
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerAchievementResult">
+   	 	select 	*	
+    	from PLAYER_ACHIEVEMENT pi    	   
+    	where  pi.PLAYER_ID =  #fid# 
+	</select>		
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="PlayerAchievement">
+		insert into PLAYER_ACHIEVEMENT(
+   	 		PLAYER_ID,
+   	 		ACHIEVEMENT_ID,
+   	 		STATUS,
+   	 		NUMBER,
+   	 		VISIBLE
+		) values (
+			#playerId#,
+			#achievementId#,
+			#status#,
+			#number#,
+			#visible#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="PlayerAchievement">
+		update PLAYER_ACHIEVEMENT 
+			set STATUS  = #status#,
+				NUMBER  = #number#,
+				VISIBLE = #visible#
+		where  ID=#id#;
+	</update>
+	
+</sqlMap>

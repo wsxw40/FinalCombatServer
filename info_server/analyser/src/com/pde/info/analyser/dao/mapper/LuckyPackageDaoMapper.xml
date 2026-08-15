@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.LuckyPackageDao">
+
+	<resultMap id="StatisticResultMap" type="com.pde.info.analyser.pojo.LuckyPackageStatistic">
+		<result column="STATISTIC_DATE" property="statisticDate" jdbcType="VARCHAR" />
+		<result column="USING_NUMBER_GOLD" property="usingNumberGold" jdbcType="INTEGER" />
+		<result column="USER_NUMBER_GOLD" property="userNumberGold" jdbcType="INTEGER" />
+		<result column="USING_NUMBER_SILVER" property="usingNumberSilver" jdbcType="INTEGER" />
+		<result column="USER_NUMBER_SILVER" property="userNumberSilver" jdbcType="INTEGER" />
+		<result column="USING_NUMBER_COPPER" property="usingNumberCopper" jdbcType="INTEGER" />
+		<result column="USER_NUMBER_COPPER" property="userNumberCopper" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="addLuckyPackage" parameterType="com.pde.info.analyser.pojo.LuckyPackage" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `INFO_LUCKY_PACKAGE` (`PLAYER_ID`,`PACKAGE_LEVEL`,`PAY_TYPE`,`SYSTEM_ID`,`SYSTEM_NUMBER`,`USE_TYPE`,`CHIP_PRICE`,`CREATE_DATE`) 
+		VALUES ( #{playerId}, #{packageLevel}, #{payType}, #{systemId}, #{systemNumber}, #{useType},#{chipPrice}, NOW());
+	</insert>
+
+	<select id="getStatistic" resultMap="StatisticResultMap" parameterType="java.util.Map" >
+    	SELECT `STATISTIC_DATE`,`USING_NUMBER_GOLD`,`USER_NUMBER_GOLD`,`USING_NUMBER_SILVER`,`USER_NUMBER_SILVER`,`USING_NUMBER_COPPER`,`USER_NUMBER_COPPER`
+    	FROM `INFO_REPORT_LUCKY_PACKAGE` 
+    	WHERE `STATISTIC_DATE` BETWEEN #{startDate} AND #{endDate}
+    	ORDER BY `STATISTIC_DATE` DESC
+  	</select>
+
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="GmGroup">
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="GmGroup" type="com.pearl.o2o.pojo.GmGroup"/> 	
+  
+	<select id="select" parameterClass="java.util.Map" resultClass="GmGroup">
+		SELECT 	DISTINCT
+				g.ID				as id,
+				g.NAME				as name,
+				g.DESCRIPTION		as description,
+				g.CREATOR_ID 		as creatorId,
+				u.NAME				as createName,
+				g.CODE				as code
+		FROM GM_GROUP g LEFT JOIN GM_USER u ON g.CREATOR_ID = u.ID
+		<dynamic prepend="WHERE">
+			<isNotNull property="groups">
+				<isNotEmpty prepend="AND" property="groups">
+					<iterate property="groups" open="(" close=")" conjunction="OR">
+						g.CODE LIKE '$groups[].code$%'		
+					</iterate>			
+				</isNotEmpty>		
+			</isNotNull>					
+			<isNotNull prepend="AND" property="codeStr">
+				g.CODE LIKE '$codeStr$%'		
+			</isNotNull>
+			<isNotNull prepend="AND" property="groupId">
+				g.ID = #groupId#		
+			</isNotNull>	
+		</dynamic>					
+	</select>
+	
+	<select id="selectUserGroups" parameterClass="java.lang.Integer" resultClass="GmGroup">
+		SELECT	g.ID				as id,
+				g.NAME				as name,
+				g.DESCRIPTION		as description,
+				g.CREATOR_ID 		as creatorId,
+				u.NAME				as createName,
+				g.CODE				as code
+		FROM GM_GROUP g LEFT JOIN GM_USER u ON g.CREATOR_ID = u.ID, 
+			 GM_USER_GROUP ug
+		WHERE ug.USER_ID = #gmUserId# 
+			AND ug.GROUP_ID = g.ID
+		ORDER BY LENGTH(g.CODE), g.CODE
+	</select>
+	
+	<select id="selectUserCreateGroups" parameterClass="java.lang.Integer" resultClass="GmGroup">
+		SELECT	g.ID				as id,
+				g.NAME				as name,
+				g.CODE				as code
+		FROM GM_GROUP g
+		WHERE g.CREATOR_ID = #value#
+		ORDER BY LENGTH(g.CODE), g.CODE
+	</select>
+
+	<insert id="insert" parameterClass="GmGroup">
+		INSERT INTO GM_GROUP (
+			NAME,
+			DESCRIPTION,
+			CREATOR_ID,
+			CODE
+		) VALUES (
+			#name#,
+			#description#,
+			#creatorId#,
+			genGmGroupCode(#code#)
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="GmGroup">
+		UPDATE GM_GROUP 
+		SET NAME		= #name#,
+			DESCRIPTION	= #description#,
+			CREATOR_ID 	= #creatorId#
+		WHERE ID = #id#;
+	</update>
+	
+	<delete id="delete" parameterClass="java.util.Map">
+		DELETE FROM GM_GROUP
+		<dynamic prepend="WHERE">
+			<isNotNull property="groups">
+				<isNotEmpty property="groups" prepend="AND">
+					<iterate property="groups" open="(" close=")" conjunction="OR">
+						ID = #groups[].id#				
+					</iterate>			
+				</isNotEmpty>		
+			</isNotNull>	
+		</dynamic>
+	</delete>
+</sqlMap>
+
+ 	

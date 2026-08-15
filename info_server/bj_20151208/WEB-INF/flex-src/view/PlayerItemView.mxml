@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import vo.PlayerItem;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import vo.GmUser;
+			import window.PlayerManageWindow;
+			private var model:O2oModel = O2oModel.getInstance();
+			
+			public var fatherWindow:PlayerManageWindow = null;
+			[Bindable]
+			public var playerId:int=0;
+			[Bindable]
+			public var playerItem:PlayerItem=null;
+			[Bindable]
+			public var playerItemList:ArrayCollection=new ArrayCollection();
+			 [Bindable]
+            public var types:ArrayCollection = new ArrayCollection(
+                [ {label:"ALL", data:0},
+               {label:"武器/Weapon", data:1},
+                {label:"服装/Top", data:2},
+                {label:"配饰/Accessory", data:3},
+                {label:"道具/Items", data:4},
+                {label:"素材/Material ", data:5},
+                {label:"蓝图/Blueprint", data:6},
+                {label:"大礼包/GiftPack", data:7},
+                {label:"打开类/OpenType", data:8}
+                   ]);
+			public function init():void{
+				initButtons();
+				if(playerId!=0){
+					getRo.getPlayerItemList(playerId);
+				}
+			}
+			private function initButtons():void{
+				deleteBtn.enabled=true;
+				playerItemDatagrid.editable=false;
+			}
+			private function getHandler(e:ResultEvent):void{
+				this.playerItemList=e.result as ArrayCollection;
+				playerItem = null;
+				if(playerItemList == null){
+					this.fatherWindow.playerItemList.title = "PlayerNotDefaultItemList(total 0)";
+				} else {
+					this.fatherWindow.playerItemList.title = "PlayerNotDefaultItemList(total" + playerItemList.length.toString() + ")";
+				}
+			}
+
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+
+
+			private function onDeleteBtnClick():void{
+				if(this.playerItem!=null){
+					if(playerItem.pack ==true || playerItem.isDefault == 'Y'){
+						Alert.show(resourceManager.getString('Language','message.NeedSelected'));
+					}else{
+						deleteRo.deletePlayerItem(model.gmUser, this.playerItem);
+					}
+				} else {
+					Alert.show(resourceManager.getString('Language','NeedSelectedItem'));
+				}
+			}
+//			private function onEditBtnClick():void{
+//				save.enabled=true;
+//				newBtn.enabled=false;
+//				deleteBtn.enabled=false;
+//				editBtn.enabled=false;
+//				canelBtn.enabled=true;
+//				paymentDatagrid.editable=true;
+//			}
+			private function onSaveBtnClick():void{
+				initButtons();
+			}
+			private function onCanelBtnClick():void{
+				initButtons();
+			}
+			private function selectHandler():void{
+				this.playerItem=playerItemDatagrid.selectedItem as PlayerItem;
+			}
+			private function putOnPlayerItem():void{
+				if(this.playerItem == null){
+					Alert.show(resourceManager.getString('Language','NeedSelected'));
+				} else if(this.playerItem.pack > 0){
+					Alert.show(resourceManager.getString('Language','AlreadyWeared'));
+				} else {
+					updateRo.putOnPlayerItem(model.gmUser, this.playerItem.id, this.playerItem.playerId);
+				}
+			}
+			private function putOnPlayerItemHandler():void{
+				init();
+				Alert.show(resourceManager.getString('Language','WearSuccessed'));
+			}
+			private var type:int=0;
+			private function closeHandler(e:Event):void{
+				type=ComboBox(e.target).selectedItem.data;
+				if(type==0){
+					playerItemList.filterFunction=null;
+					playerItemList.refresh();
+				}else{
+					playerItemList.filterFunction=choiceType;
+					playerItemList.refresh();
+				}
+			
+			}
+			private function choiceType(item:Object):Boolean{
+				return item.type==type;
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getPlayerItemList" result="getHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deletePlayerItem" result="init()" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="putOnPlayerItem" result="putOnPlayerItemHandler()" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:VBox height="100%" width="100%">
+	<mx:DataGrid id="playerItemDatagrid" dataProvider="{playerItemList}" itemClick="selectHandler()">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="{resourceManager.getString('Language','label.PlayerItemId')}"/>
+			<mx:DataGridColumn dataField="playerId" headerText="{resourceManager.getString('Language','label.PlayerId')}"/>
+			<mx:DataGridColumn dataField="itemDisplayName" headerText="{resourceManager.getString('Language','label.Name')}" width="150"/>
+			<mx:DataGridColumn dataField="itemId" headerText="{resourceManager.getString('Language','label.SystemItemId')}"/>
+			<!--<mx:DataGridColumn dataField="isDefault" headerText="是否默认(“Y”默认，“N”非默认)"/>-->
+			<mx:DataGridColumn dataField="pack" headerText="{resourceManager.getString('Language','label.IsWeared')}" width="100">
+			<mx:itemRenderer>
+				<mx:Component>
+					<mx:Label text="{data.pack}" color="{data.pack==true?0x00FF00:0x000000}"/>
+				</mx:Component>
+			</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn dataField="validDateStr" headerText="{resourceManager.getString('Language','label.BuyTime')}" width="100"/>
+			<mx:DataGridColumn dataField="expireDateStr" headerText="{resourceManager.getString('Language','label.ExpireDate')}" width="150"/>
+			<mx:DataGridColumn dataField="level" headerText="{resourceManager.getString('Language','label.Level')}" width="80">
+			<mx:itemRenderer >
+				<mx:Component>
+					<mx:Label text="{data.level}" color="{data.level>5?0xFF0000:0x000000}"/>
+				</mx:Component>
+			</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn dataField="playerItemUnitType" headerText="{resourceManager.getString('Language','label.LooseMethod')}" width="80"/>
+			<mx:DataGridColumn dataField="quantity" headerText="{resourceManager.getString('Language','label.Amount')}" width="80">
+			<mx:itemRenderer>
+				<mx:Component>
+					<mx:Label text="{data.quantity}" color="{data.quantity>100?0xFF0000:0x000000}"/>
+				</mx:Component>
+			</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:ApplicationControlBar>	
+    	<mx:Button id="deleteBtn" label="{resourceManager.getString('Language','button.Delete')}" click="onDeleteBtnClick()"/>
+    	<mx:Button id="putOnBtn" label="{resourceManager.getString('Language','button.PutOn')}" click="putOnPlayerItem()"/>
+    	<mx:Button id="refreshBtn" label="{resourceManager.getString('Language','button.Refresh')}" click="init()"/>
+    	 <mx:ComboBox dataProvider="{types}" width="150" 
+            change="closeHandler(event);"/>
+    	
+    </mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:VBox>

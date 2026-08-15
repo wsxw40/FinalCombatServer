@@ -1,0 +1,1041 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayer" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="G_POINT" property="gPoint" jdbcType="INTEGER" />
+    <result column="CREDIT" property="credit" jdbcType="INTEGER" />
+    <result column="VOUCHER" property="voucher" jdbcType="INTEGER" />
+    <result column="EXP" property="exp" jdbcType="INTEGER" />
+    <result column="RANK" property="rank" jdbcType="INTEGER" />
+    <result column="CHARACTER_SIZE" property="characterSize" jdbcType="TINYINT" />
+    <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_LOGIN_IP" property="lastLoginIp" jdbcType="VARCHAR" />
+    <result column="LAST_LOGOUT_TIME" property="lastLogoutTime" jdbcType="TIMESTAMP" />
+    <result column="GENERAL_SCORE" property="generalScore" jdbcType="INTEGER" />
+    <result column="GENERAL_KILL" property="generalKill" jdbcType="INTEGER" />
+    <result column="GENERAL_DEAD" property="generalDead" jdbcType="INTEGER" />
+    <result column="GENERAL_HEAD_SHOT" property="generalHeadShot" jdbcType="INTEGER" />
+    <result column="GENERAL_KNIFE_KILL" property="generalKnifeKill" jdbcType="INTEGER" />
+    <result column="GENERAL_CONTROL" property="generalControl" jdbcType="INTEGER" />
+    <result column="GENERAL_REVENGE" property="generalRevenge" jdbcType="INTEGER" />
+    <result column="GENERAL_WIN" property="generalWin" jdbcType="INTEGER" />
+    <result column="GENERAL_TOTAL" property="generalTotal" jdbcType="INTEGER" />
+    <result column="TEAM_SCORE" property="teamScore" jdbcType="INTEGER" />
+    <result column="TEAM_KILL" property="teamKill" jdbcType="INTEGER" />
+    <result column="TEAM_DEAD" property="teamDead" jdbcType="INTEGER" />
+    <result column="TEAM_HEAD_SHOT" property="teamHeadShot" jdbcType="INTEGER" />
+    <result column="TEAM_KNIFE_KILL" property="teamKnifeKill" jdbcType="INTEGER" />
+    <result column="TEAM_GRENADE_KILL" property="teamGrenadeKill" jdbcType="INTEGER" />
+    <result column="TEAM_HIT_POINT" property="teamHitPoint" jdbcType="INTEGER" />
+    <result column="TEAM_WIN" property="teamWin" jdbcType="INTEGER" />
+    <result column="TEAM_TOTAL" property="teamTotal" jdbcType="INTEGER" />
+    <result column="FUN_GP_TOTAL" property="funGpTotal" jdbcType="INTEGER" />
+    <result column="FUN_CR_TOTAL" property="funCrTotal" jdbcType="INTEGER" />
+    <result column="FUN_GRENADE_KILL" property="funGrenadeKill" jdbcType="INTEGER" />
+    <result column="FUN_DROP_KILL" property="funDropKill" jdbcType="INTEGER" />
+    <result column="FUN_WEAPON_MOD" property="funWeaponMod" jdbcType="INTEGER" />
+    <result column="FUN_DEAD" property="funDead" jdbcType="INTEGER" />
+    <result column="TUTORIAL" property="tutorial" jdbcType="VARCHAR" />
+    <result column="PROFILE" property="profile" jdbcType="VARCHAR" />
+    <result column="ICON" property="icon" jdbcType="VARCHAR" />
+    <result column="SELECTED_CHARACTERS" property="selectedCharacters" jdbcType="VARCHAR" />
+    <result column="ACHIEVEMENT" property="achievement" jdbcType="VARCHAR" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="CHAR" />
+    <result column="TEAM_ID" property="teamId" jdbcType="INTEGER" />
+    <result column="GENERAL_GRENADE_KILL" property="generalGrenadeKill" jdbcType="INTEGER" />
+    <result column="IS_NEW" property="isNew" jdbcType="INTEGER" />
+    <result column="IS_VIP" property="isVip" jdbcType="INTEGER" />
+    <result column="VIP_EXPERIENCE" property="vipExperience" jdbcType="INTEGER" />
+    <result column="VIP_TO_EXPIRE" property="vipToExpire" jdbcType="BIGINT" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="GOLD" property="gold" jdbcType="INTEGER" />
+    <result column="SILVER" property="silver" jdbcType="INTEGER" />
+    <result column="BRONZE" property="bronze" jdbcType="INTEGER" />
+    <result column="TOTAL" property="total" jdbcType="INTEGER" />
+    <result column="GENERAL_ASSIST" property="generalAssist" jdbcType="INTEGER" />
+    <result column="WEEK_SCORE" property="weekScore" jdbcType="INTEGER" />
+    <result column="WEEK_KILL" property="weekKill" jdbcType="INTEGER" />
+    <result column="WEEK_ASSIST" property="weekAssist" jdbcType="INTEGER" />
+    <result column="WEEK_DEAD" property="weekDead" jdbcType="INTEGER" />
+    <result column="WEEK_WIN" property="weekWin" jdbcType="INTEGER" />
+    <result column="WEEK_TOTAL" property="weekTotal" jdbcType="INTEGER" />
+    <result column="BLACK_WHITE" property="blackWhite" jdbcType="CHAR" />
+    <result column="RUN_AWAY" property="runAway" jdbcType="INTEGER" />
+    <result column="CHARACTERS" property="characters" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="GENERAL_LOSE" property="generalLose" jdbcType="INTEGER" />
+    <result column="IS_XUNLEI" property="isXunlei" jdbcType="TINYINT" />
+    <result column="GENERAL_HEALTH_NUM" property="generalHealthNum" jdbcType="INTEGER" />
+    <result column="IS_CHECK" property="isCheck" jdbcType="BIT" />
+    <result column="MAX_FIGHT_NUM" property="maxFightNum" jdbcType="INTEGER" />
+    <result column="ACCOUNT_TYPE" property="accountType" jdbcType="TINYINT" />
+    <result column="IS_CHEST" property="isChest" jdbcType="INTEGER" />
+    <result column="SECOND_PASSWORD" property="secondPassword" jdbcType="VARCHAR" />
+    <result column="HAS_SECOND_PASSWORD" property="hasSecondPassword" jdbcType="TINYINT" />
+    <result column="APPLY_RESET_SPW_TIME" property="applyResetSpwTime" jdbcType="TIMESTAMP" />
+    <result column="REMAINS_TEAM_EXP" property="remainsTeamExp" jdbcType="INTEGER" />
+    <result column="LAST_TEAM_EXP" property="lastTeamExp" jdbcType="INTEGER" />
+    <result column="LAST_TEAM_EXP_EXPIRE_TIME" property="lastTeamExpExpireTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_EXIT_TEAM_ID" property="lastExitTeamId" jdbcType="INTEGER" />
+    <result column="UNUSABLE_RESOURCE" property="unusableResource" jdbcType="INTEGER" />
+    <result column="USABLE_RESOURCE" property="usableResource" jdbcType="INTEGER" />
+    <result column="P_RESOURCE_BEGIN_TIME" property="pResourceBeginTime" jdbcType="TIMESTAMP" />
+    <result column="VIP_EXP_GIFT_LEVEL" property="vipExpGiftLevel" jdbcType="VARCHAR" />
+    <result column="MATCH_WIN" property="matchWin" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USER_NAME, `NAME`, G_POINT, CREDIT, VOUCHER, EXP, RANK, CHARACTER_SIZE, LAST_LOGIN_TIME, 
+    LAST_LOGIN_IP, LAST_LOGOUT_TIME, GENERAL_SCORE, GENERAL_KILL, GENERAL_DEAD, GENERAL_HEAD_SHOT, 
+    GENERAL_KNIFE_KILL, GENERAL_CONTROL, GENERAL_REVENGE, GENERAL_WIN, GENERAL_TOTAL, 
+    TEAM_SCORE, TEAM_KILL, TEAM_DEAD, TEAM_HEAD_SHOT, TEAM_KNIFE_KILL, TEAM_GRENADE_KILL, 
+    TEAM_HIT_POINT, TEAM_WIN, TEAM_TOTAL, FUN_GP_TOTAL, FUN_CR_TOTAL, FUN_GRENADE_KILL, 
+    FUN_DROP_KILL, FUN_WEAPON_MOD, FUN_DEAD, TUTORIAL, PROFILE, ICON, SELECTED_CHARACTERS, 
+    ACHIEVEMENT, IS_DELETED, TEAM_ID, GENERAL_GRENADE_KILL, IS_NEW, IS_VIP, VIP_EXPERIENCE, 
+    VIP_TO_EXPIRE, TITLE, GOLD, SILVER, BRONZE, TOTAL, GENERAL_ASSIST, WEEK_SCORE, WEEK_KILL, 
+    WEEK_ASSIST, WEEK_DEAD, WEEK_WIN, WEEK_TOTAL, BLACK_WHITE, RUN_AWAY, CHARACTERS, 
+    CREATE_TIME, GENERAL_LOSE, IS_XUNLEI, GENERAL_HEALTH_NUM, IS_CHECK, MAX_FIGHT_NUM, 
+    ACCOUNT_TYPE, IS_CHEST, SECOND_PASSWORD, HAS_SECOND_PASSWORD, APPLY_RESET_SPW_TIME, 
+    REMAINS_TEAM_EXP, LAST_TEAM_EXP, LAST_TEAM_EXP_EXPIRE_TIME, LAST_EXIT_TEAM_ID, UNUSABLE_RESOURCE, 
+    USABLE_RESOURCE, P_RESOURCE_BEGIN_TIME, VIP_EXP_GIFT_LEVEL, MATCH_WIN
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER where 1=1 
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or USER_NAME like '${searchValue}%' or `NAME` like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn} 
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from PLAYER where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or USER_NAME like '${searchValue}%' or `NAME` like '${searchValue}%' )
+ 	 </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PLAYER
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayer" >
+    insert into PLAYER (ID, USER_NAME, `NAME`, 
+      G_POINT, CREDIT, VOUCHER, 
+      EXP, RANK, CHARACTER_SIZE, 
+      LAST_LOGIN_TIME, LAST_LOGIN_IP, LAST_LOGOUT_TIME, 
+      GENERAL_SCORE, GENERAL_KILL, GENERAL_DEAD, 
+      GENERAL_HEAD_SHOT, GENERAL_KNIFE_KILL, GENERAL_CONTROL, 
+      GENERAL_REVENGE, GENERAL_WIN, GENERAL_TOTAL, 
+      TEAM_SCORE, TEAM_KILL, TEAM_DEAD, 
+      TEAM_HEAD_SHOT, TEAM_KNIFE_KILL, TEAM_GRENADE_KILL, 
+      TEAM_HIT_POINT, TEAM_WIN, TEAM_TOTAL, 
+      FUN_GP_TOTAL, FUN_CR_TOTAL, FUN_GRENADE_KILL, 
+      FUN_DROP_KILL, FUN_WEAPON_MOD, FUN_DEAD, 
+      TUTORIAL, PROFILE, ICON, 
+      SELECTED_CHARACTERS, ACHIEVEMENT, IS_DELETED, 
+      TEAM_ID, GENERAL_GRENADE_KILL, IS_NEW, 
+      IS_VIP, VIP_EXPERIENCE, VIP_TO_EXPIRE, 
+      TITLE, GOLD, SILVER, 
+      BRONZE, TOTAL, GENERAL_ASSIST, 
+      WEEK_SCORE, WEEK_KILL, WEEK_ASSIST, 
+      WEEK_DEAD, WEEK_WIN, WEEK_TOTAL, 
+      BLACK_WHITE, RUN_AWAY, CHARACTERS, 
+      CREATE_TIME, GENERAL_LOSE, IS_XUNLEI, 
+      GENERAL_HEALTH_NUM, IS_CHECK, MAX_FIGHT_NUM, 
+      ACCOUNT_TYPE, IS_CHEST, SECOND_PASSWORD, 
+      HAS_SECOND_PASSWORD, APPLY_RESET_SPW_TIME, 
+      REMAINS_TEAM_EXP, LAST_TEAM_EXP, LAST_TEAM_EXP_EXPIRE_TIME, 
+      LAST_EXIT_TEAM_ID, UNUSABLE_RESOURCE, USABLE_RESOURCE, 
+      P_RESOURCE_BEGIN_TIME, VIP_EXP_GIFT_LEVEL, 
+      MATCH_WIN)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{gPoint,jdbcType=INTEGER}, #{credit,jdbcType=INTEGER}, #{voucher,jdbcType=INTEGER}, 
+      #{exp,jdbcType=INTEGER}, #{rank,jdbcType=INTEGER}, #{characterSize,jdbcType=TINYINT}, 
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=INTEGER}, #{lastLogoutTime,jdbcType=TIMESTAMP}, 
+      #{generalScore,jdbcType=INTEGER}, #{generalKill,jdbcType=INTEGER}, #{generalDead,jdbcType=INTEGER}, 
+      #{generalHeadShot,jdbcType=INTEGER}, #{generalKnifeKill,jdbcType=INTEGER}, #{generalControl,jdbcType=INTEGER}, 
+      #{generalRevenge,jdbcType=INTEGER}, #{generalWin,jdbcType=INTEGER}, #{generalTotal,jdbcType=INTEGER}, 
+      #{teamScore,jdbcType=INTEGER}, #{teamKill,jdbcType=INTEGER}, #{teamDead,jdbcType=INTEGER}, 
+      #{teamHeadShot,jdbcType=INTEGER}, #{teamKnifeKill,jdbcType=INTEGER}, #{teamGrenadeKill,jdbcType=INTEGER}, 
+      #{teamHitPoint,jdbcType=INTEGER}, #{teamWin,jdbcType=INTEGER}, #{teamTotal,jdbcType=INTEGER}, 
+      #{funGpTotal,jdbcType=INTEGER}, #{funCrTotal,jdbcType=INTEGER}, #{funGrenadeKill,jdbcType=INTEGER}, 
+      #{funDropKill,jdbcType=INTEGER}, #{funWeaponMod,jdbcType=INTEGER}, #{funDead,jdbcType=INTEGER}, 
+      #{tutorial,jdbcType=VARCHAR}, #{profile,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{selectedCharacters,jdbcType=VARCHAR}, #{achievement,jdbcType=VARCHAR}, #{isDeleted,jdbcType=CHAR}, 
+      #{teamId,jdbcType=INTEGER}, #{generalGrenadeKill,jdbcType=INTEGER}, #{isNew,jdbcType=INTEGER}, 
+      #{isVip,jdbcType=INTEGER}, #{vipExperience,jdbcType=INTEGER}, #{vipToExpire,jdbcType=BIGINT}, 
+      #{title,jdbcType=VARCHAR}, #{gold,jdbcType=INTEGER}, #{silver,jdbcType=INTEGER}, 
+      #{bronze,jdbcType=INTEGER}, #{total,jdbcType=INTEGER}, #{generalAssist,jdbcType=INTEGER}, 
+      #{weekScore,jdbcType=INTEGER}, #{weekKill,jdbcType=INTEGER}, #{weekAssist,jdbcType=INTEGER}, 
+      #{weekDead,jdbcType=INTEGER}, #{weekWin,jdbcType=INTEGER}, #{weekTotal,jdbcType=INTEGER}, 
+      #{blackWhite,jdbcType=CHAR}, #{runAway,jdbcType=INTEGER}, #{characters,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{generalLose,jdbcType=INTEGER}, #{isXunlei,jdbcType=TINYINT}, 
+      #{generalHealthNum,jdbcType=INTEGER}, #{isCheck,jdbcType=BIT}, #{maxFightNum,jdbcType=INTEGER}, 
+      #{accountType,jdbcType=TINYINT}, #{isChest,jdbcType=INTEGER}, #{secondPassword,jdbcType=VARCHAR}, 
+      #{hasSecondPassword,jdbcType=TINYINT}, #{applyResetSpwTime,jdbcType=TIMESTAMP}, 
+      #{remainsTeamExp,jdbcType=INTEGER}, #{lastTeamExp,jdbcType=INTEGER}, #{lastTeamExpExpireTime,jdbcType=TIMESTAMP}, 
+      #{lastExitTeamId,jdbcType=INTEGER}, #{unusableResource,jdbcType=INTEGER}, #{usableResource,jdbcType=INTEGER}, 
+      #{pResourceBeginTime,jdbcType=TIMESTAMP}, #{vipExpGiftLevel,jdbcType=VARCHAR}, 
+      #{matchWin,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayer" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into PLAYER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userName != null" >
+        USER_NAME,
+      </if>
+      <if test="name != null" >
+        `NAME`,
+      </if>
+      <if test="gPoint != null" >
+        G_POINT,
+      </if>
+      <if test="credit != null" >
+        CREDIT,
+      </if>
+      <if test="voucher != null" >
+        VOUCHER,
+      </if>
+      <if test="exp != null" >
+        EXP,
+      </if>
+      <if test="rank != null" >
+        RANK,
+      </if>
+      <if test="characterSize != null" >
+        CHARACTER_SIZE,
+      </if>
+      <if test="lastLoginTime != null" >
+        LAST_LOGIN_TIME,
+      </if>
+      <if test="lastLoginIp != null" >
+        LAST_LOGIN_IP,
+      </if>
+      <if test="lastLogoutTime != null" >
+        LAST_LOGOUT_TIME,
+      </if>
+      <if test="generalScore != null" >
+        GENERAL_SCORE,
+      </if>
+      <if test="generalKill != null" >
+        GENERAL_KILL,
+      </if>
+      <if test="generalDead != null" >
+        GENERAL_DEAD,
+      </if>
+      <if test="generalHeadShot != null" >
+        GENERAL_HEAD_SHOT,
+      </if>
+      <if test="generalKnifeKill != null" >
+        GENERAL_KNIFE_KILL,
+      </if>
+      <if test="generalControl != null" >
+        GENERAL_CONTROL,
+      </if>
+      <if test="generalRevenge != null" >
+        GENERAL_REVENGE,
+      </if>
+      <if test="generalWin != null" >
+        GENERAL_WIN,
+      </if>
+      <if test="generalTotal != null" >
+        GENERAL_TOTAL,
+      </if>
+      <if test="teamScore != null" >
+        TEAM_SCORE,
+      </if>
+      <if test="teamKill != null" >
+        TEAM_KILL,
+      </if>
+      <if test="teamDead != null" >
+        TEAM_DEAD,
+      </if>
+      <if test="teamHeadShot != null" >
+        TEAM_HEAD_SHOT,
+      </if>
+      <if test="teamKnifeKill != null" >
+        TEAM_KNIFE_KILL,
+      </if>
+      <if test="teamGrenadeKill != null" >
+        TEAM_GRENADE_KILL,
+      </if>
+      <if test="teamHitPoint != null" >
+        TEAM_HIT_POINT,
+      </if>
+      <if test="teamWin != null" >
+        TEAM_WIN,
+      </if>
+      <if test="teamTotal != null" >
+        TEAM_TOTAL,
+      </if>
+      <if test="funGpTotal != null" >
+        FUN_GP_TOTAL,
+      </if>
+      <if test="funCrTotal != null" >
+        FUN_CR_TOTAL,
+      </if>
+      <if test="funGrenadeKill != null" >
+        FUN_GRENADE_KILL,
+      </if>
+      <if test="funDropKill != null" >
+        FUN_DROP_KILL,
+      </if>
+      <if test="funWeaponMod != null" >
+        FUN_WEAPON_MOD,
+      </if>
+      <if test="funDead != null" >
+        FUN_DEAD,
+      </if>
+      <if test="tutorial != null" >
+        TUTORIAL,
+      </if>
+      <if test="profile != null" >
+        PROFILE,
+      </if>
+      <if test="icon != null" >
+        ICON,
+      </if>
+      <if test="selectedCharacters != null" >
+        SELECTED_CHARACTERS,
+      </if>
+      <if test="achievement != null" >
+        ACHIEVEMENT,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="teamId != null" >
+        TEAM_ID,
+      </if>
+      <if test="generalGrenadeKill != null" >
+        GENERAL_GRENADE_KILL,
+      </if>
+      <if test="isNew != null" >
+        IS_NEW,
+      </if>
+      <if test="isVip != null" >
+        IS_VIP,
+      </if>
+      <if test="vipExperience != null" >
+        VIP_EXPERIENCE,
+      </if>
+      <if test="vipToExpire != null" >
+        VIP_TO_EXPIRE,
+      </if>
+      <if test="title != null" >
+        TITLE,
+      </if>
+      <if test="gold != null" >
+        GOLD,
+      </if>
+      <if test="silver != null" >
+        SILVER,
+      </if>
+      <if test="bronze != null" >
+        BRONZE,
+      </if>
+      <if test="total != null" >
+        TOTAL,
+      </if>
+      <if test="generalAssist != null" >
+        GENERAL_ASSIST,
+      </if>
+      <if test="weekScore != null" >
+        WEEK_SCORE,
+      </if>
+      <if test="weekKill != null" >
+        WEEK_KILL,
+      </if>
+      <if test="weekAssist != null" >
+        WEEK_ASSIST,
+      </if>
+      <if test="weekDead != null" >
+        WEEK_DEAD,
+      </if>
+      <if test="weekWin != null" >
+        WEEK_WIN,
+      </if>
+      <if test="weekTotal != null" >
+        WEEK_TOTAL,
+      </if>
+      <if test="blackWhite != null" >
+        BLACK_WHITE,
+      </if>
+      <if test="runAway != null" >
+        RUN_AWAY,
+      </if>
+      <if test="characters != null" >
+        CHARACTERS,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="generalLose != null" >
+        GENERAL_LOSE,
+      </if>
+      <if test="isXunlei != null" >
+        IS_XUNLEI,
+      </if>
+      <if test="generalHealthNum != null" >
+        GENERAL_HEALTH_NUM,
+      </if>
+      <if test="isCheck != null" >
+        IS_CHECK,
+      </if>
+      <if test="maxFightNum != null" >
+        MAX_FIGHT_NUM,
+      </if>
+      <if test="accountType != null" >
+        ACCOUNT_TYPE,
+      </if>
+      <if test="isChest != null" >
+        IS_CHEST,
+      </if>
+      <if test="secondPassword != null" >
+        SECOND_PASSWORD,
+      </if>
+      <if test="hasSecondPassword != null" >
+        HAS_SECOND_PASSWORD,
+      </if>
+      <if test="applyResetSpwTime != null" >
+        APPLY_RESET_SPW_TIME,
+      </if>
+      <if test="remainsTeamExp != null" >
+        REMAINS_TEAM_EXP,
+      </if>
+      <if test="lastTeamExp != null" >
+        LAST_TEAM_EXP,
+      </if>
+      <if test="lastTeamExpExpireTime != null" >
+        LAST_TEAM_EXP_EXPIRE_TIME,
+      </if>
+      <if test="lastExitTeamId != null" >
+        LAST_EXIT_TEAM_ID,
+      </if>
+      <if test="unusableResource != null" >
+        UNUSABLE_RESOURCE,
+      </if>
+      <if test="usableResource != null" >
+        USABLE_RESOURCE,
+      </if>
+      <if test="pResourceBeginTime != null" >
+        P_RESOURCE_BEGIN_TIME,
+      </if>
+      <if test="vipExpGiftLevel != null" >
+        VIP_EXP_GIFT_LEVEL,
+      </if>
+      <if test="matchWin != null" >
+        MATCH_WIN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gPoint != null" >
+        #{gPoint,jdbcType=INTEGER},
+      </if>
+      <if test="credit != null" >
+        #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="voucher != null" >
+        #{voucher,jdbcType=INTEGER},
+      </if>
+      <if test="exp != null" >
+        #{exp,jdbcType=INTEGER},
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="characterSize != null" >
+        #{characterSize,jdbcType=TINYINT},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null" >
+        #{lastLoginIp,jdbcType=INTEGER},
+      </if>
+      <if test="lastLogoutTime != null" >
+        #{lastLogoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="generalScore != null" >
+        #{generalScore,jdbcType=INTEGER},
+      </if>
+      <if test="generalKill != null" >
+        #{generalKill,jdbcType=INTEGER},
+      </if>
+      <if test="generalDead != null" >
+        #{generalDead,jdbcType=INTEGER},
+      </if>
+      <if test="generalHeadShot != null" >
+        #{generalHeadShot,jdbcType=INTEGER},
+      </if>
+      <if test="generalKnifeKill != null" >
+        #{generalKnifeKill,jdbcType=INTEGER},
+      </if>
+      <if test="generalControl != null" >
+        #{generalControl,jdbcType=INTEGER},
+      </if>
+      <if test="generalRevenge != null" >
+        #{generalRevenge,jdbcType=INTEGER},
+      </if>
+      <if test="generalWin != null" >
+        #{generalWin,jdbcType=INTEGER},
+      </if>
+      <if test="generalTotal != null" >
+        #{generalTotal,jdbcType=INTEGER},
+      </if>
+      <if test="teamScore != null" >
+        #{teamScore,jdbcType=INTEGER},
+      </if>
+      <if test="teamKill != null" >
+        #{teamKill,jdbcType=INTEGER},
+      </if>
+      <if test="teamDead != null" >
+        #{teamDead,jdbcType=INTEGER},
+      </if>
+      <if test="teamHeadShot != null" >
+        #{teamHeadShot,jdbcType=INTEGER},
+      </if>
+      <if test="teamKnifeKill != null" >
+        #{teamKnifeKill,jdbcType=INTEGER},
+      </if>
+      <if test="teamGrenadeKill != null" >
+        #{teamGrenadeKill,jdbcType=INTEGER},
+      </if>
+      <if test="teamHitPoint != null" >
+        #{teamHitPoint,jdbcType=INTEGER},
+      </if>
+      <if test="teamWin != null" >
+        #{teamWin,jdbcType=INTEGER},
+      </if>
+      <if test="teamTotal != null" >
+        #{teamTotal,jdbcType=INTEGER},
+      </if>
+      <if test="funGpTotal != null" >
+        #{funGpTotal,jdbcType=INTEGER},
+      </if>
+      <if test="funCrTotal != null" >
+        #{funCrTotal,jdbcType=INTEGER},
+      </if>
+      <if test="funGrenadeKill != null" >
+        #{funGrenadeKill,jdbcType=INTEGER},
+      </if>
+      <if test="funDropKill != null" >
+        #{funDropKill,jdbcType=INTEGER},
+      </if>
+      <if test="funWeaponMod != null" >
+        #{funWeaponMod,jdbcType=INTEGER},
+      </if>
+      <if test="funDead != null" >
+        #{funDead,jdbcType=INTEGER},
+      </if>
+      <if test="tutorial != null" >
+        #{tutorial,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null" >
+        #{profile,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="selectedCharacters != null" >
+        #{selectedCharacters,jdbcType=VARCHAR},
+      </if>
+      <if test="achievement != null" >
+        #{achievement,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="teamId != null" >
+        #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="generalGrenadeKill != null" >
+        #{generalGrenadeKill,jdbcType=INTEGER},
+      </if>
+      <if test="isNew != null" >
+        #{isNew,jdbcType=INTEGER},
+      </if>
+      <if test="isVip != null" >
+        #{isVip,jdbcType=INTEGER},
+      </if>
+      <if test="vipExperience != null" >
+        #{vipExperience,jdbcType=INTEGER},
+      </if>
+      <if test="vipToExpire != null" >
+        #{vipToExpire,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="gold != null" >
+        #{gold,jdbcType=INTEGER},
+      </if>
+      <if test="silver != null" >
+        #{silver,jdbcType=INTEGER},
+      </if>
+      <if test="bronze != null" >
+        #{bronze,jdbcType=INTEGER},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=INTEGER},
+      </if>
+      <if test="generalAssist != null" >
+        #{generalAssist,jdbcType=INTEGER},
+      </if>
+      <if test="weekScore != null" >
+        #{weekScore,jdbcType=INTEGER},
+      </if>
+      <if test="weekKill != null" >
+        #{weekKill,jdbcType=INTEGER},
+      </if>
+      <if test="weekAssist != null" >
+        #{weekAssist,jdbcType=INTEGER},
+      </if>
+      <if test="weekDead != null" >
+        #{weekDead,jdbcType=INTEGER},
+      </if>
+      <if test="weekWin != null" >
+        #{weekWin,jdbcType=INTEGER},
+      </if>
+      <if test="weekTotal != null" >
+        #{weekTotal,jdbcType=INTEGER},
+      </if>
+      <if test="blackWhite != null" >
+        #{blackWhite,jdbcType=CHAR},
+      </if>
+      <if test="runAway != null" >
+        #{runAway,jdbcType=INTEGER},
+      </if>
+      <if test="characters != null" >
+        #{characters,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="generalLose != null" >
+        #{generalLose,jdbcType=INTEGER},
+      </if>
+      <if test="isXunlei != null" >
+        #{isXunlei,jdbcType=TINYINT},
+      </if>
+      <if test="generalHealthNum != null" >
+        #{generalHealthNum,jdbcType=INTEGER},
+      </if>
+      <if test="isCheck != null" >
+        #{isCheck,jdbcType=BIT},
+      </if>
+      <if test="maxFightNum != null" >
+        #{maxFightNum,jdbcType=INTEGER},
+      </if>
+      <if test="accountType != null" >
+        #{accountType,jdbcType=TINYINT},
+      </if>
+      <if test="isChest != null" >
+        #{isChest,jdbcType=INTEGER},
+      </if>
+      <if test="secondPassword != null" >
+        #{secondPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="hasSecondPassword != null" >
+        #{hasSecondPassword,jdbcType=TINYINT},
+      </if>
+      <if test="applyResetSpwTime != null" >
+        #{applyResetSpwTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remainsTeamExp != null" >
+        #{remainsTeamExp,jdbcType=INTEGER},
+      </if>
+      <if test="lastTeamExp != null" >
+        #{lastTeamExp,jdbcType=INTEGER},
+      </if>
+      <if test="lastTeamExpExpireTime != null" >
+        #{lastTeamExpExpireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastExitTeamId != null" >
+        #{lastExitTeamId,jdbcType=INTEGER},
+      </if>
+      <if test="unusableResource != null" >
+        #{unusableResource,jdbcType=INTEGER},
+      </if>
+      <if test="usableResource != null" >
+        #{usableResource,jdbcType=INTEGER},
+      </if>
+      <if test="pResourceBeginTime != null" >
+        #{pResourceBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="vipExpGiftLevel != null" >
+        #{vipExpGiftLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="matchWin != null" >
+        #{matchWin,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayer" >
+    update PLAYER
+    <set >
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gPoint != null" >
+        G_POINT = #{gPoint,jdbcType=INTEGER},
+      </if>
+      <if test="credit != null" >
+        CREDIT = #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="voucher != null" >
+        VOUCHER = #{voucher,jdbcType=INTEGER},
+      </if>
+      <if test="exp != null" >
+        EXP = #{exp,jdbcType=INTEGER},
+      </if>
+      <if test="rank != null" >
+        RANK = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="characterSize != null" >
+        CHARACTER_SIZE = #{characterSize,jdbcType=TINYINT},
+      </if>
+      <if test="lastLoginTime != null" >
+        LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null" >
+        LAST_LOGIN_IP = #{lastLoginIp,jdbcType=INTEGER},
+      </if>
+      <if test="lastLogoutTime != null" >
+        LAST_LOGOUT_TIME = #{lastLogoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="generalScore != null" >
+        GENERAL_SCORE = #{generalScore,jdbcType=INTEGER},
+      </if>
+      <if test="generalKill != null" >
+        GENERAL_KILL = #{generalKill,jdbcType=INTEGER},
+      </if>
+      <if test="generalDead != null" >
+        GENERAL_DEAD = #{generalDead,jdbcType=INTEGER},
+      </if>
+      <if test="generalHeadShot != null" >
+        GENERAL_HEAD_SHOT = #{generalHeadShot,jdbcType=INTEGER},
+      </if>
+      <if test="generalKnifeKill != null" >
+        GENERAL_KNIFE_KILL = #{generalKnifeKill,jdbcType=INTEGER},
+      </if>
+      <if test="generalControl != null" >
+        GENERAL_CONTROL = #{generalControl,jdbcType=INTEGER},
+      </if>
+      <if test="generalRevenge != null" >
+        GENERAL_REVENGE = #{generalRevenge,jdbcType=INTEGER},
+      </if>
+      <if test="generalWin != null" >
+        GENERAL_WIN = #{generalWin,jdbcType=INTEGER},
+      </if>
+      <if test="generalTotal != null" >
+        GENERAL_TOTAL = #{generalTotal,jdbcType=INTEGER},
+      </if>
+      <if test="teamScore != null" >
+        TEAM_SCORE = #{teamScore,jdbcType=INTEGER},
+      </if>
+      <if test="teamKill != null" >
+        TEAM_KILL = #{teamKill,jdbcType=INTEGER},
+      </if>
+      <if test="teamDead != null" >
+        TEAM_DEAD = #{teamDead,jdbcType=INTEGER},
+      </if>
+      <if test="teamHeadShot != null" >
+        TEAM_HEAD_SHOT = #{teamHeadShot,jdbcType=INTEGER},
+      </if>
+      <if test="teamKnifeKill != null" >
+        TEAM_KNIFE_KILL = #{teamKnifeKill,jdbcType=INTEGER},
+      </if>
+      <if test="teamGrenadeKill != null" >
+        TEAM_GRENADE_KILL = #{teamGrenadeKill,jdbcType=INTEGER},
+      </if>
+      <if test="teamHitPoint != null" >
+        TEAM_HIT_POINT = #{teamHitPoint,jdbcType=INTEGER},
+      </if>
+      <if test="teamWin != null" >
+        TEAM_WIN = #{teamWin,jdbcType=INTEGER},
+      </if>
+      <if test="teamTotal != null" >
+        TEAM_TOTAL = #{teamTotal,jdbcType=INTEGER},
+      </if>
+      <if test="funGpTotal != null" >
+        FUN_GP_TOTAL = #{funGpTotal,jdbcType=INTEGER},
+      </if>
+      <if test="funCrTotal != null" >
+        FUN_CR_TOTAL = #{funCrTotal,jdbcType=INTEGER},
+      </if>
+      <if test="funGrenadeKill != null" >
+        FUN_GRENADE_KILL = #{funGrenadeKill,jdbcType=INTEGER},
+      </if>
+      <if test="funDropKill != null" >
+        FUN_DROP_KILL = #{funDropKill,jdbcType=INTEGER},
+      </if>
+      <if test="funWeaponMod != null" >
+        FUN_WEAPON_MOD = #{funWeaponMod,jdbcType=INTEGER},
+      </if>
+      <if test="funDead != null" >
+        FUN_DEAD = #{funDead,jdbcType=INTEGER},
+      </if>
+      <if test="tutorial != null" >
+        TUTORIAL = #{tutorial,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null" >
+        PROFILE = #{profile,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        ICON = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="selectedCharacters != null" >
+        SELECTED_CHARACTERS = #{selectedCharacters,jdbcType=VARCHAR},
+      </if>
+      <if test="achievement != null" >
+        ACHIEVEMENT = #{achievement,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="teamId != null" >
+        TEAM_ID = #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="generalGrenadeKill != null" >
+        GENERAL_GRENADE_KILL = #{generalGrenadeKill,jdbcType=INTEGER},
+      </if>
+      <if test="isNew != null" >
+        IS_NEW = #{isNew,jdbcType=INTEGER},
+      </if>
+      <if test="isVip != null" >
+        IS_VIP = #{isVip,jdbcType=INTEGER},
+      </if>
+      <if test="vipExperience != null" >
+        VIP_EXPERIENCE = #{vipExperience,jdbcType=INTEGER},
+      </if>
+      <if test="vipToExpire != null" >
+        VIP_TO_EXPIRE = #{vipToExpire,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="gold != null" >
+        GOLD = #{gold,jdbcType=INTEGER},
+      </if>
+      <if test="silver != null" >
+        SILVER = #{silver,jdbcType=INTEGER},
+      </if>
+      <if test="bronze != null" >
+        BRONZE = #{bronze,jdbcType=INTEGER},
+      </if>
+      <if test="total != null" >
+        TOTAL = #{total,jdbcType=INTEGER},
+      </if>
+      <if test="generalAssist != null" >
+        GENERAL_ASSIST = #{generalAssist,jdbcType=INTEGER},
+      </if>
+      <if test="weekScore != null" >
+        WEEK_SCORE = #{weekScore,jdbcType=INTEGER},
+      </if>
+      <if test="weekKill != null" >
+        WEEK_KILL = #{weekKill,jdbcType=INTEGER},
+      </if>
+      <if test="weekAssist != null" >
+        WEEK_ASSIST = #{weekAssist,jdbcType=INTEGER},
+      </if>
+      <if test="weekDead != null" >
+        WEEK_DEAD = #{weekDead,jdbcType=INTEGER},
+      </if>
+      <if test="weekWin != null" >
+        WEEK_WIN = #{weekWin,jdbcType=INTEGER},
+      </if>
+      <if test="weekTotal != null" >
+        WEEK_TOTAL = #{weekTotal,jdbcType=INTEGER},
+      </if>
+      <if test="blackWhite != null" >
+        BLACK_WHITE = #{blackWhite,jdbcType=CHAR},
+      </if>
+      <if test="runAway != null" >
+        RUN_AWAY = #{runAway,jdbcType=INTEGER},
+      </if>
+      <if test="characters != null" >
+        CHARACTERS = #{characters,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="generalLose != null" >
+        GENERAL_LOSE = #{generalLose,jdbcType=INTEGER},
+      </if>
+      <if test="isXunlei != null" >
+        IS_XUNLEI = #{isXunlei,jdbcType=TINYINT},
+      </if>
+      <if test="generalHealthNum != null" >
+        GENERAL_HEALTH_NUM = #{generalHealthNum,jdbcType=INTEGER},
+      </if>
+      <if test="isCheck != null" >
+        IS_CHECK = #{isCheck,jdbcType=BIT},
+      </if>
+      <if test="maxFightNum != null" >
+        MAX_FIGHT_NUM = #{maxFightNum,jdbcType=INTEGER},
+      </if>
+      <if test="accountType != null" >
+        ACCOUNT_TYPE = #{accountType,jdbcType=TINYINT},
+      </if>
+      <if test="isChest != null" >
+        IS_CHEST = #{isChest,jdbcType=INTEGER},
+      </if>
+      <if test="secondPassword != null" >
+        SECOND_PASSWORD = #{secondPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="hasSecondPassword != null" >
+        HAS_SECOND_PASSWORD = #{hasSecondPassword,jdbcType=TINYINT},
+      </if>
+      <if test="applyResetSpwTime != null" >
+        APPLY_RESET_SPW_TIME = #{applyResetSpwTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remainsTeamExp != null" >
+        REMAINS_TEAM_EXP = #{remainsTeamExp,jdbcType=INTEGER},
+      </if>
+      <if test="lastTeamExp != null" >
+        LAST_TEAM_EXP = #{lastTeamExp,jdbcType=INTEGER},
+      </if>
+      <if test="lastTeamExpExpireTime != null" >
+        LAST_TEAM_EXP_EXPIRE_TIME = #{lastTeamExpExpireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastExitTeamId != null" >
+        LAST_EXIT_TEAM_ID = #{lastExitTeamId,jdbcType=INTEGER},
+      </if>
+      <if test="unusableResource != null" >
+        UNUSABLE_RESOURCE = #{unusableResource,jdbcType=INTEGER},
+      </if>
+      <if test="usableResource != null" >
+        USABLE_RESOURCE = #{usableResource,jdbcType=INTEGER},
+      </if>
+      <if test="pResourceBeginTime != null" >
+        P_RESOURCE_BEGIN_TIME = #{pResourceBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="vipExpGiftLevel != null" >
+        VIP_EXP_GIFT_LEVEL = #{vipExpGiftLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="matchWin != null" >
+        MATCH_WIN = #{matchWin,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayer" >
+    update PLAYER
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      `NAME` = #{name,jdbcType=VARCHAR},
+      G_POINT = #{gPoint,jdbcType=INTEGER},
+      CREDIT = #{credit,jdbcType=INTEGER},
+      VOUCHER = #{voucher,jdbcType=INTEGER},
+      EXP = #{exp,jdbcType=INTEGER},
+      RANK = #{rank,jdbcType=INTEGER},
+      CHARACTER_SIZE = #{characterSize,jdbcType=TINYINT},
+      LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+      LAST_LOGIN_IP = #{lastLoginIp,jdbcType=INTEGER},
+      LAST_LOGOUT_TIME = #{lastLogoutTime,jdbcType=TIMESTAMP},
+      GENERAL_SCORE = #{generalScore,jdbcType=INTEGER},
+      GENERAL_KILL = #{generalKill,jdbcType=INTEGER},
+      GENERAL_DEAD = #{generalDead,jdbcType=INTEGER},
+      GENERAL_HEAD_SHOT = #{generalHeadShot,jdbcType=INTEGER},
+      GENERAL_KNIFE_KILL = #{generalKnifeKill,jdbcType=INTEGER},
+      GENERAL_CONTROL = #{generalControl,jdbcType=INTEGER},
+      GENERAL_REVENGE = #{generalRevenge,jdbcType=INTEGER},
+      GENERAL_WIN = #{generalWin,jdbcType=INTEGER},
+      GENERAL_TOTAL = #{generalTotal,jdbcType=INTEGER},
+      TEAM_SCORE = #{teamScore,jdbcType=INTEGER},
+      TEAM_KILL = #{teamKill,jdbcType=INTEGER},
+      TEAM_DEAD = #{teamDead,jdbcType=INTEGER},
+      TEAM_HEAD_SHOT = #{teamHeadShot,jdbcType=INTEGER},
+      TEAM_KNIFE_KILL = #{teamKnifeKill,jdbcType=INTEGER},
+      TEAM_GRENADE_KILL = #{teamGrenadeKill,jdbcType=INTEGER},
+      TEAM_HIT_POINT = #{teamHitPoint,jdbcType=INTEGER},
+      TEAM_WIN = #{teamWin,jdbcType=INTEGER},
+      TEAM_TOTAL = #{teamTotal,jdbcType=INTEGER},
+      FUN_GP_TOTAL = #{funGpTotal,jdbcType=INTEGER},
+      FUN_CR_TOTAL = #{funCrTotal,jdbcType=INTEGER},
+      FUN_GRENADE_KILL = #{funGrenadeKill,jdbcType=INTEGER},
+      FUN_DROP_KILL = #{funDropKill,jdbcType=INTEGER},
+      FUN_WEAPON_MOD = #{funWeaponMod,jdbcType=INTEGER},
+      FUN_DEAD = #{funDead,jdbcType=INTEGER},
+      TUTORIAL = #{tutorial,jdbcType=VARCHAR},
+      PROFILE = #{profile,jdbcType=VARCHAR},
+      ICON = #{icon,jdbcType=VARCHAR},
+      SELECTED_CHARACTERS = #{selectedCharacters,jdbcType=VARCHAR},
+      ACHIEVEMENT = #{achievement,jdbcType=VARCHAR},
+      IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      TEAM_ID = #{teamId,jdbcType=INTEGER},
+      GENERAL_GRENADE_KILL = #{generalGrenadeKill,jdbcType=INTEGER},
+      IS_NEW = #{isNew,jdbcType=INTEGER},
+      IS_VIP = #{isVip,jdbcType=INTEGER},
+      VIP_EXPERIENCE = #{vipExperience,jdbcType=INTEGER},
+      VIP_TO_EXPIRE = #{vipToExpire,jdbcType=BIGINT},
+      TITLE = #{title,jdbcType=VARCHAR},
+      GOLD = #{gold,jdbcType=INTEGER},
+      SILVER = #{silver,jdbcType=INTEGER},
+      BRONZE = #{bronze,jdbcType=INTEGER},
+      TOTAL = #{total,jdbcType=INTEGER},
+      GENERAL_ASSIST = #{generalAssist,jdbcType=INTEGER},
+      WEEK_SCORE = #{weekScore,jdbcType=INTEGER},
+      WEEK_KILL = #{weekKill,jdbcType=INTEGER},
+      WEEK_ASSIST = #{weekAssist,jdbcType=INTEGER},
+      WEEK_DEAD = #{weekDead,jdbcType=INTEGER},
+      WEEK_WIN = #{weekWin,jdbcType=INTEGER},
+      WEEK_TOTAL = #{weekTotal,jdbcType=INTEGER},
+      BLACK_WHITE = #{blackWhite,jdbcType=CHAR},
+      RUN_AWAY = #{runAway,jdbcType=INTEGER},
+      CHARACTERS = #{characters,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      GENERAL_LOSE = #{generalLose,jdbcType=INTEGER},
+      IS_XUNLEI = #{isXunlei,jdbcType=TINYINT},
+      GENERAL_HEALTH_NUM = #{generalHealthNum,jdbcType=INTEGER},
+      IS_CHECK = #{isCheck,jdbcType=BIT},
+      MAX_FIGHT_NUM = #{maxFightNum,jdbcType=INTEGER},
+      ACCOUNT_TYPE = #{accountType,jdbcType=TINYINT},
+      IS_CHEST = #{isChest,jdbcType=INTEGER},
+      SECOND_PASSWORD = #{secondPassword,jdbcType=VARCHAR},
+      HAS_SECOND_PASSWORD = #{hasSecondPassword,jdbcType=TINYINT},
+      APPLY_RESET_SPW_TIME = #{applyResetSpwTime,jdbcType=TIMESTAMP},
+      REMAINS_TEAM_EXP = #{remainsTeamExp,jdbcType=INTEGER},
+      LAST_TEAM_EXP = #{lastTeamExp,jdbcType=INTEGER},
+      LAST_TEAM_EXP_EXPIRE_TIME = #{lastTeamExpExpireTime,jdbcType=TIMESTAMP},
+      LAST_EXIT_TEAM_ID = #{lastExitTeamId,jdbcType=INTEGER},
+      UNUSABLE_RESOURCE = #{unusableResource,jdbcType=INTEGER},
+      USABLE_RESOURCE = #{usableResource,jdbcType=INTEGER},
+      P_RESOURCE_BEGIN_TIME = #{pResourceBeginTime,jdbcType=TIMESTAMP},
+      VIP_EXP_GIFT_LEVEL = #{vipExpGiftLevel,jdbcType=VARCHAR},
+      MATCH_WIN = #{matchWin,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

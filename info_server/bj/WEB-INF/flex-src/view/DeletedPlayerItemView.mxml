@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()" xmlns:component="component.*" xmlns:renderer="renderer.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.StringUtil;
+			import mx.controls.DateField;
+			import mx.formatters.DateFormatter;
+			import window.RecoveryItemWindow;
+			import mx.events.ItemClickEvent;
+			import mx.events.CloseEvent;
+			import vo.PlayerItem;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import vo.Player;
+			import vo.GmUser;
+			import window.PlayerManageWindow;
+			import component.MyDataGridColumn;
+			import renderer.CheckBoxRenderer;
+			private var model:O2oModel = O2oModel.getInstance();
+			
+			public var fatherWindow:RecoveryItemWindow = null;
+			[Bindable]
+			public var playerId:int=0;
+			[Bindable]
+			public var playerItem:PlayerItem=null;
+			[Bindable]
+			public var playerItemList:ArrayCollection=new ArrayCollection();
+			
+			 [Bindable]
+            public var types:ArrayCollection = new ArrayCollection(
+                [ 
+                {label:"武器", data:1}, 
+                  {label:"套装", data:2}, 
+                  {label:"配饰", data:3},
+                   {label:"道具", data:4},
+                   {label:"素材", data:5},
+                   {label:"大礼包", data:7},
+                   {label:"打开类", data:8},
+                   ]);
+             [Bindable]
+            public var unitTypes:ArrayCollection = new ArrayCollection(
+                [ 	{label:"永久", data:0},
+                	{label:"个数", data:1}, 
+                	{label:"时间", data:2}, 
+                   ]);
+           /*   [Bindable]
+            public var characters:ArrayCollection = new ArrayCollection(
+                [ {label:"全部", data:0},
+                {label:"火箭兵", data:1}, 
+                  {label:"重机枪手", data:2}, 
+                  {label:"狙击手", data:3},
+                   {label:"突击手", data:4},
+                   {label:"火焰兵", data:5},
+                   {label:"护士", data:6},
+                   ]);*/
+			public function init():void{
+				initButtons();
+				if(playerId!=0){
+					getRo.getDeletedPlayerItemList(playerId, null, null, 0 , 0,1);
+				}
+			}
+			private function initButtons():void{
+				recoveryBtn.enabled=true;
+				cleanBtn.enabled=false;
+				/*var isDeleted:MyDataGridColumn=new MyDataGridColumn("isDeleted","是否删除",false,150);
+				isDeleted.itemRenderer=new ClassFactory(CheckBoxRenderer);
+				var columns:Array = playerItemDatagrid.columns;
+				columns.push(isDeleted);
+				playerItemDatagrid.columns = columns;*/
+				playerItemDatagrid.editable=false;
+			}
+			private function getHandler(e:ResultEvent):void{
+				this.playerItemList=e.result as ArrayCollection;
+				playerItem = null;
+				if(playerItemList == null){
+					this.fatherWindow.playerItemList.title = "玩家已删除物品列表(共0项)";
+				} else {
+					this.fatherWindow.playerItemList.title = "玩家已删除物品列表(共" + playerItemList.length.toString() + "项)";
+				}
+			}
+
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+
+			public 	function search():void{
+				if(playerId!=0){
+					var playerItemId:int = int(StringUtil.trim(playerItemId.text));
+					var level:Object = null;
+					var sysItemId:Object = null;
+					if(StringUtil.trim(itemLevel.text)!=""){
+						level = int(StringUtil.trim(itemLevel.text));
+					}
+					if(StringUtil.trim(sysitemId.text)!=""){
+						sysItemId = int(StringUtil.trim(sysitemId.text));
+					}
+					var unitType:int = itemUnitType.selectedItem.data;
+					var sysitemType:int = siType.selectedItem.data;
+					
+					if(playerItemId!=0){
+						getRo.getDeletedPlayerItemList(playerId, playerItemId, null, null , null,null);
+					}else if(sysItemId != null&&sysItemId!=0){
+						getRo.getDeletedPlayerItemList(playerId, null, sysItemId, level , null,null);
+					}else{
+						getRo.getDeletedPlayerItemList(playerId, null, null, level , unitType,	sysitemType);
+					}
+				}
+			} 
+			private function onRevBtnClick():void{
+			 	var playerItemIdList:ArrayCollection=new ArrayCollection();
+				for each(var pi:PlayerItem in playerItemList){
+					if(pi.isDeleted=="N"){
+						playerItemIdList.addItem(pi.id);
+					}
+				}
+				if(playerItemIdList.length>0){
+					updateRo.revDeletedItems(model.gmUser,playerId,playerItemIdList);
+					
+				}else{
+					Alert.show("Nothing to recovery !");
+				}
+			}
+			
+			private function revPlayerItemHandler():void{
+				init();
+				cleanBtn.enabled=true;
+				Alert.show("Success! click button [clean cache] then go to the player's Depot to check it");
+			}
+
+			private function selectHandler():void{
+				this.playerItem=playerItemDatagrid.selectedItem as PlayerItem;
+			}
+			
+			
+			private function cleanPiCache(event:Event):void{
+				Alert.yesLabel = "YES";
+                Alert.noLabel = "NO";
+				Alert.show("Please make sure that the player has been offline more than 20 minutes,otherwise something wrong may happen on the player's items,Going on?","Caution !",3,this,alertClickHandler);
+			}
+			
+			private function alertClickHandler(event:CloseEvent):void {
+                if (event.detail==Alert.YES){
+                	updateRo.cleanPlayerItemsCache(model.gmUser,playerId);
+	                cleanBtn.enabled=false;
+                	}
+            }
+			private var type:int=0;
+			private function closeHandler(e:Event):void{
+				type=ComboBox(e.target).selectedItem.data;
+				if(type==0){
+					playerItemList.filterFunction=null;
+					playerItemList.refresh();
+				}else{
+					playerItemList.filterFunction=choiceType;
+					playerItemList.refresh();
+				}
+			
+			}
+			private function choiceType(item:Object):Boolean{
+				return item.type==type;
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getDeletedPlayerItemList" result="getHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="revDeletedItems" result="revPlayerItemHandler()" fault="defaultFaultHandle(event)"/>
+		<mx:method name="cleanPlayerItemsCache"  fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:VBox height="100%" width="100%">
+	<mx:DataGrid id="playerItemDatagrid" dataProvider="{playerItemList}"  height="429">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="玩家物品ID"/>
+			<mx:DataGridColumn dataField="playerId" headerText="玩家ID"/>
+			<mx:DataGridColumn dataField="itemDisplayName" headerText="名称" width="150"/>
+			<mx:DataGridColumn dataField="itemId" headerText="系统物品ID"/>
+			
+			<mx:DataGridColumn dataField="validDateStr" headerText="购买时间" width="100"/>
+			<mx:DataGridColumn dataField="expireDateStr" headerText="expireDate" width="150"/>
+			<mx:DataGridColumn dataField="level" headerText="强化等级" width="80">
+			<mx:itemRenderer >
+				<mx:Component>
+					<mx:Label text="{data.level}" color="{data.level>5?0xFF0000:0x000000}"/>
+				</mx:Component>
+			</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn dataField="playerItemUnitType" headerText="消耗方式" width="80"/>
+			<mx:DataGridColumn dataField="quantity" headerText="数量" width="80">
+			<mx:itemRenderer>
+				<mx:Component>
+					<mx:Label text="{data.quantity}" color="{data.quantity>100?0xFF0000:0x000000}"/>
+				</mx:Component>
+			</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<component:MyDataGridColumn dataField="isDeleted" headerText="是否恢复" itemRenderer="renderer.CheckBoxIsRevRenderer" />
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:ApplicationControlBar width="700">	
+		<mx:Label text="ID:"/>
+    	<mx:TextInput id="playerItemId" width="80" />
+    	<mx:Label text="ITEM_ID:"/>
+    	<mx:TextInput id="sysitemId" width="60"/>
+    	<mx:Label text="LEVEL:"/>
+    	<mx:TextInput id="itemLevel" width="40"/>
+    	<mx:ComboBox id="itemUnitType" dataProvider="{unitTypes}" width="100"/>
+    	<mx:ComboBox id="siType" dataProvider="{types}" width="100"/>
+    	<mx:Button id="searchBtn" label="search" click="search()"/>
+    </mx:ApplicationControlBar>
+	<mx:ApplicationControlBar width="550">	
+    	<mx:Button id="recoveryBtn" label="recovery" click="onRevBtnClick()"/>
+    	<mx:Button id="cleanBtn" label="clean cache" click="cleanPiCache(event)"/>
+    	<mx:Button id="refreshBtn" label="refresh" click="init()"/>
+    	
+    </mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:VBox>

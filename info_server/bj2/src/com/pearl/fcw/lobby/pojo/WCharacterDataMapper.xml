@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WCharacterDataMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WCharacterData" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="CHARACTER_ID" property="characterId" jdbcType="INTEGER" />
+    <result column="KILL" property="kill" jdbcType="INTEGER" />
+    <result column="DEAD" property="dead" jdbcType="INTEGER" />
+    <result column="HEAD_SHOT" property="headShot" jdbcType="INTEGER" />
+    <result column="KNIFE_KILL" property="knifeKill" jdbcType="INTEGER" />
+    <result column="USED_COUNT" property="usedCount" jdbcType="INTEGER" />
+    <result column="CONTROL_NUM" property="controlNum" jdbcType="INTEGER" />
+    <result column="REVENGE_NUM" property="revengeNum" jdbcType="INTEGER" />
+    <result column="ASSIST_NUM" property="assistNum" jdbcType="INTEGER" />
+    <result column="MAX_HEAD_SHOT" property="maxHeadShot" jdbcType="INTEGER" />
+    <result column="MAX_KILL" property="maxKill" jdbcType="INTEGER" />
+    <result column="MAX_HEALTH" property="maxHealth" jdbcType="INTEGER" />
+    <result column="MAX_DAMAGE" property="maxDamage" jdbcType="INTEGER" />
+    <result column="MAX_ALIVE_TIME" property="maxAliveTime" jdbcType="INTEGER" />
+    <result column="MVP_NUM" property="mvpNum" jdbcType="INTEGER" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PLAYER_ID, CHARACTER_ID, `KILL`, DEAD, HEAD_SHOT, KNIFE_KILL, USED_COUNT, CONTROL_NUM, 
+    REVENGE_NUM, ASSIST_NUM, MAX_HEAD_SHOT, MAX_KILL, MAX_HEALTH, MAX_DAMAGE, MAX_ALIVE_TIME, 
+    MVP_NUM, BACK_UP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WCharacterData" >
+    select 
+    <include refid="Base_Column_List" />
+    from CHARACTER_DATA${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WCharacterData" >
+    select 
+    <include refid="Base_Column_List" />
+    from CHARACTER_DATA${tableSuffix}
+    where 1=1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from CHARACTER_DATA${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WCharacterData" >
+    insert into CHARACTER_DATA${tableSuffix} (ID, PLAYER_ID, CHARACTER_ID, 
+      `KILL`, DEAD, HEAD_SHOT, 
+      KNIFE_KILL, USED_COUNT, CONTROL_NUM, 
+      REVENGE_NUM, ASSIST_NUM, MAX_HEAD_SHOT, 
+      MAX_KILL, MAX_HEALTH, MAX_DAMAGE, 
+      MAX_ALIVE_TIME, MVP_NUM, BACK_UP
+      )
+    values (#{id,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, #{characterId,jdbcType=INTEGER}, 
+      #{kill,jdbcType=INTEGER}, #{dead,jdbcType=INTEGER}, #{headShot,jdbcType=INTEGER}, 
+      #{knifeKill,jdbcType=INTEGER}, #{usedCount,jdbcType=INTEGER}, #{controlNum,jdbcType=INTEGER}, 
+      #{revengeNum,jdbcType=INTEGER}, #{assistNum,jdbcType=INTEGER}, #{maxHeadShot,jdbcType=INTEGER}, 
+      #{maxKill,jdbcType=INTEGER}, #{maxHealth,jdbcType=INTEGER}, #{maxDamage,jdbcType=INTEGER}, 
+      #{maxAliveTime,jdbcType=INTEGER}, #{mvpNum,jdbcType=INTEGER}, #{backUp,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WCharacterData" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into CHARACTER_DATA${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID,
+      </if>
+      <if test="kill != null" >
+        `KILL`,
+      </if>
+      <if test="dead != null" >
+        DEAD,
+      </if>
+      <if test="headShot != null" >
+        HEAD_SHOT,
+      </if>
+      <if test="knifeKill != null" >
+        KNIFE_KILL,
+      </if>
+      <if test="usedCount != null" >
+        USED_COUNT,
+      </if>
+      <if test="controlNum != null" >
+        CONTROL_NUM,
+      </if>
+      <if test="revengeNum != null" >
+        REVENGE_NUM,
+      </if>
+      <if test="assistNum != null" >
+        ASSIST_NUM,
+      </if>
+      <if test="maxHeadShot != null" >
+        MAX_HEAD_SHOT,
+      </if>
+      <if test="maxKill != null" >
+        MAX_KILL,
+      </if>
+      <if test="maxHealth != null" >
+        MAX_HEALTH,
+      </if>
+      <if test="maxDamage != null" >
+        MAX_DAMAGE,
+      </if>
+      <if test="maxAliveTime != null" >
+        MAX_ALIVE_TIME,
+      </if>
+      <if test="mvpNum != null" >
+        MVP_NUM,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="characterId != null" >
+        #{characterId,jdbcType=INTEGER},
+      </if>
+      <if test="kill != null" >
+        #{kill,jdbcType=INTEGER},
+      </if>
+      <if test="dead != null" >
+        #{dead,jdbcType=INTEGER},
+      </if>
+      <if test="headShot != null" >
+        #{headShot,jdbcType=INTEGER},
+      </if>
+      <if test="knifeKill != null" >
+        #{knifeKill,jdbcType=INTEGER},
+      </if>
+      <if test="usedCount != null" >
+        #{usedCount,jdbcType=INTEGER},
+      </if>
+      <if test="controlNum != null" >
+        #{controlNum,jdbcType=INTEGER},
+      </if>
+      <if test="revengeNum != null" >
+        #{revengeNum,jdbcType=INTEGER},
+      </if>
+      <if test="assistNum != null" >
+        #{assistNum,jdbcType=INTEGER},
+      </if>
+      <if test="maxHeadShot != null" >
+        #{maxHeadShot,jdbcType=INTEGER},
+      </if>
+      <if test="maxKill != null" >
+        #{maxKill,jdbcType=INTEGER},
+      </if>
+      <if test="maxHealth != null" >
+        #{maxHealth,jdbcType=INTEGER},
+      </if>
+      <if test="maxDamage != null" >
+        #{maxDamage,jdbcType=INTEGER},
+      </if>
+      <if test="maxAliveTime != null" >
+        #{maxAliveTime,jdbcType=INTEGER},
+      </if>
+      <if test="mvpNum != null" >
+        #{mvpNum,jdbcType=INTEGER},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WCharacterData" >
+    update CHARACTER_DATA${tableSuffix}
+    <set >
+      <if test="playerId != null" >
+        PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID = #{characterId,jdbcType=INTEGER},
+      </if>
+      <if test="kill != null" >
+        `KILL` = #{kill,jdbcType=INTEGER},
+      </if>
+      <if test="dead != null" >
+        DEAD = #{dead,jdbcType=INTEGER},
+      </if>
+      <if test="headShot != null" >
+        HEAD_SHOT = #{headShot,jdbcType=INTEGER},
+      </if>
+      <if test="knifeKill != null" >
+        KNIFE_KILL = #{knifeKill,jdbcType=INTEGER},
+      </if>
+      <if test="usedCount != null" >
+        USED_COUNT = #{usedCount,jdbcType=INTEGER},
+      </if>
+      <if test="controlNum != null" >
+        CONTROL_NUM = #{controlNum,jdbcType=INTEGER},
+      </if>
+      <if test="revengeNum != null" >
+        REVENGE_NUM = #{revengeNum,jdbcType=INTEGER},
+      </if>
+      <if test="assistNum != null" >
+        ASSIST_NUM = #{assistNum,jdbcType=INTEGER},
+      </if>
+      <if test="maxHeadShot != null" >
+        MAX_HEAD_SHOT = #{maxHeadShot,jdbcType=INTEGER},
+      </if>
+      <if test="maxKill != null" >
+        MAX_KILL = #{maxKill,jdbcType=INTEGER},
+      </if>
+      <if test="maxHealth != null" >
+        MAX_HEALTH = #{maxHealth,jdbcType=INTEGER},
+      </if>
+      <if test="maxDamage != null" >
+        MAX_DAMAGE = #{maxDamage,jdbcType=INTEGER},
+      </if>
+      <if test="maxAliveTime != null" >
+        MAX_ALIVE_TIME = #{maxAliveTime,jdbcType=INTEGER},
+      </if>
+      <if test="mvpNum != null" >
+        MVP_NUM = #{mvpNum,jdbcType=INTEGER},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WCharacterData" >
+    update CHARACTER_DATA${tableSuffix}
+    set PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      CHARACTER_ID = #{characterId,jdbcType=INTEGER},
+      `KILL` = #{kill,jdbcType=INTEGER},
+      DEAD = #{dead,jdbcType=INTEGER},
+      HEAD_SHOT = #{headShot,jdbcType=INTEGER},
+      KNIFE_KILL = #{knifeKill,jdbcType=INTEGER},
+      USED_COUNT = #{usedCount,jdbcType=INTEGER},
+      CONTROL_NUM = #{controlNum,jdbcType=INTEGER},
+      REVENGE_NUM = #{revengeNum,jdbcType=INTEGER},
+      ASSIST_NUM = #{assistNum,jdbcType=INTEGER},
+      MAX_HEAD_SHOT = #{maxHeadShot,jdbcType=INTEGER},
+      MAX_KILL = #{maxKill,jdbcType=INTEGER},
+      MAX_HEALTH = #{maxHealth,jdbcType=INTEGER},
+      MAX_DAMAGE = #{maxDamage,jdbcType=INTEGER},
+      MAX_ALIVE_TIME = #{maxAliveTime,jdbcType=INTEGER},
+      MVP_NUM = #{mvpNum,jdbcType=INTEGER},
+      BACK_UP = #{backUp,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,6 @@
+id = #$payment.id#,
+unittype = #$payment.unittype.number#,
+unit = #$payment.unit#,
+cost = #$payment.cost#,
+payType = #$payment.payType.number#,
+sysItemId = #$payment.sysItemId#,

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" height="100%" width="100%"  creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import vo.Server;
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.events.ItemClickEvent;
+			import vo.GmUser;
+			private var model:O2oModel = O2oModel.getInstance();
+			[Bindable]
+			private var selectServerStr:String="";
+			[Bindable]
+			private var server:Server
+			[Bindable]
+			private var serverList:ArrayCollection=new ArrayCollection();
+			private function init():void{
+				noticeType.selection=serverNotice;
+				getRo.getServersList();
+			}
+			private function onSendBtnClick():void{
+				if(msg.text!=""){
+					if(noticeType.selectedValue=="1"){
+						if(server!=null){
+							createRo.createGMNoticeNow(model.gmUser, server.id, 1, msg.text);
+						}else{
+							Alert.show("请选择服务器器");
+						}
+					}else{
+						createRo.createGMNoticeNow(model.gmUser, 0, 2, msg.text);
+					}
+				}else{
+					Alert.show("公告内容不能为空");
+				}
+			}
+			private function onResetBtnClick():void{
+				msg.text="";
+			}
+			private function onRadioSelect(e:ItemClickEvent):void{
+				if(e.currentTarget.selectedValue=="1"){
+					serverDataGrid.visible=true;
+					serverview.visible=true;
+					selectServerStr=server.name;
+				}else{
+					serverDataGrid.visible=false;
+					serverview.visible=false;
+				}
+				
+			}
+			private function onServerSelect():void{
+				this.server=serverDataGrid.selectedItem as Server;
+				selectServerStr=server.name;
+			}
+			private function handler(e:ResultEvent):void{
+				msg.text="";
+			}
+			private function getServerListHandler(evt:ResultEvent):void{
+				serverList= evt.result as ArrayCollection;
+				serverDataGrid.selectedIndex=0;
+				this.server=serverDataGrid.selectedItem as Server;
+				selectServerStr=server.name;
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getServersList" result="getServerListHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create" showBusyCursor="true">
+		<mx:method name="createGMNoticeNow"  result="handler(event)" />
+	</mx:RemoteObject>
+	
+	<mx:HBox  height="100%" width="100%" >
+		<mx:VBox  height="100%" width="100%" horizontalAlign="center">	
+			<mx:ControlBar>
+				<mx:HBox>
+					<mx:RadioButtonGroup id="noticeType" itemClick="onRadioSelect(event)"/>
+			        <mx:RadioButton groupName="noticeType" id="serverNotice" value="1" 
+			            label="{resourceManager.getString('Language','label.ImmSysNotice')}" width="150" />
+			        <mx:RadioButton groupName="noticeType" id="proxyNotice" value="2" 
+			            label="{resourceManager.getString('Language','label.BigPlaceNotice')}" width="150" />
+				</mx:HBox>
+			</mx:ControlBar>
+			<mx:HBox id="serverview">
+					<mx:Label color="red" text="{resourceManager.getString('Language','label.CurrentServer')}"/><mx:Label id="selectServer" text="{selectServerStr}"/>
+			</mx:HBox>
+			<mx:HBox>
+				<mx:DataGrid id="serverDataGrid" dataProvider="{serverList}" itemClick="onServerSelect()" 
+					 height="100%" editable="false">
+					<mx:columns>
+						 <mx:DataGridColumn dataField="id" headerText="{resourceManager.getString('Language','label.ServerId')}"  editable="false"/>
+						 <mx:DataGridColumn dataField="name" headerText="{resourceManager.getString('Language','label.ServerName')}"/>
+						 <mx:DataGridColumn dataField="max" headerText="{resourceManager.getString('Language','label.GoToTopest')}" />
+						 <mx:DataGridColumn dataField="min" headerText="{resourceManager.getString('Language','label.GoToShortest')}" />
+						 <mx:DataGridColumn dataField="maxOnline" headerText="{resourceManager.getString('Language','label.MaxOnline')}" />
+					</mx:columns>
+				</mx:DataGrid>
+				<mx:TextArea id="msg" width="500" height="228"  textAlign="left"/>
+			</mx:HBox>
+			
+			<mx:HBox>
+				<mx:ControlBar width="100%">	
+		        	<mx:Button id="sendBtn"  label="{resourceManager.getString('Language','button.Send')}" click="onSendBtnClick()"/>
+		        	<mx:Button id="resetBtn" label="{resourceManager.getString('Language','button.button.Reset')}" click="onResetBtnClick()"/>
+			     </mx:ControlBar>
+			</mx:HBox>
+		</mx:VBox>
+	</mx:HBox>	
+</mx:VBox>

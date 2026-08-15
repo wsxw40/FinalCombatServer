@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="WebcafeIpList">
+	<typeAlias alias="WebcafeIpListPojo" type="com.pde.uweb.database.partner.webcafelist.WebcafeIpListPojo" />
+	<resultMap id="result" class="WebcafeIpListPojo">
+		<result property="id" column="WEBCAF_ID_B" jdbcType="NUMBER" />
+		<result property="cafeIp" column="WEBCAF_IP" jdbcType="VARCHAR" />
+		<result property="type" column="WEBCAF_TYPE" jdbcType="NUMBER" />
+	
+	</resultMap>
+	<!-- select -->
+	<select id="select" resultMap="result">
+		SELECT  *
+		FROM WEBCAFE_IP_LIST
+	</select>
+</sqlMap>

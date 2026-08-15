@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="380" xmlns:view="view.*">
+<mx:Script>
+	<![CDATA[
+		import vo.SysItem;
+		private var _weapon:SysItem;
+		[Bindable]
+		public function set weapon(value:SysItem):void{
+			this._weapon=value;
+		}
+		public function get weapon():SysItem{
+			return this._weapon;
+		}
+	]]>
+</mx:Script>
+	<mx:TabBar id="tb" dataProvider="{vs}"/>
+	<mx:ViewStack id="vs" width="100%" height="100%">
+		<view:WeaponFormItem1 label="基本信息" id="w1" sysItem="{weapon}"/>
+		<view:WeaponFormItem4 label="武器基本信息" id="w4" sysItem="{weapon}"/>
+		<view:WeaponFormItem2 label="武器精度" id="w2" sysItem="{weapon}"/>
+		<view:WeaponFormItem3 label="其他" id="w3" sysItem="{weapon}"/>
+	</mx:ViewStack>
+</mx:VBox>

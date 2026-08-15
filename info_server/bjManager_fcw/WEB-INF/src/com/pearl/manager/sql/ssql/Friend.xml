@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Friend">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="Friend" type="com.pearl.manager.pojo.Friend"/> 	
+
+	<resultMap id="selectFriendResult" class="Friend">
+		<result property="id" column="ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="friendId" column="FRIEND_ID"/>			
+		<result property="type" column="TYPE"/>
+		<result property="groupName" column="Name"/>
+		<result property="acceptted" column="ACCEPTTED"/>
+	</resultMap>
+	
+	<resultMap id="selectFriendRankResult" class="Friend">
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="friendId" column="FRIEND_ID"/>			
+		<result property="type" column="TYPE"/>
+		<result property="groupName" column="Name"/>
+		<result property="acceptted" column="ACCEPTTED"/>	
+		<result property="name" column="NAME"/>
+		<result property="rank" column="RANK"/>
+	</resultMap>
+	
+  
+	<select id="select" parameterClass="java.util.Map" resultMap="selectFriendResult">
+   	 	select
+   	 	f.ID,
+   	 		f.PLAYER_ID,
+   	 		f.FRIEND_ID,   	 		
+   	 		f.TYPE,
+   	 		f.Name,
+   	 		f.ACCEPTTED
+    	from FRIEND f
+		where  f.PLAYER_ID = #fid#				
+	</select>
+	
+	<select id="selectRequestByFriendId" parameterClass="java.util.Map" resultMap="selectFriendResult">
+   	 	select
+   	 		f.ID,
+   	 		f.PLAYER_ID,
+   	 		f.FRIEND_ID,   	 		
+   	 		f.TYPE,
+   	 		f.Name,
+   	 		f.ACCEPTTED
+    	from FRIEND f
+		where	f.FRIEND_ID = #friendId# and f.TYPE = #type# and f.ACCEPTTED = 'N'		
+	</select>
+	
+	<select id="selectByFriendId" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+   	 	select
+   	 	f.PLAYER_ID
+    	from FRIEND f
+		where  f.FRIEND_ID = #friendId#	and type = 3
+	</select>  
+	
+	<select id="selectFriend" parameterClass="java.util.Map" resultMap="selectFriendResult">
+   	 	select
+   	 	
+   	 		f.PLAYER_ID,
+   	 		f.FRIEND_ID,
+   	 		f.IS_BLACK_LIST,
+   	 		p.NAME,
+   	 		p.RANK,
+   	 		ifnull(t.NAME,"") 		as TEAM
+    	from FRIEND f
+      	left outer join  PLAYER p on p.ID=f.PLAYER_ID
+    	left outer join PLAYER_TEAM pt on p.ID = pt.PLAYER_ID
+    	left outer join TEAM t on pt.TEAM_ID = t.ID
+		where  p.IS_DELETED="N"		
+		<isNotNull prepend="and" property="playerId">
+			f.FRIEND_ID = #playerId#
+		</isNotNull>
+		and f.IS_BLACK_LIST = 'N'
+		order by p.NAME;			 
+	</select>  
+	
+	<select id="selectFriendRankList" parameterClass="java.util.Map" resultMap="selectFriendRankResult">
+   	 	select 
+			(select count(*) + 1 from PLAYER where GENERAL_SCORE <![CDATA[ > ]]>  p.GENERAL_SCORE and IS_DELETED="N")  as GAMERANK,
+   	 		f.PLAYER_ID,
+   	 		f.FRIEND_ID,   	 		
+   	 		f.IS_BLACK_LIST,
+   	 		p.NAME,
+   	 		p.RANK
+    	from FRIEND f left join  PLAYER p on f.FRIEND_ID=p.ID
+		where   f.PLAYER_ID = #playerId# and f.IS_BLACK_LIST = 'N' and p.IS_DELETED="N"	
+		order by GAMERANK asc	 
+	</select>  
+	
+	<select id="fuzzyCountGroup" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+  		select count(*) from FRIEND f 
+		where f.NAME =#value#;
+  	</select>
+	
+	<insert id="insert" parameterClass="Friend">
+		insert into FRIEND (
+			PLAYER_ID, 
+			FRIEND_ID,
+			TYPE,
+			NAME,
+			ACCEPTTED
+			)
+		values (
+			#playerId#, 
+			#friendId#, 
+			#type#,
+			#groupName#,
+			#acceptted#
+			)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>	
+	</insert>	
+	
+	
+	<update id="update" parameterClass="Friend">
+		update FRIEND f
+		set f.TYPE = #type#,f.ACCEPTTED = #acceptted#,f.NAME = #groupName#
+		where f.ID = #id#
+	</update>	
+	
+	<delete id="delete" parameterClass="Friend">
+		delete from FRIEND
+		where ID = #id#
+	</delete>
+	<delete id="deleteHard" parameterClass="java.util.Map">
+		delete from FRIEND
+		where PLAYER_ID = #playerId#
+		<isNotNull prepend="and" property="type">
+			TYPE = #type#
+		</isNotNull>
+	</delete>		
+</sqlMap>

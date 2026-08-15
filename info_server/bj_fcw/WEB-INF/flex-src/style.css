@@ -1,0 +1,25 @@
+/* CSS file */
+Application {
+	font-family: "_sans";
+	font-size: 12;
+}
+ToolTip {
+	font-size: 12;
+}
+MenuBar {	
+	backgroundColor: #FFFFFF;
+	fillColors: #BCC2CD, #FFFFFF;
+	fillAlphas: 1.0, 1.0;
+	themeColor: #009dff;
+   	fontSize: 16;
+   	fontWeight: bold;
+	font-size:15;
+}
+.logDifference {
+	font-size: 12;
+	backgroundColor:red;
+	fillColors:red;
+	color:red;
+	fontWeight: bold;
+	borderColor:red;
+}

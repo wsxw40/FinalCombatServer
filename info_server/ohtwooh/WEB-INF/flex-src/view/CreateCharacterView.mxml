@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" fontSize="12" 
+	label="Add Character" title="Add Character" showCloseButton="true" width="326" height="496" xmlns:vo="vo.*"
+	close="PopUpManager.removePopUp(this)">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import vo.Character;
+			[Bindable]
+			public function set character(character:Character):void{
+			    this._character=character;
+			}
+			public function get character():Character{
+			    return this._character;
+			}
+		]]>
+	</mx:Script>
+	<vo:Character id="_character" crouchSpeed="{parseFloat(crouchSpeed.text)}" 
+		jumpSpeed="{parseFloat(jumpSpeed.text)}"  runSpeed="{parseFloat(runSpeed.text)}" accelSpeed="{parseFloat(accelSpeed.text)}"
+		throwSpeed="{parseFloat(throwSpeed.text)}" walkSpeed="{parseFloat(walkSpeed.text)}" 
+		resourceP="{resourceP.text}" resourceT="{resourceT.text}" isDefault="{isDefault.text}" cost="{parseInt(cost.text)}"
+		gender="{gender.text}"/>
+
+	<mx:VBox height="437">
+		<mx:Form width="100%" height="100%">
+			<mx:FormHeading label="Please add a character" textAlign="left"/>
+			<mx:FormItem label="RunSpeed" width="241">
+				<mx:TextInput width="100%" id="runSpeed" text="{character.runSpeed}"/>
+			</mx:FormItem>
+			<mx:FormItem label="WalkSpeed" width="241">
+				<mx:TextInput  width="100%" id="walkSpeed" text="{character.walkSpeed}"/>
+			</mx:FormItem>
+			<mx:FormItem label="CrouchSpeed" width="241">
+				<mx:TextInput  width="100%" id="crouchSpeed" text="{character.crouchSpeed}"/>
+			</mx:FormItem>
+			<mx:FormItem label="AccelSpeed" width="241">
+				<mx:TextInput  width="100%" id="accelSpeed" text="{character.accelSpeed}"/>
+			</mx:FormItem>
+			<mx:FormItem label="JumpSpeed" width="241">
+				<mx:TextInput  width="100%" text="{character.jumpSpeed}" id="jumpSpeed"/>
+			</mx:FormItem>
+			<mx:FormItem label="ThrowSpeed" width="241">
+				<mx:TextInput  width="100%" text="{character.throwSpeed}" id="throwSpeed"/>
+			</mx:FormItem>
+			<mx:FormItem label="ResourceP" width="241">
+				<mx:TextInput  width="100%" text="{character.resourceP}" id="resourceP"/>
+			</mx:FormItem>
+			<mx:FormItem label="ResourceT" width="241">
+				<mx:TextInput  width="100%" text="{character.resourceT}" id="resourceT"/>
+			</mx:FormItem>
+			<mx:FormItem label="isDefault" width="241">
+				<mx:TextInput  width="100%" text="{character.isDefault}" id="isDefault"/>
+			</mx:FormItem>
+			<mx:FormItem label="gender" width="241">
+				<mx:TextInput  width="100%" text="{character.gender}" id="gender"/>
+			</mx:FormItem>
+			<mx:FormItem label="cost" width="241">
+				<mx:TextInput  width="100%" text="{character.cost}" id="cost"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ApplicationControlBar width="288">
+			<mx:Button label="退出" id="cancel"/>
+			<mx:Button label="保存" id="save"/>
+			<mx:Button label="清空" id="clear" click="{this.character=new Character();}"/>
+		</mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:TitleWindow>

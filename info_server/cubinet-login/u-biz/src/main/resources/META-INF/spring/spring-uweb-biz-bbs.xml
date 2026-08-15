@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	
+		<!-- bbs function 抽象配置 -->
+		<bean id="abstractBBSDiscuzFunction" class="com.pde.uweb.bbs.api.BBSDiscuzFunction" abstract="true"/>
+		
+			<!-- 配置bbs通信接口 -->
+		<bean id="bbsUCenterClient_biz" class="com.pde.uweb.bbs.api.BBSUCenterClient" parent="abstractBBSDiscuzFunction">
+					<property name="ucIp" value="${bbs.uc.ip}"/>
+					<property name="ucAPI" value="${bbs.uc.api}"/>
+					<property name="ucConnect" value="${bbs.uc.connect}"/>
+					<property name="ucKey" value="${bbs.uc.key}"/>
+					<property name="ucAppId" value="${bbs.uc.appid}"/>
+		</bean>
+		
+	<!-- 	<bean id="bbsUCenterClient_biz" name="com.pde.uweb">
+					<property name="ucIp" value="${bbs.uc.ip}"/>
+					<property name="ucAPI" value="${bbs.uc.api}"/>
+					<property name="ucConnect" value="${bbs.uc.connect}"/>
+					<property name="ucKey" value="${bbs.uc.key}"/>
+					<property name="ucAppId" value="${bbs.uc.appid}"/>
+		</bean> -->
+
+</beans>

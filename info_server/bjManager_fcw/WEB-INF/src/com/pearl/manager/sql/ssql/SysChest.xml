@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysChest">
+ 	<typeAlias alias="SysChest" type="com.pearl.manager.pojo.SysChest"/> 	
+
+	<resultMap id="selectResult" class="SysChest">
+		<result property="id" column="ID"/>
+		<result property="type" column="TYPE"/>
+		<result property="level" column="LEVEL"/>
+		<result property="sysItemId" column="SYS_ITEM_ID"/>
+		<result property="weight" column="WEIGHT"/>
+		<result property="weight1" column="WEIGHT1"/>
+		<result property="number" column="NUMBER"/>
+		<result property="useType" column="USE_TYPE"/>
+		<result property="isNotice" column="IS_NOTICE"/>
+		<result property="price" column="PRICE"/>
+		<result property="chipPrice" column="CHIP_PRICE"/>
+		<result property="isDeleted" column="IS_DELETED"/>
+	</resultMap>
+  
+	<select id="select" resultMap="selectResult">
+   	 	select 
+   	 		ID,
+   	 		TYPE,
+   	 		LEVEL,
+   	 		SYS_ITEM_ID,
+   	 		WEIGHT,
+   	 		WEIGHT1,
+   	 		NUMBER,
+   	 		USE_TYPE,
+   	 		IS_NOTICE,
+   	 		PRICE,
+   	 		CHIP_PRICE,
+   	 		IS_DELETED
+    	from SYS_CHEST
+	</select>  	
+	
+	
+	<select id="selectById" parameterClass="java.lang.Integer" resultMap="selectResult">
+   	 	select 
+   	 		ID,
+   	 		TYPE,
+   	 		LEVEL,
+   	 		SYS_ITEM_ID,
+   	 		WEIGHT,
+   	 		WEIGHT1,
+   	 		NUMBER,
+   	 		USE_TYPE,
+   	 		IS_NOTICE,
+   	 		PRICE,
+   	 		CHIP_PRICE,
+   	 		IS_DELETED
+    	from SYS_CHEST
+		where ID=#value#
+	</select> 
+	
+	<delete id="delete" parameterClass="SysChest">
+   	 	delete from SYS_CHEST
+		where ID=#id#
+	</delete>  
+	
+	<insert id="insert" parameterClass="SysChest">
+		insert into SYS_CHEST
+			(TYPE,
+	   	 		LEVEL,
+	   	 		SYS_ITEM_ID,
+	   	 		WEIGHT,
+	   	 		WEIGHT1,
+	   	 		NUMBER,
+	   	 		USE_TYPE,
+	   	 		IS_NOTICE,
+	   	 		PRICE,
+	   	 		CHIP_PRICE,
+	   	 		IS_DELETED)
+		values
+			   (#type#,
+				#level#,
+				#sysItemId#,
+				#weight#,
+				#weight1#,
+				#number#,
+				#useType#,
+				#isNotice#,
+				#price#,
+				#chipPrice#,
+				#isDeleted#)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>	
+	</insert>
+	
+	<update id="update" parameterClass="SysChest">
+		update SYS_CHEST
+		set 	TYPE			= #type#,
+	   	 		LEVEL			= #level#,
+	   	 		SYS_ITEM_ID		= #sysItemId#,
+	   	 		WEIGHT			= #weight#,
+	   	 		WEIGHT1			= #weight1#,
+	   	 		NUMBER			= #number#,
+	   	 		USE_TYPE		= #useType#,
+	   	 		IS_NOTICE		= #isNotice#,
+	   	 		PRICE			= #price#,
+	   	 		CHIP_PRICE		= #chipPrice#,
+	   	 		IS_DELETED		= #isDeleted#
+ 		where	ID				= #id#
+	</update>
+</sqlMap>

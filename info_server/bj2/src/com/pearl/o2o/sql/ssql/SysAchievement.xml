@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysAchievement">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="sysAchievement" type="com.pearl.o2o.pojo.SysAchievement"/> 	
+	<resultMap id="selectAchievementResult" class="sysAchievement">
+		<result property="id" 				column="ID"/>
+		<result property="name" 			column="NAME"/>
+		<result property="descriptionCN" 		column="DESCRIPTION"/>
+		<result property="title" 			column="TITLE"/>
+		<result property="type" 			column="TYPE"/>
+		<result property="number" 			column="NUMBER"/>
+		<result property="color" 			column="COLOR"/>
+		<result property="characterId" 		column="CHARACTER_ID"/>
+		<result property="action" 			column="ACTION"/>
+		<result property="statType" 		column="STAT_TYPE"/>
+		<result property="gift" 			column="GIFT"/>
+		<result property="parent" 			column="PARENT"/>
+		<result property="group" 			column="GROUP"/>
+		<result property="isDeleted" 			column="IS_DELETED"/>
+	</resultMap>  		
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectAchievementResult">
+   	 	select * 		
+    		from SYS_ACHIEVEMENT where IS_DELETED = 'N';
+	</select>		
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="sysAchievement">
+		insert into SYS_MISSION(
+   	 		NAME,
+   	 		DESCRIPTION,
+   	 		TITLE,
+   	 		TYPE,
+   	 		NUMBER,
+   	 		COLOR,
+   	 		CHARACTER_ID,
+   	 		ACTION,
+   	 		STAT_TYPE,
+   	 		GIFT,
+   	 		PARENT,
+   	 		`GROUP`, IS_DELETED
+		) values (
+			#name#,
+			#descriptionCN#,
+			#title#,
+			#type#,
+			#number#,
+			#color#,
+			#characterId#,
+			#action#,
+			#statType#,
+			#gift#,
+			#parent#,
+			#group#, #isDeleted#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+</sqlMap>

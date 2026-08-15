@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+	verticalAlign="middle" horizontalAlign="center" creationComplete="init()" backgroundImage="{login_bg}">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.StateChangeEvent;
+			private function init():void{
+		    	userName.setFocus();
+		    	userName.setSelection(0, 0);
+		    }
+		    private function login():void{
+		    	if(userName.text=="admin"&&password.text=="admin"){
+		    		this.dispatchEvent(new StateChangeEvent(StateChangeEvent.CURRENT_STATE_CHANGE,true));
+		    	}
+			}
+			
+		   [Embed(source="/resource/login_bg.jpg")]
+		   public static const login_bg:Class;	
+		]]>
+	</mx:Script>
+	<mx:Panel  width="370" height="240" title="{resourceManager.getString('Language','title.user.login')}" 
+		verticalAlign="middle" verticalScrollPolicy="off" headerColors="0xB3AD93"
+		horizontalAlign="center" horizontalScrollPolicy="off">
+		<mx:Form width="100%" verticalGap="15" verticalScrollPolicy="off">
+			<mx:FormItem label="用户名" width="100%">
+				<mx:TextInput id="userName" enter="login()"/>
+			</mx:FormItem>
+			<mx:FormItem label="密码" >
+				<mx:TextInput id="password" width="100%" displayAsPassword="true" enter="login()"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:Label id="message" width="100%" color="0xFF0000" paddingLeft="10" paddingRight="10"/>
+		<mx:ControlBar horizontalAlign="center">
+			<mx:Button label="登陆" 
+				width="94" fontWeight="bold"
+				click="login()"/>
+		</mx:ControlBar>		  	
+	</mx:Panel> 
+</mx:VBox>

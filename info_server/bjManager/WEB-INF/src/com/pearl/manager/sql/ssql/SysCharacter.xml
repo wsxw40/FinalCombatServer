@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysCharacter">
+	<typeAlias alias="SysCharacter" type="com.pearl.manager.pojo.SysCharacter"/>
+	<resultMap class="SysCharacter" id="selectResult">
+		<result property="id" column="ID"/>
+		<result property="runSpeed" column="RUN_SPEED"/>
+		<result property="walkSpeed" column="WALK_SPEED"/>
+		<result property="crouchSpeed" column="CROUCH_SPEED"/>
+		<result property="accelSpeed" column="ACCEL_SPEED"/>
+		<result property="jumpSpeed" column="JUMP_SPEED"/>
+		<result property="throwSpeed" column="THROW_SPEED"/>
+		<result property="costumeResource" column="RESOURCE_P"/>
+		<result property="isDefault" column="IS_DEFAULT"/>
+		<result property="cost" column="COST"/>
+		<result property="name" column="NAME"/>
+		<result property="maxHp" column="MAX_HP"/>
+		<result property="exHp" column="EX_HP"/>
+		<result property="defaultLevel" column="LEVEL"/>
+		<result property="isFired" column="IS_FIRED"/>
+		
+		<result property="isEnable" column="IS_ENABLE"/>
+		<result property="controllerHeight" column="CONTROLLER_HEIGHT"/>
+		<result property="controllerRadius" column="CONTROLLER_RADIUS"/>
+		<result property="controllerCrouchHeight" column="CONTROLLER_CROUCH_HEIGHT"/>
+		<result property="scoreOffset" column="SCORE_OFFSET"/>
+		
+		<result property="resourceName" column="RESOURCE_NAME"/>
+	</resultMap>
+	
+	
+	<!--================================================== Select ==================================================-->
+	<select id="select" resultMap="selectResult" parameterClass="java.util.Map" >
+		select * from SYS_CHARACTER 
+		where IS_DELETED="N"
+	</select>
+	
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->	
+	<insert id="insert"  parameterClass="com.pearl.manager.pojo.SysCharacter">
+		insert into SYS_CHARACTER(
+			RUN_SPEED,
+			WALK_SPEED,
+			CROUCH_SPEED,
+			ACCEL_SPEED,
+			JUMP_SPEED,
+			THROW_SPEED,
+			RESOURCE_P,
+			IS_DEFAULT,COST,NAME,MAX_HP,EX_HP,LEVEL,IS_FIRED,RESOURCE_NAME,IS_ENABLE,
+			CONTROLLER_HEIGHT,CONTROLLER_RADIUS,CONTROLLER_CROUCH_HEIGHT,SCORE_OFFSET
+		) values(
+			#runSpeed#,
+			#walkSpeed#,
+			#crouchSpeed#,
+			#accelSpeed#,
+			#jumpSpeed#,
+			#throwSpeed#,
+			#costumeResource#,
+			#isDefault#,#cost#,#name#,#maxHp#,#exHp#,#defaultLevel#,#isFired#,#resourceName#,
+			#isEnable#,#controllerHeight#,#controllerRadius#,#controllerCrouchHeight#,#scoreOffset#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	
+	<update id="delete" parameterClass="SysCharacter">
+		update SYS_CHARACTER set IS_DELETED="Y" where ID=#id#;
+	</update>
+	
+	
+	<update id="update" parameterClass="SysCharacter">
+		update SYS_CHARACTER set
+			RUN_SPEED=#runSpeed#,
+			WALK_SPEED=#walkSpeed#,
+			CROUCH_SPEED=#crouchSpeed#,
+			ACCEL_SPEED=#accelSpeed#,
+			JUMP_SPEED=#jumpSpeed#,
+			THROW_SPEED=#throwSpeed#,
+			RESOURCE_P=#costumeResource#,
+			IS_DEFAULT=#isDefault#,
+			COST=#cost#,
+			NAME=#name#,MAX_HP=#maxHp#,EX_HP=#exHp#,LEVEL=#defaultLevel#,
+			IS_FIRED=#isFired#,
+			IS_ENABLE=#isEnable#,
+			CONTROLLER_HEIGHT=#controllerHeight#,
+			CONTROLLER_RADIUS=#controllerRadius#,
+			CONTROLLER_CROUCH_HEIGHT=#controllerCrouchHeight#,
+			SCORE_OFFSET=#scoreOffset#
+		where ID=#id#;	
+	</update>
+</sqlMap>

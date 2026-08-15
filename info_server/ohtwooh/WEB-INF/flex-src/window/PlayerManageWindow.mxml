@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import utils.ColumnFactory;
+			import utils.DatagridValidateFactory;
+			import mx.utils.StringUtil;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import vo.Player;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			[Bindable]
+			public var playerList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public var player:Player=new Player();
+			private function init():void{
+				initBtn();
+				playerDataGrid.columns=ColumnFactory.getPlayerColumns(false);
+				getRo.getPlayerList();
+			}
+			private function initBtn():void{
+//				newBtn.enabled=true;
+//				copyBtn.enabled=true;
+//		 		deleteBtn.enabled=true;
+				saveBtn.enabled=false;
+		 		editBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		playerDataGrid.selectable=true;
+		 		
+			}
+			private function onSaveBtnClick():void{
+				updateRo.updatePlayer(this.playerList);
+				initBtn();
+				playerDataGrid.editable=false;
+				
+			}
+			private function onEditBtnClick():void{
+				playerDataGrid.editable=true;
+//				newBtn.enabled=false;
+//		 		deleteBtn.enabled=false;
+		 		editBtn.enabled=false;
+//		 		copyBtn.enabled=false;
+		 		cancelBtn.enabled=true;
+		 		saveBtn.enabled=true;
+			}
+			private function onCancelBtnClick():void{
+				initBtn();
+				playerDataGrid.editable=false;
+				getRo.getPlayerList();
+			}
+			private function getPlayerListHandler(evt:ResultEvent):void{
+				playerList=evt.result as ArrayCollection;
+			}
+			private function updatePlayerListHandler(evt:ResultEvent):void{
+				getRo.getPlayerList();
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.message.toString());
+				
+			}
+			private function selectHandler():void{
+		 		player=playerDataGrid.selectedItem as Player;
+		 	}
+		 	private function checkIt(event:Event):void
+			{
+				playerDataGrid.invalidateList();
+			}
+			private var datagridValidate:Validator;
+			private function endEdit(event:DataGridEvent):void{
+		 		var dataField:String = event.dataField;
+				var fCell:Array=[event.columnIndex,event.rowIndex];
+				var source:Object=event.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(event.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = event.currentTarget.editedItemRenderer.data[event.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+               		var validate:Validator=DatagridValidateFactory.getCharacterValidater(dataField,source);
+               		if(validate!=null){
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			playerDataGrid.selectable=false;
+	               			this.player.isChange=1;
+	               			var array:Array=new Array();
+	               			array.push(dataField);
+	               			
+	               			callLater(maintainFocus1,array);
+	               			
+	               		}else{
+	               			event.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		}
+               		}else{
+               			callLater(maintainFocus);
+               		}
+               	}else{
+               		callLater(maintainFocus);
+               	}
+               	
+		 	}
+		 	private function maintainEdit(colIndex:int,rowIndex:int,source:Object):void
+			{
+				var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+				if(playerDataGrid.editedItemPosition==null)
+				{
+	   				playerDataGrid.editedItemPosition = editCell;
+					callLater(validateCurrentEditor);
+	   			}
+			}
+			private function validateCurrentEditor():void{
+				datagridValidate.source=playerDataGrid.itemEditorInstance;
+				datagridValidate.validate();
+			}
+			private function maintainFocus1(str:String):void
+			{
+				if(str=="exp"){
+					getRo.getPlayerTitle(this.player.exp);
+				}
+				if(str=="rank"){
+					getRo.getPlayerExp(this.player.rank);
+				}	
+			}
+			private function maintainFocus():void
+			{
+	   			playerDataGrid.editedItemPosition = null;
+			}
+			private function getPlayerTitleHandler(evt:ResultEvent):void{
+				var title:int=evt.result as int;
+				this.player.rank=title;
+				playerDataGrid.selectable=true;
+				playerDataGrid.editedItemPosition = null;
+			
+			}
+			private function getPlayerExpHandler(evt:ResultEvent):void{
+				var exp:int=evt.result as int;
+				this.player.exp=exp;
+				playerDataGrid.selectable=true;
+				playerDataGrid.editedItemPosition = null;
+			
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getPlayerList" result="getPlayerListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getPlayerTitle" result="getPlayerTitleHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getPlayerExp" result="getPlayerExpHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<!--<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createCharacter" result="getPlayerListHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteCharacter" result="getPlayerListHandler(event)"/>
+	</mx:RemoteObject>-->
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updatePlayer" result="updatePlayerListHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox  height="100%" width="100%">
+	
+	<mx:VBox  height="100%" width="100%">
+	<mx:HBox>
+		<mx:ControlBar width="100%" >				
+	        	<!--<mx:Button id="newBtn"  label="新建" click="onNewBtnClick()"/>
+	        	<mx:Button id="copyBtn" label="复制到粘贴板" click="onCopyBtnClick()"/>
+	        	
+	        	<mx:Button id="deleteBtn" label="删除" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="showLog"  label="查看日志"  click="onShowBtnClick()"/>-->
+	        	<mx:Button id="saveBtn"  label="保存"  click="onSaveBtnClick()"/>
+	        	<mx:Button id="editBtn"  label="编辑" click="onEditBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="取消"  click="onCancelBtnClick()"/>
+	        	
+	     </mx:ControlBar>
+	</mx:HBox>
+		<mx:ApplicationControlBar  height="100%" width="100%">	
+			<component:MyDataGrid id="playerDataGrid" dataProvider="{playerList}" itemClick="selectHandler()" lockedColumnCount="3" 
+				width="100%" height="100%" editable="false" change="checkIt(event)"
+				itemEditEnd="endEdit(event)">
+			</component:MyDataGrid>
+		</mx:ApplicationControlBar>
+		</mx:VBox>
+	</mx:HBox>	
+</mx:VBox>

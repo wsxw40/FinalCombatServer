@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:Script source="../common/CommonScript.as"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import vo.GmUser;
+			import mx.utils.StringUtil;
+			import mx.events.ValidationResultEvent;
+			import event.GmGroupEvent;
+			import mx.rpc.events.ResultEvent;
+			import vo.GmGroup;			
+			
+			private var model:O2oModel = O2oModel.getInstance();
+			[Bindable]
+			public var groups:ArrayCollection = new ArrayCollection();
+			
+			private var _selectedGroup:GmGroup;
+			
+			public function get selectedGroup():GmGroup{
+				return this._selectedGroup;
+			}
+			[Bindable]
+			public function set selectedGroup(group:GmGroup):void{
+				this._selectedGroup = group;
+				parentGroupCB.enabled = false;
+				
+				if(selectedGroup && selectedGroup.id != 0){
+					var parentCode:String = selectedGroup.code;
+					parentCode = parentCode.substr(0, parentCode.length -2);
+					
+					var index:int = -1;
+					for(var i:int = 0; i < groups.length; i++){
+						var g:GmGroup = groups.getItemAt(i) as GmGroup;
+						if(g.code == parentCode){
+							index = i;
+						}
+					}
+					
+					parentGroupCB.selectedIndex = index;
+				}					
+			}
+			
+			private function addGroup():void{
+				selectedGroup = new GmGroup();
+				parentGroupCB.enabled = true;
+			}
+			
+			private function saveGroup():void{
+				var result:ValidationResultEvent = sv.validate(groupNameTI.text);
+				if(parentGroupCB.selectedIndex == -1){
+					Alert.show("请选择父组");
+				} else {
+					if(result.type == ValidationResultEvent.VALID){
+						selectedGroup.id	= Number(groupIdLab.text);
+						selectedGroup.name	= StringUtil.trim(groupNameTI.text);
+						selectedGroup.description	= StringUtil.trim(descriptionTA.text);
+						selectedGroup.creatorId = model.gmUser.id;
+						selectedGroup.code = parentGroupCB.selectedItem.code;
+						if(selectedGroup.id == 0){
+							createRo.createGmGroup(model.gmUser, selectedGroup);
+						}else{
+							updateRo.updateGmGroup(model.gmUser, selectedGroup);
+						}
+						parentGroupCB.enabled = false;
+					}	
+				}			
+			}
+			import mx.controls.Alert;
+			private function deleteGroup():void{
+				if(selectedGroup.code=="01" || selectedGroup.code=="0101" || selectedGroup.code=="0102"){
+					Alert.show("这个分组不能删除");
+				}else {
+					deleteRo.deleteGmGroup(model.gmUser, selectedGroup);
+				}
+			}
+			
+			private function createGmGroupHandler(e:ResultEvent):void{
+				var result:GmGroup = e.result as GmGroup;
+				var ge:GmGroupEvent = new GmGroupEvent(result, GmGroupEvent.CREATE_GM_GROUP, true, true);
+				dispatchEvent(ge);
+			}
+			
+			private function updateGmGroupHandler(e:ResultEvent):void{
+				var result:GmGroup = e.result as GmGroup;
+				var ge:GmGroupEvent = new GmGroupEvent(result, GmGroupEvent.UPDATE_GM_GROUP, true, true);
+				dispatchEvent(ge);
+			}
+			
+			private function deleteGmGroupHandler(e:ResultEvent):void{
+				var ge:GmGroupEvent = new GmGroupEvent(null, GmGroupEvent.DELETE_GM_GROUP, true, true);
+				dispatchEvent(ge);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="createRo" destination="ro.create" showBusyCursor="true">
+		<mx:method name="createGmGroup" result="createGmGroupHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update" showBusyCursor="true">
+		<mx:method name="updateGmGroup" result="updateGmGroupHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete" showBusyCursor="true">
+		<mx:method name="deleteGmGroup" result="deleteGmGroupHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:StringValidator id="sv" required="true" property="text" minLength="1" source="{groupNameTI}"/>
+	
+	<mx:VBox width="100%" height="100%">
+		<mx:Form width="100%">
+			<mx:FormItem label="GM Group ID:" required="true">
+				<mx:Label id="groupIdLab" text="{selectedGroup.id}"/>
+			</mx:FormItem>
+			<mx:FormItem label="{resourceManager.getString('Language','label.GroupName')}:" required="true">
+				<mx:TextInput id="groupNameTI" text="{selectedGroup.name}" width="400"/>						
+			</mx:FormItem>
+			<mx:FormItem label="{resourceManager.getString('Language','label.FatherGroupName')}:" required="true">
+				<mx:ComboBox id="parentGroupCB" dataProvider="{groups}" labelField="name" enabled="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="{resourceManager.getString('Language','label.Remark')}:" height="100%">
+				<mx:TextArea id="descriptionTA" text="{selectedGroup.description}" width="400" height="100%"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:HBox>
+			<mx:Button id="addBtn" label="{resourceManager.getString('Language','button.New')}" click="addGroup()"/>
+			<mx:Button id="saveBtn" label="{resourceManager.getString('Language','button.Save')}" click="saveGroup()"/>
+			<mx:Button id="deleteBtn" label="{resourceManager.getString('Language','button.Delete')}" click="deleteGroup()"/>
+		</mx:HBox>
+	</mx:VBox>		
+</mx:Canvas>

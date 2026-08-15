@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*" creationComplete="init()"
+	 height="100%" width="100%"
+	 xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*" horizontalAlign="center">
+<mx:Script>
+	<![CDATA[
+		import mx.managers.PopUpManager;
+		import popup.AddSysNotice;
+		import popup.UpdateSysNotice;
+		import mx.controls.TextInput;
+		import vo.SysNotice;
+		import mx.collections.ArrayCollection;
+		import mx.controls.Alert;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import vo.GmUser;
+		private var model:O2oModel = O2oModel.getInstance();
+		[Bindable]
+		private var sysNoticeList:ArrayCollection=new ArrayCollection();
+		private function init():void{
+			getRo.getSysNoticeList();
+		}
+		private function getSysNoticeListHandler(e:ResultEvent):void{
+			sysNoticeList=e.result as ArrayCollection;
+			unFirstGetList();
+		}
+		private function defaultFaultHandler(evt:FaultEvent):void{
+			Alert.show(evt.fault.faultString);
+		}
+		private var addSysNotice:AddSysNotice;
+		private var updateSysNotice:UpdateSysNotice;
+		
+		[Bindable]
+		private var sysNotice:SysNotice=new SysNotice();
+		 private var ntype:int;
+        private function doTypeFilter(event : Event):void{
+        	this.ntype  = event.target.selectedItem.data;
+        	sysNoticeList.filterFunction=ntypeFilter;
+        	sysNoticeList.refresh();
+        	update.enabled=false;
+        }
+        private function ntypeFilter(item:Object):Boolean{
+				var si:SysNotice = item as SysNotice;
+				if(this.ntype == 0)
+					return true;
+				if(si.type==this.ntype)			
+					return true;
+				else 
+					return false;
+			}
+		private function addButtonClick():void{
+			addSysNotice=AddSysNotice(PopUpManager.createPopUp(this,AddSysNotice,true));
+			addSysNotice.sysNotice=new SysNotice();
+			addSysNotice.close.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(addSysNotice);});
+	 		addSysNotice.save.addEventListener(MouseEvent.CLICK,addNewSysNotice);
+			PopUpManager.centerPopUp(addSysNotice);
+		}
+		private function addNewSysNoticeHaldler(evt:ResultEvent):void{
+			var flag:int = evt.result as int;
+			if(flag==1)
+				Alert.show("公告内容长度不能超过30个汉字，或者60个字母");
+			else if(flag==0){
+				getRo.getSysNoticeList();
+				unFirstGetList();
+				PopUpManager.removePopUp(addSysNotice);
+			}
+		}
+		private function addNewSysNotice(e:MouseEvent):void{
+			if(StringUtil.trim(addSysNotice.sysNotice.content)){
+				createRo.createSysNotice(model.gmUser, addSysNotice.sysNotice);
+			} else {
+				Alert.show("公告内容不能为空");
+			}
+		}
+		private function onDeleteClick():void{
+			deleteRo.deleteSysNotice(model.gmUser, sysNotice);
+			getRo.getSysNoticeList();
+		}
+		private function unFirstGetList():void{
+			sysNoticeList.filterFunction=ntypeFilter;
+        	sysNoticeList.refresh();
+		}
+		private function onUpdateClick():void{
+			updateSysNotice=UpdateSysNotice(PopUpManager.createPopUp(this,UpdateSysNotice,true));
+			updateSysNotice.sysNotice=this.sysNotice;
+			updateSysNotice.close.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(updateSysNotice);});
+	 		updateSysNotice.save.addEventListener(MouseEvent.CLICK,updateNewSysNotice);
+			PopUpManager.centerPopUp(updateSysNotice);
+		}
+		import mx.utils.StringUtil;
+		private function updateNewSysNotice(e:MouseEvent):void{
+			if(StringUtil.trim(updateSysNotice.sysNotice.content)){
+				updateRo.updateSysNotice(model.gmUser, updateSysNotice.sysNotice);
+			} else {
+				Alert.show("公告内容不能为空");
+			}
+		}
+		private function updateNewSysNoticeHaldler(e:ResultEvent):void{
+			var flag:int = e.result as int;
+			if(flag==0){
+				init();
+				unFirstGetList();
+				PopUpManager.removePopUp(updateSysNotice);
+			} else {
+				Alert.show("公告内容长度不能超过30个汉字，或者60个字母");
+			}
+		}
+//		private function updateSysNoticeHandler(e:ResultEvent):void{
+//		}
+//		private function createSysNoticeHandler(e:ResultEvent):void{
+//			getRo.getSysNoticeList();
+//		}
+		private function selectHandler():void{
+				update.enabled=true;
+				this.sysNotice=sysNoticeDataGrid.selectedItem as SysNotice;
+			}
+		[Bindable]
+		public var stypes:ArrayCollection = new ArrayCollection(
+                [ {label:"----所有----", data:0}, 
+                  {label:"定时公告", data:1}, 
+                  {label:"循环公告", data:2} 
+                ]);
+        private function onRrefreshClick():void{
+        	init();
+		}
+	]]>
+</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getSysNoticeList" result="getSysNoticeListHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createSysNotice" result="addNewSysNoticeHaldler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateSysNotice" result="updateNewSysNoticeHaldler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteSysNotice"/>
+	</mx:RemoteObject>
+	<mx:HBox  height="100%" width="100%">
+	
+	<mx:VBox  height="100%" width="100%">
+	<mx:HBox>
+		<mx:ApplicationControlBar width="100%" >	
+			<mx:Button label="{resourceManager.getString('Language','button.New')}" id="add" click="addButtonClick()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Delete')}" id="del" click="onDeleteClick()"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Save')}" id="update" click="onUpdateClick()" enabled="false"/>
+			<mx:Label text="{resourceManager.getString('Language','label.Type')}：" />
+			<mx:ComboBox  dataProvider="{stypes}" close="doTypeFilter(event)"/>
+			<mx:Button label="{resourceManager.getString('Language','button.Refresh')}" id="refresh" click="onRrefreshClick()"/>
+		</mx:ApplicationControlBar>
+	</mx:HBox>
+	<mx:ApplicationControlBar  height="100%" width="100%">
+				<mx:DataGrid id="sysNoticeDataGrid" dataProvider="{sysNoticeList}" lockedColumnCount="1" 
+					width="100%" height="100%" editable="false" paddingBottom="0" itemClick="selectHandler()">
+					<mx:columns>
+						<mx:DataGridColumn dataField="id" headerText="ID" editable="false"/>
+						<mx:DataGridColumn dataField="type" headerText="{resourceManager.getString('Language','label.Type')}">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:HBox>
+										<mx:Label id="bwLab">
+											<mx:Script>
+												<![CDATA[
+													import common.Constants;
+													
+													private var _data:Object;
+													
+													public override function get data():Object{
+														return _data;
+													}
+													[Bindable]
+													public override function set data(u:Object):void{
+														this._data = u;
+														if(u.type == Constants.LOOP_NOTICE){
+															bwLab.text = "循环公告";
+														}else if(u.type == Constants.FIX_NOTICE){
+															bwLab.text = "定时公告";
+														}
+													}
+												]]>
+											</mx:Script>
+										</mx:Label>
+									</mx:HBox>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn dataField="content" headerText="{resourceManager.getString('Language','label.NoticeContent')}"/>
+						<mx:DataGridColumn dataField="startTimeStr" headerText="{resourceManager.getString('Language','label.StartTime')}"/>
+						<mx:DataGridColumn dataField="endTimeStr" headerText="{resourceManager.getString('Language','label.EndTime')}"/>
+						<mx:DataGridColumn dataField="noticeTime" headerText="{resourceManager.getString('Language','label.Between')}"/>
+					</mx:columns>
+				</mx:DataGrid>
+	</mx:ApplicationControlBar>
+	</mx:VBox>
+	</mx:HBox>
+</mx:VBox>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+<mx:Script>
+	<![CDATA[
+		import mx.controls.Alert;
+		import mx.core.UIComponent;
+		import mx.events.ValidationResultEvent;
+		import utils.DatagridValidateFactory;
+		import mx.validators.Validator;
+		import vo.SysItem;
+		private var _sysItem:SysItem;
+		[Bindable]
+		public function set sysItem(value:SysItem):void{
+			this._sysItem=value;
+		}
+		public function get sysItem():SysItem{
+			return this._sysItem;
+		}
+		
+		public var validateArray:Array=new Array();
+		private function validateTextInput(e:Event):void{
+			var dataField:String="";
+			var value:String="";
+			var validate:Validator;
+			if(e.currentTarget == descriptionCN){
+				var source1:TextArea=e.currentTarget as TextArea;
+				dataField=source1.id;
+				value=source1.text;
+				validate=DatagridValidateFactory.getSysitemValidator(dataField,source1);
+			}else{
+				var source2:TextInput=e.currentTarget as TextInput;
+				dataField=source2.id;
+				if(dataField=="wBackBoostPlus"){
+					dataField="WBackBoostPlus";
+				}
+				value=source2.text;
+				validate=DatagridValidateFactory.getSysitemValidator(dataField,source2);
+			}
+			
+			var pattern:RegExp = / /g;
+			value=value.replace(pattern,"");
+			var val:ValidationResultEvent=validate.validate();
+			if(val.type=="valid"){
+				if(dataField=="WBackBoostPlus"){
+					sysItem[dataField]=parseInt(value);
+				}
+				if(sysItem[dataField] is String){
+					sysItem[dataField]=value;
+				}else if(sysItem[dataField] is Number){
+					sysItem[dataField]=parseFloat(value);
+				}else {
+					sysItem[dataField]=value;
+				}
+			}else{
+				validateArray.push(validate);
+			}
+			sysItem.isChange=1;
+		} 
+		
+	]]>
+</mx:Script>
+	<mx:VBox width="60%" borderStyle="solid" verticalGap="0" >
+		<mx:Label text="武器基本属性"/>
+		<mx:HBox width="100%">
+			<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+				<mx:FormItem label="wChangeInTime">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wChangeInTime" text="{sysItem.wChangeInTime}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wMoveSpeedOffset">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wMoveSpeedOffset" text="{sysItem.wMoveSpeedOffset}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wPenetration">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WPenetration" text="{sysItem.WPenetration}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wDamage">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WDamage" text="{sysItem.WDamage}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wRangeModifier">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wRangeModifier" text="{sysItem.wRangeModifier}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wFireTime">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wFireTime" text="{sysItem.wFireTime}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wReloadTime">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wReloadTime" text="{sysItem.wReloadTime}"/>
+				</mx:FormItem>
+				<mx:FormItem label="WAmmoOneClip">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WAmmoOneClip" text="{sysItem.WAmmoOneClip}"/>
+				</mx:FormItem>
+				<mx:FormItem label="WAmmoCount">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WAmmoCount" text="{sysItem.WAmmoCount}"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+				<mx:FormItem label="WAutoFire">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WAutoFire" text="{sysItem.WAutoFire}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wTimeToIdle">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wTimeToIdle" text="{sysItem.wTimeToIdle}"/>
+				</mx:FormItem>
+				<mx:FormItem label="WCritRate">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WCritRate" text="{sysItem.WCritRate}"/>
+				</mx:FormItem>
+				<mx:FormItem label="WCritAvailable">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WCritAvailable" text="{sysItem.WCritAvailable}"/>
+				</mx:FormItem>
+				<mx:FormItem label="WDamageModifer">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WDamageModifer" text="{sysItem.WDamageModifer}"/>
+				</mx:FormItem>
+				<mx:FormItem label="characterId">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="characterId" text="{sysItem.characterId}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wRangeStart">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wRangeStart" text="{sysItem.wRangeStart}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wRangeEnd">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wRangeEnd" text="{sysItem.wRangeEnd}"/>
+				</mx:FormItem>
+				<mx:FormItem label="WShootBulletCount">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WShootBulletCount" text="{sysItem.WShootBulletCount}"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+				<mx:FormItem label="wSpread">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wSpread" text="{sysItem.wSpread}"/>
+				</mx:FormItem>
+				<mx:FormItem label="description">
+					<mx:TextArea change="validateTextInput(event)" width="250" height="100" id="descriptionCN" text="{sysItem.descriptionCN}"/>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:HBox>
+	</mx:VBox>
+	<mx:VBox width="40%" borderStyle="solid" verticalGap="0" >
+		<mx:Label text="其他属性"/>
+		<mx:HBox width="100%">
+			<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+				<mx:FormItem label="wOnairFactor">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wOnairFactor" text="{sysItem.wOnairFactor}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wFireMaxSpeed">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wFireMaxSpeed" text="{sysItem.wFireMaxSpeed}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wFireStartSpeed">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wFireStartSpeed" text="{sysItem.wFireStartSpeed}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wFireAceleration">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wFireAceleration" text="{sysItem.wFireAceleration}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wFireResistance">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wFireResistance" text="{sysItem.wFireResistance}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wXOffset">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wXOffset" text="{sysItem.wXOffset}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wHitSpeed">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wHitSpeed" text="{sysItem.wHitSpeed}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wLastHurt">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wLastHurt" text="{sysItem.wLastHurt}"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+				<mx:FormItem label="wDmgModifyTimerMin">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wDmgModifyTimerMin" text="{sysItem.wDmgModifyTimerMin}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wDmgModifyTimerMax">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wDmgModifyTimerMax" text="{sysItem.wDmgModifyTimerMax}"/>
+				</mx:FormItem>
+				<mx:FormItem label="WDmgModifyMin">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WDmgModifyMin" text="{sysItem.WDmgModifyMin}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wDmgModifyMax">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="wDmgModifyMax" text="{sysItem.wDmgModifyMax}"/>
+				</mx:FormItem>
+				<mx:FormItem label="wBackBoostPlus">
+					<mx:TextInput change="validateTextInput(event)" width="50" id="WBackBoostPlus" text="{sysItem.WBackBoostPlus}"/>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:HBox>
+	</mx:VBox>
+</mx:HBox>

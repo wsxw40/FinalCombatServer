@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300"
+	label="weapon Point" title="weapon Point"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}">
+	<mx:Script>
+		<![CDATA[
+			import vo.Supplies;
+			import utils.ColumnFactory;
+			import mx.controls.Alert;
+			import vo.WeaponPoint;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			[Bindable]
+			public  var suppliesList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public  var weapons:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public  var suppies:Supplies;
+			private var weaponAdd:AddLevelWeaponView;
+			private function onNewBtnClick():void{
+				var s:Supplies=new Supplies();
+				suppliesList.addItem(s);
+			}
+			private function onNewWeaponBtnClick():void{
+				
+				weaponAdd=AddLevelWeaponView(PopUpManager.createPopUp(this,AddLevelWeaponView,true));
+				weaponAdd.weaponNameDatagrid.columns=ColumnFactory.getSysItemName(false);
+				weaponAdd.weaponNameDatagrid.dataProvider=weapons;
+				weaponAdd.save.addEventListener(MouseEvent.CLICK,selectWeapon);
+			 	weaponAdd.cancel.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(weaponAdd);});
+			}
+			private function selectWeapon(evt:MouseEvent):void{
+				if(weaponAdd.weapon!=null){
+					var suppies:Supplies=new Supplies();
+					suppies.type=1;
+					suppies.value=weaponAdd.weapon.id;
+					suppliesList.addItem(suppies);
+				}
+				PopUpManager.removePopUp(weaponAdd);
+			}
+			private function onDeleteBtnClick():void{
+				if(this.suppies==null){
+					Alert.show("请选择一条记录。");
+				}else{
+					var index:int=suppiesDatagrid.selectedIndex;
+					suppliesList.removeItemAt(index);
+				}
+			}
+			private function onCancelBtnClick():void{
+				PopUpManager.removePopUp(this);
+			}
+			private function selectHandler():void{
+				this.suppies=suppiesDatagrid.selectedItem as Supplies;
+			}
+			
+		]]>
+	</mx:Script>
+<mx:VBox>
+	<mx:VBox>
+		<mx:DataGrid id="suppiesDatagrid" dataProvider="{suppliesList}" editable="true" width="378" height="194" itemClick="selectHandler()">
+		</mx:DataGrid>
+	</mx:VBox>
+	<mx:VBox>
+		<mx:ControlBar width="100%" >
+				<mx:Button id="save"  label="保存"/>		
+	        	<mx:Button id="newBtn"  label="新建" click="onNewBtnClick()"/>
+	        	<mx:Button id="newWeaponBtn"  label="新建武器" click="onNewWeaponBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="删除" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="退出"  click="onCancelBtnClick()"/>
+	        
+	     </mx:ControlBar>
+	</mx:VBox>
+</mx:VBox>
+</mx:TitleWindow>

@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import popup.VehicleLinePointView;
+			import vo.VehicleLinePoint;
+			import popup.FlagPointView;
+			import vo.FlagPoint;
+			import vo.PointVO;
+			import popup.PointView;
+			import popup.ZombieInfoView;
+			import vo.ZombieInfo;
+			import vo.Supplies;
+			import popup.SuppliesView;
+			import popup.WeaponPointView;
+			import vo.WeaponPoint;
+			import vo.BlastPoint;
+			import popup.BlastPointView;
+			import mx.controls.DataGrid;
+			import utils.PointUtils;
+			import vo.GamePoint;
+			import popup.StartPointView;
+			import mx.managers.PopUpManager;
+			import view.CreateMapView;
+			import mx.utils.StringUtil;
+			import utils.DatagridValidateFactory;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import utils.ColumnFactory;
+			import mx.rpc.events.FaultEvent;
+			import vo.LevelWeapon;
+			import vo.LevelInfo;
+			import vo.GmUser;
+			private var model:O2oModel = O2oModel.getInstance();
+			[Bindable]
+			private var levelList:ArrayCollection;
+			[Bindable]
+			private var levelWeapons:ArrayCollection;
+			[Bindable]
+			private var typeList:ArrayCollection;
+			[Bindable]
+			private var levelInfo:LevelInfo=null;
+			private var isCopy:Boolean=false;
+			private var  mapView:CreateMapView;
+			private function init():void{
+				trace("map management = "+model.gmUser.id);
+				initBtn();
+				levelDataGrid.columns=ColumnFactory.getLevelColumns(false);
+				getRo.getLevelList();
+				initTypeList();	
+			}
+			private function initTypeList():void{
+				typeList=new ArrayCollection();
+				typeList.addItemAt("--ALL--",0);
+				typeList.addItemAt("0",1);
+				typeList.addItemAt("1",2);
+				typeList.addItemAt("2",3);
+				typeList.addItemAt("3",4);
+				typeList.addItemAt("4",5);
+				typeList.addItemAt("5",6);
+				typeList.addItemAt("6",7);
+				typeList.addItemAt("7",8);
+				typeList.addItemAt("8",9);
+				typeList.addItemAt("9",10);
+				typeList.addItemAt("10",11);
+				typeCb.selectedIndex=0;
+			}
+			private function initBtn():void{
+				newBtn.enabled=true;
+				copyBtn.enabled=true;
+				saveBtn.enabled=false;
+		 		deleteBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		
+			}
+			private function onNewBtnClick():void{
+				mapView=CreateMapView(PopUpManager.createPopUp(this,CreateMapView,true));
+				if(isCopy){
+					mapView.levelInfo=this.levelInfo;
+				}else{
+					mapView.levelInfo=new LevelInfo();
+				}
+				mapView.cancel.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(mapView);});
+				mapView.save.addEventListener(MouseEvent.CLICK,saveLevelInfo);
+				PopUpManager.centerPopUp(mapView);
+				
+			}
+			private function saveLevelInfo(evt:MouseEvent):void{
+				createRo.createLevelInfo(model.gmUser, mapView.levelInfo);
+				PopUpManager.removePopUp(mapView);
+				getRo.getLevelList();
+			}
+			private function onCopyBtnClick():void{
+				if(this.levelInfo==null){
+					Alert.show(resourceManager.getString('Language','label.ChooseMap'));
+				}else{
+					isCopy=true;
+				}
+				
+			}
+			private function onSaveBtnClick():void{
+				updateRo.updateLevelInfoList(model.gmUser, this.levelList);
+				initBtn();
+				levelDataGrid.editable=false;
+				
+			}
+			private function onDeleteBtnClick():void{
+				if(this.levelInfo==null){
+					Alert.show(resourceManager.getString('Language','label.ChooseMap'));
+				}else
+				{
+				deleteRo.deleteLevelInfo(model.gmUser, this.levelInfo);
+				getRo.getLevelList();
+				}
+				
+			}
+			private function onEditBtnClick():void{
+				levelDataGrid.editable=true;
+				newBtn.enabled=false;
+		 		deleteBtn.enabled=false;
+		 		editBtn.enabled=false;
+		 		copyBtn.enabled=false;
+		 		cancelBtn.enabled=true;
+		 		saveBtn.enabled=true;
+				
+			}
+			
+			private function filterLevelInfo():void{
+				levelList.filterFunction=levelInfoFilterFun;
+				levelList.refresh();
+			}
+			
+			private function levelInfoFilterFun(item:Object):Boolean{
+				var level:LevelInfo=item as LevelInfo;
+				if(typeCb.selectedIndex!=0){
+					return level.type.toString() == typeCb.selectedItem;
+				}
+				return true;
+			}
+			private function onIssueBtnClick():void{
+				updateRo.issueLevelInfoList();
+			}
+			private function onCancelBtnClick():void{
+					initBtn();
+				levelDataGrid.editable=false;
+				getRo.getLevelList();
+				
+			}
+			private function typeLableFun(item:String):String{
+				return item;
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+			private function getLevelListHandler(evt:ResultEvent):void{
+			 this.levelList=evt.result as ArrayCollection;
+			}
+			private function getLevelWeaponsHandler(evt:ResultEvent):void{
+			
+			}
+			
+			private function selectHandler():void{
+				this.levelInfo=levelDataGrid.selectedItem as LevelInfo;
+			}
+			private function createLevelHandler(evt:ResultEvent):void{
+				getRo.getLevelList();
+			}
+			private function checkIt(event:Event):void
+			{
+				levelDataGrid.invalidateList();
+			}
+			private var datagridValidate:Validator;
+			private function endEdit(event:DataGridEvent):void{
+		 		var dataField:String = event.dataField;
+				var fCell:Array=[event.columnIndex,event.rowIndex];
+				var source:Object=event.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(event.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = event.currentTarget.editedItemRenderer.data[event.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+//               		var validate:Validator=DatagridValidateFactory.getCharacterValidater(dataField,source);
+					var validate:Validator=null;
+               		if(validate!=null){//no validate
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.levelInfo.isChange=1;
+	               			callLater(maintainFocus);
+	               			
+	               		}else{
+	               			event.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		}
+               		}else{
+               			this.levelInfo.isChange=1;
+               			callLater(maintainFocus);
+               		}
+               	}else{
+               		callLater(maintainFocus);
+               	}
+               	
+		 	}
+		 	private function maintainEdit(colIndex:int,rowIndex:int,source:Object):void
+			{
+				
+				var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+				if(levelDataGrid.editedItemPosition==null)
+				{
+	   				levelDataGrid.editedItemPosition = editCell;
+					callLater(validateCurrentEditor);
+	   			}
+			}
+			private function validateCurrentEditor():void{
+				datagridValidate.source=levelDataGrid.itemEditorInstance;
+				datagridValidate.validate();
+			}
+			private function maintainFocus():void
+			{
+	   			levelDataGrid.editedItemPosition = null;
+			}
+			private var weapView:WeaponForMapManageWindow;
+			private function onToLevelWeaponClick():void
+			{
+				if(this.levelInfo==null){
+					Alert.show(resourceManager.getString('Language','label.ChooseMap'));
+				}else
+				{
+		   			weapView=WeaponForMapManageWindow(PopUpManager.createPopUp(this,WeaponForMapManageWindow,true));
+		   			weapView.levelId=this.levelInfo.id;
+	   			}
+			}
+			private var point:PointView;
+			private var flag:FlagPointView;
+			private var start:StartPointView;
+			private var blast:BlastPointView;
+			private var vehicleLine:VehicleLinePointView;
+			private var zombieView:ZombieInfoView;
+			private var weapon:WeaponPointView;
+			private var suppiesView:SuppliesView;
+			private var currentPoint:String="";
+			private var cell:int;
+			private function startEdit(evt:DataGridEvent):void{
+				this.cell=evt.columnIndex;
+				if(evt.columnIndex==4){
+					this.currentPoint=this.levelInfo.startPoints;
+					showGamePointPopup();
+				}else if(evt.columnIndex==5){
+					this.currentPoint=this.levelInfo.supplies;
+					showSuppiesPopup();
+				}else if(evt.columnIndex==6){
+					this.currentPoint=this.levelInfo.blastPoints;
+					showBlastPointPopup();
+				}else if(evt.columnIndex==7){
+					this.currentPoint=this.levelInfo.lineInfo;
+					showVehicleLinePopup();
+				}
+			}
+			
+			private function showGamePointPopup():void{
+				var gamePoints:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var gamePoint:GamePoint=new GamePoint();
+						gamePoint.teamId=a[0];
+						gamePoint.x=a[1];
+						gamePoint.y=a[2];
+						gamePoint.z=a[3];
+						gamePoint.rotate=a[4];
+						gamePoints.addItem(gamePoint);
+					}
+				}
+				start=StartPointView(PopUpManager.createPopUp(this,StartPointView,true));
+				start.gamePointDatagrid.columns=ColumnFactory.getGamePoint(false);
+				start.gamePoints=gamePoints;
+				start.save.addEventListener(MouseEvent.CLICK,gamePointsHandler);
+				PopUpManager.centerPopUp(start);
+			}
+			private function gamePointsHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.gamePointToString(start.gamePoints);
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					if(cell==4){
+						this.levelInfo.startPoints=str;
+					}
+				}
+				PopUpManager.removePopUp(start);
+			}
+			
+			private function showBlastPointPopup():void{
+				var blastPoints:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var blastPoint:BlastPoint=new BlastPoint();
+						blastPoint.x=a[0];
+						blastPoint.y=a[1];
+						blastPoint.z=a[2];
+						blastPoint.rotate=a[3];
+						blastPoint.x1=a[4];
+						blastPoint.y1=a[5];
+						blastPoint.z1=a[6];
+						blastPoints.addItem(blastPoint);
+					}
+				}	
+				blast=BlastPointView(PopUpManager.createPopUp(this,BlastPointView,true));
+				blast.blastPointDatagrid.columns=ColumnFactory.getBlastPoint(false);
+				blast.blastPoints=blastPoints;
+				blast.save.addEventListener(MouseEvent.CLICK,blastPointsHandler);
+				PopUpManager.centerPopUp(blast);
+				
+			}
+			private function blastPointsHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.blastPointToString(blast.blastPoints);
+				
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					if(cell==6){
+						this.levelInfo.blastPoints=str;
+					}
+				}
+				PopUpManager.removePopUp(blast);
+			}
+			private function showFlagPointPopup():void{
+				var pointsList:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var flagPoint:FlagPoint=new FlagPoint();
+						flagPoint.teamId=a[0];
+						flagPoint.x=a[1];
+						flagPoint.y=a[2];
+						flagPoint.z=a[3];
+						flagPoint.rotate=a[4];
+						flagPoint.x1=a[5];
+						flagPoint.y1=a[6];
+						flagPoint.z1=a[7];
+						pointsList.addItem(flagPoint);
+					}
+				}
+				flag=FlagPointView(PopUpManager.createPopUp(this,FlagPointView,true));
+				flag.flagPointDatagrid.columns=ColumnFactory.getFlagPoint(false);
+				flag.flagPoints=pointsList;
+				flag.save.addEventListener(MouseEvent.CLICK,flagHandler);
+				PopUpManager.centerPopUp(flag);
+			}
+			private function flagHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.flagPointToString(flag.flagPoints);
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					this.levelInfo.flagPoints=str;
+				}
+				PopUpManager.removePopUp(flag);
+			}
+			private function showPointPopup():void{
+				var gamePoints:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var gamePoint:PointVO=new PointVO();
+						gamePoint.x=a[0];
+						gamePoint.y=a[1];
+						gamePoint.z=a[2];
+						gamePoints.addItem(gamePoint);
+					}
+				}
+				point=PointView(PopUpManager.createPopUp(this,PointView,true));
+				point.pointDatagrid.columns=ColumnFactory.getPoint(false);
+				point.points=gamePoints;
+				point.save.addEventListener(MouseEvent.CLICK,pointsHandler);
+				PopUpManager.centerPopUp(point);
+			}
+			private function pointsHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.pointToString(point.points);
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+//					if(cell==8){
+//						this.levelInfo.supplyPoints=str;
+//					}
+				}
+				PopUpManager.removePopUp(point);
+			}
+			
+			
+			
+			private function showSuppiesPopup():void{
+				var suppiesList:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var suppies:Supplies=new Supplies();
+						suppies.x=a[0];
+						suppies.y=a[1];
+						suppies.z=a[2];
+						suppies.type=a[3];
+						suppies.name=a[4];
+						suppies.value=a[5];
+						suppies.random=a[6];
+						suppies.skillTime=a[7];
+						suppiesList.addItem(suppies);
+					}
+				}
+				suppiesView=SuppliesView(PopUpManager.createPopUp(this,SuppliesView,true));
+				suppiesView.suppiesDatagrid.columns=ColumnFactory.getSupplies(false);
+				suppiesView.suppliesList=suppiesList;
+				suppiesView.weapons=this.levelWeapons;
+				suppiesView.save.addEventListener(MouseEvent.CLICK,suppiesHandler);
+				PopUpManager.centerPopUp(suppiesView);
+			}
+			private function suppiesHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.suppiesToString(suppiesView.suppliesList);
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					this.levelInfo.supplies=str;
+				}
+				PopUpManager.removePopUp(suppiesView);
+			}
+			private function showWeaponPointPopup():void{
+				
+				var weaponPoints:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var weaponPoint:WeaponPoint=new WeaponPoint();
+						weaponPoint.weaponId=a[0];
+						weaponPoint.x=a[1];
+						weaponPoint.y=a[2];
+						weaponPoint.z=a[3];
+						weaponPoint.rotate=a[4];
+						weaponPoint.type=a[5];
+						weaponPoints.addItem(weaponPoint);
+					}
+				}
+				weapon=WeaponPointView(PopUpManager.createPopUp(this,WeaponPointView,true));
+				weapon.weaponPointDatagrid.columns=ColumnFactory.getWeaponPoint(false);
+				weapon.weaponPoints=weaponPoints;
+				weapon.weapons=this.levelWeapons;
+				weapon.save.addEventListener(MouseEvent.CLICK,weaponPointsHandler);
+				PopUpManager.centerPopUp(weapon);
+			}
+			private function weaponPointsHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.weaponPointToString(weapon.weaponPoints);
+				
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					this.levelInfo.weaponPoints=str;
+				}
+				PopUpManager.removePopUp(weapon);
+			}
+			private function showZombieInfoPopup():void{
+				var zombieInfos:ArrayCollection=new ArrayCollection();
+				var zombieInfo:String=this.currentPoint;
+				if(zombieInfo!=""){
+					var array:Array=zombieInfo.split(":");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(";");
+						var zombie:ZombieInfo=new ZombieInfo();
+						zombie.type=a[0];
+						zombie.level1=a[1];
+						zombie.level2=a[2];
+						zombie.level3=a[3];
+						zombie.level4=a[4];
+						zombie.skillType=a[5];
+						zombie.effect=a[6];
+						zombie.effectTime=a[7];
+						zombie.cooldown=a[8];
+						zombie.hurtAddition=a[9]
+						zombieInfos.addItem(zombie);
+					}
+				}	
+				zombieView=ZombieInfoView(PopUpManager.createPopUp(this,ZombieInfoView,true));
+				zombieView.zombieInfoDatagrid.columns=ColumnFactory.getZombieInfo(false);
+				zombieView.zombieInfos=zombieInfos;
+				zombieView.save.addEventListener(MouseEvent.CLICK,zombieInfoHandler);
+				PopUpManager.centerPopUp(zombieView);
+				
+			}
+			
+			private function zombieInfoHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.zombieInfosToString(zombieView.zombieInfos);
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					if(cell==11){
+						this.levelInfo.zombieInfo=str;
+					}
+				}
+				PopUpManager.removePopUp(zombieView);
+			}
+			private function showVehicleLinePopup():void{
+				var vehicleLinePoints:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var point:VehicleLinePoint=new VehicleLinePoint();
+						point.lineId=a[0];
+						point.index=a[1];
+						point.x=a[2];
+						point.y=a[3];
+						point.z=a[4];
+						point.x1=a[5];
+						point.y1=a[6];
+						point.z1=a[7];
+						point.isSlope=a[8];
+						vehicleLinePoints.addItem(point);
+					}
+				}	
+				vehicleLine=VehicleLinePointView(PopUpManager.createPopUp(this,VehicleLinePointView,true));
+				vehicleLine.vehicleLinePointDatagrid.columns=ColumnFactory.getVehicleLinePoint(false);
+				vehicleLine.vehicleLinePoints=vehicleLinePoints;
+				vehicleLine.save.addEventListener(MouseEvent.CLICK,vehicleLinePointsHandler);
+				PopUpManager.centerPopUp(vehicleLine);
+				
+			}
+			private function vehicleLinePointsHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.vehicleLinePointToString(vehicleLine.vehicleLinePoints);
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					if(cell==7){
+						this.levelInfo.lineInfo=str;
+					}
+				}
+				PopUpManager.removePopUp(vehicleLine);
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getLevelList" result="getLevelListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getLevelWeapons" result="getLevelWeaponsHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createLevelInfo"  result="createLevelHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteLevelInfo" result="createLevelHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateLevelInfoList" result="createLevelHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox  height="100%" width="100%">
+	<mx:VBox  height="100%" width="100%">
+	<mx:HBox>
+		<mx:ApplicationControlBar width="100%" >				
+	        	<mx:Button id="newBtn"  label="{resourceManager.getString('Language','button.New')}" click="onNewBtnClick()"/>
+	        	<mx:Button id="copyBtn" label="{resourceManager.getString('Language','button.Paste')}" click="onCopyBtnClick()"/>
+	        	<mx:Button id="saveBtn"  label="{resourceManager.getString('Language','button.Save')}"  click="onSaveBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="{resourceManager.getString('Language','button.Delete')}" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="editBtn"  label="{resourceManager.getString('Language','button.Edit')}" click="onEditBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="{resourceManager.getString('Language','button.Cancel')}"  click="onCancelBtnClick()"/>
+	        	<mx:Button id="issueBtn"  label="{resourceManager.getString('Language','button.Release')}" click="onIssueBtnClick()"/>
+	        	<mx:ComboBox id="typeCb" dataProvider="{typeList}" labelFunction="typeLableFun" labelField="name"/>
+	        	<mx:Button id="searchBtn" label="{resourceManager.getString('Language','button.Query')}" click="filterLevelInfo()"/>
+	        	<!--<mx:Button id="toLevelWeapon"  label="编辑地图武器"  click="onToLevelWeaponClick()"/>-->
+	     </mx:ApplicationControlBar>
+	</mx:HBox>
+		<mx:ApplicationControlBar  height="100%" width="100%">	
+			<component:MyDataGrid id="levelDataGrid" dataProvider="{levelList}" itemClick="selectHandler()" lockedColumnCount="4"
+				width="100%" height="100%" editable="false" change="checkIt(event)" itemFocusIn="startEdit(event)" itemEditEnd="endEdit(event)">
+			</component:MyDataGrid>
+		</mx:ApplicationControlBar>
+		</mx:VBox>
+	</mx:HBox>	
+	
+</mx:VBox>

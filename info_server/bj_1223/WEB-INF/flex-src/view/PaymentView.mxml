@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import vo.Payment;
+			import mx.managers.PopUpManager;
+			import popup.AddPayment;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import vo.GmUser;
+			private var model:O2oModel = O2oModel.getInstance();
+			[Bindable]
+			public var itemId:int=0;
+			[Bindable]
+			public var payment:Payment=null;
+			[Bindable]
+			public var paymentList:ArrayCollection=new ArrayCollection();
+			public function init():void{
+				initButtons();
+				if(itemId!=0){
+					getRo.getPaymentListById(itemId);
+				}
+			}
+			private function initButtons():void{
+				save.enabled=false;
+				newBtn.enabled=true;
+				deleteBtn.enabled=true;
+				editBtn.enabled=true;
+				canelBtn.enabled=false;
+				paymentDatagrid.editable=false;
+			}
+			private function getHandler(e:ResultEvent):void{
+				this.paymentList=e.result as ArrayCollection;
+			}
+			private function createHandler(e:ResultEvent):void{
+				initButtons();
+				PopUpManager.removePopUp(addView);
+				if(itemId!=0){
+					getRo.getPaymentListById(itemId);
+				}
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+			private var addView:AddPayment;
+			private function onNewBtnClick():void{
+				addView=AddPayment(PopUpManager.createPopUp(this.parent,AddPayment,true));
+				var pay:Payment=new Payment();
+				pay.itemId=this.itemId;
+				addView.payment=pay;
+				addView.save.addEventListener(MouseEvent.CLICK,addPaymentHandler);
+				addView.cancel.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(addView)});
+				PopUpManager.centerPopUp(addView);
+			}
+			private function addPaymentHandler(evt:MouseEvent):void{
+				var pay:Payment=addView.payment as Payment
+				createRo.createPayment(model.gmUser, pay);
+			}
+			private function onDeleteBtnClick():void{
+				if(this.payment!=null){
+					deleteRo.deletePayment(model.gmUser, this.payment);
+				}
+			}
+			private function onEditBtnClick():void{
+				save.enabled=true;
+				newBtn.enabled=false;
+				deleteBtn.enabled=false;
+				editBtn.enabled=false;
+				canelBtn.enabled=true;
+				paymentDatagrid.editable=true;
+			}
+			private function onSaveBtnClick():void{
+				initButtons();
+				updateRo.updatePayment(model.gmUser, this.paymentList);
+			}
+			private function onCanelBtnClick():void{
+				initButtons();
+			}
+			private function selectHandler():void{
+				this.payment=paymentDatagrid.selectedItem as Payment;
+			}
+			import mx.events.DataGridEvent;
+			import mx.controls.TextInput;
+			import mx.utils.StringUtil;
+			import utils.DatagridValidateFactory;
+			import mx.validators.Validator;
+			private var datagridValidate:Validator;
+			public function endEdit(evt:DataGridEvent):void{
+		 		var dataField:String = evt.dataField;
+				var fCell:Array=[evt.columnIndex,evt.rowIndex];
+				var source:Object=evt.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(evt.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = evt.currentTarget.editedItemRenderer.data[evt.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               if(newVal!=oldVal){
+               		var validate:Validator=null//DatagridValidateFactory.getSysitemValidator(dataField,source);
+               		if(validate!=null){
+               			/* datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.sysItem.isChange=1;
+	               			callLater(maintainFocus);
+	               			
+	               		}else{
+	               			evt.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		} */
+	               		this.payment.isChange = 1;
+               		}else{
+               			callLater(maintainFocus);
+               		} 
+               	}else{
+               		callLater(maintainFocus);
+               	}
+		 	}
+		 	private function maintainFocus():void
+			{
+	   			paymentDatagrid.editedItemPosition = null;
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getPaymentListById" result="getHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createPayment" result="createHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deletePayment" result="createHandler(event)"/>
+	</mx:RemoteObject>
+		<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updatePayment" result="createHandler(event)" fault="defaultFaultHandle(event)" />
+	</mx:RemoteObject>	
+	<mx:VBox width="100%" >
+	<mx:ApplicationControlBar width="376">
+		<mx:Button id="save"  label="{resourceManager.getString('Language','button.Save')}" click="onSaveBtnClick()"/>		
+    	<mx:Button id="newBtn"  label="{resourceManager.getString('Language','button.New')}" click="onNewBtnClick()"/>
+    	<mx:Button id="deleteBtn" label="{resourceManager.getString('Language','button.Delete')}" click="onDeleteBtnClick()"/>
+    	<mx:Button id="editBtn"  label="{resourceManager.getString('Language','button.Edit')}"  click="onEditBtnClick()"/>
+    	<mx:Button id="canelBtn"  label="{resourceManager.getString('Language','button.Canel')}"  click="onCanelBtnClick()"/>
+	</mx:ApplicationControlBar>
+	<mx:Panel title="PaymentList" width="100%">
+	<mx:DataGrid id="paymentDatagrid" dataProvider="{paymentList}" itemClick="selectHandler()" itemEditEnd="endEdit(event)" width="100%">
+		<mx:columns >
+			<mx:DataGridColumn dataField="id" headerText="Payment ID" editable="false"/>
+			<mx:DataGridColumn dataField="itemId" headerText="Item ID" editable="false"/>
+			<mx:DataGridColumn dataField="payType" headerText="PayType(1：CPoint 2：FCPoint 4：Medal 5：黑曜石（个人） 6：黑曜石（队伍） 7：黑原石（个人） 8：黑原石（队伍）)"/>
+			<mx:DataGridColumn dataField="unitType" headerText="UnitType(1：BaseQuantity 2：BaseTime)"/>
+			<mx:DataGridColumn dataField="cost" headerText="Price"/>
+			<mx:DataGridColumn dataField="unit" headerText="Quantity"/>
+			<mx:DataGridColumn dataField="isShow" headerText="IsShow(0：Yes 1：No)"/>
+			<mx:DataGridColumn dataField="level" headerText="对应战队空间等级（默认0）"/>
+			<mx:DataGridColumn dataField="finishPayType" headerText="秒建造币种，同paytype"/>
+			<mx:DataGridColumn dataField="finishCost" headerText="秒建造价格"/>
+		</mx:columns>
+	</mx:DataGrid>
+	</mx:Panel>
+	</mx:VBox>
+</mx:HBox>

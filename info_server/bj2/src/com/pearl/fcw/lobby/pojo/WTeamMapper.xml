@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WTeamMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WTeam" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DECLARATION" property="declaration" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="BOARD" property="board" jdbcType="VARCHAR" />
+    <result column="LOGO" property="logo" jdbcType="VARCHAR" />
+    <result column="SIZE" property="size" jdbcType="INTEGER" />
+    <result column="KILL" property="kill" jdbcType="INTEGER" />
+    <result column="HEAD_SHOT" property="headShot" jdbcType="INTEGER" />
+    <result column="GAME_WIN" property="gameWin" jdbcType="INTEGER" />
+    <result column="GAME_TOTAL" property="gameTotal" jdbcType="INTEGER" />
+    <result column="CHALLENGE_WIN" property="challengeWin" jdbcType="INTEGER" />
+    <result column="CHALLENGE_TOTAL" property="challengeTotal" jdbcType="INTEGER" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="DELETED" property="deleted" jdbcType="CHAR" />
+    <result column="SCORE" property="score" jdbcType="INTEGER" />
+    <result column="HIT_SCORE" property="hitScore" jdbcType="INTEGER" />
+    <result column="PROVINCE" property="province" jdbcType="VARCHAR" />
+    <result column="CITY" property="city" jdbcType="VARCHAR" />
+    <result column="RANK" property="rank" jdbcType="INTEGER" />
+    <result column="LEVEL" property="level" jdbcType="INTEGER" />
+    <result column="EXP" property="exp" jdbcType="INTEGER" />
+    <result column="RECORE_RANKING_FORMER" property="recoreRankingFormer" jdbcType="INTEGER" />
+    <result column="RECORE_RANKING_CURR" property="recoreRankingCurr" jdbcType="INTEGER" />
+    <result column="FIGHT_RANKING_FORMER" property="fightRankingFormer" jdbcType="INTEGER" />
+    <result column="FIGHT_RANKING_CURR" property="fightRankingCurr" jdbcType="INTEGER" />
+    <result column="PREWEEK_RES_AMOUNT" property="preweekResAmount" jdbcType="INTEGER" />
+    <result column="TEAM_SPACE_LEVEL" property="teamSpaceLevel" jdbcType="INTEGER" />
+    <result column="UNUSABLE_RESOURCE" property="unusableResource" jdbcType="INTEGER" />
+    <result column="USABLE_RESOURCE" property="usableResource" jdbcType="INTEGER" />
+    <result column="TEAM_SPACE_ACTIVE" property="teamSpaceActive" jdbcType="INTEGER" />
+    <result column="T_RES_LAST_ADD_TIME" property="tResLastAddTime" jdbcType="TIMESTAMP" />
+    <result column="T_RESOURCE_BEGIN_TIME" property="tResourceBeginTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_TEAM_PLACE_LEVEL_UP_TIME" property="lastTeamPlaceLevelUpTime" jdbcType="INTEGER" />
+    <result column="PREDAY_RES_AMOUNT" property="predayResAmount" jdbcType="INTEGER" />
+    <result column="CUR_WEEK_ROB_COUNT" property="curWeekRobCount" jdbcType="INTEGER" />
+    <result column="CUR_WEEK_ROB_UPDATE_TIME" property="curWeekRobUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, `NAME`, DECLARATION, DESCRIPTION, BOARD, LOGO, SIZE, `KILL`, HEAD_SHOT, GAME_WIN, 
+    GAME_TOTAL, CHALLENGE_WIN, CHALLENGE_TOTAL, CREATED_TIME, DELETED, SCORE, HIT_SCORE, 
+    PROVINCE, CITY, RANK, `LEVEL`, EXP, RECORE_RANKING_FORMER, RECORE_RANKING_CURR, FIGHT_RANKING_FORMER, 
+    FIGHT_RANKING_CURR, PREWEEK_RES_AMOUNT, TEAM_SPACE_LEVEL, UNUSABLE_RESOURCE, USABLE_RESOURCE, 
+    TEAM_SPACE_ACTIVE, T_RES_LAST_ADD_TIME, T_RESOURCE_BEGIN_TIME, LAST_TEAM_PLACE_LEVEL_UP_TIME, 
+    PREDAY_RES_AMOUNT, CUR_WEEK_ROB_COUNT, CUR_WEEK_ROB_UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WTeam" >
+    select 
+    <include refid="Base_Column_List" />
+    from TEAM
+    where ID = #{id,jdbcType=INTEGER} and DELETED='N'
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WTeam" >
+    select 
+    <include refid="Base_Column_List" />
+    from TEAM
+    where  DELETED='N'
+      <if test="name != null" >
+        and `NAME` = #{name,jdbcType=VARCHAR}
+      </if>
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from TEAM where `DELETED` = 'N'
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '%${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from TEAM where `DELETED` = 'N'
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '%${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from TEAM
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WTeam" >
+    insert into TEAM (ID, `NAME`, DECLARATION, 
+      DESCRIPTION, BOARD, LOGO, 
+      SIZE, `KILL`, HEAD_SHOT, 
+      GAME_WIN, GAME_TOTAL, CHALLENGE_WIN, 
+      CHALLENGE_TOTAL, CREATED_TIME, DELETED, 
+      SCORE, HIT_SCORE, PROVINCE, 
+      CITY, RANK, `LEVEL`, 
+      EXP, RECORE_RANKING_FORMER, RECORE_RANKING_CURR, 
+      FIGHT_RANKING_FORMER, FIGHT_RANKING_CURR, PREWEEK_RES_AMOUNT, 
+      TEAM_SPACE_LEVEL, UNUSABLE_RESOURCE, USABLE_RESOURCE, 
+      TEAM_SPACE_ACTIVE, T_RES_LAST_ADD_TIME, T_RESOURCE_BEGIN_TIME, 
+      LAST_TEAM_PLACE_LEVEL_UP_TIME, PREDAY_RES_AMOUNT, 
+      CUR_WEEK_ROB_COUNT, CUR_WEEK_ROB_UPDATE_TIME
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{declaration,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{board,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, 
+      #{size,jdbcType=INTEGER}, #{kill,jdbcType=INTEGER}, #{headShot,jdbcType=INTEGER}, 
+      #{gameWin,jdbcType=INTEGER}, #{gameTotal,jdbcType=INTEGER}, #{challengeWin,jdbcType=INTEGER}, 
+      #{challengeTotal,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=CHAR}, 
+      #{score,jdbcType=INTEGER}, #{hitScore,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{rank,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, 
+      #{exp,jdbcType=INTEGER}, #{recoreRankingFormer,jdbcType=INTEGER}, #{recoreRankingCurr,jdbcType=INTEGER}, 
+      #{fightRankingFormer,jdbcType=INTEGER}, #{fightRankingCurr,jdbcType=INTEGER}, #{preweekResAmount,jdbcType=INTEGER}, 
+      #{teamSpaceLevel,jdbcType=INTEGER}, #{unusableResource,jdbcType=INTEGER}, #{usableResource,jdbcType=INTEGER}, 
+      #{teamSpaceActive,jdbcType=INTEGER}, #{tResLastAddTime,jdbcType=TIMESTAMP}, #{tResourceBeginTime,jdbcType=TIMESTAMP}, 
+      #{lastTeamPlaceLevelUpTime,jdbcType=INTEGER}, #{predayResAmount,jdbcType=INTEGER}, 
+      #{curWeekRobCount,jdbcType=INTEGER}, #{curWeekRobUpdateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WTeam" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into TEAM
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        `NAME`,
+      </if>
+      <if test="declaration != null" >
+        DECLARATION,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="board != null" >
+        BOARD,
+      </if>
+      <if test="logo != null" >
+        LOGO,
+      </if>
+      <if test="size != null" >
+        SIZE,
+      </if>
+      <if test="kill != null" >
+        `KILL`,
+      </if>
+      <if test="headShot != null" >
+        HEAD_SHOT,
+      </if>
+      <if test="gameWin != null" >
+        GAME_WIN,
+      </if>
+      <if test="gameTotal != null" >
+        GAME_TOTAL,
+      </if>
+      <if test="challengeWin != null" >
+        CHALLENGE_WIN,
+      </if>
+      <if test="challengeTotal != null" >
+        CHALLENGE_TOTAL,
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME,
+      </if>
+      <if test="deleted != null" >
+        DELETED,
+      </if>
+      <if test="score != null" >
+        SCORE,
+      </if>
+      <if test="hitScore != null" >
+        HIT_SCORE,
+      </if>
+      <if test="province != null" >
+        PROVINCE,
+      </if>
+      <if test="city != null" >
+        CITY,
+      </if>
+      <if test="rank != null" >
+        RANK,
+      </if>
+      <if test="level != null" >
+        `LEVEL`,
+      </if>
+      <if test="exp != null" >
+        EXP,
+      </if>
+      <if test="recoreRankingFormer != null" >
+        RECORE_RANKING_FORMER,
+      </if>
+      <if test="recoreRankingCurr != null" >
+        RECORE_RANKING_CURR,
+      </if>
+      <if test="fightRankingFormer != null" >
+        FIGHT_RANKING_FORMER,
+      </if>
+      <if test="fightRankingCurr != null" >
+        FIGHT_RANKING_CURR,
+      </if>
+      <if test="preweekResAmount != null" >
+        PREWEEK_RES_AMOUNT,
+      </if>
+      <if test="teamSpaceLevel != null" >
+        TEAM_SPACE_LEVEL,
+      </if>
+      <if test="unusableResource != null" >
+        UNUSABLE_RESOURCE,
+      </if>
+      <if test="usableResource != null" >
+        USABLE_RESOURCE,
+      </if>
+      <if test="teamSpaceActive != null" >
+        TEAM_SPACE_ACTIVE,
+      </if>
+      <if test="tResLastAddTime != null" >
+        T_RES_LAST_ADD_TIME,
+      </if>
+      <if test="tResourceBeginTime != null" >
+        T_RESOURCE_BEGIN_TIME,
+      </if>
+      <if test="lastTeamPlaceLevelUpTime != null" >
+        LAST_TEAM_PLACE_LEVEL_UP_TIME,
+      </if>
+      <if test="predayResAmount != null" >
+        PREDAY_RES_AMOUNT,
+      </if>
+      <if test="curWeekRobCount != null" >
+        CUR_WEEK_ROB_COUNT,
+      </if>
+      <if test="curWeekRobUpdateTime != null" >
+        CUR_WEEK_ROB_UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="declaration != null" >
+        #{declaration,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="board != null" >
+        #{board,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        #{size,jdbcType=INTEGER},
+      </if>
+      <if test="kill != null" >
+        #{kill,jdbcType=INTEGER},
+      </if>
+      <if test="headShot != null" >
+        #{headShot,jdbcType=INTEGER},
+      </if>
+      <if test="gameWin != null" >
+        #{gameWin,jdbcType=INTEGER},
+      </if>
+      <if test="gameTotal != null" >
+        #{gameTotal,jdbcType=INTEGER},
+      </if>
+      <if test="challengeWin != null" >
+        #{challengeWin,jdbcType=INTEGER},
+      </if>
+      <if test="challengeTotal != null" >
+        #{challengeTotal,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=CHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="hitScore != null" >
+        #{hitScore,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="exp != null" >
+        #{exp,jdbcType=INTEGER},
+      </if>
+      <if test="recoreRankingFormer != null" >
+        #{recoreRankingFormer,jdbcType=INTEGER},
+      </if>
+      <if test="recoreRankingCurr != null" >
+        #{recoreRankingCurr,jdbcType=INTEGER},
+      </if>
+      <if test="fightRankingFormer != null" >
+        #{fightRankingFormer,jdbcType=INTEGER},
+      </if>
+      <if test="fightRankingCurr != null" >
+        #{fightRankingCurr,jdbcType=INTEGER},
+      </if>
+      <if test="preweekResAmount != null" >
+        #{preweekResAmount,jdbcType=INTEGER},
+      </if>
+      <if test="teamSpaceLevel != null" >
+        #{teamSpaceLevel,jdbcType=INTEGER},
+      </if>
+      <if test="unusableResource != null" >
+        #{unusableResource,jdbcType=INTEGER},
+      </if>
+      <if test="usableResource != null" >
+        #{usableResource,jdbcType=INTEGER},
+      </if>
+      <if test="teamSpaceActive != null" >
+        #{teamSpaceActive,jdbcType=INTEGER},
+      </if>
+      <if test="tResLastAddTime != null" >
+        #{tResLastAddTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tResourceBeginTime != null" >
+        #{tResourceBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastTeamPlaceLevelUpTime != null" >
+        #{lastTeamPlaceLevelUpTime,jdbcType=INTEGER},
+      </if>
+      <if test="predayResAmount != null" >
+        #{predayResAmount,jdbcType=INTEGER},
+      </if>
+      <if test="curWeekRobCount != null" >
+        #{curWeekRobCount,jdbcType=INTEGER},
+      </if>
+      <if test="curWeekRobUpdateTime != null" >
+        #{curWeekRobUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WTeam" >
+    update TEAM
+    <set >
+      <if test="name != null" >
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="declaration != null" >
+        DECLARATION = #{declaration,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="board != null" >
+        BOARD = #{board,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        LOGO = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        SIZE = #{size,jdbcType=INTEGER},
+      </if>
+      <if test="kill != null" >
+        `KILL` = #{kill,jdbcType=INTEGER},
+      </if>
+      <if test="headShot != null" >
+        HEAD_SHOT = #{headShot,jdbcType=INTEGER},
+      </if>
+      <if test="gameWin != null" >
+        GAME_WIN = #{gameWin,jdbcType=INTEGER},
+      </if>
+      <if test="gameTotal != null" >
+        GAME_TOTAL = #{gameTotal,jdbcType=INTEGER},
+      </if>
+      <if test="challengeWin != null" >
+        CHALLENGE_WIN = #{challengeWin,jdbcType=INTEGER},
+      </if>
+      <if test="challengeTotal != null" >
+        CHALLENGE_TOTAL = #{challengeTotal,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        DELETED = #{deleted,jdbcType=CHAR},
+      </if>
+      <if test="score != null" >
+        SCORE = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="hitScore != null" >
+        HIT_SCORE = #{hitScore,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        PROVINCE = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        CITY = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null" >
+        RANK = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        `LEVEL` = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="exp != null" >
+        EXP = #{exp,jdbcType=INTEGER},
+      </if>
+      <if test="recoreRankingFormer != null" >
+        RECORE_RANKING_FORMER = #{recoreRankingFormer,jdbcType=INTEGER},
+      </if>
+      <if test="recoreRankingCurr != null" >
+        RECORE_RANKING_CURR = #{recoreRankingCurr,jdbcType=INTEGER},
+      </if>
+      <if test="fightRankingFormer != null" >
+        FIGHT_RANKING_FORMER = #{fightRankingFormer,jdbcType=INTEGER},
+      </if>
+      <if test="fightRankingCurr != null" >
+        FIGHT_RANKING_CURR = #{fightRankingCurr,jdbcType=INTEGER},
+      </if>
+      <if test="preweekResAmount != null" >
+        PREWEEK_RES_AMOUNT = #{preweekResAmount,jdbcType=INTEGER},
+      </if>
+      <if test="teamSpaceLevel != null" >
+        TEAM_SPACE_LEVEL = #{teamSpaceLevel,jdbcType=INTEGER},
+      </if>
+      <if test="unusableResource != null" >
+        UNUSABLE_RESOURCE = #{unusableResource,jdbcType=INTEGER},
+      </if>
+      <if test="usableResource != null" >
+        USABLE_RESOURCE = #{usableResource,jdbcType=INTEGER},
+      </if>
+      <if test="teamSpaceActive != null" >
+        TEAM_SPACE_ACTIVE = #{teamSpaceActive,jdbcType=INTEGER},
+      </if>
+      <if test="tResLastAddTime != null" >
+        T_RES_LAST_ADD_TIME = #{tResLastAddTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tResourceBeginTime != null" >
+        T_RESOURCE_BEGIN_TIME = #{tResourceBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastTeamPlaceLevelUpTime != null" >
+        LAST_TEAM_PLACE_LEVEL_UP_TIME = #{lastTeamPlaceLevelUpTime,jdbcType=INTEGER},
+      </if>
+      <if test="predayResAmount != null" >
+        PREDAY_RES_AMOUNT = #{predayResAmount,jdbcType=INTEGER},
+      </if>
+      <if test="curWeekRobCount != null" >
+        CUR_WEEK_ROB_COUNT = #{curWeekRobCount,jdbcType=INTEGER},
+      </if>
+      <if test="curWeekRobUpdateTime != null" >
+        CUR_WEEK_ROB_UPDATE_TIME = #{curWeekRobUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WTeam" >
+    update TEAM
+    set `NAME` = #{name,jdbcType=VARCHAR},
+      DECLARATION = #{declaration,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      BOARD = #{board,jdbcType=VARCHAR},
+      LOGO = #{logo,jdbcType=VARCHAR},
+      SIZE = #{size,jdbcType=INTEGER},
+      `KILL` = #{kill,jdbcType=INTEGER},
+      HEAD_SHOT = #{headShot,jdbcType=INTEGER},
+      GAME_WIN = #{gameWin,jdbcType=INTEGER},
+      GAME_TOTAL = #{gameTotal,jdbcType=INTEGER},
+      CHALLENGE_WIN = #{challengeWin,jdbcType=INTEGER},
+      CHALLENGE_TOTAL = #{challengeTotal,jdbcType=INTEGER},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      DELETED = #{deleted,jdbcType=CHAR},
+      SCORE = #{score,jdbcType=INTEGER},
+      HIT_SCORE = #{hitScore,jdbcType=INTEGER},
+      PROVINCE = #{province,jdbcType=VARCHAR},
+      CITY = #{city,jdbcType=VARCHAR},
+      RANK = #{rank,jdbcType=INTEGER},
+      `LEVEL` = #{level,jdbcType=INTEGER},
+      EXP = #{exp,jdbcType=INTEGER},
+      RECORE_RANKING_FORMER = #{recoreRankingFormer,jdbcType=INTEGER},
+      RECORE_RANKING_CURR = #{recoreRankingCurr,jdbcType=INTEGER},
+      FIGHT_RANKING_FORMER = #{fightRankingFormer,jdbcType=INTEGER},
+      FIGHT_RANKING_CURR = #{fightRankingCurr,jdbcType=INTEGER},
+      PREWEEK_RES_AMOUNT = #{preweekResAmount,jdbcType=INTEGER},
+      TEAM_SPACE_LEVEL = #{teamSpaceLevel,jdbcType=INTEGER},
+      UNUSABLE_RESOURCE = #{unusableResource,jdbcType=INTEGER},
+      USABLE_RESOURCE = #{usableResource,jdbcType=INTEGER},
+      TEAM_SPACE_ACTIVE = #{teamSpaceActive,jdbcType=INTEGER},
+      T_RES_LAST_ADD_TIME = #{tResLastAddTime,jdbcType=TIMESTAMP},
+      T_RESOURCE_BEGIN_TIME = #{tResourceBeginTime,jdbcType=TIMESTAMP},
+      LAST_TEAM_PLACE_LEVEL_UP_TIME = #{lastTeamPlaceLevelUpTime,jdbcType=INTEGER},
+      PREDAY_RES_AMOUNT = #{predayResAmount,jdbcType=INTEGER},
+      CUR_WEEK_ROB_COUNT = #{curWeekRobCount,jdbcType=INTEGER},
+      CUR_WEEK_ROB_UPDATE_TIME = #{curWeekRobUpdateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,71 @@
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BannedWord">
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="BannedWord" type="com.pearl.manager.pojo.BannedWord" />
+		
+	<resultMap id="selectBannedWordResult" class="BannedWord" groupBy="id">
+		<result property="id"				column="ID"/>
+		<result property="bannedWord"		column="BANNED_WORD"/>
+		<result property="isDeleted"		column="DELETED"/>
+		<result property="includeInWord"	column="INCLUDE_IN_WORD"/>
+	</resultMap>
+	
+	<select id="select" resultMap="selectBannedWordResult">
+		select * 
+		from SYS_BANNED_WORD 
+		order by ID
+	</select>
+	
+	<delete id="deleteAll">
+		delete from SYS_BANNED_WORD
+		where 1 = 1
+	</delete>
+	
+	<insert id="insert" parameterClass="BannedWord">
+		insert into SYS_BANNED_WORD (
+			BANNED_WORD,
+			DELETED,
+			INCLUDE_IN_WORD
+		) values (
+			#bannedWord#,
+			#isDeleted#,
+			#includeInWord#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	<insert id="insertBatch" parameterClass="java.util.Map">
+		insert into SYS_BANNED_WORD (
+			BANNED_WORD,
+			DELETED,
+			INCLUDE_IN_WORD
+		) values (
+			#bannedWord#,
+			#isDeleted#,
+			#includeInWord#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	
+	<update id="update" parameterClass="BannedWord">
+		update SYS_BANNED_WORD
+		set BANNED_WORD 	= #bannedWord#,
+			DELETED			= #isDeleted#,
+			INCLUDE_IN_WORD	= #includeInWord#
+		where ID = #id#
+	</update>
+	
+	<select id="fuzzyQueryByWord" resultMap="selectBannedWordResult" parameterClass="java.lang.String">
+		select * 
+		from SYS_BANNED_WORD 
+		where BANNED_WORD like '%$value$%'
+	</select>
+</sqlMap>

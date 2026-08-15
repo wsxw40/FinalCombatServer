@@ -1,0 +1,14 @@
+# 二进制/编译产物
+game_server/bin/
+game_server/*/objs/
+*.class
+*.o
+*.war
+# 日志
+logs/
+*.log
+*.pcap
+*.pcapng
+# 临时
+*.tmp
+backup_*.sql

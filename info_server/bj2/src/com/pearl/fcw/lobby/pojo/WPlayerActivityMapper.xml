@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayerActivity" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="ACTION" property="action" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="NUMBER" property="number" jdbcType="INTEGER" />
+    <result column="TARGET" property="target" jdbcType="INTEGER" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="AWARD" property="award" jdbcType="INTEGER" />
+    <result column="ACTIVITY_ID" property="activityId" jdbcType="INTEGER" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="ACHIEVEMENT_ACTION" property="achievementAction" jdbcType="INTEGER" />
+    <result column="CHARACTER_ID" property="characterId" jdbcType="INTEGER" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PLAYER_ID, ACTION, STATUS, NUMBER, TARGET, CREATE_TIME, AWARD, ACTIVITY_ID, START_TIME, 
+    END_TIME, NAME, ACHIEVEMENT_ACTION, CHARACTER_ID, BACK_UP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerActivity" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_ACTIVITY${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerActivity" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_ACTIVITY${tableSuffix}
+    where PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PLAYER_ACTIVITY${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayerActivity" >
+    insert into PLAYER_ACTIVITY${tableSuffix} (ID, PLAYER_ID, ACTION, 
+      STATUS, NUMBER, TARGET, 
+      CREATE_TIME, AWARD, ACTIVITY_ID, 
+      START_TIME, END_TIME, NAME, 
+      ACHIEVEMENT_ACTION, CHARACTER_ID, BACK_UP
+      )
+    values (#{id,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, #{action,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{target,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{award,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
+      #{achievementAction,jdbcType=INTEGER}, #{characterId,jdbcType=INTEGER}, #{backUp,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerActivity" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into PLAYER_ACTIVITY${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="action != null" >
+        ACTION,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="number != null" >
+        NUMBER,
+      </if>
+      <if test="target != null" >
+        TARGET,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="award != null" >
+        AWARD,
+      </if>
+      <if test="activityId != null" >
+        ACTIVITY_ID,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="endTime != null" >
+        END_TIME,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="achievementAction != null" >
+        ACHIEVEMENT_ACTION,
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="target != null" >
+        #{target,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="award != null" >
+        #{award,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null" >
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="achievementAction != null" >
+        #{achievementAction,jdbcType=INTEGER},
+      </if>
+      <if test="characterId != null" >
+        #{characterId,jdbcType=INTEGER},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerActivity" >
+    update PLAYER_ACTIVITY${tableSuffix}
+    <set >
+      <if test="playerId != null" >
+        PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        ACTION = #{action,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        NUMBER = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="target != null" >
+        TARGET = #{target,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="award != null" >
+        AWARD = #{award,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null" >
+        ACTIVITY_ID = #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="achievementAction != null" >
+        ACHIEVEMENT_ACTION = #{achievementAction,jdbcType=INTEGER},
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID = #{characterId,jdbcType=INTEGER},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerActivity" >
+    update PLAYER_ACTIVITY${tableSuffix}
+    set PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      ACTION = #{action,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=INTEGER},
+      NUMBER = #{number,jdbcType=INTEGER},
+      TARGET = #{target,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      AWARD = #{award,jdbcType=INTEGER},
+      ACTIVITY_ID = #{activityId,jdbcType=INTEGER},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      NAME = #{name,jdbcType=VARCHAR},
+      ACHIEVEMENT_ACTION = #{achievementAction,jdbcType=INTEGER},
+      CHARACTER_ID = #{characterId,jdbcType=INTEGER},
+      BACK_UP = #{backUp,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

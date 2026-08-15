@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                         http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+                         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <cache:annotation-driven />
+
+    <!-- generic cache manager -->
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="default"/>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="GameCdKeyChannelDao"/>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="GameCdKeyTypeDao"/>
+            </set>
+        </property>
+    </bean>
+
+
+	<!-- ibatis 客户端配置 -->
+	<bean id="mysqlSqlMapClient_database" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="dataSource" ref="dataSource_framework" />
+		<property name="configLocation" value="classpath:META-INF/ibatis/mysqlSqlMapConfig.xml" />
+	</bean>
+	
+	<!-- ibatis 客户端配置（用于 cms 库） -->
+	<bean id="mysqlSqlMapClient_cms" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="dataSource" ref="dataSource_cms" />
+		<property name="configLocation" value="classpath:META-INF/ibatis/mysqlSqlMapConfig-cms.xml" />
+	</bean>
+
+	<!-- 每个版块的spring 配置文件以import形式进行导入 -->
+	<!-- 事务配置交客户端进行配置，根据实际的引用，在各个子模块内进行配置 -->
+	<!-- 尽可能实现短事务，进行快速提交形式， 实现业务板块隔离，采用业务型事务提交 -->
+	<import resource="classpath:/META-INF/ma/spring-uweb-database-ma.xml" />
+	<import resource="classpath:/META-INF/cms/spring-uweb-database-cms.xml" />
+	<import resource="classpath:/META-INF/partner/spring-uweb-database-partner.xml" />
+
+</beans>

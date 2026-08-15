@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<included>
+
+    <property name="ANALYSIS_HOME" value="${LOG_HOME}/analysis/%d{yyyyMMdd}"/>
+
+    <!-- 登陆 -->
+    <appender name="login" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/login_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="login" additivity="false" level="INFO">
+        <appender-ref ref="login"/>
+    </logger>
+
+    <!-- 登出 -->
+    <appender name="logout" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/logout_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="logout" additivity="false" level="INFO">
+        <appender-ref ref="logout"/>
+    </logger>
+
+    <!-- 充值 -->
+    <appender name="recharge" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/recharge_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="recharge" additivity="false" level="INFO">
+        <appender-ref ref="recharge"/>
+    </logger>
+
+    <!-- 扣费 -->
+    <appender name="reduce" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/reduce_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="reduce" additivity="false" level="INFO">
+        <appender-ref ref="reduce"/>
+    </logger>
+
+    <!-- 金钱消耗 -->
+    <appender name="moneyConsume" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/moneyConsume_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="moneyConsume" additivity="false" level="INFO">
+        <appender-ref ref="moneyConsume"/>
+    </logger>
+
+    <!-- 货币产出 -->
+    <appender name="currencyOutput" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/currencyOutput_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="currencyOutput" additivity="false" level="INFO">
+        <appender-ref ref="currencyOutput"/>
+    </logger>
+
+    <!-- 物品产出 -->
+    <appender name="itemOutput" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/itemOutput_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="itemOutput" additivity="false" level="INFO">
+        <appender-ref ref="itemOutput"/>
+    </logger>
+
+    <!-- 货币消耗 -->
+    <appender name="currencyConsume" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/currencyConsume_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="currencyConsume" additivity="false" level="INFO">
+        <appender-ref ref="currencyConsume"/>
+    </logger>
+
+    <!-- 物品消耗 -->
+    <appender name="itemConsume" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/itemConsume_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="itemConsume" additivity="false" level="INFO">
+        <appender-ref ref="itemConsume"/>
+    </logger>
+
+    <!-- 角色等级 -->
+    <appender name="playerLevel" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/playerLevel_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="playerLevel" additivity="false" level="INFO">
+        <appender-ref ref="playerLevel"/>
+    </logger>
+
+    <!-- 角色新建 -->
+    <appender name="playerNew" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/playerNew_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="playerNew" additivity="false" level="INFO">
+        <appender-ref ref="playerNew"/>
+    </logger>
+
+    <!-- 角色登入 -->
+    <appender name="playerOnline" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/playerOnline_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="playerOnline" additivity="false" level="INFO">
+        <appender-ref ref="playerOnline"/>
+    </logger>
+
+    <!-- 角色登出 -->
+    <appender name="playerOffline" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/playerOffline_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="playerOffline" additivity="false" level="INFO">
+        <appender-ref ref="playerOffline"/>
+    </logger>
+
+    <!-- 过关结算 -->
+    <appender name="instanceClear" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/instanceClear_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="instanceClear" additivity="false" level="INFO">
+        <appender-ref ref="instanceClear"/>
+    </logger>
+
+    <!-- 任务 -->
+    <appender name="questDeliver" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/questDeliver_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="questDeliver" additivity="false" level="INFO">
+        <appender-ref ref="questDeliver"/>
+    </logger>
+
+    <!-- 商城 -->
+    <appender name="shop" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/shop_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="shop" additivity="false" level="INFO">
+        <appender-ref ref="shop"/>
+    </logger>
+
+    <!-- 邮件 -->
+    <appender name="mail" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/mail_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="mail" additivity="false" level="INFO">
+        <appender-ref ref="mail"/>
+    </logger>
+
+    <!-- 已经装备的觉醒体 -->
+    <appender name="equippedDisillusion" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/equippedDisillusion_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="equippedDisillusion" additivity="false" level="INFO">
+        <appender-ref ref="equippedDisillusion"/>
+    </logger>
+
+    <!-- 已经装备的技能 -->
+    <appender name="equippedSkill" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/equippedSkill_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="equippedSkill" additivity="false" level="INFO">
+        <appender-ref ref="equippedSkill"/>
+    </logger>
+
+    <!-- 已经装备的武器 -->
+    <appender name="equippedWeapon" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/equippedWeapon_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="equippedWeapon" additivity="false" level="INFO">
+        <appender-ref ref="equippedWeapon"/>
+    </logger>
+
+    <!-- PVP结算 -->
+    <appender name="pvpClear" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/pvpClear_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="pvpClear" additivity="false" level="INFO">
+        <appender-ref ref="pvpClear"/>
+    </logger>
+
+    <!-- PVP地图编辑 -->
+    <appender name="pvpScene" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/pvpScene_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="pvpScene" additivity="false" level="INFO">
+        <appender-ref ref="pvpScene"/>
+    </logger>
+
+    <!-- 角色操作进度 -->
+    <appender name="playerProgress" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/playerProgress_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="playerProgress" additivity="false" level="INFO">
+        <appender-ref ref="playerProgress"/>
+    </logger>
+
+    <!-- 新手引导 -->
+    <appender name="playerGuide" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ANALYSIS_HOME}/playerGuide_%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="playerGuide" additivity="false" level="INFO">
+        <appender-ref ref="playerGuide"/>
+    </logger>
+
+</included>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.MedalExchangeDao">
+
+	<resultMap id="StatisticResultMap" type="com.pde.info.analyser.pojo.MedalExchangeStatistic">
+		<result column="STATISTIC_DATE" property="statisticDate" jdbcType="VARCHAR" />
+		<result column="GOLDBOX" property="medalForGoldBox" jdbcType="INTEGER" />
+		<result column="SILVERBOX" property="medalForSilverBox" jdbcType="INTEGER" />
+		<result column="BRONZEBOX" property="medalForBronzeBox" jdbcType="INTEGER" />
+		<result column="TENTCOINS" property="medalForTenThsConis" jdbcType="INTEGER" />
+		<result column="STRENGTH" property="medalForStrengthUnit" jdbcType="INTEGER" />
+		<result column="REFIT" property="medalForRefitUnit" jdbcType="INTEGER" />
+		<result column="ADDSUCCESS" property="medalForAddSuccess" jdbcType="INTEGER" />
+		
+	</resultMap>
+	
+
+	<insert id="addExchangeInfo" parameterType="com.pde.info.analyser.pojo.MedalExchange" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `INFO_MEDAL_EXCHANGE` (`PLAYER_ID`,`ITEM_ID`, `PAYMENT_ID`,`COST`,`PAYMENT_UNIT`,`PAYMENT_UNITTYPE`,`CREATE_DATE`,`ITEM_NAME`)
+		VALUES ( #{playerId}, #{itemId}, #{paymentId}, #{cost},#{paymentUnit},#{paymentUnitType}, NOW(),#{itemName});
+	</insert>
+
+	<select id="getStatistic" resultMap="StatisticResultMap" parameterType="java.util.Map">
+		SELECT `STATISTIC_DATE`,`GOLDBOX`,`SILVERBOX`,`BRONZEBOX`,`TENTCOINS`,`STRENGTH`,`REFIT`,`ADDSUCCESS`
+		FROM `INFO_REPORT_MEDAL_EXCHANGE`
+		WHERE `STATISTIC_DATE` BETWEEN #{startDate} AND #{endDate}
+    	ORDER BY `STATISTIC_DATE` DESC
+	</select>
+
+</mapper>

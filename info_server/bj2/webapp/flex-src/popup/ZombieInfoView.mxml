@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	label="Zombie Info" title="Zombie Info"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import vo.ZombieInfo;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			[Bindable]
+			public  var zombieInfos:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public  var zombieInfo:ZombieInfo;
+			private function onNewBtnClick():void{
+				var zombieInfo:ZombieInfo=new ZombieInfo();
+				zombieInfos.addItem(zombieInfo);
+			}
+			private function onDeleteBtnClick():void{
+				if(this.zombieInfo==null){
+					Alert.show("请选择一条记录。");
+				}else{
+					var index:int=zombieInfoDatagrid.selectedIndex;
+					zombieInfos.removeItemAt(index);
+				}
+			}
+			
+			private function onCancelBtnClick():void{
+				PopUpManager.removePopUp(this);
+			}
+			private function selectHandler():void{
+				this.zombieInfo=zombieInfoDatagrid.selectedItem as ZombieInfo;
+			}
+			
+		]]>
+	</mx:Script>
+<mx:VBox>
+	<mx:VBox>
+		<mx:DataGrid id="zombieInfoDatagrid" dataProvider="{zombieInfos}" editable="true" itemClick="selectHandler()">
+		</mx:DataGrid>
+	</mx:VBox>
+	<mx:VBox>
+		<mx:Label color="blue" text="Level1 example:cloth01,gasmask01,shoes01,trou01,weapon01   effect,effectTime,cooldown,hurtAddition example:40,50,60,60">
+		</mx:Label>
+	</mx:VBox>
+	<mx:VBox>
+		<mx:ControlBar width="100%" >
+				<mx:Button id="save"  label="保存"/>		
+	        	<mx:Button id="newBtn"  label="新建" click="onNewBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="删除" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="退出"  click="onCancelBtnClick()"/>
+	        
+	     </mx:ControlBar>
+	</mx:VBox>
+	
+</mx:VBox>
+</mx:TitleWindow>

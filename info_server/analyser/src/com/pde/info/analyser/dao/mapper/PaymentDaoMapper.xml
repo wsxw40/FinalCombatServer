@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.PaymentDao">
+
+	<resultMap id="CardsUnitPrice" type="com.pde.info.analyser.pojo.Payment">
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="COST" property="cost" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- dropdown with every cards unit price -->
+	<select id="getCardsUnitPrice" resultMap="CardsUnitPrice">
+    	SELECT i.`NAME`, p.`COST`
+		FROM `PAYMENT` p
+		INNER JOIN `SYS_ITEM` i ON p.`ITEM_ID`=i.`ID`
+		WHERE i.`NAME` IN ('silverCard', 'goldCard', 'bronzeCard') AND p.`UNIT`=1
+		ORDER BY p.`COST` DESC
+  	</select>
+
+</mapper>

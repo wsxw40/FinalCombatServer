@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                     http://www.springframework.org/schema/beans/spring-beans.xsd  
+                     http://www.springframework.org/schema/tx  
+                     http://www.springframework.org/schema/tx/spring-tx.xsd  
+                     http://www.springframework.org/schema/aop  
+                     http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- ==========================外部配置文件加载======================================== -->
+	<bean id="propertyConfigurer_framework" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- 忽略同名解析 -->
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations">
+			<list>
+				<value>file:/opt/config/UWEBGlobal.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ================================ 关系数据库配置  73u ============================== -->
+	<bean id="dataSource_framework" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${framework.mysql.driverClassName}" />
+		<property name="url" value="${framework.mysql.url}" />
+		<property name="username" value="${framework.mysql.username}" />
+		<property name="password" value="${framework.mysql.password}" />
+		<property name="initialSize" value="${framework.mysql.initialSize}" />
+		<property name="maxActive" value="${framework.mysql.maxActive}" />
+		<property name="maxIdle" value="${framework.mysql.maxIdle}" />
+		<property name="maxWait" value="${framework.mysql.maxWait}" />
+	</bean>
+	
+	<!-- ================================ 关系数据库配置  cms （cms 和 73u 两库合并） ============================== -->
+	<bean id="dataSource_cms" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${framework.mysql.driverClassName}" />
+		<property name="url" value="${framework.mysql.url}" />
+		<property name="username" value="${framework.mysql.username}" />
+		<property name="password" value="${framework.mysql.password}" />
+		<property name="initialSize" value="${framework.mysql.initialSize}" />
+		<property name="maxActive" value="${framework.mysql.maxActive}" />
+		<property name="maxIdle" value="${framework.mysql.maxIdle}" />
+		<property name="maxWait" value="${framework.mysql.maxWait}" />
+	</bean>
+
+</beans>

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+	<display-name>Final Combat</display-name>
+	<description>Final Combat Service</description>
+
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+
+    <!-- Http Flex Session attribute and binding listener support -->
+    <listener>
+        <listener-class>flex.messaging.HttpFlexSession</listener-class>
+    </listener>	
+	
+
+    <context-param>
+        <param-name>flex.class.path</param-name>
+        <param-value>/WEB-INF/flex/jars</param-value>
+    </context-param>
+	<!-- ip filter 
+	<filter>
+     <filter-name>IpFilter</filter-name>
+     <filter-class>com.pearl.o2o.filter.IpFilter</filter-class>
+     <init-param>        
+        <param-name>deny</param-name>
+        <param-value>192.168.1.38</param-value>
+     </init-param>
+     <init-param>        
+        <param-name>allow</param-name>
+        <param-value>192.168.1.69</param-value>
+     </init-param>
+  </filter>
+  -->
+
+
+    <!-- MessageBroker Servlet -->
+    <servlet>
+        <servlet-name>MessageBrokerServlet</servlet-name>
+        <display-name>MessageBrokerServlet</display-name>
+        <servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>
+        <init-param>
+            <param-name>services.configuration.file</param-name>
+            <param-value>/WEB-INF/flex/services-config.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>MessageBrokerServlet</servlet-name>
+        <url-pattern>/messagebroker/*</url-pattern>
+    </servlet-mapping>
+
+
+	<!-- Servlet Mapping-->
+	<servlet>
+		<servlet-name>initServlet</servlet-name>
+		<display-name>initServlet</display-name>
+		<load-on-startup>0</load-on-startup>
+		<servlet-class>com.pearl.o2o.servlet.server.InitServlet</servlet-class>
+	</servlet>	
+	
+	
+	<servlet>
+        <servlet-name>MonitorServlet</servlet-name>
+        <display-name>MonitorServlet</display-name>
+        <servlet-class>com.pearl.o2o.servlet.server.MonitorServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>MonitorServlet</servlet-name>
+        <url-pattern>/monitor/*</url-pattern>
+    </servlet-mapping>
+	
+	<servlet>
+        <servlet-name>SwitchServlet</servlet-name>
+        <display-name>SwitchServlet</display-name>
+        <servlet-class>com.pearl.o2o.servlet.server.SwitchServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>SwitchServlet</servlet-name>
+        <url-pattern>/switch/*</url-pattern>
+    </servlet-mapping>
+	
+	<servlet>
+        <servlet-name>SynCacheServlet</servlet-name>
+        <display-name>SynCacheServlet</display-name>
+        <servlet-class>com.pearl.o2o.servlet.server.SynCacheServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SynCacheServlet</servlet-name>
+        <url-pattern>/gm/SynCacheServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>InitPersonTopServlet</servlet-name>
+        <display-name>InitPersonTopServlet</display-name>
+        <servlet-class>com.pearl.o2o.servlet.server.InitPersonTopServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>InitPersonTopServlet</servlet-name>
+        <url-pattern>/gm/InitPersonTopServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>CompeteBuyTaskServlet</servlet-name>
+        <display-name>CompeteBuyTaskServlet</display-name>
+        <servlet-class>com.pearl.o2o.servlet.server.CompeteBuyTaskServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CompeteBuyTaskServlet</servlet-name>
+        <url-pattern>/gm/CompeteBuyTaskServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>ResetSysItem</servlet-name>
+        <display-name>ResetSysItem</display-name>
+        <servlet-class>com.pearl.o2o.servlet.server.ResetSysItem</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>ResetSysItem</servlet-name>
+        <url-pattern>/gm/ResetSysItem</url-pattern>
+    </servlet-mapping>
+  
+    <servlet>
+        <servlet-name>InitConfig</servlet-name>
+        <display-name>InitConfig</display-name>
+        <servlet-class>com.pearl.o2o.servlet.server.InitConfig</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>InitConfig</servlet-name>
+        <url-pattern>/gm/InitConfig</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>pay</servlet-name>
+        <display-name>pay</display-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.AddLeiPointServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>beVIP</servlet-name>
+        <display-name>beVIP</display-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.PayTobeVipServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>reduceFc</servlet-name>
+        <display-name>reduceFc</display-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.ReduceLeiPointServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>pay</servlet-name>
+        <url-pattern>/gm/pay</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>beVIP</servlet-name>
+        <url-pattern>/gm/beVIP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reduceFc</servlet-name>
+        <url-pattern>/gm/reduceFc</url-pattern>
+    </servlet-mapping>
+    
+	<servlet>
+        <servlet-name>queryOrder</servlet-name>
+        <display-name>queryOrder</display-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.QueryXunleiOrderServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>queryOrder</servlet-name>
+        <url-pattern>/gm/queryOrder</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>queryBalance</servlet-name>
+        <display-name>queryBalance</display-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.QueryXunleBalanceServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>queryBalance</servlet-name>
+        <url-pattern>/gm/queryBalance</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GetAwardServlet</servlet-name>
+        <display-name>GetAwardServlet</display-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.GetAwardServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>GetAwardServlet</servlet-name>
+        <url-pattern>/getaward</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>QueryAwardServlet</servlet-name>
+        <display-name>QueryAwardServlet</display-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.QueryAwardServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>QueryAwardServlet</servlet-name>
+        <url-pattern>/queryaward</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SendMailServlet</servlet-name>
+        <display-name>SendMailServlet</display-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.SendMailServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>SendMailServlet</servlet-name>
+        <url-pattern>/sendmail</url-pattern>
+    </servlet-mapping>
+     <servlet>
+        <servlet-name>BindServlet</servlet-name>
+        <display-name>BindServlet</display-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.BindServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>BindServlet</servlet-name>
+        <url-pattern>/bind</url-pattern>
+    </servlet-mapping>
+    
+     <servlet>
+    	<servlet-name>queryPlayerVipStatus</servlet-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.QueryPlayerVipStatus</servlet-class>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>queryPlayerVipStatus</servlet-name>
+        <url-pattern>/gm/queryPlayerVipStatus</url-pattern>
+    </servlet-mapping>
+     
+    <servlet>
+    	<servlet-name>kickPlayer</servlet-name>
+        <servlet-class>com.pearl.o2o.servlet.gameguard.KickPlayer</servlet-class>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>kickPlayer</servlet-name>
+        <url-pattern>/gm/kickPlayer</url-pattern>
+    </servlet-mapping>
+     
+    <servlet>
+    	<servlet-name>sendGiftToPlayer</servlet-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.SendGiftToPlayer</servlet-class>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>sendGiftToPlayer</servlet-name>
+        <url-pattern>/sendgift</url-pattern>
+    </servlet-mapping>
+    
+    <!-- -->
+
+     <servlet>
+    	<servlet-name>cindex</servlet-name>
+        <servlet-class>com.pearl.o2o.servlet.gm.IndexPointerServlet</servlet-class>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>cindex</servlet-name>
+        <url-pattern>/cindex</url-pattern>
+    </servlet-mapping>
+    
+     <servlet>
+    	<servlet-name>gmGiftServlet</servlet-name>
+        <servlet-class>com.pearl.o2o.service.GmGiftServlet</servlet-class>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>gmGiftServlet</servlet-name>
+        <url-pattern>/cindex/gmGift</url-pattern>
+    </servlet-mapping>
+    
+     <servlet>
+    	<servlet-name>dataOhteServlet</servlet-name>
+        <servlet-class>com.pearl.o2o.service.DataOhteServlet</servlet-class>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>dataOhteServlet</servlet-name>
+        <url-pattern>/cindex/dataOhte</url-pattern>
+    </servlet-mapping>
+    
+     <servlet>
+    	<servlet-name>levelOhteServlet</servlet-name>
+        <servlet-class>com.pearl.o2o.service.LevelOhteServlet</servlet-class>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>levelOhteServlet</servlet-name>
+        <url-pattern>/cindex/levelOhte</url-pattern>
+    </servlet-mapping>
+	
+	 <servlet>
+		<servlet-name>uploadProcessorServlet</servlet-name>
+		<servlet-class>com.pearl.o2o.service.UploadProcessorServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>uploadProcessorServlet</servlet-name>
+		<url-pattern>/cindex/upload</url-pattern>
+	</servlet-mapping>
+	
+	<!-- openid+appid -->
+	 <servlet>
+		<servlet-name>qqSelectServlet</servlet-name>
+		<servlet-class>com.pearl.o2o.service.QqSelectServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>qqSelectServlet</servlet-name>
+		<url-pattern>/cindex/qqSelectServlet</url-pattern>
+	</servlet-mapping>
+	<!-- -->
+	<!-- qqCallBackServlet-->
+	 <servlet>
+		<servlet-name>qqCallBackServlet</servlet-name>
+		<servlet-class>com.pearl.o2o.service.QqCallBackServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>qqCallBackServlet</servlet-name>
+		<url-pattern>/cindex/qqCallBackServlet</url-pattern>
+	</servlet-mapping>
+	<!-- -->
+</web-app>
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TeamHistory">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="TeamHistory" type="com.pearl.o2o.pojo.TeamHistory"/> 	
+
+	<resultMap id="selectResult" class="TeamHistory">
+		<result property="teamId" column="TEAM_ID"/>
+		<result property="oppoNent" column="OPPONENT"/>
+		<result property="attendees" column="ATTENDEES"/>	
+		<result property="result" column="RESULT"/>
+		<result property="createTime" column="CREATED_TIME"/>
+	</resultMap>
+	
+	<select id="select" resultClass="java.lang.Integer" resultMap="selectResult">
+		select * from TEAM_HISTORY 
+		where TEAM_ID=#id#
+		order by CREATED_TIME desc limit 0, 50;
+	</select>
+	
+	<insert id="addTeamHistory" parameterClass="java.util.Map">
+		insert into TEAM_HISTORY (TEAM_ID,OPPONENT,ATTENDEES,RESULT,CREATED_TIME)
+			values(#teamId#,#opponent#, #attendees#, #result#, now());		  			
+  	</insert>
+	
+</sqlMap>

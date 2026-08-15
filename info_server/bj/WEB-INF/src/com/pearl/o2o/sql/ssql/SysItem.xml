@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysItem">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="SysItem" type="com.pearl.o2o.pojo.SysItem" />
+	<resultMap id="selectSysItemResult" class="SysItem">
+		<result property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="resourceStable" column="RESOURCE_STABLE" />
+		<result property="resourceChangeable" column="RESOURCE_CHANGEABLE" />
+		<result property="type" column="TYPE" />
+		<result property="subType" column="SUB_TYPE" />
+		<result property="modifiedDesc" column="MODIFIED_DESC" />
+		<result property="isDeleted" column="IS_DELETED" />
+		<result property="wId" column="W_ID" />
+		<result property="wChangeInTime" column="W_CHANGE_IN_TIME" />
+		<result property="wMoveSpeedOffset" column="W_MOVE_SPEED_OFFSET" />
+		<result property="wCrossOffset" column="W_CROSS_OFFSET" />
+		<result property="wAccuracyDivisor" column="W_ACCURACY_DIVISOR" />
+		<result property="wAccuracyOffset" column="W_ACCURACY_OFFSET" />
+		<result property="wMaxInaccuracy" column="W_MAX_INACCURACY" />
+		<result property="wPenetration" column="W_PENETRATION" />
+		<result property="wDamage" column="W_DAMAGE" />
+		<result property="wRangeModifier" column="W_RANGE_MODIFIER" />
+		<result property="wFireTime" column="W_FIRE_TIME" />
+		<result property="wReloadTime" column="W_RELOAD_TIME" />
+		<result property="wAmmoOneClip" column="W_AMMO_ONE_CLIP" />
+		<result property="wAmmoCount" column="W_AMMO_COUNT" />
+		<result property="wAutoFire" column="W_AUTO_FIRE" />
+		<result property="wTimeToIdle" column="W_TIME_TO_IDLE" />
+		<result property="wNormalOffset" column="W_NORMAL_OFFSET" />
+		<result property="wNormalFactor" column="W_NORMAL_FACTOR" />
+		<result property="wOnairOffset" column="W_ONAIR_OFFSET" />
+		<result property="wOnairFactor" column="W_ONAIR_FACTOR" />
+		<result property="wMoveOffset" column="W_MOVE_OFFSET" />
+		<result property="wMoveFactor" column="W_MOVE_FACTOR" />
+		<result property="wNormalUpBase" column="W_NORMAL_UP_BASE" />
+		<result property="wNormalLateralBase" column="W_NORMAL_LATERAL_BASE" />
+		<result property="wNormalUpModifier" column="W_NORMAL_UP_MODIFIER" />
+		<result property="wNormalLateralModifier" column="W_NORMAL_LATERAL_MODIFIER" />
+		<result property="wNormalUpMax" column="W_NORMAL_UP_MAX" />
+		<result property="wNormalLateralMax" column="W_NORMAL_LATERAL_MAX" />
+		<result property="wNormalDirChange" column="W_NORMAL_DIR_CHANGE" />
+		<result property="wMoveUpBase" column="W_MOVE_UP_BASE" />
+		<result property="wMoveLateralBase" column="W_MOVE_LATERAL_BASE" />
+		<result property="wMoveUpModifier" column="W_MOVE_UP_MODIFIER" />
+		<result property="wMoveLateralModifier" column="W_MOVE_LATERAL_MODIFIER" />
+		<result property="wMoveUpMax" column="W_MOVE_UP_MAX" />
+		<result property="wMoveLateralMax" column="W_MOVE_LATERAL_MAX" />
+		<result property="wMoveDirChange" column="W_MOVE_DIR_CHANGE" />
+		<result property="wOnairUpBase" column="W_ONAIR_UP_BASE" />
+		<result property="wOnairLateralBase" column="W_ONAIR_LATERAL_BASE" />
+		<result property="wOnairUpModifier" column="W_ONAIR_UP_MODIFIER" />
+		<result property="wOnairLateralModifier" column="W_ONAIR_LATERAL_MODIFIER" />
+		<result property="wOnairUpMax" column="W_ONAIR_UP_MAX" />
+		<result property="wOnairLateralMax" column="W_ONAIR_LATERAL_MAX" />
+		<result property="wOnairDirChange" column="W_ONAIR_DIR_CHANGE" />
+		<result property="wCrouchUpBase" column="W_CROUCH_UP_BASE" />
+		<result property="wCrouchLateralBase" column="W_CROUCH_LATERAL_BASE" />
+		<result property="wCrouchUpModifier" column="W_CROUCH_UP_MODIFIER" />
+		<result property="wCrouchLateralModifier" column="W_CROUCH_LATERAL_MODIFIER" />
+		<result property="wCrouchUpMax" column="W_CROUCH_UP_MAX" />
+		<result property="wCrouchLateralMax" column="W_CROUCH_LATERAL_MAX" />
+		<result property="wCrouchDirChange" column="W_CROUCH_DIR_CHANGE" />
+		<result property="wUpModifier" column="W_UP_MODIFIER" />
+		
+		<result property="wShootBulletCount" column="W_SHOOT_BULLET_COUNT" />
+		<result property="wSpread" column="W_SPREAD" />
+		<result property="wFireMaxSpeed" column="W_FIRE_MAX_SPEED" />
+		<result property="wFireStartSpeed" column="W_FIRE_START_SPEED" />
+		<result property="wFireAceleration" column="W_FIRE_ACELERATION" />
+		<result property="wFireResistance" column="W_FIRE_RESISTANCE" />
+		
+		<result property="wStabTime" column="W_STAB_TIME" />
+		<result property="wStabLightTime" column="W_STAB_LIGHT_TIME" />
+		<result property="wStabHurt" column="W_STAB_HURT" />
+		<result property="wStabLightHurt" column="W_STAB_LIGHT_HURT" />
+		<result property="wExplodeTime" column="W_EXPLODE_TIME" />
+		<result property="wReadyTime" column="W_READY_TIME" />
+		<result property="wThrowOutTime" column="W_THROW_OUT_TIME" />
+		<result property="wHurtRange" column="W_HURT_RANGE" />
+		<result property="wHurt" column="W_HURT" />
+		
+		<result property="displayNameCN" column="DISPLAY_NAME" />
+		<result property="level" column="LEVEL" />
+		<result property="descriptionCN" column="DESCRIPTION" />
+		<result property="iBuffId" column="I_BUFF_ID" />
+		<result property="iId" column="I_ID" />
+		
+		<result property="cId" column="C_ID" />
+		<result property="iValue" column="I_VALUE" />
+
+		<result property="wRangeStart" column="W_RANGE_START" />
+		<result property="wRangeEnd" column="W_RANGE_END" />
+		<result property="wAccuracyTime" column="W_ACCURACY_TIME" />
+		<result property="wAccuracyTimeModefier" column="W_ACCURACY_TIME_MODIFIER" />
+		<result property="wMaxAccuracy" column="W_MAX_ACCURACY" />
+		<result property="wMinAccuracy" column="W_MIN_ACCURACY" />
+		<result property="wCrossLengthBase" column="W_CROSS_LENGTH_BASE" />
+		<result property="wCrossLengthFactor" column="W_CROSS_LENGTH_FACTOR" />
+		<result property="wCrossDistanceBase" column="W_CROSS_DISTANCE_BASE" />
+		<result property="wCrossDistanceFactor" column="W_CROSS_DISTANCE_FACTOR" />
+		
+		<result property="wXOffset" column="W_X_OFFSET" />
+		<result property="wSightNormalOffset" column="W_SIGHT_NORMAL_OFFSET" />
+		<result property="wSightOnairOffset" column="W_SIGHT_ONAIR_OFFSET" />
+		<result property="wSightMoveOffset" column="W_SIGHT_MOVE_OFFSET" />
+		<result property="wStabDistance" column="W_STAB_DISTANCE" />
+		<result property="wStabLightDistance" column="W_STAB_LIGHT_DISTANCE" />
+		<result property="wStabWidth" column="W_STAB_WIDTH" />
+		<result property="wBackFactor" column="W_BACK_FACTOR" />
+		<result property="wFlashRangeStart" column="W_FLASH_RANGE_START" />
+		<result property="wFlashRangeEnd" column="W_FLASH_RANGE_END" />
+		<result property="wFlashBackFactor" column="W_FLASH_BACK_FACTOR" />
+		<result property="wTimeMax" column="W_TIME_MAX" />
+		<result property="wTimeFade" column="W_TIME_FADE" />
+		<result property="wTime" column="W_TIME" />
+		
+		<result property="wHitSpeed" column="W_HIT_SPEED" />
+		<result property="wHitAcceleration" column="W_HIT_ACCELERATION" />
+		<result property="wHitDistance" column="W_HIT_DISTANCE" />
+		<result property="wSightInfo" column="W_SIGHT_INFO" />
+		
+		
+		<result property="wMaxDistance" column="W_MAX_DISTANCE" />
+		<result property="wAddBlood" column="W_ADD_BLOOD" />
+		<result property="wAmmoType" column="W_AMMO_TYPE" />
+		<result property="wFlySpeed" column="W_FLY_SPEED" />
+		<result property="wMaxaliveTime" column="W_MAXALIVE_TIME" />
+		<result property="wGravity" column="W_GRAVITY" />
+		<result property="wLastHurt" column="W_LAST_HURT" />
+		<result property="wLastTime" column="W_LAST_TIME" />
+		<result property="wSpecialDistance" column="W_SPECIAL_DISTANCE" />
+		<result property="wSpecialRange" column="W_SPECIAL_RANGE" />
+		<result property="wSpecialLasttime" column="W_SPECIAL_LASTTIME" />
+		<result property="wSpecialHurt" column="W_SPECIAL_HURT" />
+		<result property="wSpecialLasthurt" column="W_SPECIAL_LASTHURT" />
+		<result property="wParticlenum" column="W_PARTICLEMUN" />
+		<result property="wShowSpeed" column="W_SHOW_SPEED" />
+		<result property="wAmmopartKey" column="W_AMMOPART_KEY" />
+		<result property="wCritRate" column="W_CRIT_RATE" />
+		<result property="wCritAvailable" column="W_CRIT_AVAILABLE" />
+		
+		<result property="characterId" column="CHARACTER_ID" />
+		<result property="gunProperty1" column="GUN_PROPERTY1" />
+		<result property="gunProperty2" column="GUN_PROPERTY2" />
+		<result property="gunProperty3" column="GUN_PROPERTY3" />
+		<result property="gunProperty4" column="GUN_PROPERTY4" />
+		<result property="gunProperty5" column="GUN_PROPERTY5" />
+		<result property="gunProperty6" column="GUN_PROPERTY6" />
+		<result property="gunProperty7" column="GUN_PROPERTY7" />
+		<result property="wDmgModifyTimerMin" column="W_DMG_MODIFY_TIMER_MIN" />
+		<result property="wDmgModifyTimerMax" column="W_DMG_MODIFY_TIMER_MAX" />
+		<result property="wDmgModifyMin" column="W_DMG_MODIFY_MIN" />
+		<result property="wDmgModifyMax" column="W_DMG_MODIFY_MAX" />
+		<result property="wCapsuleHeight" column="W_CAPSULE_HEIGHT" />
+		<result property="wCapsuleRadius" column="W_CAPSULE_RADIUS" />
+		
+		<result property="wDamageModifer" column="W_DAMAGE_MODIFER" />
+		<result property="isVip" column="IS_VIP" />
+		<result property="isNew" column="IS_New" />
+		<result property="isHot" column="IS_HOT" />
+		<result property="isWeb" column="IS_WEB" />
+		<result property="isPopular" column="IS_POPULAR" />
+		<result property="isExchange" column="IS_EXCHANGE"/> 
+		<result property="isAsset" column="IS_ASSET"/>
+		<result property="items" column="ITEMS" />
+		<result property="wBackBoostPlus" column="BACK_BOOST_PLUS" />
+		<result property="wFixPrice" column="W_FIX_PRICE" />
+		<result property="itemIndex" column="INDEX" />
+		
+		<result property="cResistanceFire" column="C_RESISTANCE_FIRE" />
+		<result property="cResistanceBlast" column="C_RESISTANCE_BLAST" />
+		<result property="cResistanceBullet" column="C_RESISTANCE_BULLET" />
+		<result property="cResistanceKnife" column="C_RESISTANCE_KNIFE" />
+		<result property="cBloodAdd" column="C_BLOOD_ADD" />
+		<result property="isStrengthen" column="IS_STRENGTHEN" />
+		<result property="mType" column="M_TYPE" />
+		<result property="mValue" column="M_VALUE" />
+		<result property="fightNum" column="FIGHT_NUM"/>
+		<result property="rareLevel" column="RARE_LEVEL"/>
+		<result property="strengthLevel" column="STRENGTH_LEVEL"/>
+		<result property="evaluateRmb" column="EVALUATE_RMB"/>
+
+		<result property="teamOccupyLength" column="TEAM_LEVEL_OCCUPY_LENGTH"/>
+		<result property="teamOccupyWidth" column="TEAM_LEVEL_OCCUPY_WIDTH"/>
+		<result property="needTeamPlaceLevel" column="NEED_TEAM_PLACE_LEVEL"/>
+		<result property="teamItemUpgradePrice" column="TEAM_ITEM_UPGRADE_PRICE"/>
+		<result property="timeForBuildingUp" column="TIME_FOR_BUILDING_UP"/>
+		<result property="timeForCreate" column="TIME_FOR_CREATE"/>
+		
+		
+	</resultMap>
+	<select id="select" resultMap="selectSysItemResult" parameterClass="java.util.Map">
+		select * from SYS_ITEM;
+	</select>
+	<select id="countSysItemSuitable" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		select count(*) from SYS_ITEM si
+		where
+			 si.TYPE = #type#
+			 and si.SUB_TYPE = #subtype#
+			 and si.IS_DELETED='N'
+			 and si.P_SUITABLE like concat('%',(select name from SYS_ITEM si where si.ID=#id#),'%');
+	</select>	
+	<select id="selectSysItemSuitable" parameterClass="java.util.Map" resultMap="selectSysItemResult">
+		select * from SYS_ITEM si
+		where 
+			si.TYPE = #type#
+			and si.SUB_TYPE = #subtype#
+			and si.IS_DELETED='N'
+			and si.P_SUITABLE like concat('%',(select name from SYS_ITEM si where si.ID=#id#),'%') 
+		limit #start#, #stop#;
+	</select>		
+	<select id="selectSysPackage" parameterClass="java.lang.Integer" resultMap="selectSysItemResult">
+		select si.* from
+		(
+			select sp.* from SYS_PACKAGE sp
+			left outer join 
+				SYS_ITEM si on si.ID=sp.PACKAGE_ID
+			where
+			sp.PACKAGE_ID = #value#
+			and si.IS_DELETED='N'
+		) p
+
+		left outer join SYS_ITEM si on si.ID=p.ITEM_ID
+		where si.IS_DELETED='N';
+	</select>
+	<delete id="delete" parameterClass="SysItem">
+		update SYS_ITEM set IS_DELETED=#isDeleted#  
+		where ID=#id#;
+	</delete>
+	<delete id="deleteHard" parameterClass="SysItem">
+		delete from SYS_ITEM
+		where ID=#id#;
+	</delete>
+	<insert id="insert" parameterClass="SysItem">
+		insert into SYS_ITEM(
+		  NAME,
+		  DISPLAY_NAME,
+		  RESOURCE_STABLE,
+		  RESOURCE_CHANGEABLE,
+		  TYPE,
+		  SUB_TYPE,
+		  LEVEL,
+		  MODIFIED_DESC,
+		  W_ID,
+		  W_CHANGE_IN_TIME ,
+		  W_MOVE_SPEED_OFFSET,
+		  W_CROSS_OFFSET,
+		  W_ACCURACY_DIVISOR,
+		  W_ACCURACY_OFFSET,
+		  W_MAX_INACCURACY,
+		  W_PENETRATION,
+		  W_DAMAGE,
+		  W_RANGE_MODIFIER,
+		  W_FIRE_TIME,
+		  W_RELOAD_TIME,
+		  W_AMMO_ONE_CLIP,
+		  W_AMMO_COUNT ,
+		  W_AUTO_FIRE ,
+		  W_TIME_TO_IDLE ,
+		  W_NORMAL_OFFSET ,
+		  W_NORMAL_FACTOR ,
+		  W_ONAIR_OFFSET ,
+		  W_ONAIR_FACTOR ,
+		  W_MOVE_OFFSET ,
+		  W_MOVE_FACTOR ,
+		  W_NORMAL_UP_BASE ,
+		  W_NORMAL_LATERAL_BASE ,
+		  W_NORMAL_UP_MODIFIER ,
+		  W_NORMAL_LATERAL_MODIFIER ,
+		  W_NORMAL_UP_MAX ,
+		  W_NORMAL_LATERAL_MAX ,
+		  W_NORMAL_DIR_CHANGE ,
+		  W_MOVE_UP_BASE ,
+		  W_MOVE_LATERAL_BASE ,
+		  W_MOVE_UP_MODIFIER ,
+		  W_MOVE_LATERAL_MODIFIER ,
+		  W_MOVE_UP_MAX ,
+		  W_MOVE_LATERAL_MAX ,
+		  W_MOVE_DIR_CHANGE ,
+		  W_ONAIR_UP_BASE ,
+		  W_ONAIR_LATERAL_BASE ,
+		  W_ONAIR_UP_MODIFIER ,
+		  W_ONAIR_LATERAL_MODIFIER ,
+		  W_ONAIR_UP_MAX,
+		  W_ONAIR_LATERAL_MAX ,
+		  W_ONAIR_DIR_CHANGE ,
+		  W_CROUCH_UP_BASE,
+		  W_CROUCH_LATERAL_BASE ,
+		  W_CROUCH_UP_MODIFIER ,
+		  W_CROUCH_LATERAL_MODIFIER ,
+		  W_CROUCH_UP_MAX ,
+		  W_CROUCH_LATERAL_MAX ,
+		  W_CROUCH_DIR_CHANGE ,
+		  W_UP_MODIFIER ,
+		  W_SHOOT_BULLET_COUNT,W_SPREAD,W_FIRE_MAX_SPEED,W_FIRE_START_SPEED,W_FIRE_ACELERATION,W_FIRE_RESISTANCE,
+		  W_STAB_TIME ,
+		  W_STAB_LIGHT_TIME ,
+		  W_STAB_HURT ,
+		  W_STAB_LIGHT_HURT,
+		  W_EXPLODE_TIME ,
+		  W_READY_TIME ,
+		  W_THROW_OUT_TIME ,
+		  W_HURT_RANGE ,
+		  W_HURT ,
+		  C_ID,
+		  DESCRIPTION,
+		  I_BUFF_ID,
+		  I_ID,
+		  W_RANGE_START,
+		  W_RANGE_END,
+		  W_ACCURACY_TIME,
+		  W_ACCURACY_TIME_MODIFIER,
+		  W_MAX_ACCURACY,
+		  W_MIN_ACCURACY,
+		  W_CROSS_LENGTH_BASE,
+		  W_CROSS_LENGTH_FACTOR,
+		  W_CROSS_DISTANCE_BASE,
+		  W_CROSS_DISTANCE_FACTOR,
+		  W_X_OFFSET,
+		  W_SIGHT_NORMAL_OFFSET,W_SIGHT_ONAIR_OFFSET,W_SIGHT_MOVE_OFFSET,
+		  W_STAB_DISTANCE,W_STAB_LIGHT_DISTANCE,W_STAB_WIDTH,W_BACK_FACTOR,
+		  W_FLASH_RANGE_START,W_FLASH_RANGE_END,W_FLASH_BACK_FACTOR,W_TIME_MAX,W_TIME_FADE,W_TIME,
+		  I_VALUE,
+		  W_HIT_SPEED,
+		  W_HIT_ACCELERATION,
+		  W_HIT_DISTANCE,
+		 W_SIGHT_INFO,
+		 W_MAX_DISTANCE,
+		 W_ADD_BLOOD,
+		 W_AMMO_TYPE,
+		 W_FLY_SPEED,
+		 W_MAXALIVE_TIME,
+		 W_GRAVITY,
+		 W_LAST_HURT,
+		 W_LAST_TIME,
+		 W_SPECIAL_DISTANCE,
+		 W_SPECIAL_RANGE,
+		 W_SPECIAL_LASTTIME,
+		 W_SPECIAL_HURT,
+		 W_SPECIAL_LASTHURT,
+		 W_PARTICLEMUN,
+		 W_SHOW_SPEED,
+		 W_AMMOPART_KEY,
+		 W_CRIT_RATE,W_CRIT_AVAILABLE,
+		 CHARACTER_ID,
+		 W_DMG_MODIFY_TIMER_MIN,W_DMG_MODIFY_TIMER_MAX,W_DMG_MODIFY_MIN,W_DMG_MODIFY_MAX,W_CAPSULE_HEIGHT,W_CAPSULE_RADIUS,
+		 W_DAMAGE_MODIFER,
+		 GUN_PROPERTY1,GUN_PROPERTY2,GUN_PROPERTY3,GUN_PROPERTY4,GUN_PROPERTY5,GUN_PROPERTY6,GUN_PROPERTY7,
+		 IS_VIP,IS_NEW,IS_HOT,ITEMS,BACK_BOOST_PLUS,W_FIX_PRICE,`INDEX`,
+		 C_RESISTANCE_FIRE,C_RESISTANCE_BLAST,C_RESISTANCE_BULLET,C_RESISTANCE_KNIFE,C_BLOOD_ADD,IS_STRENGTHEN,M_TYPE,M_VALUE,
+		 IS_WEB,IS_POPULAR,RARE_LEVEL,FIGHT_NUM,IS_EXCHANGE,IS_ASSET,EVALUATE_RMB,TEAM_LEVEL_OCCUPY_LENGTH,TEAM_LEVEL_OCCUPY_WIDTH,
+		 NEED_TEAM_PLACE_LEVEL,TEAM_ITEM_UPGRADE_PRICE,TIME_FOR_BUILDING_UP,TIME_FOR_CREATE
+		)
+		values(
+			#name#,
+			#displayNameCN#,
+			#resourceStable#,
+			#resourceChangeable#,
+			#type#,
+			#subType#,
+			#level#,
+			#modifiedDesc#,
+			#wId#,
+			#wChangeInTime#,
+			#wMoveSpeedOffset#,
+			#wCrossOffset#,
+			#wAccuracyDivisor#,
+			#wAccuracyOffset#,
+			#wMaxInaccuracy#,
+			#wPenetration#,
+			#wDamage#,
+			#wRangeModifier#,
+			#wFireTime#,
+			#wReloadTime#,
+			#wAmmoOneClip#,
+			#wAmmoCount#,
+			#wAutoFire#,
+			#wTimeToIdle#,
+			#wNormalOffset#,
+			#wNormalFactor#,
+			#wOnairOffset#,
+			#wOnairFactor#,
+			#wMoveOffset#,
+			#wMoveFactor#,
+			#wNormalUpBase#,
+			#wNormalLateralBase#,
+			#wNormalUpModifier#,
+			#wNormalLateralModifier#,
+			#wNormalUpMax#,
+			#wNormalLateralMax#,
+			#wNormalDirChange#,
+			#wMoveUpBase#,
+			#wMoveLateralBase#,
+			#wMoveUpModifier#,
+			#wMoveLateralModifier#,
+			#wMoveUpMax#,
+			#wMoveLateralMax#,
+			#wMoveDirChange#,
+			#wOnairUpBase#,
+			#wOnairLateralBase#,
+			#wOnairUpModifier#,
+			#wOnairLateralModifier#,
+			#wOnairUpMax#,
+			#wOnairLateralMax#,
+			#wOnairDirChange#,
+			#wCrouchUpBase#,
+			#wCrouchLateralBase#,
+			#wCrouchUpModifier#,
+			#wCrouchLateralModifier#,
+			#wCrouchUpMax#,
+			#wCrouchLateralMax#,
+			#wCrouchDirChange#,
+			#wUpModifier#,
+			#wShootBulletCount#,#wSpread#,#wFireMaxSpeed#,#wFireStartSpeed#,#wFireAceleration#,#wFireResistance#,
+			#wStabTime#,
+			#wStabLightTime#,
+			#wStabHurt#,
+			#wStabLightHurt#,
+			#wExplodeTime#,
+			#wReadyTime#,
+			#wThrowOutTime#,
+			#wHurtRange#,
+			#wHurt#,
+			#cId#,
+			#descriptionCN#,#iBuffId#,#iId#,
+			#wRangeStart#,
+			#wRangeEnd#,
+			#wAccuracyTime#,
+			#wAccuracyTimeModefier#,
+			#wMaxAccuracy#,
+			#wMinAccuracy#,
+			#wCrossLengthBase#,
+			#wCrossLengthFactor#,
+			#wCrossDistanceBase#,
+			#wCrossDistanceFactor#,
+			#wXOffset#,
+			#wSightNormalOffset#,
+			#wSightOnairOffset#,
+			#wSightMoveOffset#,
+			#wStabDistance#,
+			#wStabLightDistance#,
+			#wStabWidth#,
+			#wBackFactor#,
+			#wFlashRangeStart#,
+			#wFlashRangeEnd#,
+			#wFlashBackFactor#,
+			#wTimeMax#,
+			#wTimeFade#,
+			#wTime#,
+			#iValue#,
+			#wHitSpeed#,
+			#wHitAcceleration#,
+			#wHitDistance#,
+			#wSightInfo#,
+			#wMaxDistance#,
+			#wAddBlood#,
+			#wAmmoType#,
+			#wFlySpeed#,
+			#wMaxaliveTime#,
+			#wGravity#,
+			#wLastHurt#,
+			#wLastTime#,
+			#wSpecialDistance#,
+			#wSpecialRange#,
+			#wSpecialLasttime#,
+			#wSpecialHurt#,
+			#wSpecialLasthurt#,
+			#wParticlenum#,
+			#wShowSpeed#,
+			#wAmmopartKey#,#wCritRate#,#wCritAvailable#,#characterId#,
+			#wDmgModifyTimerMin#,#wDmgModifyTimerMax#,#wDmgModifyMin#,#wDmgModifyMax#,#wCapsuleHeight#,#wCapsuleRadius#,#wDamageModifer#,
+			#gunProperty1#,#gunProperty2#,#gunProperty3#,#gunProperty4#,#gunProperty5#,#gunProperty6#,#gunProperty7#,
+			#isVip#,#isNew#,#isHot#,#items#,#wBackBoostPlus#,#wFixPrice#,#itemIndex#,
+			#cResistanceFire#,#cResistanceBlast#,#cResistanceBullet#,#cResistanceKnife#,#cBloodAdd#,#isStrengthen#,#mType#,#mValue#,
+			#isWeb#,#isPopular#,#rareLevel#,#fightNum#,#isExchange#,#isAsset#,#evaluateRmb#,#teamOccupyLength#,#teamOccupyWidth#,
+			#needTeamPlaceLevel#,#teamItemUpgradePrice#,#timeForBuildingUp#,#timeForCreate#
+			
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<update id="update" parameterClass="SysItem">
+		update SYS_ITEM
+		set 
+		  NAME=#name#,
+		  DISPLAY_NAME=#displayNameCN#,
+		  RESOURCE_STABLE=#resourceStable#,
+		  RESOURCE_CHANGEABLE=#resourceChangeable#,
+		  TYPE=#type#,
+		  SUB_TYPE=#subType#,
+		  LEVEL=#level#,
+		  MODIFIED_DESC=#modifiedDesc#,
+		  W_ID=#wId#,
+		  W_CHANGE_IN_TIME=#wChangeInTime#,
+		  W_MOVE_SPEED_OFFSET=#wMoveSpeedOffset#,
+		  W_CROSS_OFFSET=#wCrossOffset#,
+		  W_ACCURACY_DIVISOR=#wAccuracyDivisor#,
+		  W_ACCURACY_OFFSET=#wAccuracyOffset#,
+		  W_MAX_INACCURACY=#wMaxInaccuracy#,
+		  W_PENETRATION=#wPenetration#,
+		  W_DAMAGE=#wDamage#,
+		  W_RANGE_MODIFIER=#wRangeModifier#,
+		  W_FIRE_TIME=#wFireTime#,
+		  W_RELOAD_TIME=#wReloadTime#,
+		  W_AMMO_ONE_CLIP=#wAmmoOneClip#,
+		  W_AMMO_COUNT =#wAmmoCount#,
+		  W_AUTO_FIRE =#wAutoFire#,
+		  W_TIME_TO_IDLE =#wTimeToIdle#,
+		  W_NORMAL_OFFSET =#wNormalOffset#,
+		  W_NORMAL_FACTOR =#wNormalFactor#,
+		  W_ONAIR_OFFSET =#wOnairOffset#,
+		  W_ONAIR_FACTOR =#wOnairFactor#,
+		  W_MOVE_OFFSET =#wMoveOffset#,
+		  W_MOVE_FACTOR =#wMoveFactor#,
+		  W_NORMAL_UP_BASE =#wNormalUpBase#,
+		  W_NORMAL_LATERAL_BASE =#wNormalLateralBase#,
+		  W_NORMAL_UP_MODIFIER =#wNormalUpModifier#,
+		  W_NORMAL_LATERAL_MODIFIER =#wNormalLateralModifier#,
+		  W_NORMAL_UP_MAX =#wNormalUpMax#,
+		  W_NORMAL_LATERAL_MAX =#wNormalLateralMax#,
+		  W_NORMAL_DIR_CHANGE =#wNormalDirChange#,
+		  W_MOVE_UP_BASE =#wMoveUpBase#,
+		  W_MOVE_LATERAL_BASE =#wMoveLateralBase#,
+		  W_MOVE_UP_MODIFIER =#wMoveUpModifier#,
+		  W_MOVE_LATERAL_MODIFIER =#wMoveLateralModifier#,
+		  W_MOVE_UP_MAX =#wMoveUpMax#,
+		  W_MOVE_LATERAL_MAX =#wMoveLateralMax#,
+		  W_MOVE_DIR_CHANGE =#wMoveDirChange#,
+		  W_ONAIR_UP_BASE =#wOnairUpBase#,
+		  W_ONAIR_LATERAL_BASE =#wOnairLateralBase#,
+		  W_ONAIR_UP_MODIFIER =#wOnairUpModifier#,
+		  W_ONAIR_LATERAL_MODIFIER =#wOnairLateralModifier#,
+		  W_ONAIR_UP_MAX =#wOnairUpMax#,
+		  W_ONAIR_LATERAL_MAX =#wOnairLateralMax#,
+		  W_ONAIR_DIR_CHANGE =#wOnairDirChange#,
+		  W_CROUCH_UP_BASE =#wCrouchUpBase#,
+		  W_CROUCH_LATERAL_BASE =#wCrouchLateralBase#,
+		  W_CROUCH_UP_MODIFIER =#wCrouchUpModifier#,
+		  W_CROUCH_LATERAL_MODIFIER =#wCrouchLateralModifier#,
+		  W_CROUCH_UP_MAX =#wCrouchUpMax#,
+		  W_CROUCH_LATERAL_MAX =#wCrouchLateralMax#,
+		  W_CROUCH_DIR_CHANGE =#wCrouchDirChange#,
+		  W_UP_MODIFIER =#wUpModifier#,
+		  W_SHOOT_BULLET_COUNT=#wShootBulletCount#,
+		  W_SPREAD=#wSpread#,
+		  W_FIRE_MAX_SPEED=#wFireMaxSpeed#,
+		  W_FIRE_START_SPEED=#wFireStartSpeed#,
+		  W_FIRE_ACELERATION=#wFireAceleration#,
+		  W_FIRE_RESISTANCE=#wFireResistance#,
+		  W_STAB_TIME =#wStabTime#,
+		  W_STAB_LIGHT_TIME =#wStabLightTime#,
+		  W_STAB_HURT =#wStabHurt#,
+		  W_STAB_LIGHT_HURT =#wStabLightHurt#,
+		  W_EXPLODE_TIME =#wExplodeTime#,
+		  W_READY_TIME= #wReadyTime#,
+		  W_THROW_OUT_TIME= #wThrowOutTime#,
+		  W_HURT_RANGE= #wHurtRange#,
+		  W_HURT =#wHurt#,
+		  C_ID=#cId#,
+		  DESCRIPTION=#descriptionCN#,
+		  I_BUFF_ID=#iBuffId#,
+		  I_ID=#iId#,
+		  IS_DELETED=#isDeleted#,
+		  W_RANGE_START=#wRangeStart#,
+		  W_RANGE_END=#wRangeEnd#,
+		  W_ACCURACY_TIME=#wAccuracyTime#,
+		  W_ACCURACY_TIME_MODIFIER=#wAccuracyTimeModefier#,
+		  W_MAX_ACCURACY=#wMaxAccuracy#,
+		  W_MIN_ACCURACY=#wMinAccuracy#,
+		  W_CROSS_LENGTH_BASE=#wCrossLengthBase#,
+		 W_CROSS_LENGTH_FACTOR=#wCrossLengthFactor#,
+		 W_CROSS_DISTANCE_BASE=#wCrossDistanceBase#,
+		 W_CROSS_DISTANCE_FACTOR=#wCrossDistanceFactor#,
+	 	 W_SHOOT_BULLET_COUNT=#wShootBulletCount#,
+	 	 W_SPREAD=#wSpread#,
+	 	 W_FIRE_MAX_SPEED=#wFireMaxSpeed#,
+	 	 W_FIRE_START_SPEED=#wFireStartSpeed#,
+	 	 W_FIRE_ACELERATION=#wFireAceleration#,
+	 	 W_FIRE_RESISTANCE=#wFireResistance#,
+		 I_VALUE=#iValue#,
+		 W_X_OFFSET=#wXOffset#,
+		 W_SIGHT_NORMAL_OFFSET=#wSightNormalOffset#,W_SIGHT_ONAIR_OFFSET=#wSightOnairOffset#,W_SIGHT_MOVE_OFFSET=#wSightMoveOffset#,
+		 W_STAB_DISTANCE=#wStabDistance#,W_STAB_LIGHT_DISTANCE=#wStabLightDistance#,W_STAB_WIDTH=#wStabWidth#,W_BACK_FACTOR=#wBackFactor#,
+		 W_FLASH_RANGE_START=#wFlashRangeStart#,W_FLASH_RANGE_END=#wFlashRangeEnd#,
+		 W_FLASH_BACK_FACTOR=#wFlashBackFactor#,W_TIME_MAX=#wTimeMax#,W_TIME_FADE=#wTimeFade#,W_TIME=#wTime#,
+		  W_HIT_SPEED=#wHitSpeed#,
+		  W_HIT_ACCELERATION=#wHitAcceleration#,
+		  W_HIT_DISTANCE=#wHitDistance#,
+		 W_SIGHT_INFO=#wSightInfo#,
+		 W_MAX_DISTANCE=#wMaxDistance#,
+		 W_ADD_BLOOD=#wAddBlood#,
+		 W_AMMO_TYPE=#wAmmoType#,
+		 W_FLY_SPEED=#wFlySpeed#,
+		 W_MAXALIVE_TIME=#wMaxaliveTime#,
+		 W_GRAVITY=#wGravity#,
+		 W_LAST_HURT=#wLastHurt#,
+		 W_LAST_TIME=#wLastTime#,
+		 W_SPECIAL_DISTANCE=#wSpecialDistance#,
+		 W_SPECIAL_RANGE=#wSpecialRange#,
+		 W_SPECIAL_LASTTIME=#wSpecialLasttime#,
+		 W_SPECIAL_HURT=#wSpecialHurt#,
+		 W_SPECIAL_LASTHURT=#wSpecialLasthurt#,
+		 W_PARTICLEMUN=#wParticlenum#,
+		 W_SHOW_SPEED=#wShowSpeed#,
+		 W_AMMOPART_KEY=#wAmmopartKey#,
+		W_CRIT_RATE=#wCritRate#,
+		W_CRIT_AVAILABLE=#wCritAvailable#,
+		CHARACTER_ID=#characterId#,
+		W_DMG_MODIFY_TIMER_MIN=#wDmgModifyTimerMin#,
+		W_DMG_MODIFY_TIMER_MAX=#wDmgModifyTimerMax#,
+		W_DMG_MODIFY_MIN=#wDmgModifyMin#,
+		W_DMG_MODIFY_MAX=#wDmgModifyMax#,
+		W_CAPSULE_HEIGHT=#wCapsuleHeight#,
+		W_CAPSULE_RADIUS=#wCapsuleRadius#,
+		W_DAMAGE_MODIFER=#wDamageModifer#,
+		GUN_PROPERTY1=#gunProperty1#,
+		GUN_PROPERTY2=#gunProperty2#,
+		GUN_PROPERTY3=#gunProperty3#,
+		GUN_PROPERTY4=#gunProperty4#,
+		GUN_PROPERTY5=#gunProperty5#,
+		GUN_PROPERTY6=#gunProperty6#,
+		GUN_PROPERTY7=#gunProperty7#,
+		IS_VIP=#isVip#,
+		IS_NEW=#isNew#,
+		IS_HOT=#isHot#,
+		IS_WEB=#isWeb#,
+		IS_POPULAR=#isPopular#,
+		IS_EXCHANGE=#isExchange#,
+		IS_ASSET=#isAsset#,
+		ITEMS=#items#,BACK_BOOST_PLUS=#wBackBoostPlus#,W_FIX_PRICE=#wFixPrice#,
+		`INDEX`=#itemIndex#,
+		C_RESISTANCE_FIRE=#cResistanceFire#,
+		C_RESISTANCE_BLAST=#cResistanceBlast#,
+		C_RESISTANCE_BULLET=#cResistanceBullet#,
+		C_RESISTANCE_KNIFE=#cResistanceKnife#,
+		C_BLOOD_ADD=#cBloodAdd#,
+		IS_STRENGTHEN=#isStrengthen#,
+		M_TYPE=#mType#,
+		M_VALUE=#mValue#,
+		RARE_LEVEL=#rareLevel#,
+		FIGHT_NUM=#fightNum#,
+		STRENGTH_LEVEL=#strengthLevel#,
+		EVALUATE_RMB=#evaluateRmb#,
+		TEAM_LEVEL_OCCUPY_LENGTH=#teamOccupyLength#,
+		TEAM_LEVEL_OCCUPY_WIDTH=#teamOccupyWidth#,
+		NEED_TEAM_PLACE_LEVEL=#needTeamPlaceLevel#,
+		TEAM_ITEM_UPGRADE_PRICE=#teamItemUpgradePrice#,	
+		TIME_FOR_BUILDING_UP=#timeForBuildingUp#,
+		TIME_FOR_CREATE=#timeForCreate#
+		 where ID=#id#;
+	</update>
+</sqlMap>

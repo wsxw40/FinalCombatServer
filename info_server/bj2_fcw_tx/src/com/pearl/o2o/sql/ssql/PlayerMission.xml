@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerMission">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PlayerMission" type="com.pearl.o2o.pojo.PlayerMission"/> 	
+	<resultMap id="selectPlayerMissionResult" class="PlayerMission">
+		<result property="id" 				column="ID"/>
+		<result property="playerId" 		column="PLAYER_ID"/>
+		<result property="sysMissionId" 	column="MISSION_ID"/>		
+		<result property="status" 			column="STATUS"/>
+		<result property="number" 			column="NUMBER"/>
+		<result property="target" 			column="TARGET"/>
+		<result property="createTime" 		column="CREATE_TIME"/>
+		<result property="type" 			column="TYPE"/>
+		<result property="award" 			column="AWARD"/>
+	</resultMap>  		
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerMissionResult">
+   	 	select 	ID, PLAYER_ID, MISSION_ID, STATUS, NUMBER, TARGET, CREATE_TIME, TYPE,AWARD	
+    	from PLAYER_MISSION$tableSuffix$ pi    	   
+    	where  pi.PLAYER_ID =  #fid# 
+	</select>		
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="PlayerMission">
+		insert into PLAYER_MISSION$tableSuffix$(
+   	 		PLAYER_ID,
+   	 		MISSION_ID,
+   	 		STATUS,
+   	 		NUMBER,
+   	 		TARGET,
+   	 		CREATE_TIME,
+   	 		TYPE
+		) values (
+			#playerId#,
+			#sysMissionId#,
+			#status#,
+			#number#,
+			#target#,
+			#createTime#,
+			#type#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="PlayerMission">
+		update PLAYER_MISSION$tableSuffix$ 
+			set STATUS  = #status#,
+				NUMBER  = #number#,
+				AWARD   = #award#
+		where  ID=#id#;
+	</update>
+	
+	<delete id="delete" parameterClass="PlayerMission">
+		delete from PLAYER_MISSION$tableSuffix$ 
+		where  ID=#id#;
+	</delete>
+</sqlMap>

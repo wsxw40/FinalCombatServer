@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="CmsNews">
+
+	<typeAlias alias="CmsNewsObject" type="com.pde.uweb.database.cms.cmsnews.CmsNewsPojo" />
+	<resultMap id="cmsnewsResult" class="CmsNewsObject">
+		<result property="newsId" column="NEWS_ID_B" jdbcType="NUMBER" />
+		<result property="newsColumnId" column="NEWS_COLUMN_ID_B" jdbcType="NUMBER" />
+		<result property="headline" column="HEADLINE_V" jdbcType="VARCHAR" />
+		<result property="subhead" column="SUBHEAD_V" jdbcType="VARCHAR" />
+		<result property="content" column="CONTENT_T" jdbcType="TEXT" />
+		<result property="author" column="AUTHOR_V" jdbcType="VARCHAR" />
+		<result property="topLevel" column="TOP_LEVEL_I" jdbcType="NUMBER" />
+		<result property="priorityLevel" column="PRIORITY_LEVEL_I" jdbcType="NUMBER" />
+		<result property="headlineStatus" column="HEADLINE_STATUS_I" jdbcType="NUMBER" />
+		<result property="status" column="STATUS_I" jdbcType="NUMBER" />
+		<result property="type" column="TYPE_I" jdbcType="NUMBER" />
+		<result property="createDate" column="CREATE_DATE_D" jdbcType="DATETIME" />
+		<result property="lastModifyDate" column="LAST_MODIFY_DATE_D" jdbcType="DATETIME" />
+		<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+		<result property="thumbnails" column="THUMBNAILS_V" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- get row count -->
+	<select id="getRowCount" resultClass="java.lang.Integer" parameterClass="com.pde.uweb.database.cms.cmsnews.CmsNewsSearchFilter">
+		SELECT COUNT(*)
+		FROM CMS_NEWS
+		WHERE 1=1
+		<dynamic>
+			<isNotEmpty prepend="AND" property="headline"> HEADLINE_V = #headline# </isNotEmpty>
+			<isNotEmpty prepend="AND" property="author"> AUTHOR_V = #author# </isNotEmpty>
+			<isGreaterThan compareValue="-1" prepend="AND" property="status"> STATUS_I = #status# </isGreaterThan>
+			<isGreaterThan compareValue="0" prepend="AND" property="type"> TYPE_I = #type# </isGreaterThan>
+			<isNotEmpty prepend="AND" property="fromDate"> CREATE_DATE_D >= #fromDate# </isNotEmpty>
+			<isNotEmpty prepend="AND" property="toDate"> <![CDATA[CREATE_DATE_D <= ADDDATE(#toDate#, 1)]]> </isNotEmpty>
+		</dynamic>
+	</select>
+
+	<!-- get news by search filter -->
+	<select id="getNewsByFilter" resultMap="cmsnewsResult" parameterClass="com.pde.uweb.database.cms.cmsnews.CmsNewsSearchFilter">
+		SELECT
+			NEWS_ID_B,
+			NEWS_COLUMN_ID_B,
+			HEADLINE_V,
+			SUBHEAD_V,
+			CONTENT_T,
+			AUTHOR_V,
+			TOP_LEVEL_I,
+			PRIORITY_LEVEL_I,
+			HEADLINE_STATUS_I,
+			STATUS_I,
+			TYPE_I,
+			CREATE_DATE_D,
+			LAST_MODIFY_DATE_D,
+			VERSION_B,
+			THUMBNAILS_V
+		FROM CMS_NEWS
+		WHERE 1=1
+		<dynamic>
+			<isNotEmpty prepend="AND" property="headline"> HEADLINE_V = #headline# </isNotEmpty>
+			<isNotEmpty prepend="AND" property="author"> AUTHOR_V = #author# </isNotEmpty>
+			<isGreaterThan compareValue="-1" prepend="AND" property="status"> STATUS_I = #status# </isGreaterThan>
+			<isGreaterThan compareValue="0" prepend="AND" property="type"> TYPE_I = #type# </isGreaterThan>
+			<isNotEmpty prepend="AND" property="fromDate"> CREATE_DATE_D >= #fromDate# </isNotEmpty>
+			<isNotEmpty prepend="AND" property="toDate"> <![CDATA[CREATE_DATE_D <= ADDDATE(#toDate#, 1)]]> </isNotEmpty>
+		</dynamic>
+		ORDER BY PRIORITY_LEVEL_I DESC, LAST_MODIFY_DATE_D DESC
+		LIMIT #beginRow#, #rowCount#
+	</select>
+
+</sqlMap>

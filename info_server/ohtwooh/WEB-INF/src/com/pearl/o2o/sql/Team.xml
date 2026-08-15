@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Team">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="Team" type="com.pearl.o2o.pojo.Team"/> 	
+
+	<resultMap id="selectResult" class="Team">
+		<result property="id" column="ID"/>
+		<result property="name" column="NAME"/>
+		<result property="declaration" column="DECLARATION"/>	
+		<result property="description" column="DESCRIPTION"/>
+		<result property="board" column="BOARD"/>
+		<result property="logo" column="LOGO"/>
+		<result property="size" column="SIZE"/>
+		<result property="kill" column="KILL"/>
+		<result property="headShot" column="HEAD_SHOT"/>
+		<result property="gameWin" column="GAME_WIN"/>
+		<result property="gameTotal" column="GAME_TOTAL"/>
+		<result property="challengeWin" column="CHALLENGE_WIN"/>	
+		<result property="challengeTotal" column="CHALLENGE_TOTAL"/>
+		<result property="createTime" column="CREATED_TIME"/>
+		<result property="teamList" column="ID"  select="Team.selectAlly" />
+		<result property="memberList" column="ID"  select="PlayerTeam.select"/>	
+	</resultMap>
+	<resultMap id="selectAllyResult" class="Team">
+		<result property="id" column="ID"/>
+		<result property="name" column="NAME"/>
+		<result property="declaration" column="DECLARATION"/>	
+		<result property="description" column="DESCRIPTION"/>
+		<result property="board" column="BOARD"/>
+		<result property="logo" column="LOGO"/>
+		<result property="size" column="SIZE"/>
+		<result property="kill" column="KILL"/>
+		<result property="headShot" column="HEAD_SHOT"/>
+		<result property="gameWin" column="GAME_WIN"/>
+		<result property="gameTotal" column="GAME_TOTAL"/>
+		<result property="challengeWin" column="CHALLENGE_WIN"/>	
+		<result property="challengeTotal" column="CHALLENGE_TOTAL"/>
+		<result property="createTime" column="CREATED_TIME"/>
+	</resultMap>
+	<insert id="insert" parameterClass="Team">
+	insert into TEAM(NAME,DECLARATION,DESCRIPTION,BOARD,LOGO,SIZE,CREATED_TIME)
+	values(
+			#name#,
+			#declaration#,
+			#description#,
+			#board#,
+			#logo#,
+			#size#,
+			now()
+	);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+  	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+  		select * from TEAM t
+  		where t.DELETED="N" 
+    		<isNotNull prepend="and" property="id">
+				t.ID =  #id#
+			</isNotNull>
+			<isNotNull prepend="and" property="name">
+				t.NAME like '%$name$%'
+			</isNotNull>
+		order by ID;
+  	</select>
+	
+	<select id="selectByPlayerId" parameterClass="java.lang.Integer" resultMap = "selectResult">
+		select t.* 
+			from TEAM  t inner join PLAYER_TEAM pt on t.ID = pt.TEAM_ID
+			where pt.PLAYER_ID = #playerId# and pt.APPROVED = 'Y'  
+	</select>
+	
+	
+	<select id="selectAlly" parameterClass="java.lang.Integer" resultMap="selectAllyResult">
+  		select * from ALLY a
+  		left outer join  TEAM t on t.ID=a.ALLY_ID
+   		where a.TEAM_ID =  #value# and t.DELETED="N" ;
+  	</select>
+  	
+  	<update id="addAlly" parameterClass="java.util.Map">
+	  	insert into ALLY(TEAM_ID,ALLY_ID) values(#teamId#,#allyId#);
+  	</update>
+  	
+  	<update id="removeAlly" parameterClass="java.util.Map">
+	  	delete from  ALLY where TEAM_ID = #teamId# and 	ALLY_ID = #allyId#;
+  	</update>
+  	
+  	<select id="selectByIds" parameterClass="java.util.ArrayList" resultMap="selectResult">
+  		select * from TEAM
+  		where ID in ( 
+  		<iterate  conjunction=",">
+			#ids[]#	
+		</iterate>  
+		)		
+  	</select>
+  	
+  
+  	
+  	<update id = "updateTeamScore" parameterClass="com.pearl.o2o.pojo.TeamScoreIncrement">
+  	  	update TEAM
+  	   	set 
+  			`KILL` = `KILL` + #kill#,
+  			HEAD_SHOT = HEAD_SHOT + #headShot#,
+  			GAME_WIN = GAME_WIN + #gameWin#,
+  			GAME_TOTAL = GAME_TOTAL + #gameTotal#,
+  			CHALLENGE_WIN =  CHALLENGE_WIN + #challengeWin#,
+  			CHALLENGE_TOTAL = CHALLENGE_TOTAL + #challengeTotal#
+  		where ID = #teamId#
+  	</update>
+  	<update id = "updateSize" parameterClass="java.util.Map">
+  	  	update TEAM
+  	   	set SIZE = #size#
+  		where ID = #teamId# and DELETED="N" ;
+  	</update>
+  	
+  	<update id = "updateTeamInfo" parameterClass="java.util.Map">	
+  		update TEAM 
+  			set 
+  			<dynamic prepend="    ">
+  			    <isNotNull prepend="," property="declare"  removeFirstPrepend="true">
+					DECLARATION = #declare#
+  				</isNotNull>
+  				<isNotNull prepend="," property="desc"  removeFirstPrepend="true">
+  					DESCRIPTION = #desc#
+  				</isNotNull>
+  				<isNotNull prepend="," property="board"  removeFirstPrepend="true">
+  					BOARD = #board#
+  				</isNotNull>
+  			</dynamic>	
+  		where ID = #id#	and DELETED = 'N';
+  	</update>
+  	
+  	<update id="delete" parameterClass="java.util.Map">
+  		update TEAM t
+  			set t.DELETED = "Y"
+		where t.ID = (select TEAM_ID from
+  			(select pt.* from PLAYER_TEAM pt left outer join PLAYER p on p.ID=pt.PLAYER_ID where p.user_id=#userId# and p.id=#playerId# and pt.job=4) a 
+  			where a.TEAM_ID=#teamId#);
+  	</update>
+	<delete id="deletePlayerTeam" parameterClass="java.util.Map">
+		delete from PLAYER_TEAM where TEAM_ID=#teamId#; 
+	</delete>
+  	<select id="fuzzyCountTeam" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+  		select count(*) from TEAM t 
+		where t.NAME =#name# and t.DELETED="N" ;
+  	</select>
+  	
+</sqlMap>

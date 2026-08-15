@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE sqlMapConfig
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings
+		lazyLoadingEnabled="false" 
+		useStatementNamespaces="true"
+		cacheModelsEnabled="true"/>
+	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/Player.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerInfo.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerItem.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysItem.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerBuff.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/Team.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/Ally.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerTeam.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/Payment.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerPack.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysCharacter.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysBioCharacter.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/CharacterData.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysNotice.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysIcon.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysAchievement.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysActivity.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerActivity.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/XunleiOrderLog.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/User.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/Friend.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/Server.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/Channel.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/SysItemLog.xml" />
+
+	<sqlMap resource="com/pearl/o2o/sql/ssql/Message.xml" />		
+
+	<sqlMap resource="com/pearl/o2o/sql/SysCharacterLog.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/Rank.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/KeyWord.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/LevelInfo.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/LevelWeapon.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/TeamHistory.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/SysModeConfig.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/SysConfiguration.xml" />
+	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PayLog.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/BlackIP.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/BannedWord.xml" />
+	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/GmUser.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/GmReport.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/GmLog.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/GmGroup.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/GmPrivilege.xml" />	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/GmGroupPrivilege.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/GmUserGroup.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysMission.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerMission.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/InterfaceRecord.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement0.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement1.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement2.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement3.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement4.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement5.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement6.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement7.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement8.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement9.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerAchievement10.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/UnSpeaker.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysChest.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerChest.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/OnlineAward.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysGrowthMission.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerGrowthMission.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/StrengthenAppend.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerMelting.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/MeltingAward.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/TeamProclamation.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/TeamBuff.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/SysTeamBuff.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/TeamRecord.xml" />
+	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/BattleFieldRobDaily.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/TeamLevelInfo.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/TeamItem.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/TeamTechnology.xml" />
+	<sqlMap resource="com/pearl/o2o/sql/ssql/BuyItemRecord.xml" />
+	
+	<sqlMap resource="com/pearl/o2o/sql/ssql/PlayerTrack.xml" />
+	
+	
+	
+</sqlMapConfig>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="50%" height="100%" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import vo.TeamRecord;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import window.TeamListWindow;
+			public var fatherWindow:TeamListWindow = null;
+			[Bindable]
+			public var teamId:int=0;
+			[Bindable]
+			public var teamRecordList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			private var selectedType:int = -1;
+			public function init():void{
+				if(teamId!=0){
+					getLogByTeamId(teamId);
+				}
+			}
+			
+			public function getLogByTeamId(id:int):void{
+				getRo.getAllTeamRecord(id);
+			}
+			
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+
+			private function getAllTeamRecordHandler(evt:ResultEvent):void{
+				this.teamRecordList = evt.result as ArrayCollection;
+				teamRecordList.filterFunction=typeFilter;
+				teamRecordList.refresh();
+				if(fatherWindow != null){
+					fatherWindow.teamLogPanel.title = "日志列表(共" + teamRecordList.length + "项)";
+				}
+			}
+		private function typeFilter(item:Object):Boolean{
+				if(selectedType==-1){
+					return true;
+				} else if(selectedType == item.type){
+					return true;
+				} else {
+					return false;
+				}
+			}
+		private function doTypeFilter(evt:Event):void{
+			this.selectedType  = evt.target.selectedItem.data;
+        		teamRecordList.filterFunction=typeFilter;
+        		teamRecordList.refresh();
+        		if(fatherWindow != null){
+					fatherWindow.teamLogPanel.title = "日志列表(共" + teamRecordList.length + "项)";
+				}
+		}
+        [Bindable]
+        public var types:ArrayCollection = new ArrayCollection(
+                [ {label:"------所有 / ALL------", data:-1}, 
+                  {label:"申请/ Apply", data:0}, 
+                  {label:"加入 / Join", data:1},
+                  {label:"退出/ Quit", data:2} 
+                ]);
+        private function defaultFaultHandler(evt:FaultEvent):void{
+        	Alert.show(evt.fault.faultString);
+        }
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getAllTeamRecord" result="getAllTeamRecordHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:VBox width="100%">
+	<mx:HBox>
+		<mx:ApplicationControlBar width="100%" >	
+			<mx:Label text="{resourceManager.getString('Language','label.OperateType')}：" />
+			<mx:ComboBox dataProvider="{types}" close="doTypeFilter(event)"/>
+		</mx:ApplicationControlBar>
+	</mx:HBox>
+	<mx:DataGrid id="datagrid" dataProvider="{teamRecordList}" width="80%" height="100%">
+		<mx:columns>
+			<mx:DataGridColumn dataField="team" headerText="{resourceManager.getString('Language','label.TeamId')}" width="50"/>
+			<mx:DataGridColumn dataField="playerid" headerText="{resourceManager.getString('Language','label.PlayerId')}" width="50"/>
+			<mx:DataGridColumn dataField="type" headerText="{resourceManager.getString('Language','label.OperateType')}" width="100">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:HBox>
+							<mx:Label id="bwLab1">
+							<mx:Script>
+										<![CDATA[
+											import common.Constants;
+											private var _data:Object;
+											
+											public override function get data():Object{
+												return _data;
+											}
+											[Bindable]
+											public override function set data(u:Object):void{
+												this._data = u;
+												if(u.type== Constants.APPLY_JOIN){
+													bwLab1.text = "申请 / Apply";
+												} else if(u.type==Constants.SUCCESS_JOIN){
+													bwLab1.text = "加入 / Join";
+												}else if(u.type==Constants.SUCCESS_EXIT){
+													bwLab1.text ="退出 / Quit";
+												}
+											}
+										]]>
+									</mx:Script>
+							</mx:Label>
+						</mx:HBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn dataField="createTime" headerText="{resourceManager.getString('Language','label.OperateTime')}" width="100">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:HBox>
+								<mx:Label id="bwLab">
+									<mx:Script>
+										<![CDATA[
+											import common.Constants;
+											import mx.formatters.DateFormatter;
+											private var _data:Object;
+											
+											public override function get data():Object{
+												return _data;
+											}
+											[Bindable]
+											public override function set data(u:Object):void{
+												this._data = u;
+												var format:DateFormatter = new DateFormatter();
+    											format.formatString = "YYYY-MM-DD HH:NN";
+												bwLab.text = format.format(u.createTime);
+											}
+										]]>
+									</mx:Script>
+								</mx:Label>
+							</mx:HBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	</mx:VBox>
+</mx:HBox>

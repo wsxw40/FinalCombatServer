@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="1024" height="1024" creationComplete="init()" backgroundImage="{backImage}"
+	borderStyle="solid"
+    horizontalCenter="0">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.SortField;
+			import mx.collections.Sort;
+			import flash.utils.getTimer;
+			import event.BoxClickEvent;
+			import common.ImageEnum;
+			import mx.controls.Image;
+			import vo.DeadthPointVO;
+			import renderer.DeadthPointItem;
+			import mx.containers.Box;
+			import mx.collections.ArrayCollection;
+			
+			public var sortList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public var backImage:Class;
+			[Bindable]
+			public var size:int=16;
+			private var alpa:Number=0.3;
+			private var alpa2:Number=0.15;
+			private var defaultClor:uint=0xff0000;
+			
+			private function init():void{
+				if(dataProvider!=null){
+					addRect();
+				}
+			}
+			[Bindable]
+			public var _defaultTeam:int=2;
+			[Bindable]
+			public var _defaultTeamArray:ArrayCollection;
+			
+			[Bindable]
+			public var _dataProvider:ArrayCollection;
+			public function get dataProvider():ArrayCollection
+		    {
+		      return _dataProvider;
+		    }
+		    /**
+		     * @private
+		     */
+		    [Bindable]
+		    public function set dataProvider(value:ArrayCollection):void
+		    {
+		      if (_dataProvider != value)
+		      {
+		        _dataProvider = value;
+		        addRect();
+		      }
+		    }
+		   
+		  
+		    private function addRect():void{
+		    	var c:Date=new Date();
+		    	if(dataProvider!=null&&dataProvider.length!=0){
+		    		var s:Sort=new Sort();
+					s.fields = [new SortField("x",true,false,Array.NUMERIC), new SortField("z",true,false,Array.NUMERIC)];
+					dataProvider.sort=s;
+					dataProvider.refresh();
+		    		trace("dataProvider length="+dataProvider.length);
+		    		sortList=new ArrayCollection();
+		    		var indexx:Number=0;
+		    		var indexz:Number=0;
+		    		var list:ArrayCollection=new ArrayCollection();
+			    	for(var i:int=0;i<dataProvider.length;i++){
+			    		var tPoint:DeadthPointVO=dataProvider.getItemAt(i) as DeadthPointVO;
+			    		if(sortList.length==0){
+//			    			trace(" == "+tPoint.x+"    "+tPoint.z);	
+			    			sortList.addItem(tPoint);
+			    			indexx=tPoint.x;
+			    			indexz=tPoint.z;
+			    		}else{
+				    		if(tPoint.x==indexx&&tPoint.z==indexz){
+				    			var tp:DeadthPointVO=sortList.getItemAt(sortList.length-1) as DeadthPointVO;
+				    			tp.value+=tPoint.value;
+				    		}else {
+//				    			trace(" == "+tPoint.x+"    "+tPoint.z);	
+				    			sortList.addItem(tPoint);
+				    			indexx=tPoint.x;
+			    				indexz=tPoint.z;
+				    		}
+			    		}
+			    	}
+//			    	trace("sortList length="+sortList.length);
+			    	var d:Date=new Date();
+			    	trace("计算time==="+(d.getTime()-c.getTime()));
+			    	drawRect(sortList);
+		    	}
+		    }
+		   	private function drawRect(sortList:ArrayCollection):void{
+		   		var s:Date=new Date();
+		   		for(var i:int=0;i<sortList.length;i++){
+		   			var point:DeadthPointVO=sortList.getItemAt(i) as DeadthPointVO;
+		   			var box:DeadthPointItem=new DeadthPointItem(point);
+		   			if(box.x%(size*2)==0){
+		   				box.alpha=alpa;
+		   			}else{
+		   				box.alpha=alpa2;
+		   			}
+		    		
+		    		box.width=size;
+		    		box.height=size;
+					this.addChild(box);
+		   		}
+		   		var g:Date=new Date();
+		   		trace("addchildTime==="+(g.getTime()-s.getTime()));
+		   	}
+		    
+		]]>
+	</mx:Script>
+</mx:Canvas>

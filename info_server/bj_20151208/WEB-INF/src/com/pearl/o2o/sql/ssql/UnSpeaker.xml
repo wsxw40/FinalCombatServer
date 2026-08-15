@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="UnSpeaker">
+ 	<typeAlias alias="UnSpeaker" type="com.pearl.o2o.pojo.UnSpeaker"/> 	
+
+	<resultMap id="selectResult" class="UnSpeaker">
+		<result property="id" column="ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="createTime" column="CREATE_TIME"/>
+	</resultMap>
+  
+	<select id="select" resultMap="selectResult">
+   	 	select 
+   	 		ID,
+   	 		PLAYER_ID,
+   	 		CREATE_TIME
+    	from UNSPEAKER
+	</select>  	
+	
+	
+	<select id="selectById" parameterClass="java.lang.Integer" resultMap="selectResult">
+   	 	select 
+   	 		ID,
+   	 		PLAYER_ID,
+   	 		CREATE_TIME
+    	from UNSPEAKER
+		where ID=#value#
+	</select> 
+	
+	<delete id="delete" parameterClass="java.lang.Integer">
+   	 	delete from UNSPEAKER
+		where PLAYER_ID=#value#
+	</delete>  
+	
+	<insert id="insert" parameterClass="UnSpeaker">
+		insert into UNSPEAKER
+			(PLAYER_ID,
+   	 		CREATE_TIME)
+		values
+			(#playerId#,
+			now())
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>	
+	</insert>
+</sqlMap>

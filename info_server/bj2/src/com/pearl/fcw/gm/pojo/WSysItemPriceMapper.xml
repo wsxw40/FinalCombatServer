@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysItemPriceMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysItemPrice" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="SYS_ITEM_ID" property="sysItemId" jdbcType="INTEGER" />
+    <result column="PAY_TYPE" property="payType" jdbcType="INTEGER" />
+    <result column="UNIT_TYPE" property="unitType" jdbcType="INTEGER" />
+    <result column="COST" property="cost" jdbcType="INTEGER" />
+    <result column="UNIT" property="unit" jdbcType="INTEGER" />
+    <result column="IS_TARGET" property="isTarget" jdbcType="INTEGER" />
+    <result column="PAY_GROUP" property="payGroup" jdbcType="INTEGER" />
+    <result column="MULTI_TYPE" property="multiType" jdbcType="LONGVARCHAR" />
+    <result column="LEVEL" property="level" jdbcType="INTEGER" />
+    <result column="VIP_LEVEL" property="vipLevel" jdbcType="INTEGER" />
+    <result column="TEAM_LEVEL" property="vipLevel" jdbcType="INTEGER" />
+    <result column="WEIGHT_RATE" property="weightRate" jdbcType="INTEGER" />
+    <result column="PROBABILITY" property="probability" jdbcType="REAL" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="CHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, SYS_ITEM_ID, PAY_TYPE, UNIT_TYPE, COST, UNIT, IS_TARGET, PAY_GROUP, MULTI_TYPE, LEVEL, VIP_LEVEL, TEAM_LEVEL, 
+    WEIGHT_RATE, PROBABILITY, IS_DELETED, CREATE_TIME, UPDATE_TIME
+  </sql>
+  <sql id="Base_Column_List2" >
+    pri.ID, pri.SYS_ITEM_ID, pri.PAY_TYPE, pri.UNIT_TYPE, pri.COST, pri.UNIT, pri.IS_TARGET, pri.PAY_GROUP, pri.MULTI_TYPE, 
+    pri.LEVEL, pri.VIP_LEVEL, pri.TEAM_LEVEL,
+    pri.WEIGHT_RATE, pri.PROBABILITY, pri.IS_DELETED, pri.CREATE_TIME, pri.UPDATE_TIME, sitem.DISPLAY_NAME SYS_ITEM_DISPLAY_NAME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ITEM_PRICE
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysItemPrice" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ITEM_PRICE
+    where 1=1 
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List2" />
+    from SYS_ITEM_PRICE pri left join SYS_ITEM sitem  on pri.SYS_ITEM_ID = sitem.ID
+    where pri.IS_DELETED = 'N'
+    <if test="searchValue != null">
+    and ( pri.SYS_ITEM_ID like '${searchValue}%' or pri.PAY_GROUP like '${searchValue}%' or sitem.DISPLAY_NAME like '%${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) 
+    from SYS_ITEM_PRICE pri,SYS_ITEM sitem where pri.IS_DELETED = 'N' and pri.SYS_ITEM_ID = sitem.ID
+  	<if test="searchValue != null">
+    and ( pri.SYS_ITEM_ID like '${searchValue}%' or pri.PAY_GROUP like '${searchValue}%' or sitem.DISPLAY_NAME like '%${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_ITEM_PRICE
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysItemPrice" >
+    insert into SYS_ITEM_PRICE (ID, SYS_ITEM_ID, PAY_TYPE, 
+      UNIT_TYPE, COST, UNIT, 
+      IS_TARGET, PAY_GROUP, MULTI_TYPE, LEVEL, 
+      VIP_LEVEL, TEAM_LEVEL, WEIGHT_RATE, PROBABILITY, 
+      IS_DELETED, CREATE_TIME, UPDATE_TIME
+      )
+    values (#{id,jdbcType=INTEGER}, #{sysItemId,jdbcType=INTEGER}, #{payType,jdbcType=INTEGER}, 
+      #{unitType,jdbcType=INTEGER}, #{cost,jdbcType=INTEGER}, #{unit,jdbcType=INTEGER}, 
+      #{isTarget,jdbcType=INTEGER}, #{payGroup,jdbcType=INTEGER}, #{multiType,jdbcType=LONGVARCHAR}, 
+      #{level,jdbcType=INTEGER}, #{vipLevel,jdbcType=INTEGER}, #{teamLevel,jdbcType=INTEGER}, 
+      #{weightRate,jdbcType=INTEGER}, #{probability,jdbcType=REAL}, 
+      #{isDeleted,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_ITEM_PRICE (ID, SYS_ITEM_ID, PAY_TYPE, 
+      UNIT_TYPE, COST, UNIT, 
+      IS_TARGET, PAY_GROUP, MULTI_TYPE, LEVEL, 
+      VIP_LEVEL, TEAM_LEVEL, WEIGHT_RATE, PROBABILITY, 
+      IS_DELETED, CREATE_TIME, UPDATE_TIME
+      )
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+	   (#{item.id,jdbcType=INTEGER}, #{item.sysItemId,jdbcType=INTEGER}, #{item.payType,jdbcType=INTEGER}, 
+      #{item.unitType,jdbcType=INTEGER}, #{item.cost,jdbcType=INTEGER}, #{item.unit,jdbcType=INTEGER}, 
+      #{item.isTarget,jdbcType=INTEGER}, #{item.payGroup,jdbcType=INTEGER}, #{item.multiType,jdbcType=LONGVARCHAR}, 
+      #{item.level,jdbcType=INTEGER},  #{item.vipLevel,jdbcType=INTEGER},   #{item.teamLevel,jdbcType=INTEGER}, 
+      #{item.weightRate,jdbcType=INTEGER}, #{item.probability,jdbcType=REAL}, 
+      #{item.isDeleted,jdbcType=CHAR}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP}
+      )
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysItemPrice" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_ITEM_PRICE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="sysItemId != null" >
+        SYS_ITEM_ID,
+      </if>
+      <if test="payType != null" >
+        PAY_TYPE,
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE,
+      </if>
+      <if test="cost != null" >
+        COST,
+      </if>
+      <if test="unit != null" >
+        UNIT,
+      </if>
+      <if test="isTarget != null" >
+        IS_TARGET,
+      </if>
+      <if test="payGroup != null" >
+        PAY_GROUP,
+      </if>
+      <if test="multiType != null" >
+        MULTI_TYPE,
+      </if>
+      <if test="level != null" >
+        LEVEL,
+      </if>
+      <if test="vipLevel != null" >
+        VIP_LEVEL,
+      </if>
+      <if test="teamLevel != null" >
+        TEAM_LEVEL,
+      </if>
+      <if test="weightRate != null" >
+        WEIGHT_RATE,
+      </if>
+      <if test="probability != null" >
+        PROBABILITY,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysItemId != null" >
+        #{sysItemId,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="unitType != null" >
+        #{unitType,jdbcType=INTEGER},
+      </if>
+      <if test="cost != null" >
+        #{cost,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="isTarget != null" >
+        #{isTarget,jdbcType=INTEGER},
+      </if>
+      <if test="payGroup != null" >
+        #{payGroup,jdbcType=INTEGER},
+      </if>
+      <if test="multiType != null" >
+        #{multiType,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="vipLevel != null" >
+        #{vipLevel,jdbcType=INTEGER},
+      </if>
+      <if test="teamLevel != null" >
+        #{teamLevel,jdbcType=INTEGER},
+      </if>
+      <if test="weightRate != null" >
+        #{weightRate,jdbcType=INTEGER},
+      </if>
+      <if test="probability != null" >
+        #{probability,jdbcType=REAL},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysItemPrice" >
+    update SYS_ITEM_PRICE
+    <set >
+      <if test="sysItemId != null" >
+        SYS_ITEM_ID = #{sysItemId,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null" >
+        PAY_TYPE = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE = #{unitType,jdbcType=INTEGER},
+      </if>
+      <if test="cost != null" >
+        COST = #{cost,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        UNIT = #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="isTarget != null" >
+        IS_TARGET = #{isTarget,jdbcType=INTEGER},
+      </if>
+      <if test="payGroup != null" >
+        PAY_GROUP = #{uiType,jdbcType=INTEGER},
+      </if>
+      <if test="multiType != null" >
+        MULTI_TYPE = #{multiType,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="level != null" >
+        LEVEL = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="vipLevel != null" >
+        VIP_LEVEL = #{vipLevel,jdbcType=INTEGER},
+      </if>
+      <if test="teamLevel != null" >
+        TEAM_LEVEL = #{teamLevel,jdbcType=INTEGER},
+      </if>
+      <if test="weightRate != null" >
+        WEIGHT_RATE = #{weightRate,jdbcType=INTEGER},
+      </if>
+      <if test="probability != null" >
+        PROBABILITY = #{probability,jdbcType=REAL},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysItemPrice" >
+    update SYS_ITEM_PRICE
+    set SYS_ITEM_ID = #{sysItemId,jdbcType=INTEGER},
+      PAY_TYPE = #{payType,jdbcType=INTEGER},
+      UNIT_TYPE = #{unitType,jdbcType=INTEGER},
+      COST = #{cost,jdbcType=INTEGER},
+      UNIT = #{unit,jdbcType=INTEGER},
+      IS_TARGET = #{isTarget,jdbcType=INTEGER},
+      PAY_GROUP = #{payGroup,jdbcType=INTEGER},
+      MULTI_TYPE = #{multiType,jdbcType=LONGVARCHAR},
+      LEVEL = #{level,jdbcType=INTEGER},
+      VIP_LEVEL = #{vipLevel,jdbcType=INTEGER},
+      TEAM_LEVEL = #{teamLevel,jdbcType=INTEGER},
+      WEIGHT_RATE = #{weightRate,jdbcType=INTEGER},
+      PROBABILITY = #{probability,jdbcType=REAL},
+      IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

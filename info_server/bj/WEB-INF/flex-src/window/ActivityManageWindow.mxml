@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import popup.VehicleLinePointView;
+			import vo.VehicleLinePoint;
+			import popup.FlagPointView;
+			import vo.FlagPoint;
+			import vo.PointVO;
+			import popup.PointView;
+			import popup.ZombieInfoView;
+			import vo.ZombieInfo;
+			import vo.Supplies;
+			import popup.SuppliesView;
+			import popup.WeaponPointView;
+			import vo.WeaponPoint;
+			import vo.BlastPoint;
+			import popup.BlastPointView;
+			import mx.controls.DataGrid;
+			import utils.PointUtils;
+			import vo.GamePoint;
+			import popup.StartPointView;
+			import mx.managers.PopUpManager;
+			import view.CreateMapView;
+			import mx.utils.StringUtil;
+			import utils.DatagridValidateFactory;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import utils.ColumnFactory;
+			import mx.rpc.events.FaultEvent;
+			import vo.LevelWeapon;
+			import vo.LevelInfo;
+			import vo.GmUser;
+			private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+			[Bindable]private var levelList:ArrayCollection;
+			[Bindable]private var _levelInfo:LevelInfo = new LevelInfo();
+			[Bindable]
+			public function set levelInfo(lf:LevelInfo):void{
+				 this._levelInfo=lf;
+			}
+			public function get levelInfo():LevelInfo{
+				 return this._levelInfo;
+			}
+			
+			private function init():void{
+				//levelDataGrid.columns=ColumnFactory.getLevelColumnsSimple(false);
+				getRo.getLevelList();
+			}
+			private function selectHandler():void{
+				this.levelInfo=levelDataGrid.selectedItem as LevelInfo;
+				//startDate.time=levelInfo.activityStart.getTime();
+				//endDate.time=levelInfo.activityEnd.getTime();
+				startTime.selectedDate = levelInfo.activityStart;
+				endTime.selectedDate = levelInfo.activityEnd;
+			}
+			private function getLevelListHandler(evt:ResultEvent):void{
+			 this.levelList=evt.result as ArrayCollection;
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+			private function saveBtnClick():void{
+			try{
+				var exp:Number = parseFloat(expAdd.text);
+				var gp:Number = parseFloat(gpAdd.text);
+				
+				if("NaN" == exp.toString()){
+					Alert.show("经验加成应该为小数");
+					return;
+				}else if("NaN" == gp.toString()){
+					Alert.show("CAL加成应该为小数");
+					return;
+				} else {
+					this.levelInfo.expAdd = exp;
+					this.levelInfo.gpAdd = gp;
+					this.levelInfo.activityStart = startTime.selectedDate;
+					this.levelInfo.activityEnd = endTime.selectedDate;
+					updateRo.updateLevelInfo(gmUser, levelInfo);
+					getRo.getLevelList();
+				}
+			}catch(e:Event){
+				
+			}
+			}
+			private function refreshData():void{
+				expAdd.text = this.levelInfo.expAdd.toFixed(1);
+				gpAdd.text = this.levelInfo.gpAdd.toFixed(1);
+				startTime.selectedDate = levelInfo.activityStart;
+				endTime.selectedDate = levelInfo.activityEnd;
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getLevelList" result="getLevelListHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateLevelInfo" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox width="100%" height="100%">
+	<mx:HBox  width="401" height="100%">
+		
+	</mx:HBox>
+	<mx:VDividedBox  height="100%" width="50%">
+		<mx:Panel height="370" width="100%" title="{resourceManager.getString('Language','label.MapList')}">	
+			<mx:DataGrid id="levelDataGrid" dataProvider="{levelList}" itemClick="selectHandler()" lockedColumnCount="3"
+				width="100%" height="100%" editable="false" >
+			<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="id" width="50"/>
+			<mx:DataGridColumn dataField="type" headerText="{resourceManager.getString('Language','label.Type')}" width="100">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:HBox>
+							<mx:Label id="bwLab1">
+							<mx:Script>
+										<![CDATA[
+											import common.Constants;
+											private var _data:Object;
+											
+											public override function get data():Object{
+												return _data;
+											}
+											[Bindable]
+											public override function set data(u:Object):void{
+												this._data = u;
+												/*for(var i:int = 0; i < Constants.levelType.length; i++){
+													if(Constants.levelType[i].data == u.type){
+														bwLab1.text = Constants.levelType[i].label;
+													}
+												}*/
+												if(u.type== 0){
+													bwLab1.text = Constants.levelType[0].label;
+												} else if(u.type==1){
+													bwLab1.text = Constants.levelType[1].label;
+												}else if(u.type==2){
+													bwLab1.text =Constants.levelType[2].label;
+												}else if(u.type==3){
+													bwLab1.text =Constants.levelType[3].label;
+												}else if(u.type==4){
+													bwLab1.text =Constants.levelType[4].label;
+												}else if(u.type==5){
+													bwLab1.text = Constants.levelType[5].label;
+												}else if(u.type==6){
+													bwLab1.text = Constants.levelType[6].label;
+												}
+											}
+										]]>
+									</mx:Script>
+							</mx:Label>
+						</mx:HBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn dataField="name" headerText="name" width="50"/>
+			<mx:DataGridColumn dataField="displayName" headerText="displayName" width="100"/>
+			</mx:columns>
+			</mx:DataGrid>
+		</mx:Panel>
+		<mx:Panel height="362" width="100%">
+		<mx:VBox>
+			<mx:ApplicationControlBar>
+				<mx:Button id="save" label="{resourceManager.getString('Language','button.Save')}" click="saveBtnClick();"/>
+				<mx:Button id="cancle" label="{resourceManager.getString('Language','button.Cancel')}" click="refreshData();"/>
+			</mx:ApplicationControlBar>
+			<mx:Form>
+				<mx:FormItem label="{resourceManager.getString('Language','label.MapId')}：">
+					<mx:HBox>
+						<mx:Label text="{this.levelInfo.id}"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.ExpMultiple')}：">
+					<mx:HBox>
+						<mx:TextInput id="expAdd" text="{this.levelInfo.expAdd.toFixed(1)}" editable="true"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.MultipleCAL')}：">
+					<mx:HBox>
+						<mx:TextInput id="gpAdd" text="{this.levelInfo.gpAdd.toFixed(1)}" editable="true"/>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.StartTime')}：">
+					<mx:HBox>
+						<mx:VBox horizontalAlign="center" verticalAlign="top">
+			       			 <mx:VBox horizontalAlign="center" verticalAlign="middle" >
+			            			<common:DateTimePicker id="startTime" change="{}" minuteIncrement="1" backgroundColor="#FFFFFF"/>
+			        		</mx:VBox>
+		    			</mx:VBox>
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.EndTime')}：">
+					<mx:HBox>
+						<mx:VBox horizontalAlign="center" verticalAlign="top">
+			       			 <mx:VBox horizontalAlign="center" verticalAlign="middle" >
+			            			<common:DateTimePicker id="endTime" change="{}" minuteIncrement="1" backgroundColor="#FFFFFF"/>
+			        		</mx:VBox>
+		    			</mx:VBox>
+					</mx:HBox>
+				</mx:FormItem>			
+			</mx:Form>
+		</mx:VBox>
+		</mx:Panel>
+	</mx:VDividedBox>	
+	</mx:HBox>
+</mx:VBox>

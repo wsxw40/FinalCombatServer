@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="User">
+	<typeAlias alias="UserObject" type="com.pde.uweb.database.ma.user.UserPojo" />
+	<resultMap id="userResult" class="UserObject">
+		<result property="userId" column="USER_ID_B" jdbcType="NUMBER" />
+		<result property="userName" column="USER_NAME_V" jdbcType="VARCHAR" />
+		<result property="password" column="PASSWORD_V" jdbcType="VARCHAR" />
+		<result property="idName" column="ID_NAME_V" jdbcType="VARCHAR" />
+		<result property="idNumber" column="ID_NUMBER_V" jdbcType="VARCHAR" />
+		<result property="email" column="EMAIL_V" jdbcType="VARCHAR" />
+		<result property="mobile" column="MOBILE_V" jdbcType="VARCHAR" />
+		<result property="emailStatus" column="EMAIL_STATUS_T" jdbcType="NUMBER" />
+		<result property="mobileStatus" column="MOBILE_STATUS_T" jdbcType="NUMBER" />
+		<result property="status" column="STATUS_T" jdbcType="NUMBER" />
+		<result property="questionId" column="QUESTION_ID_B" jdbcType="NUMBER" />
+		<result property="answer" column="ANSWER_V" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="uid" class="java.lang.Long">
+		<result property="userId" column="USER_ID_B" jdbcType="NUMBER" />
+	</resultMap>
+	
+	<!-- get user by loginName -->
+	<select id="selectByLoginName" resultMap="userResult" parameterClass="java.util.Map">
+		SELECT
+			USER_ID_B,
+			USER_NAME_V,
+			PASSWORD_V,
+			ID_NAME_V,
+			ID_NUMBER_V,
+			EMAIL_V,
+			MOBILE_V,
+			EMAIL_STATUS_T,
+			MOBILE_STATUS_T,
+			STATUS_T,
+			QUESTION_ID_B,
+			ANSWER_V
+		FROM USERS
+		WHERE USER_NAME_V = #userName#
+	</select>
+
+	<!-- get user_id by loginName -->
+	<select id="selectUidByLoginName" resultMap="uid" parameterClass="java.util.Map">
+		SELECT 
+			USER_ID_B 
+		FROM USERS
+		WHERE USER_NAME_V = #userName#
+	</select>
+	
+	<!-- get user_id by email -->
+	<select id="selectUidByEmail" resultMap="uid" parameterClass="java.util.Map">
+		SELECT
+			USER_ID_B
+		FROM USERS
+		WHERE EMAIL_V = #email#
+	</select>
+
+</sqlMap>

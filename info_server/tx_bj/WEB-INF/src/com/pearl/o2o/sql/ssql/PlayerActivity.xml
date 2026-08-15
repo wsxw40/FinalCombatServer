@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerActivity">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PlayerActivity" type="com.pearl.o2o.pojo.PlayerActivity"/> 	
+	<resultMap id="selectResult" class="PlayerActivity">
+		<result property="id" 				column="ID"/>
+		<result property="playerId" 		column="PLAYER_ID"/>
+		<result property="sysActivityId" 	column="ACTIVITY_ID"/>		
+		<result property="status" 			column="STATUS"/>
+		<result property="number" 			column="NUMBER"/>
+		<result property="action" 			column="ACTION"/>
+		<result property="target" 			column="TARGET"/>
+		<result property="award" 			column="AWARD"/>
+		<result property="startTime" 			column="START_TIME"/>
+		<result property="endTime" 			column="END_TIME"/>
+		<result property="createTime" 			column="CREATE_TIME"/>
+		<result property="name" 			column="NAME"/>
+		<result property="achievementAction" 			column="ACHIEVEMENT_ACTION"/>
+		<result property="characterId" 			column="CHARACTER_ID"/>
+	</resultMap>  		
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+   	 	select 	*	
+    	from PLAYER_ACTIVITY$tableSuffix$ pa
+    	where  
+    	<dynamic prepend="    ">
+			<isNotNull prepend="and" property="fid">
+				pa.PLAYER_ID =  #fid#
+			</isNotNull>
+			and pa.END_TIME>=now()   
+		</dynamic>
+	</select>		
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="playerActivity">
+		insert into PLAYER_ACTIVITY$tableSuffix$(
+   	 		PLAYER_ID,
+   	 		ACTIVITY_ID,
+   	 		STATUS,
+   	 		NUMBER,
+   	 		ACTION,
+   	 		TARGET,
+   	 		AWARD,
+   	 		START_TIME,
+   	 		END_TIME,
+   	 		CREATE_TIME,NAME,ACHIEVEMENT_ACTION,CHARACTER_ID
+		) values (
+			#playerId#,
+			#sysActivityId#,
+			#status#,
+			#number#,	
+			#action#,
+			#target#,
+			#award#,
+			#startTime#,
+			#endTime#,
+			#createTime#,#name#	,#achievementAction#,#characterId#		
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="playerActivity">
+		update PLAYER_ACTIVITY$tableSuffix$ 
+			set STATUS  = #status#,
+				NUMBER  = #number#,
+				AWARD   = #award#
+		where  ID=#id#;
+	</update>
+	
+</sqlMap>

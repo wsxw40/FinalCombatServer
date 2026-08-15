@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import common.Constants;
+			import popup.*;
+			import vo.*;
+			import event.*;
+			import vo.Player;
+			import mx.controls.DataGrid;
+			import utils.*;
+			import mx.managers.PopUpManager;
+			import view.*;
+			import mx.utils.StringUtil;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.events.CloseEvent;
+			[Bindable]
+			public var playerList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public var player:Player=new Player();
+			//初始化跟刷新
+			private function init():void{
+				init_1();
+				getSendOrDelTime();
+			}
+			//刷新枪王排行榜
+			private function init_1():void{
+				qwRo.removeEventListener(ResultEvent.RESULT,flip_window);
+				qwRo.getUserList();
+				qwRo.addEventListener(ResultEvent.RESULT,getUserList_1);
+			}
+			//返回数据显示到表格里
+			private function getUserList_1(evt:ResultEvent):void{
+				var userList:ArrayCollection =ArrayCollection(evt.result);
+				detaGrid.dataProvider=userList;
+			}
+			//查看玩家战绩
+			private function getPlayerIdByQwInfo():void{
+				this.player = new Player();
+				if(StringUtil.trim(playerId.text)){
+					var result:int = ValidateUtils.validateInt(StringUtil.trim(playerId.text));
+					if(result == 2){
+						Alert.show("Player Id应为整数");
+						return;
+					} else if(result == 0){
+						qwRo.getPlayerIdByQwInfo(StringUtil.trim(playerId.text));
+					}
+				} 
+			}
+			//返回数据显示到表格1里
+			private function getPlayerIdByQwInfoHandler(evt:ResultEvent):void{
+				detaGrid_1.dataProvider=evt.result as ArrayCollection;;
+			}
+			//是否重置该玩家的冲锋之王的战绩
+			private function deletePalyerIdByQwInfo():void{
+				this.player = new Player();
+				if(StringUtil.trim(playerId.text)){
+					var result:int = ValidateUtils.validateInt(StringUtil.trim(playerId.text));
+					if(result == 2){
+						Alert.show("Player Id应为整数");
+						return;
+					} else if(result == 0){
+						Alert.show("是否重置该玩家的冲锋之王的战绩","删除确定框",Alert.YES|Alert.NO,null,deletePalyerIdByQwInfo_1);
+					}
+				} 
+			}
+			private function deletePalyerIdByQwInfo_1(eve:CloseEvent):void{
+				if(eve.detail == Alert.YES){
+					qwRo.deletePalyerIdByQwInfo(StringUtil.trim(playerId.text));
+					this.getPlayerIdByQwInfo();
+					this.init();
+					return;
+				}
+			}
+			//删除该赛季记录
+			private function close_accountHandler():void{
+				var datestr1:String = StringUtil.trim(this.date1.text);
+				var datestr2:String = StringUtil.trim(this.date2.text);
+				if(datestr1.length==0||datestr2.length==0){
+						Alert.show("请输入");
+						return;
+				}
+				Alert.show("是否删除该赛季记录","删除确定框",Alert.YES|Alert.NO,null,close_account_1);
+			}
+			private function close_account_1(eve:CloseEvent):void{
+				if(eve.detail == Alert.YES){
+					qwRo.close_account(StringUtil.trim(this.date1.text),StringUtil.trim(this.date2.text));
+					qwRo.addEventListener(ResultEvent.RESULT,flip_window);
+					this.date1.getFocus();
+					this.date2.getFocus();
+					init_1();
+					getSendOrDelTime();
+					return;
+				}
+			}
+			//发送奖励
+			private function sendSysItemHandler():void{
+				var datestr1:String = StringUtil.trim(this.date3.text);
+				var datestr2:String = StringUtil.trim(this.date4.text);
+				if(datestr1.length==0||datestr2.length==0){
+						Alert.show("请输入");
+						return;
+				}
+				Alert.show("是否发送物品","删除确定框",Alert.YES|Alert.NO,null,sendSysItem_1);
+			}
+			private function sendSysItem_1(eve:CloseEvent):void{
+				if(eve.detail == Alert.YES){
+					qwRo.sendSysItem(StringUtil.trim(this.date3.text),StringUtil.trim(this.date4.text));
+					qwRo.addEventListener(ResultEvent.RESULT,flip_window);
+					this.date3.getFocus();
+					this.date4.getFocus();
+					getSendOrDelTime();
+					return;
+				}
+			}
+			//获得发送删除记录
+			private function getSendOrDelTime():void{
+				qwRo.getSendOrDelTime();
+			}
+			//返回数据显示到表格2里
+			private function getSendOrDelTimeHandler(evt:ResultEvent):void{
+				detaGrid_2.dataProvider=evt.result as ArrayCollection;;
+			}
+			//弹窗显示本次的返回值
+			private function flip_window(evt:ResultEvent):void{
+				Alert.show(String(evt.result));
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="qwRo" destination="ro.qw" showBusyCursor="true">
+		<mx:method name="getPlayerIdByQwInfo" result="getPlayerIdByQwInfoHandler(event)" fault=""/>
+		<mx:method name="getSendOrDelTime" result="getSendOrDelTimeHandler(event)" fault=""/>
+		<mx:method name="deletePalyerIdByQwInfo" result="flip_window(event)" fault=""/>
+	</mx:RemoteObject>
+	
+	<mx:HBox width="100%" height="100%">
+		<mx:VDividedBox  height="100%" width="100%">
+			<mx:HBox width="100%" height="50%">
+			
+				<mx:Panel height="370" width="50%" title="枪王排行榜">	
+					<mx:DataGrid id="detaGrid"  width="100%" height="300">
+						<mx:columns>
+							<mx:DataGridColumn dataField="detaGrid" headerText="data" width="50"/>
+						</mx:columns>
+					</mx:DataGrid>
+					<mx:Button label="刷新" click="init_1()"/>
+				</mx:Panel>
+				
+				<mx:Panel height="370" width="50%"   title="查看玩家数据">	
+					<mx:ApplicationControlBar >	
+							<mx:Label text="Player ID"/>
+							<mx:TextInput id="playerId" />
+							<mx:Button id="check_1"  label="检索"  click="getPlayerIdByQwInfo()"/>	
+							<mx:Button id="delete_1"  label="是否重置该玩家的冲锋之王的战绩"  click="deletePalyerIdByQwInfo()"/>	
+				     </mx:ApplicationControlBar>
+					<mx:DataGrid id="detaGrid_1"  width="100%" height="100%">
+						<mx:columns>
+							<mx:DataGridColumn dataField="detaGrid_1" headerText="detaGrid_1" width="50"/>
+						</mx:columns>
+					</mx:DataGrid>
+				</mx:Panel>
+				
+			</mx:HBox>
+			
+			<mx:HBox width="100%" height="40%">
+				<mx:Panel height="100%" width="50%" title="清理枪王的数据">	
+					<mx:Label  text="输入当前时间格式参考为：2016-01-20 16" /><mx:TextInput id="date1"/>
+					<mx:Label  text="输入当前时间格式参考为：2016-01-20" /><mx:TextInput id="date2"/>
+					<mx:ControlBar>	
+			        	<mx:Button label="清理枪王的数据按钮" click="close_accountHandler()"/>
+			    	</mx:ControlBar>
+				</mx:Panel>
+
+				<mx:Panel height="100%" width="50%" title="发送枪王的物品">	
+					<mx:Label  text="输入当前时间格式参考为：2016-01-20 16" /><mx:TextInput id="date3"/>
+					<mx:Label  text="输入当前时间格式参考为：2016-01-20" /><mx:TextInput id="date4"/>
+					<mx:ControlBar>	
+			        	<mx:Button label="发送枪王的物品按钮" click="sendSysItemHandler()"/>
+			    	</mx:ControlBar>
+				</mx:Panel>
+				
+				<mx:Panel height="100%" width="50%" title="清理发送的时间记录">	
+					<mx:DataGrid id="detaGrid_2"  width="100%" height="300">
+						<mx:columns>
+							<mx:DataGridColumn dataField="detaGrid_2" headerText="清理发送的时间记录" width="50"/>
+						</mx:columns>
+					</mx:DataGrid>
+					<mx:Button label="刷新" click="getSendOrDelTime()"/>
+				</mx:Panel>
+			</mx:HBox>
+		</mx:VDividedBox>	
+	</mx:HBox>
+</mx:VBox>

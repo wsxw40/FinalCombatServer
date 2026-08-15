@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerGrowthMission">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PlayerGrowthMission" type="com.pearl.manager.pojo.PlayerGrowthMission"/> 	
+	<resultMap id="selectPlayerGrowthMissionResult" class="PlayerGrowthMission">
+		<result property="id" 				column="ID"/>
+		<result property="number" 			column="NUMBER"/>
+		<result property="status" 			column="STATUS"/>
+		<result property="playerId" 		column="PLAYER_ID"/>
+		<result property="received" 		column="RECEIVED"/>
+	</resultMap>  		
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerGrowthMissionResult">
+   	 	select
+   	 		ID,	
+   	 		NUMBER,
+   	 		STATUS,
+   	 		PLAYER_ID,
+   	 		RECEIVED
+    	from PLAYER_GROWTH_MISSION$tableSuffix$
+    	where PLAYER_ID = #fid#
+	</select>		
+	<select id="selectone" parameterClass="java.util.Map" resultMap="selectPlayerGrowthMissionResult">
+   	 	select
+   	 		ID,	
+   	 		NUMBER,
+   	 		STATUS,
+   	 		PLAYER_ID,
+   	 		RECEIVED
+    	from PLAYER_GROWTH_MISSION$tableSuffix$
+    	<dynamic prepend="where">
+			<isNotNull prepend="and" property="fid">
+				ID =  #fid#
+			</isNotNull>
+			<isNotNull prepend="and" property="status">
+				STATUS = #status#
+			</isNotNull>
+			<isNotNull prepend="and" property="received">
+				RECEIVED = #received#
+			</isNotNull>
+		</dynamic>
+	</select>		
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="PlayerGrowthMission">
+		insert into PLAYER_GROWTH_MISSION$tableSuffix$(
+   	 		ID,
+   	 		NUMBER,
+   	 		STATUS,
+   	 		PLAYER_ID,
+   	 		RECEIVED
+		) values (
+			#id#,
+			#number#,
+			#status#,
+			#playerId#,
+			#received#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT ID from PLAYER_GROWTH_MISSION$tableSuffix$ where ID = #id# AND PLAYER_ID = #playerId#
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="PlayerGrowthMission">
+		update PLAYER_GROWTH_MISSION$tableSuffix$ 
+			set STATUS  = #status#,
+				NUMBER  = #number#,
+				RECEIVED = #received#
+		where  ID = #id# and PLAYER_ID = #playerId#;
+	</update>
+	
+</sqlMap>

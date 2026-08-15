@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:timePicker="common.*" 
+	fontSize="12" width="794" height="558" xmlns:vo="vo.*" label="发送系统邮件" title="发送系统邮件"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import vo.Message;
+			import mx.controls.Alert;
+			[Bindable]
+			public function set message(mes:Message):void{
+				 this._message=mes;
+			}
+			public function get message():Message{
+				 return this._message;
+			}
+		]]>
+	</mx:Script>
+	<vo:Message id="_message" subject="{subject.text}" content="{content.text}"/>
+
+<mx:HBox >
+	<mx:Form width="757" height="499">
+		<mx:FormItem label="主题：">
+			<mx:HBox>
+				<mx:TextInput id="subject" text="{message.subject}" height="31" width="510"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="内容：">
+			<mx:HBox>
+				<mx:TextArea id="content" text="{message.content}" height="82" width="510"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem>
+		<mx:ControlBar>
+			<mx:Button id="save" label="发送"/>
+			<mx:Button id="close" label="取消"/>
+		</mx:ControlBar>	
+		</mx:FormItem>
+	</mx:Form>
+			
+</mx:HBox>		
+</mx:TitleWindow>

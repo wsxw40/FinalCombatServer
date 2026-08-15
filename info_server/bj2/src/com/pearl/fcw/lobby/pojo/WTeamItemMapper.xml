@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WTeamItemMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WTeamItem" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="TEAM_ID" property="teamId" jdbcType="INTEGER" />
+    <result column="ITEM_ID" property="itemId" jdbcType="INTEGER" />
+    <result column="CURRENCY" property="currency" jdbcType="TINYINT" />
+    <result column="UNIT_TYPE" property="unitType" jdbcType="TINYINT" />
+    <result column="QUANTITY" property="quantity" jdbcType="TINYINT" />
+    <result column="DURABLE" property="durable" jdbcType="REAL" />
+    <result column="VALID_TIME" property="validTime" jdbcType="TIMESTAMP" />
+    <result column="EXPIRE_TIME" property="expireTime" jdbcType="TIMESTAMP" />
+    <result column="IS_BIND" property="isBind" jdbcType="CHAR" />
+    <result column="IS_DEFAULT" property="isDefault" jdbcType="CHAR" />
+    <result column="IS_GIFT" property="isGift" jdbcType="CHAR" />
+    <result column="MODIFIED_DESC" property="modifiedDesc" jdbcType="VARCHAR" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="CHAR" />
+    <result column="GUN_PROPERTY1" property="gunProperty1" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY2" property="gunProperty2" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY3" property="gunProperty3" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY4" property="gunProperty4" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY5" property="gunProperty5" jdbcType="VARCHAR" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+    <result column="LEFT_SECONDS" property="leftSeconds" jdbcType="INTEGER" />
+    <result column="LEVEL" property="level" jdbcType="INTEGER" />
+    <result column="GUN_PROPERTY6" property="gunProperty6" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY7" property="gunProperty7" jdbcType="VARCHAR" />
+    <result column="GUN_PROPERTY8" property="gunProperty8" jdbcType="VARCHAR" />
+    <result column="USED_COUNT" property="usedCount" jdbcType="INTEGER" />
+    <result column="BULLET" property="bullet" jdbcType="REAL" />
+    <result column="START_UP_TIME" property="startUpTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_BUILD_TIME" property="lastBuildTime" jdbcType="TIMESTAMP" />
+    <result column="BUILD_STATUS" property="buildStatus" jdbcType="INTEGER" />
+    <result column="GUN_PROPERTY1_VALUE" property="gunProperty1Value" jdbcType="REAL" />
+    <result column="GUN_PROPERTY2_VALUE" property="gunProperty2Value" jdbcType="REAL" />
+    <result column="GUN_PROPERTY3_VALUE" property="gunProperty3Value" jdbcType="REAL" />
+    <result column="GUN_PROPERTY4_VALUE" property="gunProperty4Value" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, TEAM_ID, ITEM_ID, CURRENCY, UNIT_TYPE, QUANTITY, DURABLE, VALID_TIME, EXPIRE_TIME, 
+    IS_BIND, IS_DEFAULT, IS_GIFT, MODIFIED_DESC, IS_DELETED, GUN_PROPERTY1, GUN_PROPERTY2, 
+    GUN_PROPERTY3, GUN_PROPERTY4, GUN_PROPERTY5, BACK_UP, LEFT_SECONDS, LEVEL, GUN_PROPERTY6, 
+    GUN_PROPERTY7, GUN_PROPERTY8, USED_COUNT, BULLET, START_UP_TIME, LAST_BUILD_TIME, 
+    BUILD_STATUS, GUN_PROPERTY1_VALUE, GUN_PROPERTY2_VALUE, GUN_PROPERTY3_VALUE, GUN_PROPERTY4_VALUE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WTeamItem" >
+    select 
+    <include refid="Base_Column_List" />
+    from TEAM_ITEM{tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WTeamItem" >
+    select 
+    <include refid="Base_Column_List" />
+    from TEAM_ITEM{tableSuffix}
+    where TEAM_ID = #{shareId,jdbcType=INTEGER} and IS_DELETED='N'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from TEAM_ITEM{tableSuffix}
+    where ID = #{id,jdbcType=INTEGER} 
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WTeamItem" >
+    insert into TEAM_ITEM{tableSuffix} (ID, TEAM_ID, ITEM_ID, 
+      CURRENCY, UNIT_TYPE, QUANTITY, 
+      DURABLE, VALID_TIME, EXPIRE_TIME, 
+      IS_BIND, IS_DEFAULT, IS_GIFT, MODIFIED_DESC, 
+      IS_DELETED, GUN_PROPERTY1, GUN_PROPERTY2, 
+      GUN_PROPERTY3, GUN_PROPERTY4, GUN_PROPERTY5, 
+      BACK_UP, LEFT_SECONDS, LEVEL, 
+      GUN_PROPERTY6, GUN_PROPERTY7, GUN_PROPERTY8, 
+      USED_COUNT, BULLET, START_UP_TIME, 
+      LAST_BUILD_TIME, BUILD_STATUS, GUN_PROPERTY1_VALUE, 
+      GUN_PROPERTY2_VALUE, GUN_PROPERTY3_VALUE, GUN_PROPERTY4_VALUE
+      )
+    values (#{id,jdbcType=INTEGER}, #{teamId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, 
+      #{currency,jdbcType=TINYINT}, #{unitType,jdbcType=TINYINT}, #{quantity,jdbcType=TINYINT}, 
+      #{durable,jdbcType=REAL}, #{validTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP}, 
+      #{isBind,jdbcType=CHAR}, #{isDefault,jdbcType=CHAR}, #{isGift,jdbcType=CHAR}, #{modifiedDesc,jdbcType=VARCHAR}, 
+      #{isDeleted,jdbcType=CHAR}, #{gunProperty1,jdbcType=VARCHAR}, #{gunProperty2,jdbcType=VARCHAR}, 
+      #{gunProperty3,jdbcType=VARCHAR}, #{gunProperty4,jdbcType=VARCHAR}, #{gunProperty5,jdbcType=VARCHAR}, 
+      #{backUp,jdbcType=VARCHAR}, #{leftSeconds,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, 
+      #{gunProperty6,jdbcType=VARCHAR}, #{gunProperty7,jdbcType=VARCHAR}, #{gunProperty8,jdbcType=VARCHAR}, 
+      #{usedCount,jdbcType=INTEGER}, #{bullet,jdbcType=REAL}, #{startUpTime,jdbcType=TIMESTAMP}, 
+      #{lastBuildTime,jdbcType=TIMESTAMP}, #{buildStatus,jdbcType=INTEGER}, #{gunProperty1Value,jdbcType=REAL}, 
+      #{gunProperty2Value,jdbcType=REAL}, #{gunProperty3Value,jdbcType=REAL}, #{gunProperty4Value,jdbcType=REAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WTeamItem" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into TEAM_ITEM{tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="teamId != null" >
+        TEAM_ID,
+      </if>
+      <if test="itemId != null" >
+        ITEM_ID,
+      </if>
+      <if test="currency != null" >
+        CURRENCY,
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE,
+      </if>
+      <if test="quantity != null" >
+        QUANTITY,
+      </if>
+      <if test="durable != null" >
+        DURABLE,
+      </if>
+      <if test="validTime != null" >
+        VALID_TIME,
+      </if>
+      <if test="expireTime != null" >
+        EXPIRE_TIME,
+      </if>
+      <if test="isBind != null" >
+        IS_BIND,
+      </if>
+      <if test="isDefault != null" >
+        IS_DEFAULT,
+      </if>
+      <if test="isGift != null" >
+        IS_GIFT,
+      </if>
+      <if test="modifiedDesc != null" >
+        MODIFIED_DESC,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="gunProperty1 != null" >
+        GUN_PROPERTY1,
+      </if>
+      <if test="gunProperty2 != null" >
+        GUN_PROPERTY2,
+      </if>
+      <if test="gunProperty3 != null" >
+        GUN_PROPERTY3,
+      </if>
+      <if test="gunProperty4 != null" >
+        GUN_PROPERTY4,
+      </if>
+      <if test="gunProperty5 != null" >
+        GUN_PROPERTY5,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+      <if test="leftSeconds != null" >
+        LEFT_SECONDS,
+      </if>
+      <if test="level != null" >
+        LEVEL,
+      </if>
+      <if test="gunProperty6 != null" >
+        GUN_PROPERTY6,
+      </if>
+      <if test="gunProperty7 != null" >
+        GUN_PROPERTY7,
+      </if>
+      <if test="gunProperty8 != null" >
+        GUN_PROPERTY8,
+      </if>
+      <if test="usedCount != null" >
+        USED_COUNT,
+      </if>
+      <if test="bullet != null" >
+        BULLET,
+      </if>
+      <if test="startUpTime != null" >
+        START_UP_TIME,
+      </if>
+      <if test="lastBuildTime != null" >
+        LAST_BUILD_TIME,
+      </if>
+      <if test="buildStatus != null" >
+        BUILD_STATUS,
+      </if>
+      <if test="gunProperty1Value != null" >
+        GUN_PROPERTY1_VALUE,
+      </if>
+      <if test="gunProperty2Value != null" >
+        GUN_PROPERTY2_VALUE,
+      </if>
+      <if test="gunProperty3Value != null" >
+        GUN_PROPERTY3_VALUE,
+      </if>
+      <if test="gunProperty4Value != null" >
+        GUN_PROPERTY4_VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null" >
+        #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=TINYINT},
+      </if>
+      <if test="unitType != null" >
+        #{unitType,jdbcType=TINYINT},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=TINYINT},
+      </if>
+      <if test="durable != null" >
+        #{durable,jdbcType=REAL},
+      </if>
+      <if test="validTime != null" >
+        #{validTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expireTime != null" >
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isBind != null" >
+        #{isBind,jdbcType=CHAR},
+      </if>
+      <if test="isDefault != null" >
+        #{isDefault,jdbcType=CHAR},
+      </if>
+      <if test="isGift != null" >
+        #{isGift,jdbcType=CHAR},
+      </if>
+      <if test="modifiedDesc != null" >
+        #{modifiedDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="gunProperty1 != null" >
+        #{gunProperty1,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty2 != null" >
+        #{gunProperty2,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty3 != null" >
+        #{gunProperty3,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty4 != null" >
+        #{gunProperty4,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty5 != null" >
+        #{gunProperty5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="leftSeconds != null" >
+        #{leftSeconds,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="gunProperty6 != null" >
+        #{gunProperty6,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty7 != null" >
+        #{gunProperty7,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty8 != null" >
+        #{gunProperty8,jdbcType=VARCHAR},
+      </if>
+      <if test="usedCount != null" >
+        #{usedCount,jdbcType=INTEGER},
+      </if>
+      <if test="bullet != null" >
+        #{bullet,jdbcType=REAL},
+      </if>
+      <if test="startUpTime != null" >
+        #{startUpTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastBuildTime != null" >
+        #{lastBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buildStatus != null" >
+        #{buildStatus,jdbcType=INTEGER},
+      </if>
+      <if test="gunProperty1Value != null" >
+        #{gunProperty1Value,jdbcType=REAL},
+      </if>
+      <if test="gunProperty2Value != null" >
+        #{gunProperty2Value,jdbcType=REAL},
+      </if>
+      <if test="gunProperty3Value != null" >
+        #{gunProperty3Value,jdbcType=REAL},
+      </if>
+      <if test="gunProperty4Value != null" >
+        #{gunProperty4Value,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WTeamItem" >
+    update TEAM_ITEM{tableSuffix}
+    <set >
+      <if test="teamId != null" >
+        TEAM_ID = #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null" >
+        ITEM_ID = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="currency != null" >
+        CURRENCY = #{currency,jdbcType=TINYINT},
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE = #{unitType,jdbcType=TINYINT},
+      </if>
+      <if test="quantity != null" >
+        QUANTITY = #{quantity,jdbcType=TINYINT},
+      </if>
+      <if test="durable != null" >
+        DURABLE = #{durable,jdbcType=REAL},
+      </if>
+      <if test="validTime != null" >
+        VALID_TIME = #{validTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expireTime != null" >
+        EXPIRE_TIME = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isBind != null" >
+        IS_BIND = #{isBind,jdbcType=CHAR},
+      </if>
+      <if test="isDefault != null" >
+        IS_DEFAULT = #{isDefault,jdbcType=CHAR},
+      </if>
+      <if test="isGift != null" >
+        IS_GIFT = #{isGift,jdbcType=CHAR},
+      </if>
+      <if test="modifiedDesc != null" >
+        MODIFIED_DESC = #{modifiedDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="gunProperty1 != null" >
+        GUN_PROPERTY1 = #{gunProperty1,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty2 != null" >
+        GUN_PROPERTY2 = #{gunProperty2,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty3 != null" >
+        GUN_PROPERTY3 = #{gunProperty3,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty4 != null" >
+        GUN_PROPERTY4 = #{gunProperty4,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty5 != null" >
+        GUN_PROPERTY5 = #{gunProperty5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="leftSeconds != null" >
+        LEFT_SECONDS = #{leftSeconds,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        LEVEL = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="gunProperty6 != null" >
+        GUN_PROPERTY6 = #{gunProperty6,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty7 != null" >
+        GUN_PROPERTY7 = #{gunProperty7,jdbcType=VARCHAR},
+      </if>
+      <if test="gunProperty8 != null" >
+        GUN_PROPERTY8 = #{gunProperty8,jdbcType=VARCHAR},
+      </if>
+      <if test="usedCount != null" >
+        USED_COUNT = #{usedCount,jdbcType=INTEGER},
+      </if>
+      <if test="bullet != null" >
+        BULLET = #{bullet,jdbcType=REAL},
+      </if>
+      <if test="startUpTime != null" >
+        START_UP_TIME = #{startUpTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastBuildTime != null" >
+        LAST_BUILD_TIME = #{lastBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buildStatus != null" >
+        BUILD_STATUS = #{buildStatus,jdbcType=INTEGER},
+      </if>
+      <if test="gunProperty1Value != null" >
+        GUN_PROPERTY1_VALUE = #{gunProperty1Value,jdbcType=REAL},
+      </if>
+      <if test="gunProperty2Value != null" >
+        GUN_PROPERTY2_VALUE = #{gunProperty2Value,jdbcType=REAL},
+      </if>
+      <if test="gunProperty3Value != null" >
+        GUN_PROPERTY3_VALUE = #{gunProperty3Value,jdbcType=REAL},
+      </if>
+      <if test="gunProperty4Value != null" >
+        GUN_PROPERTY4_VALUE = #{gunProperty4Value,jdbcType=REAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WTeamItem" >
+    update TEAM_ITEM{tableSuffix}
+    set TEAM_ID = #{teamId,jdbcType=INTEGER},
+      ITEM_ID = #{itemId,jdbcType=INTEGER},
+      CURRENCY = #{currency,jdbcType=TINYINT},
+      UNIT_TYPE = #{unitType,jdbcType=TINYINT},
+      QUANTITY = #{quantity,jdbcType=TINYINT},
+      DURABLE = #{durable,jdbcType=REAL},
+      VALID_TIME = #{validTime,jdbcType=TIMESTAMP},
+      EXPIRE_TIME = #{expireTime,jdbcType=TIMESTAMP},
+      IS_BIND = #{isBind,jdbcType=CHAR},
+      IS_DEFAULT = #{isDefault,jdbcType=CHAR},
+      IS_GIFT = #{isGift,jdbcType=CHAR},
+      MODIFIED_DESC = #{modifiedDesc,jdbcType=VARCHAR},
+      IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      GUN_PROPERTY1 = #{gunProperty1,jdbcType=VARCHAR},
+      GUN_PROPERTY2 = #{gunProperty2,jdbcType=VARCHAR},
+      GUN_PROPERTY3 = #{gunProperty3,jdbcType=VARCHAR},
+      GUN_PROPERTY4 = #{gunProperty4,jdbcType=VARCHAR},
+      GUN_PROPERTY5 = #{gunProperty5,jdbcType=VARCHAR},
+      BACK_UP = #{backUp,jdbcType=VARCHAR},
+      LEFT_SECONDS = #{leftSeconds,jdbcType=INTEGER},
+      LEVEL = #{level,jdbcType=INTEGER},
+      GUN_PROPERTY6 = #{gunProperty6,jdbcType=VARCHAR},
+      GUN_PROPERTY7 = #{gunProperty7,jdbcType=VARCHAR},
+      GUN_PROPERTY8 = #{gunProperty8,jdbcType=VARCHAR},
+      USED_COUNT = #{usedCount,jdbcType=INTEGER},
+      BULLET = #{bullet,jdbcType=REAL},
+      START_UP_TIME = #{startUpTime,jdbcType=TIMESTAMP},
+      LAST_BUILD_TIME = #{lastBuildTime,jdbcType=TIMESTAMP},
+      BUILD_STATUS = #{buildStatus,jdbcType=INTEGER},
+      GUN_PROPERTY1_VALUE = #{gunProperty1Value,jdbcType=REAL},
+      GUN_PROPERTY2_VALUE = #{gunProperty2Value,jdbcType=REAL},
+      GUN_PROPERTY3_VALUE = #{gunProperty3Value,jdbcType=REAL},
+      GUN_PROPERTY4_VALUE = #{gunProperty4Value,jdbcType=REAL}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

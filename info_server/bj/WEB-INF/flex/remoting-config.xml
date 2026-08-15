@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service" class="flex.messaging.services.RemotingService" 
+    messageTypes="flex.messaging.messages.RemotingMessage">
+
+    <adapters>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/>
+    </adapters>
+
+    <default-channels>
+        <channel ref="my-amf"/>
+    </default-channels>   
+    
+    
+     <destination id="ro.get">
+        <properties>
+   	        <factory>spring</factory>        
+            <source>flexGetService</source>
+        </properties>
+    </destination>
+    <destination id="ro.create">
+        <properties>
+   	        <factory>spring</factory>        
+            <source>flexCreateService</source>
+        </properties>
+    </destination>
+    
+    <destination id="ro.delete">
+        <properties>
+   	        <factory>spring</factory>        
+            <source>flexDeleteService</source>
+        </properties>
+    </destination>
+    <destination id="ro.update">
+        <properties>
+   	        <factory>spring</factory>        
+            <source>flexUpdateService</source>
+        </properties>
+    </destination>
+    <destination id="ro.nosql">
+        <properties>
+   	        <factory>spring</factory>        
+            <source>flexNosqlService</source>
+        </properties>
+    </destination>		
+     <destination id="ro.qw">
+        <properties>
+   	        <factory>spring</factory>        
+            <source>flexQwInfo</source>
+        </properties>
+    </destination>	
+    <destination id="ro.lg">
+        <properties>
+   	        <factory>spring</factory>        
+            <source>flexLeagueInfo</source>
+        </properties>
+    </destination>	
+</service>

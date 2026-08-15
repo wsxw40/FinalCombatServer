@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.GPointTotalDao">
+
+	<resultMap id="StatisticResultMap" type="com.pde.info.analyser.pojo.GPointTotalStatistic">
+		<result column="STATISTIC_DATE" property="statisticDate" jdbcType="VARCHAR" />
+		<result column="TOTAL_GPOINT" property="totalGPoint" jdbcType="INTEGER" />
+		<result column="TOTAL_PLAYER" property="totalPlayer" jdbcType="INTEGER" />
+		<result column="AMOUNT1" property="amount1" jdbcType="INTEGER" />
+		<result column="AMOUNT2" property="amount2" jdbcType="INTEGER" />
+		<result column="AMOUNT3" property="amount3" jdbcType="INTEGER" />
+		<result column="AMOUNT4" property="amount4" jdbcType="INTEGER" />
+		<result column="AMOUNT5" property="amount5" jdbcType="INTEGER" />
+		<result column="AMOUNT6" property="amount5" jdbcType="INTEGER" />
+		<result column="AMOUNT7" property="amount5" jdbcType="INTEGER" />
+		<result column="AMOUNT8" property="amount5" jdbcType="INTEGER" />
+		<result column="AMOUNT9" property="amount5" jdbcType="INTEGER" />
+		<result column="AMOUNT10" property="amount5" jdbcType="INTEGER" />
+		<result column="AMOUNT11" property="amount5" jdbcType="INTEGER" />
+		<result column="AMOUNT12" property="amount5" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="addGPointTotal" parameterType="com.pde.info.analyser.pojo.GPointTotalStatistic" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `INFO_REPORT_GPOINT_TOTAL`(`TOTAL_GPOINT`,`TOTAL_PLAYER`,`AMOUNT1`,`AMOUNT2`,`AMOUNT3`,`AMOUNT4`,`AMOUNT5`,`AMOUNT6`,`AMOUNT7`,`AMOUNT8`,`AMOUNT9`,`AMOUNT10`,`AMOUNT11`,`AMOUNT12`,`STATISTIC_DATE`,`CREATE_DATE`)
+		VALUES (#{totalGPoint},#{totalPlayer},#{amount1},#{amount2},#{amount3},#{amount4},#{amount5},#{amount6},#{amount7},#{amount8},#{amount9},#{amount10},#{amount11},#{amount12},DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%Y-%m-%d'),NOW())
+	</insert>
+
+	<select id="getStatistic" resultMap="StatisticResultMap" parameterType="java.util.Map" >
+    	SELECT `STATISTIC_DATE`,`TOTAL_GPOINT`,`TOTAL_PLAYER`,`AMOUNT1`,`AMOUNT2`,`AMOUNT3`,`AMOUNT4`,`AMOUNT5`,`AMOUNT6`,`AMOUNT7`,`AMOUNT8`,`AMOUNT9`,`AMOUNT10`,`AMOUNT11`,`AMOUNT12`
+    	FROM `INFO_REPORT_GPOINT_TOTAL`
+    	WHERE `STATISTIC_DATE` BETWEEN #{startDate} AND #{endDate}
+    	ORDER BY `STATISTIC_DATE` DESC
+  	</select>
+
+</mapper>

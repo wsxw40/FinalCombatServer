@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"  creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import vo.PlayerItem;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import vo.GmUser;
+			import view.PlayerItemView;
+			import window.PlayerManageWindow;
+			public var fatherWindow:PlayerManageWindow = null;
+			private var model:O2oModel = O2oModel.getInstance();
+			[Bindable]
+			public var playerId:int=0;
+			[Bindable]
+			public var playerItem:PlayerItem=null;
+			[Bindable]
+			public var playerItemList:ArrayCollection=new ArrayCollection();
+			public function init():void{
+//				Alert.show(""+this.playerId)
+				initButtons();
+				if(playerId!=0){
+					getRo.getPlayerDefaultItemList(playerId);
+				}
+				
+			}
+			private function initButtons():void{
+
+				//deleteBtn.enabled=true;
+				playerItemDatagrid.editable=false;
+			}
+			private function getHandler(e:ResultEvent):void{
+				this.playerItemList=e.result as ArrayCollection;
+//				Alert.show(""+this.playerItemList.length)
+				playerItem = null;
+				if(this.fatherWindow.playerDefaultItemView.playerItemList == null){
+					this.fatherWindow.defaultPlayerItemList.title = "PlayerDefaultItemList(total 0)";
+				} else {
+					this.fatherWindow.defaultPlayerItemList.title = "PlayerDefaultItemList(total " + playerItemList.length.toString() + ")";
+				}
+			}
+
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+
+
+//			private function onEditBtnClick():void{
+//				save.enabled=true;
+//				newBtn.enabled=false;
+//				deleteBtn.enabled=false;
+//				editBtn.enabled=false;
+//				canelBtn.enabled=true;
+//				paymentDatagrid.editable=true;
+//			}
+			private function onSaveBtnClick():void{
+				initButtons();
+			}
+			private function onCanelBtnClick():void{
+				initButtons();
+			}
+			private function selectHandler():void{
+				this.playerItem=playerItemDatagrid.selectedItem as PlayerItem;
+			}
+			private function putOnPlayerItem():void{
+				if(this.playerItem == null){
+//					Alert.show("您还没有选中需要装备的物品");
+					Alert.show(resourceManager.getString('Language','message.NeedSelected'));
+				} else if(this.playerItem.pack > 0){
+					Alert.show(resourceManager.getString('Language','message.AlreadyWeared'));
+				} else {
+					updateRo.putOnPlayerItem(model.gmUser, this.playerItem.id, this.playerItem.playerId);
+				}
+			}
+			private function putOnPlayerItemHandler():void{
+				init();
+				Alert.show(resourceManager.getString('Language','message.WearSuccessed'));
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getPlayerDefaultItemList" result="getHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="putOnPlayerItem" result="putOnPlayerItemHandler()" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:VBox>
+	<mx:DataGrid id="playerItemDatagrid" dataProvider="{playerItemList}" itemClick="selectHandler()">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="{resourceManager.getString('Language','label.PlayerItemId')}"/>
+			<mx:DataGridColumn dataField="playerId" headerText="{resourceManager.getString('Language','label.PlayerId')}"/>
+			<mx:DataGridColumn dataField="itemDisplayName" headerText="Name"/>
+			<mx:DataGridColumn dataField="itemId" headerText="{resourceManager.getString('Language','label.SystemItemId')}"/>
+			<!--<mx:DataGridColumn dataField="isDefault" headerText="是否默认(“Y”默认，“N”非默认)"/>-->
+			<mx:DataGridColumn dataField="pack" headerText="{resourceManager.getString('Language','label.IsWeared')}" width="250"/>
+		</mx:columns>
+	</mx:DataGrid>
+   	<!--<mx:Button id="deleteBtn" label="删除" click="onDeleteBtnClick()"/>-->
+   	<mx:ApplicationControlBar>	
+   		<mx:Button id="deleteBtn" label="Equip" click="putOnPlayerItem()"/>
+   		<mx:Button id="refreshBtn" label="rRefresh" click="init()"/>
+   	</mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:HBox>

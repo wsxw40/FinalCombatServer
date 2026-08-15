@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysOnlineAwardMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysOnlineAward" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="SYS_ITEM_ID" property="sysItemId" jdbcType="INTEGER" />
+    <result column="LEVEL" property="level" jdbcType="INTEGER" />
+    <result column="UNIT" property="unit" jdbcType="INTEGER" />
+    <result column="UNIT_TYPE" property="unitType" jdbcType="INTEGER" />
+    <result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="WEIGHT" property="weight" jdbcType="INTEGER" />
+    <result column="MUSIC" property="music" jdbcType="INTEGER" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="VARCHAR" />
+    <result column="MULTI_TYPE" property="multiType" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, SYS_ITEM_ID, LEVEL, UNIT, UNIT_TYPE, TYPE, WEIGHT, MUSIC, IS_DELETED, MULTI_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysOnlineAward" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ONLINE_AWARD
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysOnlineAward" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ONLINE_AWARD
+    where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ONLINE_AWARD where 1 = 1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or SYS_ITEM_ID like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_ONLINE_AWARD where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or SYS_ITEM_ID like '${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_ONLINE_AWARD
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysOnlineAward" >
+    insert into SYS_ONLINE_AWARD (ID, SYS_ITEM_ID, LEVEL, 
+      UNIT, UNIT_TYPE, TYPE, 
+      WEIGHT, MUSIC, IS_DELETED, MULTI_TYPE)
+    values (#{id,jdbcType=INTEGER}, #{sysItemId,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, 
+      #{unit,jdbcType=INTEGER}, #{unitType,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{weight,jdbcType=INTEGER}, #{music,jdbcType=INTEGER}, #{isDeleted,jdbcType=VARCHAR}, #{multiType,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_ONLINE_AWARD (ID, SYS_ITEM_ID, LEVEL, 
+      UNIT, UNIT_TYPE, TYPE, 
+      WEIGHT, MUSIC, IS_DELETED, MULTI_TYPE)
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+    (#{item.id,jdbcType=INTEGER}, #{item.sysItemId,jdbcType=INTEGER}, #{item.level,jdbcType=INTEGER}, 
+      #{item.unit,jdbcType=INTEGER}, #{item.unitType,jdbcType=INTEGER}, #{item.type,jdbcType=INTEGER}, 
+      #{item.weight,jdbcType=INTEGER}, #{item.music,jdbcType=INTEGER}, #{item.isDeleted,jdbcType=VARCHAR}, #{item.multiType,jdbcType=LONGVARCHAR})
+		</foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysOnlineAward" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_ONLINE_AWARD
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="sysItemId != null" >
+        SYS_ITEM_ID,
+      </if>
+      <if test="level != null" >
+        LEVEL,
+      </if>
+      <if test="unit != null" >
+        UNIT,
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="weight != null" >
+        WEIGHT,
+      </if>
+      <if test="music != null" >
+        MUSIC,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="multiType != null" >
+        MULTI_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysItemId != null" >
+        #{sysItemId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="unitType != null" >
+        #{unitType,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="music != null" >
+        #{music,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=VARCHAR},
+      </if>
+      <if test="multiType != null" >
+        #{multiType,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysOnlineAward" >
+    update SYS_ONLINE_AWARD
+    <set >
+      <if test="sysItemId != null" >
+        SYS_ITEM_ID = #{sysItemId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        LEVEL = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        UNIT = #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE = #{unitType,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        WEIGHT = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="music != null" >
+        MUSIC = #{music,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=VARCHAR},
+      </if>
+      <if test="multiType != null" >
+        MULTI_TYPE = #{multiType,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysOnlineAward" >
+    update SYS_ONLINE_AWARD
+    set SYS_ITEM_ID = #{sysItemId,jdbcType=INTEGER},
+      LEVEL = #{level,jdbcType=INTEGER},
+      UNIT = #{unit,jdbcType=INTEGER},
+      UNIT_TYPE = #{unitType,jdbcType=INTEGER},
+      TYPE = #{type,jdbcType=INTEGER},
+      WEIGHT = #{weight,jdbcType=INTEGER},
+      MUSIC = #{music,jdbcType=INTEGER},
+      IS_DELETED = #{isDeleted,jdbcType=VARCHAR},
+      MULTI_TYPE = #{multiType,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

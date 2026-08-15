@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="systemDao" class="com.pearl.o2o.dao.SystemDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="sysLevelDao" class="com.pearl.o2o.dao.SysLevelDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="itemOrderDao" class="com.pearl.o2o.dao.ItemOrderDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="userDao" class="com.pearl.o2o.dao.UserDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+	<bean id="playerDao" class="com.pearl.o2o.dao.PlayerDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+	<bean id="friendDao" class="com.pearl.o2o.dao.FriendDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>		
+	</bean>		
+	
+	<bean id="serverDao" class="com.pearl.o2o.dao.ServerDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+	<bean id="sysItemDao" class="com.pearl.o2o.dao.SysItemDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="sysItemLogDao" class="com.pearl.o2o.dao.SysItemLogDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="itemModDao" class="com.pearl.o2o.dao.ItemModDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>	
+
+	<bean id="playerItemDao" class="com.pearl.o2o.dao.PlayerItemDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="playerPackDao" class="com.pearl.o2o.dao.PlayerPackDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="messageDao" class="com.pearl.o2o.dao.MessageDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="characterDao" class="com.pearl.o2o.dao.CharacterDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="characterLogDao" class="com.pearl.o2o.dao.CharacterLogDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	<bean id="playerBuffDao" class="com.pearl.o2o.dao.PlayerBuffDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	<bean id="rankDao" class="com.pearl.o2o.dao.RankDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	<bean id="teamDao" class="com.pearl.o2o.dao.TeamDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	<bean id="playerTeamDao" class="com.pearl.o2o.dao.PlayerTeamDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="allyDao" class="com.pearl.o2o.dao.AllyDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="keyWordsDao" class="com.pearl.o2o.dao.KeyWordsDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	<bean id="teamHistoryDao" class="com.pearl.o2o.dao.TeamHistoryDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	<bean id="sysModeConfigDao" class="com.pearl.o2o.dao.SysModeConfigDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+</beans>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysIcon">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="SysIcon" type="com.pearl.manager.pojo.SysIcon"/> 	
+
+	<resultMap id="selectResult" class="SysIcon">
+		<result property="id" column="ID"/>
+		<result property="icon" column="ICON"/>	
+	</resultMap>
+  
+	<select id="select" resultMap="selectResult">
+		select * from SYS_ICON;
+	</select>  
+</sqlMap>

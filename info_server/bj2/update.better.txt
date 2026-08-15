@@ -1,0 +1,9 @@
+以下是应该改进的数据结构或者逻辑处理
+
+WPlayerService.getPlayerDailyDiscount
+//FIXME 该记录结构为map<sysItemId,map<playerId,list<boolean>>>，而且在远程缓存中时长24小时，结构不合理。应储存在PlayerExtra表中的某个字段，结构为map<sysItemId,list<boolean>>
+===============================================================================
+player表增加字段
+banOverTime Date类型 一般玩家为null，不为null表示禁止登录的结束时间
+sysItem表增加字段
+isInShop boolean类型 表示是否在商店出现

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysTeamBuffMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysTeamBuff" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="RANK" property="rank" jdbcType="INTEGER" />
+    <result column="SYS_ITEM_ID" property="sysItemId" jdbcType="INTEGER" />
+    <result column="UNIT" property="unit" jdbcType="INTEGER" />
+    <result column="UNIT_TYPE" property="unitType" jdbcType="TINYINT" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="BIT" />
+    <result column="IS_ENABLE" property="isEnable" jdbcType="BIT" />
+    <result column="PAY_TYPE" property="payType" jdbcType="TINYINT" />
+    <result column="COST" property="cost" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, RANK, SYS_ITEM_ID, UNIT, UNIT_TYPE, IS_DELETE, IS_ENABLE, PAY_TYPE, COST
+  </sql>
+  <sql id="Base_Column_List2" >
+    tb.ID, tb.RANK, tb.SYS_ITEM_ID, tb.UNIT, tb.UNIT_TYPE, tb.IS_DELETE, tb.IS_ENABLE, tb.PAY_TYPE, tb.COST
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_TEAM_BUFF
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_TEAM_BUFF
+    where IS_DELETE = 0
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_TEAM_BUFF tb,SYS_ITEM sitem 
+    where tb.IS_DELETE = 0 and tb.SYS_ITEM_ID= sitem.ID
+    <if test="searchValue != null">
+    and ( tb.SYS_ITEM_ID like '${searchValue}%' or sitem.DISPLAY_NAME like '%${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) 
+    from SYS_TEAM_BUFF tb,SYS_ITEM sitem 
+    where tb.IS_DELETE = 0 and tb.SYS_ITEM_ID= sitem.ID
+  	<if test="searchValue != null">
+    and ( tb.SYS_ITEM_ID like '${searchValue}%' or sitem.DISPLAY_NAME like '%${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_TEAM_BUFF
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysTeamBuff" >
+    insert into SYS_TEAM_BUFF (ID, RANK, SYS_ITEM_ID, 
+      UNIT, UNIT_TYPE, IS_DELETE, 
+      IS_ENABLE, PAY_TYPE, COST
+      )
+    values (#{id,jdbcType=INTEGER}, #{rank,jdbcType=INTEGER}, #{sysItemId,jdbcType=INTEGER}, 
+      #{unit,jdbcType=INTEGER}, #{unitType,jdbcType=TINYINT}, #{isDelete,jdbcType=BIT}, 
+      #{isEnable,jdbcType=BIT}, #{payType,jdbcType=TINYINT}, #{cost,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_TEAM_BUFF (ID, RANK, SYS_ITEM_ID, 
+      UNIT, UNIT_TYPE, IS_DELETE, 
+      IS_ENABLE, PAY_TYPE, COST
+      )
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+	    (#{item.id,jdbcType=INTEGER}, #{item.rank,jdbcType=INTEGER}, #{item.sysItemId,jdbcType=INTEGER}, 
+      #{item.unit,jdbcType=INTEGER}, #{item.unitType,jdbcType=TINYINT}, #{item.isDelete,jdbcType=BIT}, 
+      #{item.isEnable,jdbcType=BIT}, #{item.payType,jdbcType=TINYINT}, #{item.cost,jdbcType=INTEGER}
+      )
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysTeamBuff" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_TEAM_BUFF
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="rank != null" >
+        RANK,
+      </if>
+      <if test="sysItemId != null" >
+        SYS_ITEM_ID,
+      </if>
+      <if test="unit != null" >
+        UNIT,
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE,
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE,
+      </if>
+      <if test="isEnable != null" >
+        IS_ENABLE,
+      </if>
+      <if test="payType != null" >
+        PAY_TYPE,
+      </if>
+      <if test="cost != null" >
+        COST,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="sysItemId != null" >
+        #{sysItemId,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="unitType != null" >
+        #{unitType,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="isEnable != null" >
+        #{isEnable,jdbcType=BIT},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="cost != null" >
+        #{cost,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysTeamBuff" >
+    update SYS_TEAM_BUFF
+    <set >
+      <if test="rank != null" >
+        RANK = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="sysItemId != null" >
+        SYS_ITEM_ID = #{sysItemId,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        UNIT = #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE = #{unitType,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="isEnable != null" >
+        IS_ENABLE = #{isEnable,jdbcType=BIT},
+      </if>
+      <if test="payType != null" >
+        PAY_TYPE = #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="cost != null" >
+        COST = #{cost,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysTeamBuff" >
+    update SYS_TEAM_BUFF
+    set RANK = #{rank,jdbcType=INTEGER},
+      SYS_ITEM_ID = #{sysItemId,jdbcType=INTEGER},
+      UNIT = #{unit,jdbcType=INTEGER},
+      UNIT_TYPE = #{unitType,jdbcType=TINYINT},
+      IS_DELETE = #{isDelete,jdbcType=BIT},
+      IS_ENABLE = #{isEnable,jdbcType=BIT},
+      PAY_TYPE = #{payType,jdbcType=TINYINT},
+      COST = #{cost,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

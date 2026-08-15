@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysMatchP">
+
+ 	<typeAlias alias="SysMatchP" type="com.pearl.o2o.pojo.SysMatchP"/> 	
+
+	<resultMap id="selectSysMatchPResult" class="SysMatchP">
+		<result property="id" column="ID"/>
+		<result property="score" column="SCORE"/>		
+	</resultMap>
+<!--================================================== Select ====================================-->
+	<select id="select" resultMap="selectSysMatchPResult">
+		SELECT * FROM SYS_MATCH_P;
+	</select>  
+<!--================================================== update ====================================-->
+	<update id="update" parameterClass="SysMatchP">
+		update SYS_MATCH_P 
+		set SCORE=#score#
+		where ID=#id#;		
+	</update>
+<!--================================================== delete ====================================-->
+	<delete id="delete" parameterClass="SysMatchP">
+	delete from SYS_LEVEL where ID=#id#;
+	</delete>
+<!--================================================== insert ====================================-->
+	<insert id="insert"  parameterClass="SysMatchP">
+		insert into SYS_MATCH_P(
+			ID,
+			SCORE
+		) values(
+			#id#,
+			#score#
+		);
+	</insert>
+</sqlMap>

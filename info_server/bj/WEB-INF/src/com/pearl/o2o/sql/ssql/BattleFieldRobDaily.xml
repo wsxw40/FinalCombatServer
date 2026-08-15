@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BattleFieldRobDaily">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="BattleFieldRobDaily" type="com.pearl.o2o.pojo.BattleFieldRobDaily"/> 	
+
+	<resultMap id="selectResult" class="BattleFieldRobDaily">
+		<result property="id" column="ID"/>
+		<result property="attTeamId" column="ATT_TEAM_ID"/>		
+		<result property="defTeamId" column="DEF_TEAM_ID"/>
+		<result property="robAmount" column="ROB_AMOUNT"/>
+		<result property="beRobAmount" column="BE_ROB_AMOUNT"/>
+		<result property="robDate" column="ROB_DATE"/>
+		<result property="type" column="TYPE"/>
+	</resultMap>
+	
+	<resultMap id="selectSumResult" class="BattleFieldRobDaily">
+		<result property="id" column="ID"/>
+		<result property="attTeamId" column="ATT_TEAM_ID"/>		
+		<result property="defTeamId" column="DEF_TEAM_ID"/>
+		<result property="robAmount" column="ROB_AMOUNT"/>
+		<result property="beRobAmount" column="BE_ROB_AMOUNT"/>
+		<result property="robDate" column="ROB_DATE"/>
+		<result property="type" column="TYPE"/>
+		<result property="robsum" column="ROB_SUM"/>
+		<result property="robcount" column="ROB_COUNT"/>
+	</resultMap>	
+	
+	<!--================================================== Select ==============cleanUnUsedBattleFieldRobDaily====================================-->
+	<select id="selectBattleFieldRobDailyByTeamId" parameterClass="java.util.Map" resultMap="selectResult">
+		select *
+		from BATTLEFIELD_ROB_DAILY 
+		where ATT_TEAM_ID = #attTeamId#
+	</select>	
+	
+  	<select id="selectBattleFieldRobDailyForTop" parameterClass="java.util.Map" resultMap="selectSumResult">
+  		select ATT_TEAM_ID as attTeamId,sum(ROB_AMOUNT) as ROB_SUM ,count(ATT_TEAM_ID) as ROB_COUNT,b.*
+  		from 
+  			BATTLEFIELD_ROB_DAILY b
+  		where 
+  			b.ROB_DATE &gt;= #preTime# 
+  		AND 
+  			b.ROB_DATE &lt; #nowTime#
+  		AND 
+  			b.TYPE =#type#   			 
+		AND b.ROB_AMOUNT>0
+  		group by b.ATT_TEAM_ID order by  sum(b.ROB_AMOUNT) desc
+  	</select>
+  	
+   	<select id="selectBattleFieldRobDailyByTeamAndTime" parameterClass="java.util.Map" resultMap="selectResult">
+  		select b.*
+  		from 
+  			BATTLEFIELD_ROB_DAILY b
+  		where 
+  			b.ROB_DATE &gt;= #preTime# 
+  		AND 
+  			b.ROB_DATE &lt; #nowTime# 
+  		AND 
+  			b.TYPE =#type#   	  			
+		AND ( b.ATT_TEAM_ID=#teamId# or b.DEF_TEAM_ID=#teamId#)
+		order by b.ROB_DATE desc
+  	</select> 	
+  	
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+  	<insert id="insert" parameterClass="BattleFieldRobDaily">
+  		insert into BATTLEFIELD_ROB_DAILY
+  			(ATT_TEAM_ID,DEF_TEAM_ID,ROB_AMOUNT,BE_ROB_AMOUNT,ROB_DATE,TYPE)
+  		values
+  			(#attTeamId#,#defTeamId#,#robAmount#,#beRobAmount#,#robDate#,#type#)
+  		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+  	</insert>
+  	
+  	
+  	<delete id="cleanUnUsedBattleFieldRobDaily" parameterClass="java.util.Map">
+  		delete from BATTLEFIELD_ROB_DAILY
+		where ROB_DATE &lt; #endDate# 
+  	</delete>  	
+  	
+</sqlMap>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:Script source="../common/CommonScript.as"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.StringUtil;
+			import mx.collections.ArrayCollection;
+			import common.Constants;
+			
+			[Bindable]
+			private var gmLogs:ArrayCollection = new ArrayCollection();
+			
+			private function onQueryBtnClick():void{
+				var gmUserId:int = Number(StringUtil.trim(gmUserIdTI.text));
+				var gmUserName:String = StringUtil.trim(gmUserNameTI.text);
+				var type:String = typeCB.selectedLabel;
+				var start:Date = fromDF.selectedDate;
+				var end:Date = toDF.selectedDate;
+				
+				getRo.getGmLogs(gmUserId, gmUserName, type, start, end);
+			}
+			
+			private function getGmLogsHandler(e:ResultEvent):void{
+				gmLogs = e.result as ArrayCollection;
+			}
+			
+			private function timeLabFunc(item:Object, column:DataGridColumn):String{
+				return df.format(item[column.dataField]);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getGmLogs" result="getGmLogsHandler(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:DateFormatter id="df" formatString="MM/DD/YYYY JJ:NN:SS"/>
+	<mx:ApplicationControlBar width="100%">
+		<mx:HBox width="100%">
+			<mx:FormItem label="GM User ID">
+				<mx:TextInput id="gmUserIdTI"/>
+			</mx:FormItem>
+			<mx:FormItem label="用户名:">
+				<mx:TextInput id="gmUserNameTI"/>
+			</mx:FormItem>
+			<mx:FormItem label="操作类型:">
+				<mx:ComboBox id="typeCB" dataProvider="{Constants.GM_LOG_TYPE}"/>
+			</mx:FormItem>
+			<mx:FormItem label="从:">
+				<mx:DateField id="fromDF" selectedDate="{new Date()}"/>
+			</mx:FormItem>
+			<mx:Label text="——"/>
+			<mx:FormItem label="到:">
+				<mx:DateField id="toDF" selectedDate="{new Date()}"/>
+			</mx:FormItem>
+			<mx:Button id="queryBtn" label="检索" click="onQueryBtnClick()"/>
+		</mx:HBox>
+	</mx:ApplicationControlBar>
+	<mx:DataGrid dataProvider="{gmLogs}" width="100%" height="100%">
+		<mx:columns>
+			<!--mx:DataGridColumn dataField="id" width="100"/-->
+			<mx:DataGridColumn dataField="gmUserId" headerText="GM User ID" width="100"/>
+			<mx:DataGridColumn dataField="gmUserName" headerText="用户名" width="200"/>
+			<mx:DataGridColumn dataField="type" headerText="操作类型" width="80"/>
+			<mx:DataGridColumn dataField="methodName" headerText="操作方法" width="300"/>
+			<!--mx:DataGridColumn dataField="args"/-->
+			<mx:DataGridColumn dataField="recordTime" headerText="操作时间" labelFunction="timeLabFunc" width="200"/>
+		</mx:columns>
+	</mx:DataGrid>
+</mx:VBox>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 内容发布分页与内容总数查询 -->
+	<bean name="/nologin/cms/cmsContent.htm" class="com.pde.uweb.web.controller.cms.CMSContentController">
+		<property name="methodNameResolver" ref="methodNameResolver" />
+		<property name="cmsService" ref="cmsService_biz" />
+	</bean>
+
+	<bean name="/nologin/cms/cmsContentDetail.htm"
+		class="com.pde.uweb.web.controller.cms.CMSContentDetailController">
+		<property name="cmsService" ref="cmsService_biz" />
+	</bean>
+
+</beans>

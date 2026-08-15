@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WTeamLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WTeamLevel" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="TEAM_ID" property="teamId" jdbcType="INTEGER" />
+    <result column="LEVEL_TYPE" property="levelType" jdbcType="INTEGER" />
+    <result column="ORG_LEVEL_ID" property="orgLevelId" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DISPLAY_NAME" property="displayName" jdbcType="VARCHAR" />
+    <result column="CONFIG_POINTS" property="configPoints" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATE_ID" property="lastUpdateId" jdbcType="INTEGER" />
+    <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_BEGIN_UPDATE_TIME" property="lastBeginUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="IS_EDITABLE" property="isEditable" jdbcType="CHAR" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, TEAM_ID, LEVEL_TYPE, ORG_LEVEL_ID, NAME, DISPLAY_NAME, CONFIG_POINTS, CREATE_TIME, 
+    LAST_UPDATE_ID, LAST_UPDATE_TIME, LAST_BEGIN_UPDATE_TIME, IS_EDITABLE, IS_DELETED
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WTeamLevel" >
+    select 
+    <include refid="Base_Column_List" />
+    from TEAM_LEVEL${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WTeamLevel" >
+    select 
+    <include refid="Base_Column_List" />
+    from TEAM_LEVEL${tableSuffix}
+    where TEAM_ID = #{shareId,jdbcType=INTEGER} and IS_DELETED='N'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from TEAM_LEVEL${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WTeamLevel" >
+    insert into TEAM_LEVEL${tableSuffix} (ID, TEAM_ID, LEVEL_TYPE, 
+      ORG_LEVEL_ID, NAME, DISPLAY_NAME, 
+      CONFIG_POINTS, CREATE_TIME, LAST_UPDATE_ID, 
+      LAST_UPDATE_TIME, LAST_BEGIN_UPDATE_TIME, 
+      IS_EDITABLE, IS_DELETED)
+    values (#{id,jdbcType=INTEGER}, #{teamId,jdbcType=INTEGER}, #{levelType,jdbcType=INTEGER}, 
+      #{orgLevelId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
+      #{configPoints,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateId,jdbcType=INTEGER}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{lastBeginUpdateTime,jdbcType=TIMESTAMP}, 
+      #{isEditable,jdbcType=CHAR}, #{isDeleted,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WTeamLevel" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into TEAM_LEVEL${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="teamId != null" >
+        TEAM_ID,
+      </if>
+      <if test="levelType != null" >
+        LEVEL_TYPE,
+      </if>
+      <if test="orgLevelId != null" >
+        ORG_LEVEL_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="displayName != null" >
+        DISPLAY_NAME,
+      </if>
+      <if test="configPoints != null" >
+        CONFIG_POINTS,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="lastUpdateId != null" >
+        LAST_UPDATE_ID,
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME,
+      </if>
+      <if test="lastBeginUpdateTime != null" >
+        LAST_BEGIN_UPDATE_TIME,
+      </if>
+      <if test="isEditable != null" >
+        IS_EDITABLE,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null" >
+        #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="levelType != null" >
+        #{levelType,jdbcType=INTEGER},
+      </if>
+      <if test="orgLevelId != null" >
+        #{orgLevelId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="displayName != null" >
+        #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="configPoints != null" >
+        #{configPoints,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateId != null" >
+        #{lastUpdateId,jdbcType=INTEGER},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastBeginUpdateTime != null" >
+        #{lastBeginUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isEditable != null" >
+        #{isEditable,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WTeamLevel" >
+    update TEAM_LEVEL${tableSuffix}
+    <set >
+      <if test="teamId != null" >
+        TEAM_ID = #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="levelType != null" >
+        LEVEL_TYPE = #{levelType,jdbcType=INTEGER},
+      </if>
+      <if test="orgLevelId != null" >
+        ORG_LEVEL_ID = #{orgLevelId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="displayName != null" >
+        DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="configPoints != null" >
+        CONFIG_POINTS = #{configPoints,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateId != null" >
+        LAST_UPDATE_ID = #{lastUpdateId,jdbcType=INTEGER},
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastBeginUpdateTime != null" >
+        LAST_BEGIN_UPDATE_TIME = #{lastBeginUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isEditable != null" >
+        IS_EDITABLE = #{isEditable,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WTeamLevel" >
+    update TEAM_LEVEL${tableSuffix}
+    set TEAM_ID = #{teamId,jdbcType=INTEGER},
+      LEVEL_TYPE = #{levelType,jdbcType=INTEGER},
+      ORG_LEVEL_ID = #{orgLevelId,jdbcType=INTEGER},
+      NAME = #{name,jdbcType=VARCHAR},
+      DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+      CONFIG_POINTS = #{configPoints,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      LAST_UPDATE_ID = #{lastUpdateId,jdbcType=INTEGER},
+      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      LAST_BEGIN_UPDATE_TIME = #{lastBeginUpdateTime,jdbcType=TIMESTAMP},
+      IS_EDITABLE = #{isEditable,jdbcType=CHAR},
+      IS_DELETED = #{isDeleted,jdbcType=CHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

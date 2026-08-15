@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+<mx:Script>
+	<![CDATA[
+		import mx.events.ValidationResultEvent;
+		import utils.DatagridValidateFactory;
+		import mx.validators.Validator;
+		import vo.SysItem;
+		private var _sysItem:SysItem;
+		[Bindable]
+		public function set sysItem(value:SysItem):void{
+			this._sysItem=value;
+		}
+		public function get sysItem():SysItem{
+			return this._sysItem;
+		}
+		
+		public var validateArray:Array=new Array();
+		private function validateTextInput(e:Event):void{
+			var source:TextInput=e.currentTarget as TextInput;
+			var dataField:String=source.id;
+			var pattern:RegExp = / /g;
+			var value:String=source.text.replace(pattern,"");
+			var validate:Validator=DatagridValidateFactory.getSysitemValidator(dataField,source);
+			var val:ValidationResultEvent=validate.validate();
+			if(val.type=="valid"){
+				if(sysItem[dataField] is String){
+					sysItem[dataField]=value;
+				}else if(sysItem[dataField] is Number){
+					sysItem[dataField]=parseFloat(value);
+				}
+			}else{
+				validateArray.push(validate);
+			}
+			sysItem.isChange=1;
+		} 
+		
+	]]>
+</mx:Script>
+	<mx:VBox width="100%" borderStyle="solid" verticalGap="0">
+		<mx:Label text="站立时精度"/>
+		<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+			<mx:FormItem label="wNormalUpBase">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wNormalUpBase" text="{sysItem.wNormalUpBase}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wNormalLateralBase">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wNormalLateralBase" text="{sysItem.wNormalLateralBase}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wNormalUpModifier">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wNormalUpModifier" text="{sysItem.wNormalUpModifier}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wNormalLateralModifier">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wNormalLateralModifier" text="{sysItem.wNormalLateralModifier}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wNormalUpMax">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wNormalUpMax" text="{sysItem.wNormalUpMax}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wNormalLateralMax">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wNormalLateralMax" text="{sysItem.wNormalLateralMax}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wNormalDirChange">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wNormalDirChange" text="{sysItem.wNormalDirChange}"/>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:VBox>
+	<mx:VBox width="100%" borderStyle="solid" verticalGap="0">
+		<mx:Label text="移动时精度"/>
+		<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+			<mx:FormItem label="wMoveUpBase">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wMoveUpBase" text="{sysItem.wMoveUpBase}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wMoveLateralBase">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wMoveLateralBase" text="{sysItem.wMoveLateralBase}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wMoveUpModifier">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wMoveUpModifier" text="{sysItem.wMoveUpModifier}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wMoveLateralModifier">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wMoveLateralModifier" text="{sysItem.wMoveLateralModifier}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wMoveUpMax">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wMoveUpMax" text="{sysItem.wMoveUpMax}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wMoveLateralMax">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wMoveLateralMax" text="{sysItem.wMoveLateralMax}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wMoveDirChange">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wMoveDirChange" text="{sysItem.wMoveDirChange}"/>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:VBox>
+	<mx:VBox width="100%" borderStyle="solid" verticalGap="0" >
+		<mx:Label text="跳跃时精度"/>
+		<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+			<mx:FormItem label="wOnairUpBase">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wOnairUpBase" text="{sysItem.wOnairUpBase}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wOnairLateralBase">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wOnairLateralBase" text="{sysItem.wOnairLateralBase}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wOnairUpModifier">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wOnairUpModifier" text="{sysItem.wOnairUpModifier}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wOnairLateralModifier">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wOnairLateralModifier" text="{sysItem.wOnairLateralModifier}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wOnairUpMax">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wOnairUpMax" text="{sysItem.wOnairUpMax}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wOnairLateralMax">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wOnairLateralMax" text="{sysItem.wOnairLateralMax}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wOnairDirChange">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wOnairDirChange" text="{sysItem.wOnairDirChange}"/>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:VBox>
+	<mx:VBox width="100%" borderStyle="solid" verticalGap="0">
+		<mx:Label text="蹲伏时精度"/>
+		<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+			<mx:FormItem label="wCrouchUpBase">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wCrouchUpBase" text="{sysItem.wCrouchUpBase}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wCrouchLateralBase">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wCrouchLateralBase" text="{sysItem.wCrouchLateralBase}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wCrouchUpModifier">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wCrouchUpModifier" text="{sysItem.wCrouchUpModifier}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wCrouchLateralModifier">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wCrouchLateralModifier" text="{sysItem.wCrouchLateralModifier}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wCrouchUpMax">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wCrouchUpMax" text="{sysItem.wCrouchUpMax}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wCrouchLateralMax">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wCrouchLateralMax" text="{sysItem.wCrouchLateralMax}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wCrouchDirChange">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wCrouchDirChange" text="{sysItem.wCrouchDirChange}"/>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:VBox>
+	<mx:VBox width="100%" borderStyle="solid" verticalGap="0">
+		<mx:Label text="近身武器参数"/>
+		<mx:Form width="100%" paddingTop="0" paddingBottom="0">
+			<mx:FormItem label="wStabTime">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wStabTime" text="{sysItem.wStabTime}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wStabLightTime">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wStabLightTime" text="{sysItem.wStabLightTime}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wStabHurt">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wStabHurt" text="{sysItem.wStabHurt}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wStabLightHurt">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wStabLightHurt" text="{sysItem.wStabLightHurt}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wStabDistance">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wStabDistance" text="{sysItem.wStabDistance}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wStabLightDistance">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wStabLightDistance" text="{sysItem.wStabLightDistance}"/>
+			</mx:FormItem>
+			<mx:FormItem label="wStabWidth">
+				<mx:TextInput change="validateTextInput(event)" width="50" id="wStabWidth" text="{sysItem.wStabWidth}"/>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:VBox>
+</mx:HBox>

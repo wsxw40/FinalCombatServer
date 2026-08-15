@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import common.Constants;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import window.ModifyItemWindow;
+			import mx.events.ItemClickEvent;
+			import vo.PlayerItem;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import vo.GmUser;
+			import window.PlayerManageWindow;
+			import component.MyDataGridColumn;
+			
+			private var model:O2oModel = O2oModel.getInstance();
+			
+			public var fatherWindow:ModifyItemWindow = null;
+			[Bindable]
+			public var playerId:int=0;
+			[Bindable]
+			public var playerItem:PlayerItem=null;
+			[Bindable]
+			public var playerItemList:ArrayCollection=new ArrayCollection();
+			 [Bindable]
+            public var types:ArrayCollection = new ArrayCollection(
+                [ {label:"全部", data:0},
+                {label:"武器", data:1}, 
+                  {label:"套装", data:2}, 
+                  {label:"配饰", data:3},
+//                   {label:"道具", data:4},
+//                   {label:"素材", data:5},
+//                   {label:"大礼包", data:7},
+//                   {label:"打开类", data:8},
+                   ]);
+			public function init():void{
+				initButtons();
+				if(playerId!=0){
+					getRo.getPlayerStrengthWeapeonList(playerId);
+				}
+			}
+			private function initButtons():void{
+				modifyBtn.enabled=true;
+				saveBtn.enabled=false;
+				playerItemDatagrid.editable=false;
+			}
+			private function getHandler(e:ResultEvent):void{
+				this.playerItemList=e.result as ArrayCollection;
+				playerItem = null;
+				if(playerItemList == null){
+					this.fatherWindow.playerItemList.title = "玩家非默认物品列表(共0项)";
+				} else {
+					this.fatherWindow.playerItemList.title = "玩家非默认物品列表(共" + playerItemList.length.toString() + "项)";
+				}
+			}
+
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+
+
+			private function modifyPlayerItem():void{
+				modifyBtn.enabled=false;
+				saveBtn.enabled=true;
+				playerItemDatagrid.editable=true;
+				var columns : Array= playerItemDatagrid.columns;
+				var count :int =0;
+				for each(var c :DataGridColumn in columns){
+					if(count<4){
+						c.editable=false;
+					}
+					count++;
+				}
+				playerItemDatagrid.columns = columns;
+				
+			}
+			private function onSaveBtnClick():void{
+				var updateList : ArrayCollection = new ArrayCollection();
+				for each(var pi:PlayerItem in this.playerItemList){
+					if(pi.isUpdate!=null&&Constants.BOOLEAN_YES==pi.isUpdate){
+						updateList.addItem(pi);
+					}
+				}
+				if(updateList.length>0){
+					updateRo.modifyPlayerItems(model.gmUser,updateList);
+					initButtons();
+				}else{
+					Alert.show("must select at lest one of the item list to update!");
+				}
+			}
+			
+			private function onCanelBtnClick():void{
+				
+				initButtons();
+			}
+			private function selectHandler():void{
+				this.playerItem=playerItemDatagrid.selectedItem as PlayerItem;
+			}
+			
+			
+			private var type:int=0;
+			private function closeHandler(e:Event):void{
+				type=ComboBox(e.target).selectedItem.data;
+				if(type==0){
+					playerItemList.filterFunction=null;
+					playerItemList.refresh();
+				}else{
+					playerItemList.filterFunction=choiceType;
+					playerItemList.refresh();
+				}
+			
+			}
+			private function choiceType(item:Object):Boolean{
+				return item.type==type;
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getPlayerStrengthWeapeonList" result="getHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="modifyPlayerItems" result="init()" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:VBox height="100%" width="100%">
+	<mx:DataGrid id="playerItemDatagrid" dataProvider="{playerItemList}" itemClick="selectHandler()" width="1180" height="467">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="玩家物品ID"/>
+			<mx:DataGridColumn dataField="playerId" headerText="玩家ID"/>
+			<mx:DataGridColumn dataField="itemDisplayName" headerText="名称" width="150"/>
+			<mx:DataGridColumn dataField="itemId" headerText="系统物品ID"/>
+			<!--<mx:DataGridColumn dataField="pack" headerText="“true”已装备，“false”未装备" width="100">
+			<mx:itemRenderer>
+				<mx:Component>
+					<mx:Label text="{data.pack}" color="{data.pack==true?0x00FF00:0x000000}"/>
+				</mx:Component>
+			</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn dataField="isDefault" headerText="是否默认(“Y”默认，“N”非默认)"/>
+			
+			<mx:DataGridColumn dataField="validDateStr" headerText="购买时间" width="100"/>
+			<mx:DataGridColumn dataField="expireDateStr" headerText="expireDate" width="150"/>
+			<mx:DataGridColumn dataField="playerItemUnitType" headerText="消耗方式" width="80"/>
+			<mx:DataGridColumn dataField="quantity" headerText="数量" width="80">
+			<mx:itemRenderer>
+				<mx:Component>
+					<mx:Label text="{data.quantity}" color="{data.quantity>100?0xFF0000:0x000000}"/>
+				</mx:Component>
+			</mx:itemRenderer>
+			</mx:DataGridColumn>-->
+			<mx:DataGridColumn dataField="level" headerText="强化等级" width="80">
+			<mx:itemRenderer >
+				<mx:Component>
+					<mx:Label text="{data.level}" color="{data.level>5?0xFF0000:0x000000}"/>
+				</mx:Component>
+			</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn dataField="gunProperty2" headerText="gunProperty2" width="90"/>
+			<mx:DataGridColumn dataField="gunProperty3" headerText="gunProperty3" width="90"/>
+			<mx:DataGridColumn dataField="gunProperty4" headerText="gunProperty4" width="90"/>
+			<mx:DataGridColumn dataField="gunProperty5" headerText="gunProperty5" width="90"/>
+			<mx:DataGridColumn dataField="gunProperty6" headerText="gunProperty6" width="90"/>
+			<mx:DataGridColumn dataField="gunProperty7" headerText="gunProperty7" width="90"/>
+			<component:MyDataGridColumn dataField="isUpdate" headerText="isUpdate" itemRenderer="renderer.CheckBoxIsUpdateRenderer" width="60"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:ApplicationControlBar>	
+    	<mx:Button id="modifyBtn" label="modify" click="modifyPlayerItem()"/>
+    	<mx:Button id="saveBtn" label="save" click="onSaveBtnClick()"/>
+    	<mx:Button id="refreshBtn" label="refresh" click="init()"/>
+    	<mx:ComboBox dataProvider="{types}" width="150" change="closeHandler(event);"/>
+    </mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:VBox>

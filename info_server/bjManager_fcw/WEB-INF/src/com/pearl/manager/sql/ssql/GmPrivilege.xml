@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="GmPrivilege">
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="GmPrivilege" type="com.pearl.manager.pojo.GmPrivilege"/>
+ 	
+ 	<select id="selectPrivByGroupId" parameterClass="java.lang.Integer" resultClass="GmPrivilege">
+ 	 	select	p.ID			as id,
+ 				p.NAME			as name,
+ 				p.DESCRIPTION	as description,
+ 				p.PARENT		as parent
+ 		from GM_GROUP_PRIVILEGE gp 
+ 			left join GM_PRIVILEGE p
+ 			on gp.PRIVILEGE_ID = p.ID
+ 		where gp.GROUP_ID = #groupId#;
+ 	</select>
+ 	
+ 	<select id="selectPrivsByUserId" parameterClass="java.lang.Integer" resultClass="GmPrivilege">
+ 	 	select distinct 
+ 			p.ID			as id,
+ 			p.NAME			as name,
+ 			p.DESCRIPTION	as description,
+ 			p.PARENT		as parent
+ 		from GM_USER_GROUP ug, 
+ 			 GM_GROUP_PRIVILEGE gp, 
+ 			 GM_PRIVILEGE p
+ 		where ug.USER_ID = #userId# 
+ 			and gp.GROUP_ID = ug.GROUP_ID
+ 			and gp.PRIVILEGE_ID = p.ID
+ 	</select>
+</sqlMap>
+	

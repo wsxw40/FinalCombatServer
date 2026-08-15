@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysBannedWordMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysBannedWord" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="BANNED_WORD" property="bannedWord" jdbcType="VARCHAR" />
+    <result column="DELETED" property="deleted" jdbcType="VARCHAR" />
+    <result column="INCLUDE_IN_WORD" property="includeInWord" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, BANNED_WORD, DELETED, INCLUDE_IN_WORD
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_BANNED_WORD
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysBannedWord" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_BANNED_WORD where 1=1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_BANNED_WORD
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysBannedWord" >
+    insert into SYS_BANNED_WORD (ID, BANNED_WORD, DELETED, 
+      INCLUDE_IN_WORD)
+    values (#{id,jdbcType=INTEGER}, #{bannedWord,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}, 
+      #{includeInWord,jdbcType=VARCHAR})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_BANNED_WORD (ID, BANNED_WORD, DELETED, 
+      INCLUDE_IN_WORD)
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+	    (#{item.id,jdbcType=INTEGER}, #{item.bannedWord,jdbcType=VARCHAR}, #{item.deleted,jdbcType=VARCHAR}, 
+	      #{item.includeInWord,jdbcType=VARCHAR})
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysBannedWord" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_BANNED_WORD
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="bannedWord != null" >
+        BANNED_WORD,
+      </if>
+      <if test="deleted != null" >
+        DELETED,
+      </if>
+      <if test="includeInWord != null" >
+        INCLUDE_IN_WORD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bannedWord != null" >
+        #{bannedWord,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="includeInWord != null" >
+        #{includeInWord,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysBannedWord" >
+    update SYS_BANNED_WORD
+    <set >
+      <if test="bannedWord != null" >
+        BANNED_WORD = #{bannedWord,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        DELETED = #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="includeInWord != null" >
+        INCLUDE_IN_WORD = #{includeInWord,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysBannedWord" >
+    update SYS_BANNED_WORD
+    set BANNED_WORD = #{bannedWord,jdbcType=VARCHAR},
+      DELETED = #{deleted,jdbcType=VARCHAR},
+      INCLUDE_IN_WORD = #{includeInWord,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

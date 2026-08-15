@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysActivity">
+<typeAlias alias="SysActivity" type="com.pearl.o2o.pojo.SysActivity"/> 
+	<resultMap id="selectResult" class="SysActivity">
+		<result property="id" column="ID"/>
+		<result property="name" column="NAME"/>
+		<result property="title" column="TITLE"/>
+		<result property="startTime" column="START_TIME"/>
+		<result property="endTime" column="END_TIME"/>
+		<result property="value" column="VALUE"/>
+		<result property="targetNum" column="TARGET_NUM"/>
+		<result property="action" column="ACTION"/>
+		<result property="items" column="ITEMS"/>
+		<result property="theSwitch" column="SWITCH"/>
+		<result property="isDeleted" column="IS_DELETED"/>
+		<result property="path" column="PATH"/>
+		<result property="chracter_id" column="CHARACTER_ID"/>
+		<result property="achievement_action" column="ACHIEVEMENT_ACTION"/>
+		<result property="activityName" column="ACTIVITY_NAME"/>
+		<result property="description" column="DESCRIPTION"/>
+		<result property="withAward" column="WITH_AWARD"/>
+		<result property="unit" column="UNIT"/>
+		<result property="unitType" column="UNIT_TYPE"/>
+		<result property="backup" column="BACK_UP"/>
+	</resultMap>
+	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+		select * from SYS_ACTIVITY where IS_DELETED="N";
+	</select>
+	<update id="update" parameterClass="SysActivity">
+		update SYS_ACTIVITY
+			set `START_TIME`=#startTime#,
+				`END_TIME`=#endTime#,
+				`VALUE`= #value#,
+				`ITEMS`= #items#,
+				`TITLE`= #title#,
+				`TARGET_NUM`= #targetNum#,
+				`IS_DELETED`=#isDeleted#,
+				`SWITCH`=#theSwitch#,
+				`CHARACTER_ID`=#chracter_id#,
+				`ACHIEVEMENT_ACTION`=#achievement_action#,
+				`ACTIVITY_NAME`=#activityName#,
+				`UNIT`=#unit#,
+				`UNIT_TYPE`=#unitType#,
+				`BACK_UP`=#backup#
+			where `ID` = #id#;
+	</update>
+	<insert id="insert" parameterClass="SysActivity">
+		insert into SYS_ACTIVITY(NAME,TITLE,VALUE,TARGET_NUM,ACTION,ITEMS,SWITCH,PATH,`START_TIME`,END_TIME,IS_DELETED,
+				CHARACTER_ID,ACHIEVEMENT_ACTION,DESCRIPTION,WITH_AWARD,`UNIT`,`UNIT_TYPE`,`BACK_UP`) 
+			values(#name#,#title#,#value#,#targetNum#,#action#,#items#,#theSwitch#,#path#,#startTime#,#endTime#,
+						'N',#chracter_id#,#achievement_action#,#description#,#withAward#,#unit#,#unitType#,#backup#);
+			<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<!--  
+	<select id="selectUnSortedActivity"  resultMap="selectResult">
+		select * from SYS_ACTIVITY where IS_DELETED="N" and HAS_SORTED = "N" and END_TIME <![CDATA[ < ]]> now();
+	</select>
+	
+	<select id="selectFinishedActivity" resultMap="selectResult">
+		select * from SYS_ACTIVITY where IS_DELETED="N" and END_TIME <![CDATA[ < ]]> now();
+	</select>
+	
+	<select id="selectCurrent" parameterClass="java.lang.String" resultMap="selectResult">
+		select * from SYS_ACTIVITY where IS_DELETED="N" and END_TIME <![CDATA[ > ]]> now();
+	</select>
+	
+	<update id="updateSortedStatus" parameterClass="java.util.Map">
+		update SYS_ACTIVITY
+			set 
+				`HAS_SORTED`=#hasSorted#
+			where `ID` = #id#;
+	</update>
+	-->
+</sqlMap>

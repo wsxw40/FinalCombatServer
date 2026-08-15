@@ -1,0 +1,194 @@
+com.pearl.o2o.servlet.server.GetServerList
+		//zlm2015-10-9-匹配-服务器-开始
+		out.write(BinaryUtil.toByta(s.getServerType()));
+		//zlm2015-10-9-匹配-服务器-结束
+-->
+		//zlm2015-10-9-匹配-服务器-开始
+		//out.write(BinaryUtil.toByta(s.getServerType()));
+		//zlm2015-10-9-匹配-服务器-结束
+===================================================================
+com.pearl.o2o.servlet.server.GetPlayer
+        //剩余复活币数量
+		out.write(BinaryUtil.toByta(remainReliveCoinNum));
+        //玩家总战斗力
+		out.write(BinaryUtil.toByta(player.getMaxFightNum()));
+		//
+		int mateRank = getService.getQW_MateRank(playerId);
+        mateRank++;//这里不知道为什么从0开始算了。。。
+        out.write(BinaryUtil.toByta(mateRank));
+		//
+-->
+com.pearl.o2o.servlet.server.GetPlayer
+        //剩余复活币数量
+		out.write(BinaryUtil.toByta(remainReliveCoinNum));
+        //玩家总战斗力
+		out.write(BinaryUtil.toByta(player.getMaxFightNum()));
+		//
+		int mateRank = getService.getQW_MateRank(playerId);
+        mateRank++;//这里不知道为什么从0开始算了。。。
+        //			out.write(BinaryUtil.toByta(mateRank));
+		//
+=================================================================
+com.pearl.o2o.service.GetService
+	public SysItem joinPayment(SysItem si) throws Exception{
+		...
+		log.error(ExceptionMessage.SYS_ITEM_EMPTY_PRICE + si.getDisplayNameCN());
+		throw new Exception(ExceptionMessage.SYS_ITEM_EMPTY_PRICE + "id=" + si.getId());
+-->
+		log.error(ExceptionMessage.SYS_ITEM_EMPTY_PRICE + si.getDisplayNameCN());
+		//throw new Exception(ExceptionMessage.SYS_ITEM_EMPTY_PRICE + "id=" + si.getId());
+=================================================================
+com.pearl.o2o.servlet.server.StageClear
+	         //zlm2015-10-9-匹配-开始 
+            int isMatch =  r.readInt();
+            stageClearInfo.setIsMatch(isMatch);
+            //zlm2015-10-9-匹配-结束
+-->
+            //zlm2015-10-9-匹配-开始 
+            //			int isMatch =  r.readInt();
+            //			stageClearInfo.setIsMatch(isMatch);
+            //zlm2015-10-9-匹配-结束
+=================================================================
+com.pearl.o2o.servlet.server.StageQuit
+	int isMatch = r.readInt();//6为匹配
+-->
+	int isMatch = 0;//r.readInt();//6为匹配
+=================================================================
+com.pearl.o2o.utils.Converter
+public static String playerCharDataList(List<CharacterData> list){		
+	ctx.set("list", list);
+-->
+	//FIXME 这里写死代码限制角色出现不妥
+	ctx.set("list", list.stream().filter(p->p.getCharacterId()!=7).collect(Collectors.toList()));
+
+public static String playerCharacterList(List<Character> list,String selectIds,int size,int openSize,List<Character> bioListAndState,
+			List<SysItem> bioItemList){
+	ctx.set("list", list);
+-->
+    //FIXME 这里写死代码限制角色出现不妥
+    ctx.set("list", list.stream().filter(p -> p.getSysCharacter().getId() != 7).collect(Collectors.toList()));
+    
+public static String sysCharacterList(List<SysCharacter> list) {
+	ctx.set("list", list);
+-->
+	//FIXME 这里写死代码限制角色出现不妥
+	ctx.set("list", list.stream().filter(p->p.getId()!=7).collect(Collectors.toList()));
+
+public static String playerPackList(List<Character> list) {
+	ctx.set("list", list);
+-->
+	//FIXME 这里写死代码限制角色出现不妥
+	ctx.set("list", list.stream().filter(p->p.getSysCharacter().getId()!=7).collect(Collectors.toList()));
+	
+public static String characters(List<SysCharacter> characterlist) {
+	ctx.set("characterList", characterlist);
+-->
+    //FIXME 这里写死代码限制角色出现不妥
+    ctx.set("characterList", characterlist.stream().filter(p->p.getId()!=7).collect(Collectors.toList()));
+
+
+GetService
+getCharacterListById()
+	for(Integer id:characterIds){
+	    //FIXME 临时增加Start
+	    if(id==7){
+	        continue;
+	    }
+        //FIXME 临时增加End
+        
+getPlayerFightNumRankInTop()
+    if (chid != 0) {//0 表示综合战斗力
+		Character character = getService.getCharacterByCharacterId(playerId, Integer.parseInt(cid));
+		value = character.getFightNum();
+	} 
+-->
+	try {
+	    Character character = getService.getCharacterByCharacterId(playerId, Integer.parseInt(cid));
+	    value = character.getFightNum();
+	} catch (Exception e) {
+	    value = 0;
+	}
+
+getPlayerFightNumRankInTop()
+	if (chid != 0) {//0 表示综合战斗力
+		Character character = getService.getCharacterByCharacterId(playerId, Integer.parseInt(cid));
+		if(character==null)
+			return;
+		value = character.getFightNum();
+-->
+    if (chid != 0) {//0 表示综合战斗力
+		try {
+            Character character = getService.getCharacterByCharacterId(playerId, Integer.parseInt(cid));
+            value = character.getFightNum();
+        } catch (Exception e) {
+            value = 0;
+        }
+
+CommonUtil           
+get_Pvalue()
+	for (int i = 0; i < 7; i++) {
+-->
+	for (int i = 0; i < 6; i++) {
+	
+=============================================================================
+CombineStrength
+innerService()
+if (player.getRank()<4||player.getTutorial().charAt(2)!='2') 
+	return Converter.error(CommonMsg.FUNC_SIGN_ERROR);
+-->
+/*if (player.getRank()<4||player.getTutorial().charAt(2)!='2') 
+	return Converter.error(CommonMsg.FUNC_SIGN_ERROR);*/
+
+GetLuckyPackageToPlayer
+innerService()
+	if (player.getRank()<9||player.getTutorial().charAt(4)!='2') 
+		return Converter.error(CommonMsg.FUNC_SIGN_ERROR);
+-->
+	/*if (player.getRank()<9||player.getTutorial().charAt(4)!='2') 
+		return Converter.error(CommonMsg.FUNC_SIGN_ERROR);*/
+		
+=============================================================================
+CreateService
+multiRandomPinTu()
+//黄金彩盒有一定概率获得拼图
+-->
+//黄金彩盒有一定概率获得拼图
+playerGetPtWt=WSysConfigService.getJigsawProperty();
+		
+=============================================================================
+Constants
+final public static int[][] CHOICE_BOX = {
+		{4690,4692,4696,4698,4701,4669},
+		{4689,4693,4695,4699,4702,4670},
+		{4688,4691,4694,4697,4703,4729},
+		{4509,4512,4515,4518,4525,4527},
+-->
+final public static int[][] CHOICE_BOX = {
+		{4690,4692,4696,4698,4701,4669},
+		{4689,4693,4695,4699,4702,4670},
+		{4688,4691,4694,4697,4703,4729},
+		{4509,4513,4515,4518,4525,4527},
+
+final public static int[][] ADVANCED_LEVEL_PACKAGE={
+ { 125, 30, 1 },//强化部件		30
+            { 126, 3, 1 },//安定装置		3
+            { 4479, 25, 1 },//勋章		25
+            { 4505, 2, 1 },//改装装置		2
+            { 4486, 2, 1 },//武器属性石LV1		2
+            { 4521, 1, 1 },//服饰属性石LV1		1
+            { 4626, 1, 1 },//密码箱		1
+            { 4623, 1, 1 },//VIP保险柜		1
+            { 4305, 3, 2 },//VIP道具
+	};
+-->
+final public static int[][] ADVANCED_LEVEL_PACKAGE={
+ { 125, 30, 1 },//强化部件		30
+            { 126, 3, 1 },//安定装置		3
+            { 4479, 25, 1 },//勋章		25
+            { 4505, 2, 1 },//改装装置		2
+            { 4486, 2, 1 },//武器属性石LV1		2
+            { 4521, 1, 1 },//服饰属性石LV1		1
+            //{ 4626, 1, 1 },//密码箱		1
+            //{ 4623, 1, 1 },//VIP保险柜		1
+            //{ 4305, 3, 2 },//VIP道具
+	};

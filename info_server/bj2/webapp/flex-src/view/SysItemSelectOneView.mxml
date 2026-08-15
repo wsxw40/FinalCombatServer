@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="选择系统物品" width="550" height="578"
+	 showCloseButton="true" close="closeMe()" creationComplete="init()">
+<mx:Script>
+	<![CDATA[
+		import vo.SysItem;
+		import mx.rpc.events.ResultEvent;
+		import mx.managers.PopUpManager;
+		import mx.collections.ArrayCollection;
+		import common.Constants;
+		[Bindable]
+		private var typeList:ArrayCollection;
+		
+		private function closeMe():void{
+			PopUpManager.removePopUp(this);
+		}
+		
+		private function init():void{
+			getRo.getSysItemList(1);
+		}
+		
+		private function getSysItemListHandler(e:ResultEvent):void{
+			typeList=e.result as ArrayCollection;
+		}
+		
+		private function onCbChange():void{
+			getRo.getSysItemList(parseInt(cb.selectedItem.data));
+		}
+		
+		private function search():void{
+			if(typeList!=null && typeList.filterFunction==null){
+				typeList.filterFunction=filterSysItem;
+			}
+			typeList.refresh();
+		}
+		
+		private function filterSysItem(item:Object):Boolean{
+			var p:RegExp=/ /g;
+			var t:String=searchStr.text.replace(p,"");
+			if(t=="")return true;
+			if(SysItem(item).displayNameCN.indexOf(t)<0)return false;
+			return true;
+		}
+	]]>
+</mx:Script>
+<mx:RemoteObject id="getRo" destination="ro.get">
+	<mx:method name="getSysItemList" result="getSysItemListHandler(event)"/>
+</mx:RemoteObject>
+<mx:VBox horizontalAlign="center">
+	<mx:HBox >
+		<mx:ComboBox id="cb" change="onCbChange()" dataProvider="{Constants.typeArray}"/>
+		<mx:TextInput id="searchStr" width="200" change="search()"/>
+	</mx:HBox>
+	
+	<mx:DataGrid id="dg" dataProvider="{typeList}" width="100%" rowCount="17">
+		<mx:columns>
+			<mx:DataGridColumn headerText="系统物品ID" dataField="id"/>
+			<mx:DataGridColumn headerText="名称" dataField="displayNameCN" width="180"/>
+			<mx:DataGridColumn headerText="资源名" dataField="name"/>
+			<mx:DataGridColumn headerText="是否可强化" dataField="isStrengthen"/>
+		</mx:columns>
+	</mx:DataGrid>	
+	<mx:HBox>
+		<mx:Button id="okBtn" label="保存"/>
+		<mx:Button label="取消" click="closeMe()"/>
+	</mx:HBox>
+</mx:VBox>
+</mx:TitleWindow>

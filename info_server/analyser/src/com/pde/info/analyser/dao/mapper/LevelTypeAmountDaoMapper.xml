@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.LevelTypeAmountDao">
+
+	<resultMap id="StatisticResultMap" type="com.pde.info.analyser.pojo.LevelTypeAmountStatistic">
+		<result column="STATISTIC_DATE" property="statisticDate" jdbcType="VARCHAR" />
+		<result column="TEAM" property="team" jdbcType="INTEGER" />
+		<result column="TARGET" property="target" jdbcType="INTEGER" />
+		<result column="DELIVER" property="deliver" jdbcType="INTEGER" />
+		<result column="NEWTRAIN" property="newtrain" jdbcType="INTEGER" />
+		<result column="DESTROY" property="destory" jdbcType="INTEGER" />
+		<result column="HITBOSS" property="hitboss" jdbcType="INTEGER" />
+		<result column="KNIFE" property="knife" jdbcType="INTEGER" />
+		<result column="BLAST" property="blast" jdbcType="INTEGER" />
+		<result column="STREETBOY" property="streetboy" jdbcType="INTEGER" />
+		<result column="BIOCHEMICAL" property="biochemical" jdbcType="INTEGER" />
+		<result column="BOSS2" property="boss2" jdbcType="INTEGER" />
+		<result column="BIOCHEMICAL2" property="biochemical2" jdbcType="INTEGER" />
+		<result column="HITBOSS2" property="hitboss2" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="addLevelTypeAmount" parameterType="com.pde.info.analyser.pojo.LevelTypeAmount" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `INFO_LEVEL`(`LEVEL_ID`,`TYPE`,`STATISTIC_DATE`,`CREATE_DATE`)
+		VALUES ( #{levelId}, #{type}, DATE_FORMAT(NOW(), '%Y-%m-%d'), NOW())
+	</insert>
+
+	<select id="getStatistic" statementType="CALLABLE" resultMap="StatisticResultMap" parameterType="java.util.Map" >
+    	{
+	    	CALL P_LEVEL_TYPE_AMOUNT_SHOW (
+				#{startDate, mode=IN, jdbcType=VARCHAR},
+				#{endDate, mode=IN, jdbcType=VARCHAR}
+			)
+		}
+  	</select>
+
+</mapper>

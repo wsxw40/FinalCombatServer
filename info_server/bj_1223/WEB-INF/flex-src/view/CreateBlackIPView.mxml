@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" fontSize="12" 
+	label="Add BlackIP" title="Add BlackIP" showCloseButton="true" width="512" height="330" xmlns:vo="vo.*"
+	close="PopUpManager.removePopUp(this)">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import vo.BlackIP;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			[Bindable]
+			public function set blackIP(blackIP:BlackIP):void{
+			    this._blackIP=blackIP;
+			    if(blackIP.isBanned=="Y"){
+			    	isBanned.selectedIndex=0;
+			    } else if(blackIP.isBanned=="N"){
+			    	isBanned.selectedIndex=1;
+			    }
+			}
+			public function get blackIP():BlackIP{
+			    return this._blackIP;
+			}
+			[Bindable]
+            public var items:ArrayCollection = new ArrayCollection(
+                [ {label:"Yes", data:"Y"}, 
+                  {label:"No", data:"N"}]);
+            private function closeHandler(event:Event):void {
+                blackIP.isBanned = ComboBox(event.target).selectedItem.data;
+            }  
+		]]>
+	</mx:Script>
+	<vo:BlackIP id="_blackIP" ip="{ip.text}"  bannedTime="{parseInt(bannedTime.text)}" description="{description.text}" isBanned="Y"
+		/>
+	<mx:VBox height="255" width="480">
+		<mx:Form width="472" height="198">
+			<mx:FormHeading label="Please add a black IP" textAlign="left"/>
+			<mx:FormItem label="IP" width="366">
+				<mx:TextInput  width="100%" text="{blackIP.ip}" id="ip"/>
+			</mx:FormItem>
+			<mx:FormItem label="IsBanned" width="366">
+				<mx:ComboBox id="isBanned" dataProvider="{items}" width="150" close="closeHandler(event);"/>
+			</mx:FormItem>
+			<mx:FormItem label="BannedTime" width="366">
+				<mx:TextInput  width="100%" text="{blackIP.bannedTime}" id="bannedTime"/>
+			</mx:FormItem>
+			<mx:FormItem label="Description" width="366">
+				<mx:TextArea width="100%" text="{blackIP.description}" id="description">
+					
+				</mx:TextArea>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ApplicationControlBar width="469" textAlign="center">
+				<mx:Button label="退出" id="cancel"/>
+				<mx:Button label="保存" id="save"/>
+				<mx:Button label="清空" id="clear" click="{this.blackIP=new BlackIP();}" textAlign="center"/>
+		</mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:TitleWindow>

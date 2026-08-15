@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Channel">
+<typeAlias alias="Channel" type="com.pearl.o2o.pojo.Channel"/> 
+<resultMap id="selectChannelResult" class="Channel">
+		<result property="id" column="ID"/>
+		<result property="name" column="NAME"/>
+		<result property="serverId" column="SERVER_ID"/>
+		<result property="max" column="MAX_LEVEL"/>
+		<result property="min" column="MIN_LEVEL"/>
+		<result property="maxOnline" column="MAX_ONLINE"/>
+		<result property="channelId" column="CHANNEL_ID"/>
+		<result property="isTcp" column="IS_TCP"/>
+		<result property="maxTeam" column="MAX_TEAM_LEVEL"/>
+		<result property="minTeam" column="MIN_TEAM_LEVEL"/>
+	</resultMap>
+	<select id="select" parameterClass="java.util.Map" resultMap="selectChannelResult">
+		select * from CHANNEL c where c.SERVER_ID=#fid#;
+	</select>
+	<insert id="insert" parameterClass="Channel">
+		insert into CHANNEL(
+			NAME,
+			SERVER_ID,
+			MAX_LEVEL,
+			MIN_LEVEL,
+			MAX_ONLINE,
+			CHANNEL_ID,
+			IS_TCP,
+			MAX_TEAM_LEVEL,
+			MIN_TEAM_LEVEL
+		) values(
+			#name#,#serverId#,#max#,#min#,#maxOnline#,#channelId#,#isTcp#,#maxTeam#,#minTeam#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert> 
+	<update id="update" parameterClass="Channel" >
+		update CHANNEL set
+			NAME=#name#,SERVER_ID=#serverId#,MAX_LEVEL=#max#,MIN_LEVEL=#min#,MAX_ONLINE=#maxOnline#,CHANNEL_ID=#channelId#,
+			IS_TCP=#isTcp#,MAX_TEAM_LEVEL=#maxTeam#,MIN_TEAM_LEVEL=#minTeam#
+		where ID=#id#;	
+	</update> 
+	<delete id="delete" parameterClass="Channel">
+		delete from CHANNEL where CHANNEL_ID=#channelId# and SERVER_ID=#serverId#;
+	</delete>
+</sqlMap>

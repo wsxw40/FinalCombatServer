@@ -1,0 +1,110 @@
+JDK1.6升级到1.8后排序报错
+java.lang.IllegalArgumentException: Comparison method violates its general contract
+兼容办法
+1、Eclipse中的设置为:窗口->首选项->JAVA->已安装的JRE,在缺省的VM自变量中增加:
+-Djava.util.Arrays.useLegacyMergeSort=true
+2、windows在
+/tomcat/bin/catalina.bat中
+set "JAVA_OPTS=%JAVA_OPTS% %LOGGING_CONFIG%" -Djava.util.Arrays.useLegacyMergeSort=true
+linux在
+/tomcat/bin/catalina.sh中
+JAVA_OPTS="$JAVA_OPTS -Djava.util.Arrays.useLegacyMergeSort=true"
+==========================
+com.pearl.o2o.utils.ConfigurationUtil
+private static final ConfigurationFactory factory = new ConfigurationFactory("propertyConfig.xml"); 
+-->
+private static final ConfigurationFactory factory = new ConfigurationFactory(ConfigurationUtil.class.getResource("/").getPath() + "config/propertyConfig.xml");
+==========================
+com.pearl.o2o.manager.SmartyManager
+public String getEncodedBody(String template, Context context) throws TemplateException{
+...
+	        StringWriter writer = new StringWriter();
+            Template tt = e.getTemplate(template);
+            if(ConfigurationUtil.SWITCH_DYNAMIC_TEMPLATE.getIsOn() && tt.isUpdated()){
+            	//only the first thread can initliaze the engine
+            	if(lock.tryLock()){
+            		try{
+            			LOG.debug("reload template engine!");
+            			initliazeEngine(templatePath);
+            		}finally{
+            			lock.unlock();
+            		}
+            	}
+            	tt = e.getTemplate(template);
+            }
+
+            tt.merge(context, writer);
+            return writer.toString();
+...
+}
+-->
+public String getEncodedBody(String template, Context context) throws TemplateException{
+...
+	        /*StringWriter writer = new StringWriter();
+            Template tt = e.getTemplate(template);
+            if(ConfigurationUtil.SWITCH_DYNAMIC_TEMPLATE.getIsOn() && tt.isUpdated()){
+            	//only the first thread can initliaze the engine
+            	if(lock.tryLock()){
+            		try{
+            			LOG.debug("reload template engine!");
+            			initliazeEngine(templatePath);
+            		}finally{
+            			lock.unlock();
+            		}
+            	}
+            	tt = e.getTemplate(template);
+            }
+
+            tt.merge(context, writer);
+            return writer.toString();*/
+            return Smarty4jUtil.get(template, context);
+...
+}
+============================================================================
+com.pearl.o2o.pojo.BannedWord
+	@Override
+	public int compare(BannedWord arg0, BannedWord arg1) {
+        		if(arg0.getBannedWord().length()>arg1.getBannedWord().length())
+        			return -1;
+        		else 
+        			return 1;
+	} 
+-->
+		@Override
+	public int compare(BannedWord arg0, BannedWord arg1) {
+        return arg0.getBannedWord().length() - arg1.getBannedWord().length();
+        //		if(arg0.getBannedWord().length()>arg1.getBannedWord().length())
+        //			return -1;
+        //		else 
+        //			return 1;
+	}
+=================================================================================
+com.pearl.o2o.utils.ConfigurationUtil
+增加
+public static String TMP_FILE_DIR = config.getString("tmpFileDir.path");
+=================================================================================
+com.pearl.o2o.nosql.impl.Redis
+    public void init(){//this method should be called in spring
+		LOG.info("launch jedis " + host + ":" + port);
+		pool = new JedisPool(cfg, host, port);
+		LOG.info("jedis init successfully");
+	}
+-->
+    public void init(){//this method should be called in spring
+		LOG.info("launch jedis " + host + ":" + port);
+		pool = new JedisPool(new JedisPoolConfig(), host, port);
+		LOG.info("jedis init successfully");
+	}
+	
+	public void batchIncr(List<String> keys)throws Exception{
+		...
+			p.execute();
+-->
+			p.exec();
+	
+	public void batchIncrBy(Map<String,Integer> map)
+		...
+			p.execute();
+-->
+			p.exec();
+=================================================================================

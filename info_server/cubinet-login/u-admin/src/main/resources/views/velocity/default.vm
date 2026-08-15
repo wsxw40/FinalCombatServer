@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="Pragma" CONTENT="no-cache">
+    <meta http-equiv="Cache-Control" CONTENT="no-cache">
+    <meta http-equiv="Expires" CONTENT="0">
+
+    <title></title>
+
+    <base href="${request.contextPath}/">
+
+    <link rel="stylesheet" type="text/css" href="resources/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="resources/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="resources/jsoneditor/jsoneditor.css">
+    <script type="text/javascript" src="resources/jquery-1.7.2.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/easyui/jquery.easyui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/easyui/locale/easyui-lang-zh_CN.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/highcharts/js/highcharts.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/highcharts/js/highcharts-more.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/highcharts/js/themes/dark-blue.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="resources/jsoneditor/jsoneditor.js"></script>
+</head>
+<body>
+</body>
+</html>
+
+

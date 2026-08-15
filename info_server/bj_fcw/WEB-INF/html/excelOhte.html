@@ -1,0 +1,181 @@
+<html>
+	<head>
+		<title>CHILDREN GM TOOLS</title>
+	</head>
+	<!--<script type="text/javascript" src="js/jquery-1.7.2.js"></script>-->
+	<script type="text/javascript">
+	function ajaxFileUpload(obj) {
+		
+		if($("#fileToUpload").val().length<=0){alert("请选择一个文件上传，注意名称别包含非法字符哦\r\n【如:SYS_ITEM.xls、SYS_ONLINE_AWARD.xls】");return false;}
+		$("#loading").ajaxStart(function() {
+			$(this).show();
+		}).ajaxComplete(function() {
+			$(this).hide();
+			$(obj).removeAttr("disabled");
+		});
+		actionTime();
+		//fileToUpload
+		$.ajaxFileUpload({  
+			url : './cindex/upload',
+			secureuri : false,
+			fileElementId : 'fileToUpload',
+			dataType : 'json',
+			data : {},
+			success : function(data, status) {
+				endTime();
+				if(data.errorFileName){
+					alert("上传的文档内部格式好像有点问题哦，单击右边链接，下载查看该文档。");
+					$("#errorFileName").attr("href","./cindex/dataOhte?downFile=1&tableName="+data.errorFileName);
+					$("#errorFileName").html(data.errorFileName);    
+				}else{
+					if(data.msg) {
+						alert(data.msg);
+						$("#errorFileName").attr("href","");
+						$("#errorFileName").html("");    
+					}
+				} 
+				
+			},
+			error : function(data, status, e) {
+				endTime();
+				alert('上传出现问题~');
+			}
+		})
+		return false;
+	}
+	function ajaxFileDown(obj){
+		var form=$("<form>");
+
+		form.attr("id","form1");
+		form.attr("style",'display:none');
+		form.attr("target","");
+		form.attr("method","post");
+		form.attr("action","./cindex/dataOhte");
+		
+		var input1 = $("<input>");
+		
+		input1.attr("type","hidden");
+		input1.attr("name","tableName");
+		input1.attr("value",tbName);
+		 
+		var input2 = $("<input>");
+		input2.attr("type","hidden");
+		input2.attr("name","downFile");
+		input2.attr("value","1");
+		
+		form.append(input1);
+		form.append(input2);
+		$("body").append(form);
+		form.submit();
+		return false;
+	}
+
+	function syncache(obj){
+		$(obj).attr("disabled","true");
+		$.ajax({
+				type:'post',
+				dataType:'text',
+				url:'./gm/SynCacheServlet',
+				data:'{}',
+				cache:false, 
+				success:function(msg) 
+				{ 
+					$(obj).removeAttr("disabled");
+					alert("同步缓存启动成功，喝口水稍等几分钟后生效...\r\n下次执行间隔“15分钟”小于该数值不会再次进行同步");
+				}
+			});
+	}
+	function delHistory(obj,fileName){
+			$(obj).attr("disabled","true");
+			$.ajax({    
+				type:'post',
+				dataType:'json',
+				url:'./cindex/dataOhte?delExlFile='+fileName,
+				data:'{}',
+				cache:false, 
+				success:function(msg) 
+				{ 
+					// alert(msg["msg"]);
+					if(msg["msg"]){
+						$(obj).removeAttr("disabled");
+						$(obj).parent().parent().remove();
+					}else{
+						alert("error");
+					}
+				},error:function(msg){
+					alert("exception");   
+				}	
+			});
+		return false;
+	}
+	function exlHistory(obj){
+		$(obj).attr("disabled","true");
+		$div = $("#historyDiv");
+		$("#historyDiv").fadeIn(100);
+			$.ajax({
+				type:'post',
+				dataType:'json',
+				url:'./cindex/dataOhte?lessUploadOrDownFileList=1',
+				data:'{}',
+				cache:false, 
+				success:function(msg) 
+				{ 
+					$div.css("color","black");
+					var table = "<table class='table table-bordered table-striped' width=100% style='font-size:12px'>";
+					for(var key in msg){
+						for(var k2 in msg[key]){
+							var value = msg[key][k2].split("@");
+							fontUpload = "<font style='color:red'>";//
+							table+="<thead><tr><td><span class='label'>"+value[0]+"</span></td><td>"+(k2=='UPLOAD'?"<span class='label label-warning'>上传时间:"+value[1]+"</span>":"<span class='label' style='margin-left:-50px'>下载时间:"+value[1]+"</span>")+"</td><td><a href='./cindex/dataOhte?downFile=1&tableName="+value[2]+"'><i class='icon-download-alt'></i>下载</a> &nbsp; &nbsp; <a name='delHistory' href='javascript:void(0)' onclick='delHistory(this,\""+value[2]+"\")'><i class='icon-remove'></i>删除</a>"+"</td></tr></thead>";
+						}
+					}
+					table+="</table>";
+					$div.html(table);
+
+					$(obj).removeAttr("disabled");
+				}
+			});
+		
+
+		return false;
+	}
+	function setWindowName(name){
+		$("#tbNameShow").html(name);
+	}
+	var timeId=0;
+	var time=0; 
+	function actionTime(){
+		endTime(timeId); 
+		time=0;
+		timeId=setInterval(function(){$("#loadingNumber").html(""+(time++)+"");},1000);
+	}
+	function endTime(){
+		clearInterval(timeId);
+	}
+</script>
+	<style>
+		#button{border:1px solid black;width:80px;height:17px;;color:black;font-size:13px}
+	</style>
+	<body >  
+		<div class="widget-title" style="height:20px;width:100%;border-top:0px solid black;border-bottom:2px solid black;margin-bottom:3px;color:black;font-weight:bold;font-size:15px" align="center"><span id="tbNameShow" class="label label-important">title</span></div>
+		</br>
+	<form name="form" id="form1" action="" method="POST" enctype="multipart/form-data">
+		<input id="fileToUpload" type="file" size=60 name="fileToUpload" class="input" style="border:1px solid black;font-size:13px;width:230px;height:25px;"/>
+		&nbsp;
+		<button class="button" id="button" onclick="return ajaxFileUpload(this);">
+			上传</button>
+		&nbsp;
+		<button class="button" id="button" onclick="return ajaxFileDown(this);">下载</button>
+		&nbsp;
+		<button class="button" id="button" onclick="return syncache(this);">同步</button>
+		&nbsp;
+		<button class="button" id="button" onclick="return exlHistory(this);">历史</button>
+		&nbsp;
+		<img id="loading" src="img/loading.gif" style="display: none;">
+		<font id="loadingNumber" color="olorblack"></font>
+		&nbsp;<br/>
+		<a href="" id="errorFileName" style="font-size:17px;font-weight:bold"></a>
+	</form>
+	<div id="historyDiv" class="widget-title" style="height:300px;padding-left:-1px;overflow:auto;display:none;margin-top:13px"></div>
+	</body>
+</html>

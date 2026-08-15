@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="Message">
+	<typeAlias alias="Message" type="com.pearl.o2o.pojo.Message" />
+	<resultMap id="selectResult" class="Message">
+		<result property="id" column="ID"/>
+		<result property="senderId" column="SENDER_ID"/>
+		<result property="receiverId" column="RECEIVER_ID"/>			
+		<result property="subject" column="SUBJECT"/>		
+		<result property="content" column="CONTENT"/>
+		<result property="createdTime" column="CREATED_TIME"/>
+		<result property="open" column="OPEN"/>	
+		<result property="sender" column="SENDER"/>
+		<result property="messageModeId" column="MESSAGE_MODE_ID"/>	
+		<result property="playerItemId" column="PLAYER_ITEM_ID"/>
+		<result property="playerItemName" column="PLAYER_ITEM_NAME"/>
+	</resultMap>
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+		select
+			m.ID,
+			m.SENDER_ID,
+			p.NAME as SENDER,
+			m.RECEIVER_ID,
+			m.SUBJECT,
+			m.CONTENT,
+			m.CREATED_TIME,
+			m.OPEN,
+      		n.PLAYER_ITEM_ID,
+  			n.PLAYER_ITEM_NAME,
+			n.ID as MESSAGE_MODE_ID
+		 from MESSAGE m
+		 left outer join (
+  			select mm.ID,mm.MESSAGE_ID,item.PLAYER_ITEM_ID,item.PLAYER_ITEM_NAME
+  			from MESSAGE_ITEM mm
+  			left outer join (
+    			select
+      			pi.ID as PLAYER_ITEM_ID,
+      			si.DISPLAY_Name as PLAYER_ITEM_NAME
+    			from SYS_ITEM si
+    			left outer join PLAYER_ITEM pi on si.ID=pi.ITEM_ID
+  			) item on mm.PLAYER_ITEM_ID=item.PLAYER_ITEM_ID
+  		) n on m.ID=n.MESSAGE_ID
+  		left outer join PLAYER p on m.SENDER_ID=p.ID
+		where m.RECEIVER_ID=#receiverId#
+		<dynamic>
+    		<isNotNull prepend="and" property="messageId">
+				m.ID =  #messageId#
+			</isNotNull>
+		</dynamic>
+		and m.IS_DELETED='N'
+		and TO_DAYS(NOW()) - TO_DAYS(m.CREATED_TIME) <![CDATA[ <= ]]>30
+		order by m.CREATED_TIME desc;
+	</select>
+    <insert id="insert" parameterClass="Message">
+    	insert into MESSAGE(
+    	SENDER_ID,
+    	RECEIVER_ID,
+    	SUBJECT,
+    	CONTENT,
+    	CREATED_TIME
+    	)
+    	values(
+   		#senderId#,
+   		#receiverId#,
+   		#subject#,
+   		#content#,
+   		now()
+   		);
+   		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+    </insert>
+    <insert id="insertMessageItem" parameterClass="Message">
+    	insert into MESSAGE_ITEM(
+    	MESSAGE_ID,
+    	PLAYER_ITEM_ID
+    	)
+    	values(
+   		#id#,
+   		#playerItemId#
+   		);
+   		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+    </insert>
+    <update id="delete" parameterClass="java.lang.Integer">
+   		update MESSAGE m set m.IS_DELETED='Y' where m.ID=#messageID#;
+    </update>
+    <update id="updateMessageOpen" parameterClass="java.lang.Integer">
+   		update MESSAGE m set m.OPEN='Y' where m.ID=#messageID#;
+    </update>
+    <delete id="deleteMessageItem" parameterClass="java.lang.Integer">
+    	delete from MESSAGE_ITEM where MESSAGE_ID=#value#;
+    </delete>
+</sqlMap>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="558" height="454" xmlns:vo="vo.*">
+	<mx:Script>
+		<![CDATA[
+			import vo.Server;
+			[Bindable]
+			public function set server(server:Server):void{
+			    this._server=server;
+			}
+			public function get server():Server{
+			    return this._server;
+			}
+		]]>
+	</mx:Script>
+	
+	<vo:Server id="_server" max="{parseInt(max.text)}" min="{parseInt(min.text)} " name="{sname.text}" maxOnline="{parseInt(maxOnline.text)}"
+		isNew="{parseInt(isNew.text)}" gameType="{gameType.text}" minFightNum="{parseInt(minFightNum.text)}"/>
+	<mx:VBox width="528" height="395">
+		<mx:Form width="519" height="338">
+			<mx:FormHeading label="Please Add A Server" textAlign="left"/>
+			<mx:FormItem label="name" width="339">
+				<mx:TextInput  width="100%" id="sname"  text="{server.name}"/>
+			</mx:FormItem>
+			<mx:FormItem label="max" width="340">
+				<mx:TextInput  width="260" id="max" text="{server.max}"/>
+			</mx:FormItem>
+			<mx:FormItem label="min" width="340">
+				<mx:TextInput  width="260" id="min" text="{server.min}"/>
+			</mx:FormItem>
+			<mx:FormItem label="maxOnline" width="340">
+				<mx:TextInput  width="260" text="{server.maxOnline}" id="maxOnline"/>
+			</mx:FormItem>
+			<mx:FormItem label="isNew" width="340">
+				<mx:TextInput  width="260" text="{server.isNew}" id="isNew"/>
+			</mx:FormItem>
+			<mx:FormItem label="minFightNum" width="340">
+				<mx:TextInput  width="260" text="{server.minFightNum}" id="minFightNum"/>
+			</mx:FormItem>
+			<mx:FormItem label="gameType" width="340">
+				<mx:TextInput  width="260" text="{server.gameType}" id="gameType"/>
+			</mx:FormItem>
+			<!--//zlm2015-10-9-匹配-服务器-开始 -->
+			<mx:FormItem label="serverType" width="340">
+				<mx:TextInput  width="260" text="{server.serverType}" id="serverType"/>
+			</mx:FormItem>
+			<!--//zlm2015-10-9-匹配-服务器-结束 -->
+		</mx:Form>
+		<mx:ApplicationControlBar width="376" height="40">
+			<mx:Button label="退出" id="close"/>
+			<mx:Button label="保存" id="save"/>
+			<mx:Button label="清空" id="clear" click="{this.server=new Server();}"/>
+		</mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:TitleWindow>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import utils.ValidateUtils;
+			import mx.utils.StringUtil;
+			import mx.controls.Alert;
+			import utils.ColumnFactory;
+			import vo.Player;
+			import mx.collections.ArrayCollection;
+			import vo.GmUser;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+			[Bindable]
+			public var playerList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public var player:Player=new Player();
+			private function init():void{
+				initBtn();
+				playerDataGrid.columns=ColumnFactory.getPlayerColumns(false);
+			}
+			private function initBtn():void{
+		 		playerDataGrid.selectable=true;
+			}
+			private function onSaveBtnClick():void{
+//				updateRo.updatePlayer(this.playerList);
+				initBtn();
+				playerDataGrid.editable=false;
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+Alert.show(evt.fault.faultString);
+//				Alert.show("操作失败，请恢复默认装备再试");
+			}
+			private function fuzzySelectByUserNameHandler(evt:ResultEvent):void{
+			 	this.playerList=evt.result as ArrayCollection;
+			 	if(null == this.playerList){
+		 			this.playerListPanel.title = "玩家列表(共0项)";
+		 		} else {
+		 			this.playerListPanel.title = "玩家列表(共" + this.playerList.length + "项)";
+		 		}
+			}
+			private function defaultHandle(evt:ResultEvent):void{
+			 	Alert.show("转移成功！");
+			}
+			private function onSearchBtnClick():void{
+				this.player = new Player();
+				//this.searchList= new ArrayCollection();
+				if(StringUtil.trim(xunleiId.text)){
+					getRo.fuzzySelectByUserName(StringUtil.trim(xunleiId.text));
+				} else if(StringUtil.trim(playerName.text) == "*"){
+					//searchList = playerList;
+					//getRo.getPlayerList();
+//					getRo.fuzzySelectByName(StringUtil.trim(""));
+				}else{
+					getRo.fuzzySelectByName(StringUtil.trim(playerName.text));
+				}
+			}
+			private function fuzzySelectByNameHandler(evt:ResultEvent):void{
+			 	this.playerList=evt.result as ArrayCollection;
+			 	if(null == this.playerList){
+		 			this.playerListPanel.title = "玩家列表(共0项)";
+		 		} else {
+		 			this.playerListPanel.title = "玩家列表(共" + this.playerList.length + "项)";
+		 		}
+			}
+			private function selectHandler():void{
+				var player:Player=playerDataGrid.selectedItem as Player;
+				if(player.userName.indexOf("xldcf")!=-1){
+					Alert.show("迅雷ID包含xldcf字样，不能修改");
+				}else{
+		 		var tempId:int = player.id;
+		 		getRo.getPlayerByIdForXunlei(tempId.toString());
+		 		}
+		 	}
+		 	private function getPlayerByIdHandler(evt:ResultEvent):void{
+				this.player = (evt.result as ArrayCollection).getItemAt(0) as Player;
+				saveChangeBtn.enabled=true;
+				xunlei.editable=true;
+			}
+			
+			private function saveChange():void{
+				var newId:String=StringUtil.trim(this.xunlei.text);
+				if(newId.indexOf("xldcf")==-1){
+					Alert.show("新的迅雷ID不包含xldcf字样，不能修改");
+				}else{
+					player.userName = StringUtil.trim(this.xunlei.text);
+					updateRo.updateXunleiId(gmUser,this.player);
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getPlayerByIdForXunlei" result="getPlayerByIdHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="fuzzySelectByName" result="fuzzySelectByNameHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="fuzzySelectByUserName" result="fuzzySelectByNameHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update" showBusyCursor="true">
+		<mx:method name="updateXunleiId" result="defaultHandle(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox width="872">
+		<mx:ApplicationControlBar width="854" >	
+				<mx:Label text="Xunlei ID"/>
+				<mx:TextInput id="xunleiId" />
+				<mx:Label text="{resourceManager.getString('Language','label.NickName')}"/>
+				<mx:TextInput id="playerName" />
+				<mx:Button id="searchBtn"  label="{resourceManager.getString('Language','button.Search')}"  click="onSearchBtnClick()"/>	
+	    </mx:ApplicationControlBar> 
+	</mx:HBox>
+	
+	<mx:HBox>
+		 <mx:Label text="{resourceManager.getString('Language','label.AlertData')}" color="red">
+		 </mx:Label> 
+	</mx:HBox>
+
+	<mx:HBox height="100%" width="100%">
+		<mx:Panel title="{resourceManager.getString('Language','label.PlayerList')}" width="461" height="100%" id="playerListPanel">
+			<component:MyDataGrid id="playerDataGrid" dataProvider="{playerList}" itemClick="selectHandler()" lockedColumnCount="3" 
+			  width="447" height="100%" editable="false" >
+			</component:MyDataGrid>
+		</mx:Panel>
+		<mx:Panel title="{resourceManager.getString('Language','label.PlayerInfo')}" height="100%" width="30%">
+				<!--<mx:Form>
+					<mx:FormItem label="玩家ID:">
+						<mx:Label id="pid" text="{player.id}"/>
+					</mx:FormItem>
+				</mx:Form>-->
+				<mx:Form>
+					<mx:FormItem label="XunleiId:">
+						<mx:TextInput id="xunlei" text="{player.userName}" editable="false"/>
+					</mx:FormItem>
+				
+				</mx:Form>					
+			<mx:Button id="saveChangeBtn" label="{resourceManager.getString('Language','button.Save')}" click="saveChange();" enabled="false"/>
+		</mx:Panel>
+	</mx:HBox>
+</mx:VBox>

@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+																							<!-- 枪械类11 -->
+<bean id="blueMapRootMenu11"  class="com.pearl.o2o.pojo.MeltingMenu">
+        <property name="children">
+         <list>
+	         <ref bean="gunBlueMapList" />
+         </list>
+        </property>
+   </bean>
+ <bean id="gunBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="469" />
+       <property name="children">
+         <list>
+         	<ref bean="ch1GunBlueMapList" />
+         	<ref bean="ch2GunBlueMapList" />
+         	<ref bean="ch3GunBlueMapList" />
+         	<ref bean="ch4GunBlueMapList" />
+         	<ref bean="ch5GunBlueMapList" />
+         	<ref bean="ch6GunBlueMapList" />
+         	<ref bean="ch7GunBlueMapList" />   
+         </list>
+        </property>
+   </bean>
+   <bean id="ch1GunBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="470" />
+       <property name="children">
+         <list>
+         	<ref bean="hmGunBlueMap" />
+         </list>
+        </property>
+   </bean>
+   <bean id="hmGunBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="471" />
+ 	<property name="itemId" value= "5150" />
+   </bean>
+   
+   <bean id="ch2GunBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="472" />
+       <property name="children">
+         <list>
+         	<ref bean="fsGunBlueMap" />
+         </list>
+        </property>
+   </bean>
+   <bean id="fsGunBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="473" />
+	 	<property name="itemId" value= "5151" />
+   </bean>
+   
+   <bean id="ch3GunBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="474" />
+       <property name="children">
+         <list>
+         	<ref bean="jsGunBlueMap" />
+         </list>
+        </property>
+   </bean>
+   <bean id="jsGunBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="475" />
+	 	<property name="itemId" value= "5153" />
+   </bean>
+   
+   <bean id="ch4GunBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="476" />
+       <property name="children">
+         <list>
+         	<ref bean="ctGunBlueMap" />
+         </list>
+        </property>
+   </bean>
+   <bean id="ctGunBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="477" />
+	 	<property name="itemId" value= "5152" />
+   </bean>
+   
+   <bean id="ch5GunBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="478" />
+       <property name="children">
+         <list>
+         	<ref bean="ltGunBlueMap" />
+         </list>
+        </property>
+   </bean>
+   <bean id="ltGunBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="479" />
+	 	<property name="itemId" value= "5154" />
+   </bean>
+   
+   <bean id="ch6GunBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="480" />
+       <property name="children">
+         <list>
+        	 <ref bean="lszGunBlueMap" />
+         </list>
+        </property>
+   </bean>
+   <bean id="lszGunBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="481" />
+	 	<property name="itemId" value= "5155" />
+   </bean>
+   
+   
+   <bean id="ch7GunBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="601" />
+       <property name="children">
+         <list>
+         	<ref bean="gcbGunBlueMap" />
+         </list>
+        </property>
+   </bean>
+   <bean id="gcbGunBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="602" />
+	 	<property name="itemId" value= "5386" />
+   </bean>
+
+
+																							<!-- 枪械类12 -->
+<bean id="blueMapRootMenu12"  class="com.pearl.o2o.pojo.MeltingMenu">
+   <property name="children">
+         <list>
+	         <ref bean="gunBlueMapList2" />
+         </list>
+        </property>
+   </bean>
+ <bean id="gunBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="590" />
+       <property name="children">
+         <list>
+         	<ref bean="ch1GunBlueMapList2" />
+         	<ref bean="ch2GunBlueMapList2" />
+         	<ref bean="ch3GunBlueMapList2" />
+         	<ref bean="ch4GunBlueMapList2" />
+         	<ref bean="ch5GunBlueMapList2" />
+         	<ref bean="ch6GunBlueMapList2" />
+         	<ref bean="ch7GunBlueMapList2" />   
+         </list>
+        </property>
+   </bean>
+   <bean id="ch1GunBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="470" />
+       <property name="children">
+         <list>
+         	<ref bean="hmGunBlueMap2" />					
+         </list>
+        </property>
+   </bean>
+    <bean id="hmGunBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="6024" />
+	 	<property name="itemId" value= "6024" />
+  	</bean>
+   
+   <bean id="ch2GunBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="472" />
+       <property name="children">
+         <list>
+         	<ref bean="fsGunBlueMap2" />					
+         </list>
+        </property>
+   </bean>
+    <bean id="fsGunBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="6025" />
+	 	<property name="itemId" value= "6025" />
+   </bean>
+   
+   <bean id="ch3GunBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="474" />
+       <property name="children">
+         <list>
+         	<ref bean="jsGunBlueMap2" />					
+         </list>
+        </property>
+   </bean>
+    <bean id="jsGunBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="6027" />
+	 	<property name="itemId" value= "6027" />
+   </bean>
+   
+   <bean id="ch4GunBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="476" />
+       <property name="children">
+         <list>
+         	<ref bean="ctGunBlueMap2" />					
+         </list>
+        </property>
+   </bean>
+    <bean id="ctGunBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="6026" />
+	 	<property name="itemId" value= "6026" />
+   </bean>
+   
+   <bean id="ch5GunBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="478" />
+       <property name="children">
+         <list>
+         	<ref bean="ltGunBlueMap2" />					
+         </list>
+        </property>
+   </bean>
+    <bean id="ltGunBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="6028" />
+	 	<property name="itemId" value= "6028" />
+   	</bean>
+   
+   <bean id="ch6GunBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="480" />
+       <property name="children">
+         <list>
+        	  <ref bean="lszGunBlueMap2" />					
+         </list>
+        </property>
+   </bean>
+    <bean id="lszGunBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="6029" />
+	 	<property name="itemId" value= "6029" />
+   </bean>
+   
+   <bean id="ch7GunBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+ 	<property name="name" value="601" />
+       <property name="children">
+         <list>
+         	<ref bean="gcbGunBlueMap2" />					
+         </list>
+        </property>
+   </bean>
+	<bean id="gcbGunBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+	 	<property name="name" value="6030" />
+	 	<property name="itemId" value= "6030" />
+   </bean>
+
+
+
+
+																					<!-- 服装类21 -->
+
+<bean id="blueMapRootMenu21"  class="com.pearl.o2o.pojo.MeltingMenu">
+        <property name="children">
+         <list>
+	         <ref bean="dressBlueMapList" />
+         </list>
+        </property>
+   </bean>
+   <bean id="dressBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="482" />
+    <property name="children">
+	         <list>
+	         	<ref bean="clothBlueMapList" />
+	         	<ref bean="hatBlueMapList" />
+	         	<ref bean="ornamentBlueMapList" />
+	         </list>
+    </property>    
+   </bean>
+   <bean id="clothBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="483" />
+   </bean>
+   <bean id="hatBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="484" />
+   </bean>
+   <bean id="ornamentBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="485" />
+   </bean>
+  
+
+
+
+																						<!-- 素材类31 -->
+	<bean id="blueMapRootMenu31"  class="com.pearl.o2o.pojo.MeltingMenu">
+        <property name="children">
+         <list>
+	         <ref bean="materialBlueMapList" />
+         </list>
+        </property>
+  	 </bean>
+ 
+   
+   <bean id="materialBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="486" />
+       <property name="children">
+         <list>
+        	<ref bean="lv1MtlBlueMapList" />
+        	<ref bean="lv2MtlBlueMapList" />
+         	<ref bean="lv3MtlBlueMapList" />
+         </list>
+       </property>
+   </bean>
+   
+   
+   <bean id="lv1MtlBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="487" />
+       <property name="children">
+         <list>
+         	<ref bean="nmrkMtlBlueMap" />
+        	<ref bean="zrjzMtlBlueMap" />
+        	<ref bean="fwzdMtlBlueMap" />
+         	<ref bean="thjMtlBlueMap" />
+         	<ref bean="dhjjMtlBlueMap" />
+         </list>
+       </property>
+   </bean>
+   
+   <bean id="nmrkMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="492" />
+       <property name="itemId" value= "5184" />
+   </bean>   
+   <bean id="zrjzMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="488" />
+       <property name="itemId" value= "5185" />
+   </bean>
+   <bean id="fwzdMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="489" />
+       <property name="itemId" value= "5186" />
+   </bean>
+   <bean id="thjMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="490" />
+       <property name="itemId" value= "5187" />
+   </bean>
+   <bean id="dhjjMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="491" />
+       <property name="itemId" value= "5188" />
+   </bean>
+   
+   
+   <bean id="lv2MtlBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="493" />
+       <property name="children">
+         <list>
+        	<ref bean="djMtlBlueMap" />
+        	<ref bean="sdjgMtlBlueMap" />
+         	<ref bean="jdjgMtlBlueMap" />
+         	<ref bean="mzgMtlBlueMap" />
+         	<ref bean="zxjgMtlBlueMap" />
+         	<ref bean="bcjgMtlBlueMap" />
+         	<ref bean="jcjgMtlBlueMap" />
+         	<ref bean="tdjgMtlBlueMap" />
+         	<ref bean="jzjgMtlBlueMap" />
+         	<ref bean="dtjgMtlBlueMap" />
+         	<ref bean="ptjgMtlBlueMap" />
+         	<ref bean="xtjgMtlBlueMap" />
+         	<ref bean="qtjgMtlBlueMap" />
+         	<ref bean="bjjgMtlBlueMap" />
+         	<ref bean="bxjgMtlBlueMap" />
+         </list>
+       </property>
+   </bean>
+   <bean id="djMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="494" />
+       <property name="itemId" value= "5130" />
+   </bean>
+   <bean id="sdjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="495" />
+       <property name="itemId" value= "5131" />
+   </bean>
+   <bean id="jdjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="496" />
+       <property name="itemId" value= "5132" />
+   </bean>
+   <bean id="mzgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="497" />
+       <property name="itemId" value= "5133" />
+   </bean>
+   <bean id="zxjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="498" />
+       <property name="itemId" value= "5134" />
+   </bean>
+   <bean id="bcjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="499" />
+       <property name="itemId" value= "5135" />
+   </bean>
+   <bean id="jcjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="500" />
+       <property name="itemId" value= "5136" />
+   </bean>
+   <bean id="tdjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="501" />
+       <property name="itemId" value= "5137" />
+   </bean>
+   <bean id="jzjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="502" />
+       <property name="itemId" value= "5138" />
+   </bean>
+   <bean id="dtjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="503" />
+       <property name="itemId" value= "5139" />
+   </bean>
+   <bean id="ptjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="504" />
+       <property name="itemId" value= "5140" />
+   </bean>
+   <bean id="xtjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="505" />
+       <property name="itemId" value= "5141" />
+   </bean>
+   <bean id="qtjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="506" />
+       <property name="itemId" value= "5142" />
+   </bean>
+   <bean id="bjjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="507" />
+       <property name="itemId" value= "5143" />
+   </bean>
+   <bean id="bxjgMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="508" />
+       <property name="itemId" value= "5144" />
+   </bean>
+
+   <bean id="lv3MtlBlueMapList"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="509" />
+       <property name="children">
+         <list>
+        	<ref bean="gdzjMtlBlueMap" />
+        	<ref bean="mzzjMtlBlueMap" />
+         	<ref bean="jfzjMtlBlueMap" />
+         	<ref bean="qgzjMtlBlueMap" />
+         	<ref bean="qszjMtlBlueMap" />
+         </list>
+       </property>
+   </bean>
+   <bean id="gdzjMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="510" />
+       <property name="itemId" value= "5145" />
+   </bean>
+   <bean id="mzzjMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="511" />
+       <property name="itemId" value= "5146" />
+   </bean>
+   <bean id="jfzjMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="512" />
+       <property name="itemId" value= "5147" />
+   </bean>
+   <bean id="qgzjMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="513" />
+       <property name="itemId" value= "5148" />
+   </bean>
+   <bean id="qszjMtlBlueMap"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="514" />
+       <property name="itemId" value= "5149" />
+   </bean>
+   
+   
+  																							 <!-- 素材类32 -->
+   <bean id="blueMapRootMenu32"  class="com.pearl.o2o.pojo.MeltingMenu">
+        <property name="children">
+         <list>
+	         <ref bean="materialBlueMapList2" />
+         </list>
+        </property>
+   </bean>
+ 
+   
+   <bean id="materialBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="591" />
+       <property name="children">
+         <list>
+        	<ref bean="lv1MtlBlueMapList2" />
+        	<ref bean="lv2MtlBlueMapList2" />
+         	<ref bean="lv3MtlBlueMapList2" />
+         </list>
+       </property>
+   </bean>
+   
+   
+   <bean id="lv1MtlBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="487" />
+       <property name="children">
+         <list>
+         	<ref bean="nmrkMtlBlueMap2" />					
+        	<ref bean="zrjzMtlBlueMap2" />
+        	<ref bean="fwzdMtlBlueMap2" />
+         	<ref bean="thjMtlBlueMap2" />
+         	<ref bean="dhjjMtlBlueMap2" />
+         </list>
+       </property>
+   </bean>
+     <bean id="nmrkMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6031" />
+       <property name="itemId" value= "6031" />
+   </bean>   
+   <bean id="zrjzMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6032" />
+       <property name="itemId" value= "6032" />
+   </bean>
+   <bean id="fwzdMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6033" />
+       <property name="itemId" value= "6033" />
+   </bean>
+   <bean id="thjMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6034" />
+       <property name="itemId" value= "6034" />
+   </bean>
+   <bean id="dhjjMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6035" />
+       <property name="itemId" value= "6035" />
+   </bean>
+   
+   
+   
+   <bean id="lv2MtlBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="493" />
+       <property name="children">
+         <list>
+         	<ref bean="djMtlBlueMap2" />			
+        	<ref bean="sdjgMtlBlueMap2" />
+         	<ref bean="jdjgMtlBlueMap2" />
+         	<ref bean="mzgMtlBlueMap2" />
+         	<ref bean="zxjgMtlBlueMap2" />
+         	<ref bean="bcjgMtlBlueMap2" />
+         	<ref bean="jcjgMtlBlueMap2" />
+         	<ref bean="tdjgMtlBlueMap2" />
+         	<ref bean="jzjgMtlBlueMap2" />
+         	<ref bean="dtjgMtlBlueMap2" />
+         	<ref bean="ptjgMtlBlueMap2" />
+         	<ref bean="xtjgMtlBlueMap2" />
+         	<ref bean="qtjgMtlBlueMap2" />
+         	<ref bean="bjjgMtlBlueMap2" />
+         	<ref bean="bxjgMtlBlueMap2" />
+         </list>
+       </property>
+   </bean>
+    <bean id="djMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6004" />
+       <property name="itemId" value= "6004" />
+   </bean>
+   <bean id="sdjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6005" />
+       <property name="itemId" value= "6005" />
+   </bean>
+   <bean id="jdjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6006" />
+       <property name="itemId" value= "6006" />
+   </bean>
+   <bean id="mzgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6007" />
+       <property name="itemId" value= "6007" />
+   </bean>
+   <bean id="zxjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6008" />
+       <property name="itemId" value= "6008" />
+   </bean>
+   <bean id="bcjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6009" />
+       <property name="itemId" value= "6009" />
+   </bean>
+   <bean id="jcjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6010" />
+       <property name="itemId" value= "6010" />
+   </bean>
+   <bean id="tdjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6011" />
+       <property name="itemId" value= "6011" />
+   </bean>
+   <bean id="jzjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6012" />
+       <property name="itemId" value= "6012" />
+   </bean>
+   <bean id="dtjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6013" />
+       <property name="itemId" value= "6013" />
+   </bean>
+   <bean id="ptjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6014" />
+       <property name="itemId" value= "6014" />
+   </bean>
+   <bean id="xtjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6015" />
+       <property name="itemId" value= "6015" />
+   </bean>
+   <bean id="qtjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6016" />
+       <property name="itemId" value= "6016" />
+   </bean>
+   <bean id="bjjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6017" />
+       <property name="itemId" value= "6017" />
+   </bean>
+   <bean id="bxjgMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6018" />
+       <property name="itemId" value= "6018" />
+   </bean>
+   
+   
+   
+   <bean id="lv3MtlBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="509" />
+       <property name="children">
+         <list>
+         	<ref bean="gdzjMtlBlueMap2" />
+        	<ref bean="mzzjMtlBlueMap2" />
+         	<ref bean="jfzjMtlBlueMap2" />
+         	<ref bean="qgzjMtlBlueMap2" />
+         	<ref bean="qszjMtlBlueMap2" />
+         </list>
+       </property>
+   </bean>
+   
+    <bean id="gdzjMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6019" />
+       <property name="itemId" value= "6019" />
+   </bean>
+   <bean id="mzzjMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6020" />
+       <property name="itemId" value= "6020" />
+   </bean>
+   <bean id="jfzjMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6021" />
+       <property name="itemId" value= "6021" />
+   </bean>
+   <bean id="qgzjMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6022" />
+       <property name="itemId" value= "6022" />
+   </bean>
+   <bean id="qszjMtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="6023" />
+       <property name="itemId" value= "6023" />
+   </bean>
+   
+  
+
+  																							<!-- 增幅能源类51 -->
+   <bean id="blueMapRootMenu51"  class="com.pearl.o2o.pojo.MeltingMenu">
+        <property name="children">
+         <list>
+	         <ref bean="qzMtlBlueMapList2" />
+         </list>
+        </property>
+   </bean>
+   
+   <bean id="qzMtlBlueMapList2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="515" />
+       <property name="children">
+         <list>
+        	<ref bean="sp2MtlBlueMap2" />
+        	<ref bean="sp3MtlBlueMap2" />
+         	<ref bean="sp4MtlBlueMap2" />
+			<ref bean="sp5MtlBlueMap2" />
+         	<ref bean="qz6MtlBlueMap2" />
+         	<ref bean="qz7MtlBlueMap2" />
+         	<ref bean="qz8MtlBlueMap2" />
+         	<ref bean="qz9MtlBlueMap2" />
+         	<ref bean="qz10MtlBlueMap2" />
+         	<ref bean="qz11MtlBlueMap2" />
+         	<ref bean="qz12MtlBlueMap2" />
+         	<ref bean="qz13MtlBlueMap2" />
+         	<ref bean="qz14MtlBlueMap2" />
+         	<ref bean="qz15MtlBlueMap2" />
+         </list>
+       </property>
+   </bean>
+   <bean id="sp2MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="516" />
+       <property name="itemId" value= "5212" />
+   </bean>
+   <bean id="sp3MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="517" />
+       <property name="itemId" value= "5213" />
+   </bean>
+   <bean id="sp4MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="518" />
+       <property name="itemId" value= "5214" />
+   </bean>
+   <bean id="sp5MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="519" />
+       <property name="itemId" value= "5215" />
+   </bean>
+   <bean id="qz6MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="529" />
+       <property name="itemId" value= "5240" />
+   </bean>
+   <bean id="qz7MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="520" />
+       <property name="itemId" value= "5121" />
+   </bean>
+   <bean id="qz8MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="521" />
+       <property name="itemId" value= "5122" />
+   </bean>
+   <bean id="qz9MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="522" />
+       <property name="itemId" value= "5123" />
+   </bean>
+   <bean id="qz10MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="523" />
+       <property name="itemId" value= "5124" />
+   </bean>
+   <bean id="qz11MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="524" />
+       <property name="itemId" value= "5125" />
+   </bean>
+   <bean id="qz12MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="525" />
+       <property name="itemId" value= "5126" />
+   </bean>
+   <bean id="qz13MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="526" />
+       <property name="itemId" value= "5127" />
+   </bean>
+   <bean id="qz14MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="527" />
+       <property name="itemId" value= "5128" />
+   </bean>
+   <bean id="qz15MtlBlueMap2"  class="com.pearl.o2o.pojo.MeltingMenu">
+   	<property name="name" value="528" />
+       <property name="itemId" value= "5129" />
+   </bean>
+
+
+</beans>
+
+

@@ -1,0 +1,2344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.2">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="pj_infor_server_tester" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="用户定义的变量" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="pj_infor_server_test_thread_group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1331812792000</longProp>
+        <longProp name="ThreadGroup.end_time">1331812792000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="socket_parameter" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="info_server_ip" elementType="Argument">
+              <stringProp name="Argument.name">info_server_ip</stringProp>
+              <stringProp name="Argument.value">localhost</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">125.39.150.159|125.39.150.141|125.39.150.138</stringProp>
+            </elementProp>
+            <elementProp name="info_server_port" elementType="Argument">
+              <stringProp name="Argument.name">info_server_port</stringProp>
+              <stringProp name="Argument.value">8082</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="timeout_connect" elementType="Argument">
+              <stringProp name="Argument.name">timeout_connect</stringProp>
+              <stringProp name="Argument.value">15000</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="timeout_response" elementType="Argument">
+              <stringProp name="Argument.name">timeout_response</stringProp>
+              <stringProp name="Argument.value">15000</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="resource_parameter" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="resultsFile" elementType="Argument">
+              <stringProp name="Argument.name">resultsFile</stringProp>
+              <stringProp name="Argument.value">${__BeanShell(File.separator,)}data${__BeanShell(File.separator,)}result${__BeanShell(File.separator,)}result_${__time(yyyyMMdd-HHmmss)}.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="playerInfoData" elementType="Argument">
+              <stringProp name="Argument.name">playerInfoData</stringProp>
+              <stringProp name="Argument.value">${__property(user.dir)}${__BeanShell(File.separator,)}data${__BeanShell(File.separator,)}bj_player_data.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="combineData" elementType="Argument">
+              <stringProp name="Argument.name">combineData</stringProp>
+              <stringProp name="Argument.value">${__property(user.dir)}${__BeanShell(File.separator,)}data${__BeanShell(File.separator,)}sysItemId.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="behavior_parameter" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="actionInterval" elementType="Argument">
+              <stringProp name="Argument.name">actionInterval</stringProp>
+              <stringProp name="Argument.value">1500</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="intervalOffset" elementType="Argument">
+              <stringProp name="Argument.name">intervalOffset</stringProp>
+              <stringProp name="Argument.value">500</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="loopNum" elementType="Argument">
+              <stringProp name="Argument.name">loopNum</stringProp>
+              <stringProp name="Argument.value">20</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="login_actionInterval" elementType="Argument">
+              <stringProp name="Argument.name">login_actionInterval</stringProp>
+              <stringProp name="Argument.value">3000</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="login_intervalOffset" elementType="Argument">
+              <stringProp name="Argument.name">login_intervalOffset</stringProp>
+              <stringProp name="Argument.value">2000</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="player_resourceData" enabled="true">
+          <stringProp name="delimiter">;</stringProp>
+          <stringProp name="fileEncoding"></stringProp>
+          <stringProp name="filename">${playerInfoData}</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <stringProp name="shareMode">Current thread group</stringProp>
+          <boolProp name="stopThread">false</boolProp>
+          <stringProp name="variableNames">userName</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="combine_param" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="strength_loops" elementType="Argument">
+              <stringProp name="Argument.name">strength_loops</stringProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="strength_item_nums" elementType="Argument">
+              <stringProp name="Argument.name">strength_item_nums</stringProp>
+              <stringProp name="Argument.value">50</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="safe_item_nums" elementType="Argument">
+              <stringProp name="Argument.name">safe_item_nums</stringProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="stable_item_nums" elementType="Argument">
+              <stringProp name="Argument.name">stable_item_nums</stringProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="slottingconvert_loops" elementType="Argument">
+              <stringProp name="Argument.name">slottingconvert_loops</stringProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="combine_loops" elementType="Argument">
+              <stringProp name="Argument.name">combine_loops</stringProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="award_parameter" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="page" elementType="Argument">
+              <stringProp name="Argument.name">page</stringProp>
+              <stringProp name="Argument.value">${__Random(1,5,)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="dailynum" elementType="Argument">
+              <stringProp name="Argument.name">dailynum</stringProp>
+              <stringProp name="Argument.value">${__Random(0,9,)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="awardtype" elementType="Argument">
+              <stringProp name="Argument.name">awardtype</stringProp>
+              <stringProp name="Argument.value">8</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="vipsid" elementType="Argument">
+              <stringProp name="Argument.name">vipsid</stringProp>
+              <stringProp name="Argument.value">4623</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="mbxsid" elementType="Argument">
+              <stringProp name="Argument.name">mbxsid</stringProp>
+              <stringProp name="Argument.value">4626</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="openvipnum" elementType="Argument">
+              <stringProp name="Argument.name">openvipnum</stringProp>
+              <stringProp name="Argument.value">3</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="startvipnum" elementType="Argument">
+              <stringProp name="Argument.name">startvipnum</stringProp>
+              <stringProp name="Argument.value">5</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="openmbxnum" elementType="Argument">
+              <stringProp name="Argument.name">openmbxnum</stringProp>
+              <stringProp name="Argument.value">3</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="openmbxlistnum" elementType="Argument">
+              <stringProp name="Argument.name">openmbxlistnum</stringProp>
+              <stringProp name="Argument.value">4</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="hmrsid" elementType="Argument">
+              <stringProp name="Argument.name">hmrsid</stringProp>
+              <stringProp name="Argument.value">4485</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="vipqty" elementType="Argument">
+              <stringProp name="Argument.name">vipqty</stringProp>
+              <stringProp name="Argument.value">100</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="mbxqty" elementType="Argument">
+              <stringProp name="Argument.name">mbxqty</stringProp>
+              <stringProp name="Argument.value">100</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="hmrqty" elementType="Argument">
+              <stringProp name="Argument.name">hmrqty</stringProp>
+              <stringProp name="Argument.value">100</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="sysItemId" enabled="true">
+          <stringProp name="TestPlan.comments">sysItemId</stringProp>
+          <stringProp name="filename">${combineData}</stringProp>
+          <stringProp name="fileEncoding"></stringProp>
+          <stringProp name="variableNames">sysItemId,costId,propertyItemId</stringProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">true</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="shareMode">All threads</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <ConfigTestElement guiclass="TCPConfigGui" testclass="ConfigTestElement" testname="TCP取样器配置" enabled="false">
+          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+          <boolProp name="TCPSampler.nodelay">false</boolProp>
+          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+          <stringProp name="TCPSampler.request"></stringProp>
+          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+        </ConfigTestElement>
+        <hashTree/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="简单控制器_常用控件" enabled="false"/>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言 not include error" enabled="false">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="96784904">error</stringProp>
+            </collectionProp>
+            <stringProp name="TestPlan.comments">返回内容不包含 error 信息</stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">6</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="player_parameter" enabled="false">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="uid" elementType="Argument">
+              <stringProp name="Argument.name">uid</stringProp>
+              <stringProp name="Argument.value">${__Random(0,6,uid)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="userName" elementType="Argument">
+              <stringProp name="Argument.name">userName</stringProp>
+              <stringProp name="Argument.value">${__RandomString(20,0123456789abcdefghijklmnopqrstuvwxyz,userName)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="ip" elementType="Argument">
+              <stringProp name="Argument.name">ip</stringProp>
+              <stringProp name="Argument.value">${__Random(0,255,)}.${__Random(0,255,)}.${__Random(0,255,)}.${__Random(0,255,)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="version" elementType="Argument">
+              <stringProp name="Argument.name">version</stringProp>
+              <stringProp name="Argument.value">*</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="isXunleiVip" elementType="Argument">
+              <stringProp name="Argument.name">isXunleiVip</stringProp>
+              <stringProp name="Argument.value">${__Random(0,2,isXunleiVip)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="internetCafe" elementType="Argument">
+              <stringProp name="Argument.name">internetCafe</stringProp>
+              <stringProp name="Argument.value">${__Random(0,2,internetCafe)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_character_online_sampler" enabled="true">
+          <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+          <boolProp name="TCPSampler.nodelay">false</boolProp>
+          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_character_online&quot;,
+	&quot;uid&quot;:&quot;${__Random(0,6,uid)}&quot;,
+	&quot;userName&quot;:&quot;${userName}&quot;,
+	&quot;ip&quot;:&quot;${__Random(0,255,ip_0)}.${__Random(0,255,ip_1)}.${__Random(0,255,ip_2)}.${__Random(0,255,ip_3)}&quot;,
+	&quot;version&quot;:&quot;*&quot;,
+	&quot;isXunleiVip&quot;:&quot;${__Random(0,2,isXunleiVip)}&quot;,
+	&quot;internetCafe&quot;:&quot;${__Random(0,2,internetCafe)}&quot;
+}</stringProp>
+          <stringProp name="ConfigTestElement.username"></stringProp>
+          <stringProp name="ConfigTestElement.password"></stringProp>
+        </TCPSampler>
+        <hashTree>
+          <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="高斯随机定时器" enabled="true">
+            <stringProp name="ConstantTimer.delay">${login_intervalOffset}</stringProp>
+            <stringProp name="RandomTimer.range">${login_actionInterval}</stringProp>
+          </GaussianRandomTimer>
+          <hashTree/>
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+            <stringProp name="RegexExtractor.refname">pid</stringProp>
+            <stringProp name="RegexExtractor.regex">playerId=(.+), playerName</stringProp>
+            <stringProp name="RegexExtractor.template">$1$</stringProp>
+            <stringProp name="RegexExtractor.default">-1</stringProp>
+            <stringProp name="RegexExtractor.match_number">1</stringProp>
+          </RegexExtractor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="96784904">error</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">6</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果（If）控制器 (玩家不存在)" enabled="true">
+          <stringProp name="IfController.condition">${pid} == 0</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+        </IfController>
+        <hashTree>
+          <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_player_online_sampler" enabled="true">
+            <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+            <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+            <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+            <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+            <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+            <boolProp name="TCPSampler.nodelay">false</boolProp>
+            <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+            <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+            <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_player_online&quot;,
+	&quot;uid&quot;:&quot;${uid}&quot;,
+	&quot;userName&quot;:&quot;${userName}&quot;,
+	&quot;name&quot;:&quot;${__RandomString(10,0123456789abcdefghijklmnopqrstuvwxyz,)}&quot;,
+	&quot;ip&quot;:&quot;${ip_0}.${ip_1}.${ip_2}.${ip_3}&quot;,
+	&quot;isXunleiVip&quot;:&quot;${isXunleiVip}&quot;,
+	&quot;internetCafe&quot;:&quot;${internetCafe}&quot;
+}</stringProp>
+            <stringProp name="ConfigTestElement.username"></stringProp>
+            <stringProp name="ConfigTestElement.password"></stringProp>
+          </TCPSampler>
+          <hashTree>
+            <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="高斯随机定时器" enabled="true">
+              <stringProp name="ConstantTimer.delay">${login_intervalOffset}</stringProp>
+              <stringProp name="RandomTimer.range">${login_actionInterval}</stringProp>
+            </GaussianRandomTimer>
+            <hashTree/>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">pid</stringProp>
+              <stringProp name="RegexExtractor.regex">playerId=(.+), playerName</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default">-1</stringProp>
+              <stringProp name="RegexExtractor.match_number">1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="96784904">error</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">6</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果（If）控制器 (玩家存在)" enabled="true">
+          <stringProp name="IfController.condition">${pid}  &gt; 0</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+        </IfController>
+        <hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="发送测试物品控制器" enabled="true"/>
+          <hashTree>
+            <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_send_vip_test_sampler" enabled="true">
+              <stringProp name="TestPlan.comments">发送VIP币 给玩家 </stringProp>
+              <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+              <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+              <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+              <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+              <boolProp name="TCPSampler.nodelay">false</boolProp>
+              <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+              <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+              <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_send_vip_test&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,&quot;vipsid&quot;:&quot;${vipsid}&quot;,&quot;quantity&quot;:&quot;${vipqty}&quot;
+	}
+}</stringProp>
+              <stringProp name="ConfigTestElement.username"></stringProp>
+              <stringProp name="ConfigTestElement.password"></stringProp>
+            </TCPSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="false">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="96784904">error</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">6</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="VIP:playerItemId提取器" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">vippitmid</stringProp>
+                <stringProp name="RegexExtractor.regex">playeritemid=(.+),sid=${vipsid},</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">-1</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="MagicBox:playerItemId提取器" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">mbxpitmid</stringProp>
+                <stringProp name="RegexExtractor.regex">playeritemid=(.+),sid=${mbxsid},</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">-1</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+            </hashTree>
+            <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_send_magic_box_test_sampler" enabled="true">
+              <stringProp name="TestPlan.comments">发送VIP币 给玩家 </stringProp>
+              <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+              <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+              <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+              <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+              <boolProp name="TCPSampler.nodelay">false</boolProp>
+              <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+              <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+              <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_send_magic_box_test&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,&quot;mbxsid&quot;:&quot;${mbxsid}&quot;,&quot;quantity&quot;:&quot;${mbxqty}&quot;
+	}
+}</stringProp>
+              <stringProp name="ConfigTestElement.username"></stringProp>
+              <stringProp name="ConfigTestElement.password"></stringProp>
+            </TCPSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="false">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="96784904">error</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">6</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="VIP:playerItemId提取器" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">vippitmid</stringProp>
+                <stringProp name="RegexExtractor.regex">playeritemid=(.+),sid=${vipsid},</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">-1</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="MagicBox:playerItemId提取器" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">mbxpitmid</stringProp>
+                <stringProp name="RegexExtractor.regex">playeritemid=(.+),sid=${mbxsid},</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">-1</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+            </hashTree>
+            <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_send_hummer_test_sampler" enabled="true">
+              <stringProp name="TestPlan.comments">发送VIP币 给玩家 </stringProp>
+              <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+              <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+              <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+              <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+              <boolProp name="TCPSampler.nodelay">false</boolProp>
+              <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+              <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+              <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_send_hummer_test&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,&quot;hmrsid&quot;:&quot;${hmrsid}&quot;,&quot;quantity&quot;:&quot;${hmrqty}&quot;
+	}
+}</stringProp>
+              <stringProp name="ConfigTestElement.username"></stringProp>
+              <stringProp name="ConfigTestElement.password"></stringProp>
+            </TCPSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="false">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="96784904">error</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">6</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="VIP:playerItemId提取器" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">vippitmid</stringProp>
+                <stringProp name="RegexExtractor.regex">playeritemid=(.+),sid=${vipsid},</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">-1</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="MagicBox:playerItemId提取器" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">mbxpitmid</stringProp>
+                <stringProp name="RegexExtractor.regex">playeritemid=(.+),sid=${mbxsid},</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">-1</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${loopNum}</stringProp>
+          </LoopController>
+          <hashTree>
+            <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="高斯随机定时器" enabled="true">
+              <stringProp name="ConstantTimer.delay">${intervalOffset}</stringProp>
+              <stringProp name="RandomTimer.range">${actionInterval}</stringProp>
+            </GaussianRandomTimer>
+            <hashTree/>
+            <RandomController guiclass="RandomControlGui" testclass="RandomController" testname="CM_RequestTextRPC随机控制器" enabled="true">
+              <intProp name="InterleaveControl.style">1</intProp>
+              <stringProp name="TestPlan.comments">CM_RequestTextRPC</stringProp>
+            </RandomController>
+            <hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="简单控制器c_get_growth" enabled="true">
+                <stringProp name="TestPlan.comments">成长任务相关TestCase</stringProp>
+              </GenericController>
+              <hashTree>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_get_growth_list_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_get_growth_list&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="96784904">error</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">6</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">mid</stringProp>
+                    <stringProp name="RegexExtractor.regex">([0-9]+), &quot;(.+)&quot;, &quot;(.+)&quot;,&quot;(.+)&quot;, ([0-9]+), ([0-9]+), 1, 0, ([0-9]+), 0, ([0-9]+),</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">0</stringProp>
+                    <stringProp name="RegexExtractor.match_number">0</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                </hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果（If）控制器" enabled="true">
+                  <stringProp name="IfController.condition">${mid} &gt; 0</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_get_growth_gift_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">领取成长任务礼物</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_get_growth_gift&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;mid&quot;:&quot;${mid}&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="3237038">info</stringProp>
+                        <stringProp name="100526016">items</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">2</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="简单控制器c_online_award" enabled="true"/>
+              <hashTree>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_online_award_list_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取兑换列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_online_award&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">leftSeconds</stringProp>
+                    <stringProp name="RegexExtractor.regex">time=(.+)award</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">0</stringProp>
+                    <stringProp name="RegexExtractor.match_number">0</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                </hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果（If）控制器" enabled="true">
+                  <stringProp name="IfController.condition">${leftSeconds} &gt;= 0</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_online_award_get_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">获取兑换列表</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_online_award_get&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree>
+                    <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+                      <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                      <stringProp name="RegexExtractor.refname">leftSeconds</stringProp>
+                      <stringProp name="RegexExtractor.regex">time=(.+)award</stringProp>
+                      <stringProp name="RegexExtractor.template">$1$</stringProp>
+                      <stringProp name="RegexExtractor.default">0</stringProp>
+                      <stringProp name="RegexExtractor.match_number">0</stringProp>
+                    </RegexExtractor>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="简单控制器c_exchange" enabled="true"/>
+              <hashTree>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_exchange_list_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取兑换列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_shop_exchange_list&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;page&quot;:&quot;${__Random(1,2,)}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree/>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_exchange_req_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取兑换列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_shop_req_exchange&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;sid&quot;:&quot;4614&quot;,
+		&quot;costid&quot;:&quot;2056&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree/>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="简单控制器c_chest" enabled="true"/>
+              <hashTree>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_chest_list_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取兑换列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_chest_list&quot;,
+	&quot;paramMap&quot;:{
+		&quot;level&quot;:&quot;${__Random(1,3,)}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree/>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_chest_get_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取兑换列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_chest_get&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;level&quot;:&quot;${__Random(1,3,)}&quot;,
+		&quot;payType&quot;:&quot;${__Random(1,2,)}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree/>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_chest_chip_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取兑换列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_chest_chip&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree/>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_chest_price_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取兑换列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_chest_price&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree/>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="简单控制器(每日签到)" enabled="true"/>
+              <hashTree>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_daily_check_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_daily_check&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="96784904">error</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">6</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="checkday提取器" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">checkday</stringProp>
+                    <stringProp name="RegexExtractor.regex">day=([0-9]+-[0-9]+-[0-9]+)</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">-1</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="高斯随机定时器" enabled="true">
+                    <stringProp name="ConstantTimer.delay">${intervalOffset}</stringProp>
+                    <stringProp name="RandomTimer.range">${actionInterval}</stringProp>
+                  </GaussianRandomTimer>
+                  <hashTree/>
+                </hashTree>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_daily_num_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_daily_num&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,&quot;num&quot;:&quot;${dailynum}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="false">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="96784904">error</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">6</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="高斯随机定时器" enabled="true">
+                    <stringProp name="ConstantTimer.delay">${intervalOffset}</stringProp>
+                    <stringProp name="RandomTimer.range">${actionInterval}</stringProp>
+                  </GaussianRandomTimer>
+                  <hashTree/>
+                </hashTree>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_daily_check_list_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_daily_check_list&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="96784904">error</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">6</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="今天幸运数提取器" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">todaynum</stringProp>
+                    <stringProp name="RegexExtractor.regex">today_num=([0-9]+)</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">-1</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="我的幸运数提取器" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">mynum</stringProp>
+                    <stringProp name="RegexExtractor.regex">my_num=([0-9]+)</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">-1</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="预测幸运数提取器" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">tomnum</stringProp>
+                    <stringProp name="RegexExtractor.regex">tomorrow_num=([0-9]+)</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">-1</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="系统是否发奖提取器" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">isShowAward</stringProp>
+                    <stringProp name="RegexExtractor.regex">is_show_award=([0-1]+)</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">0</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="每日是否领取提取器" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">isGift</stringProp>
+                    <stringProp name="RegexExtractor.regex">is_gift=([0-1]+)</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">0</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1731956338">${checkday}</stringProp>
+                    </collectionProp>
+                    <stringProp name="TestPlan.comments">判断是否奖励发送成功</stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="false">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-2036592312">tomorrow_num=${dailynum}</stringProp>
+                    </collectionProp>
+                    <stringProp name="TestPlan.comments">判断是否奖励发送成功</stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果没有每日领取（If）控制器" enabled="true">
+                  <stringProp name="TestPlan.comments">如果玩家猜中幸运数字</stringProp>
+                  <stringProp name="IfController.condition">${isGift}==0</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_daily_gift_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_daily_gift&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="96784904">error</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">6</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果已经每日领取（If）控制器" enabled="true">
+                  <stringProp name="TestPlan.comments">如果玩家猜中幸运数字</stringProp>
+                  <stringProp name="IfController.condition">${isGift}!=0</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_daily_gift_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_daily_gift&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1793878348">您今天已经领取</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">2</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果玩家猜中幸运数字（If）控制器" enabled="true">
+                  <stringProp name="TestPlan.comments">如果玩家猜中幸运数字</stringProp>
+                  <stringProp name="IfController.condition">${todaynum}!=-1&amp;&amp;${todaynum}==${mynum}</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_daily_check_list_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_daily_check_list&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="96784904">error</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">6</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="101065828">is_show_award=1</stringProp>
+                      </collectionProp>
+                      <stringProp name="TestPlan.comments">判断是否奖励发送成功</stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">2</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="简单控制器(密码箱)" enabled="true"/>
+              <hashTree>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_storage_list_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">查看开奖箱</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_storage_list&quot;,
+	&quot;paramMap&quot;:{
+		&quot;uid&quot;:&quot;${uid}&quot;,&quot;pid&quot;:&quot;${pid}&quot;,&quot;t&quot;:&quot;${awardtype}&quot;,&quot;cid&quot;:1,&quot;p&quot;:&quot;1&quot;,&quot;st&quot;:&quot;0&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="96784904">error</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">6</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="VIP:playerItemId提取器" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">vippitmid</stringProp>
+                    <stringProp name="RegexExtractor.regex">playeritemid=(.+),sid=${vipsid},</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">-1</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="MagicBox:playerItemId提取器" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">mbxpitmid</stringProp>
+                    <stringProp name="RegexExtractor.regex">playeritemid=(.+),sid=${mbxsid},</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">-1</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                </hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果有vip（If）控制器" enabled="true">
+                  <stringProp name="TestPlan.comments">如果有vip</stringProp>
+                  <stringProp name="IfController.condition">${vippitmid}!=-1</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="VIP宝箱循环控制器" enabled="true">
+                    <boolProp name="LoopController.continue_forever">true</boolProp>
+                    <stringProp name="LoopController.loops">${openvipnum}</stringProp>
+                  </LoopController>
+                  <hashTree>
+                    <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_vip_random_list_sampler" enabled="true">
+                      <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                      <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                      <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                      <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                      <boolProp name="TCPSampler.nodelay">false</boolProp>
+                      <stringProp name="TCPSampler.timeout">${timeout_connect}</stringProp>
+                      <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                      <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_vip_random_list&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,&quot;playeritemid&quot;:&quot;${vippitmid}&quot;
+	}
+}</stringProp>
+                      <stringProp name="ConfigTestElement.username"></stringProp>
+                      <stringProp name="ConfigTestElement.password"></stringProp>
+                    </TCPSampler>
+                    <hashTree>
+                      <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                        <collectionProp name="Asserion.test_strings">
+                          <stringProp name="96784904">error</stringProp>
+                        </collectionProp>
+                        <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                        <boolProp name="Assertion.assume_success">false</boolProp>
+                        <intProp name="Assertion.test_type">6</intProp>
+                      </ResponseAssertion>
+                      <hashTree/>
+                    </hashTree>
+                    <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+                      <boolProp name="LoopController.continue_forever">true</boolProp>
+                      <stringProp name="LoopController.loops">${startvipnum}</stringProp>
+                    </LoopController>
+                    <hashTree>
+                      <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_vip_random_start_sampler" enabled="true">
+                        <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                        <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                        <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                        <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                        <boolProp name="TCPSampler.nodelay">false</boolProp>
+                        <stringProp name="TCPSampler.timeout">${timeout_connect}</stringProp>
+                        <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                        <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_vip_random_start&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,&quot;playeritemid&quot;:&quot;${vippitmid}&quot;
+	}
+}</stringProp>
+                        <stringProp name="ConfigTestElement.username"></stringProp>
+                        <stringProp name="ConfigTestElement.password"></stringProp>
+                      </TCPSampler>
+                      <hashTree>
+                        <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                          <collectionProp name="Asserion.test_strings">
+                            <stringProp name="96784904">error</stringProp>
+                          </collectionProp>
+                          <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                          <boolProp name="Assertion.assume_success">false</boolProp>
+                          <intProp name="Assertion.test_type">6</intProp>
+                        </ResponseAssertion>
+                        <hashTree/>
+                      </hashTree>
+                      <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="高斯随机定时器" enabled="true">
+                        <stringProp name="ConstantTimer.delay">${intervalOffset}</stringProp>
+                        <stringProp name="RandomTimer.range">${actionInterval}</stringProp>
+                      </GaussianRandomTimer>
+                      <hashTree/>
+                    </hashTree>
+                  </hashTree>
+                </hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果有MagicBox（If）控制器" enabled="true">
+                  <stringProp name="TestPlan.comments">如果有密码箱</stringProp>
+                  <stringProp name="IfController.condition">${mbxpitmid}!=-1</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="密码箱模块循环控制器" enabled="true">
+                    <boolProp name="LoopController.continue_forever">true</boolProp>
+                    <stringProp name="LoopController.loops">${openmbxlistnum}</stringProp>
+                  </LoopController>
+                  <hashTree>
+                    <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_magic_box_list_sampler" enabled="true">
+                      <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                      <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                      <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                      <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                      <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                      <boolProp name="TCPSampler.nodelay">false</boolProp>
+                      <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                      <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                      <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_magic_box_list&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,&quot;playeritemid&quot;:&quot;${mbxpitmid}&quot;
+	}
+}</stringProp>
+                      <stringProp name="ConfigTestElement.username"></stringProp>
+                      <stringProp name="ConfigTestElement.password"></stringProp>
+                    </TCPSampler>
+                    <hashTree>
+                      <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                        <collectionProp name="Asserion.test_strings">
+                          <stringProp name="96784904">error</stringProp>
+                        </collectionProp>
+                        <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                        <boolProp name="Assertion.assume_success">false</boolProp>
+                        <intProp name="Assertion.test_type">6</intProp>
+                      </ResponseAssertion>
+                      <hashTree/>
+                    </hashTree>
+                    <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_magic_box_history_list_sampler" enabled="true">
+                      <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                      <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                      <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                      <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                      <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                      <boolProp name="TCPSampler.nodelay">false</boolProp>
+                      <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                      <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                      <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_magic_box_history_list&quot;,
+	&quot;paramMap&quot;:{
+	}
+}</stringProp>
+                      <stringProp name="ConfigTestElement.username"></stringProp>
+                      <stringProp name="ConfigTestElement.password"></stringProp>
+                    </TCPSampler>
+                    <hashTree>
+                      <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                        <collectionProp name="Asserion.test_strings">
+                          <stringProp name="96784904">error</stringProp>
+                        </collectionProp>
+                        <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                        <boolProp name="Assertion.assume_success">false</boolProp>
+                        <intProp name="Assertion.test_type">6</intProp>
+                      </ResponseAssertion>
+                      <hashTree/>
+                    </hashTree>
+                    <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+                      <boolProp name="LoopController.continue_forever">true</boolProp>
+                      <stringProp name="LoopController.loops">${openmbxnum}</stringProp>
+                    </LoopController>
+                    <hashTree>
+                      <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_magic_box_open_sampler" enabled="true">
+                        <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                        <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                        <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                        <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                        <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                        <boolProp name="TCPSampler.nodelay">false</boolProp>
+                        <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                        <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                        <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_magic_box_open&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,&quot;playeritemid&quot;:&quot;${mbxpitmid}&quot;
+	}
+}</stringProp>
+                        <stringProp name="ConfigTestElement.username"></stringProp>
+                        <stringProp name="ConfigTestElement.password"></stringProp>
+                      </TCPSampler>
+                      <hashTree>
+                        <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                          <collectionProp name="Asserion.test_strings">
+                            <stringProp name="96784904">error</stringProp>
+                          </collectionProp>
+                          <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                          <boolProp name="Assertion.assume_success">false</boolProp>
+                          <intProp name="Assertion.test_type">6</intProp>
+                        </ResponseAssertion>
+                        <hashTree/>
+                      </hashTree>
+                      <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_magic_box_gift_list_sampler" enabled="true">
+                        <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                        <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                        <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                        <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                        <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                        <boolProp name="TCPSampler.nodelay">false</boolProp>
+                        <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                        <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                        <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_magic_box_gift_list&quot;,
+	&quot;paramMap&quot;:{
+		&quot;page&quot;:&quot;${page}&quot;
+	}
+}</stringProp>
+                        <stringProp name="ConfigTestElement.username"></stringProp>
+                        <stringProp name="ConfigTestElement.password"></stringProp>
+                      </TCPSampler>
+                      <hashTree>
+                        <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                          <collectionProp name="Asserion.test_strings">
+                            <stringProp name="96784904">error</stringProp>
+                          </collectionProp>
+                          <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                          <boolProp name="Assertion.assume_success">false</boolProp>
+                          <intProp name="Assertion.test_type">6</intProp>
+                        </ResponseAssertion>
+                        <hashTree/>
+                      </hashTree>
+                      <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="高斯随机定时器" enabled="true">
+                        <stringProp name="ConstantTimer.delay">${intervalOffset}</stringProp>
+                        <stringProp name="RandomTimer.range">${actionInterval}</stringProp>
+                      </GaussianRandomTimer>
+                      <hashTree/>
+                    </hashTree>
+                  </hashTree>
+                </hashTree>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="简单控制器module" enabled="true">
+                <stringProp name="TestPlan.comments">模块状态相关TestCase</stringProp>
+              </GenericController>
+              <hashTree>
+                <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_get_module_status_sampler" enabled="true">
+                  <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                  <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                  <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                  <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                  <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                  <boolProp name="TCPSampler.nodelay">false</boolProp>
+                  <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                  <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                  <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_get_module_status&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                  <stringProp name="ConfigTestElement.username"></stringProp>
+                  <stringProp name="ConfigTestElement.password"></stringProp>
+                </TCPSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言 not include error" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="96784904">error</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">6</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器 MissionState" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">MissionState</stringProp>
+                    <stringProp name="RegexExtractor.regex">Mission = {state = ([0-2])}</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default">0</stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                </hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果（If）控制器 MissionState == 1" enabled="true">
+                  <stringProp name="TestPlan.comments">如果MissionModule的状态值为1(闪烁),则客户端相应后变为2</stringProp>
+                  <stringProp name="IfController.condition">${MissionState} == 1</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_module_response_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">模块点击后响应</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_module_response&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;num&quot;:&quot;0&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree/>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_get_module_status_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_get_module_status&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言 Mission = {state = 2}," enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="355750187">Mission = {state = 2},</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">2</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果（If）控制器 MissionState == 0" enabled="true">
+                  <stringProp name="TestPlan.comments">如果MissionModule的状态值为0(禁用),则客户端相应后变为0</stringProp>
+                  <stringProp name="IfController.condition">${MissionState} == 0</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_module_response_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">模块点击后响应</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_module_response&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;num&quot;:&quot;0&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree/>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_get_module_status_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_get_module_status&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言 Mission = {state = 0}," enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="355748265">Mission = {state = 0},</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">2</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果（If）控制器 MissionState == 2" enabled="true">
+                  <stringProp name="TestPlan.comments">如果MissionModule的状态值为2(正常),则客户端相应后变为2</stringProp>
+                  <stringProp name="IfController.condition">${MissionState} == 2</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_module_response_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">模块点击后响应</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_module_response&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;num&quot;:&quot;0&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree/>
+                  <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_get_module_status_sampler" enabled="true">
+                    <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                    <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                    <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                    <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                    <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                    <boolProp name="TCPSampler.nodelay">false</boolProp>
+                    <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                    <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                    <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_get_module_status&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;
+	}
+}</stringProp>
+                    <stringProp name="ConfigTestElement.username"></stringProp>
+                    <stringProp name="ConfigTestElement.password"></stringProp>
+                  </TCPSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言 Mission = {state = 2}," enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="355750187">Mission = {state = 2},</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">2</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="简单控制器（合成流程）" enabled="true"/>
+              <hashTree>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果（If）控制器（合成流程）" enabled="true">
+                  <stringProp name="IfController.condition">${pid}  &gt; 0</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                </IfController>
+                <hashTree>
+                  <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器（强化）" enabled="true">
+                    <boolProp name="LoopController.continue_forever">true</boolProp>
+                    <stringProp name="LoopController.loops">${combine_loops}</stringProp>
+                  </LoopController>
+                  <hashTree>
+                    <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_shop_req_buy" enabled="true">
+                      <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                      <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                      <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                      <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                      <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                      <boolProp name="TCPSampler.nodelay">false</boolProp>
+                      <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                      <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                      <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_shop_req_buy&quot;,
+	&quot;paramMap&quot;:{
+		&quot;uid&quot;:&quot;0&quot;,
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;sid&quot;:&quot;${sysItemId}&quot;,
+		&quot;t&quot;:&quot;0&quot;,
+		&quot;cid&quot;:&quot;0&quot;,
+		&quot;costid&quot;:&quot;${costId}&quot;,
+		&quot;packid&quot;:&quot;0&quot;
+	}
+}</stringProp>
+                      <stringProp name="ConfigTestElement.username"></stringProp>
+                      <stringProp name="ConfigTestElement.password"></stringProp>
+                    </TCPSampler>
+                    <hashTree>
+                      <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+                        <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                        <stringProp name="RegexExtractor.refname">playerItemId</stringProp>
+                        <stringProp name="RegexExtractor.regex">pid = (.+).+</stringProp>
+                        <stringProp name="RegexExtractor.template">$1$</stringProp>
+                        <stringProp name="RegexExtractor.default">-1</stringProp>
+                        <stringProp name="RegexExtractor.match_number">1</stringProp>
+                      </RegexExtractor>
+                      <hashTree/>
+                    </hashTree>
+                    <IfController guiclass="IfControllerPanel" testclass="IfController" testname="如果（If）控制器（如果强化的装备存在）" enabled="true">
+                      <stringProp name="IfController.condition">${playerItemId}&gt;0</stringProp>
+                      <boolProp name="IfController.evaluateAll">false</boolProp>
+                    </IfController>
+                    <hashTree>
+                      <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="强化操作(循环操作)" enabled="true">
+                        <boolProp name="LoopController.continue_forever">true</boolProp>
+                        <stringProp name="LoopController.loops">${strength_loops}</stringProp>
+                      </LoopController>
+                      <hashTree>
+                        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_shop_fast_buy" enabled="true">
+                          <stringProp name="TestPlan.comments">购买强化部件</stringProp>
+                          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                          <boolProp name="TCPSampler.nodelay">false</boolProp>
+                          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_shop_fast_buy&quot;,
+	&quot;paramMap&quot;:{
+		&quot;uid&quot;:&quot;0&quot;,
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;sid&quot;:&quot;125&quot;,
+		&quot;num&quot;:&quot;${strength_item_nums}&quot;
+	}
+}</stringProp>
+                          <stringProp name="ConfigTestElement.username"></stringProp>
+                          <stringProp name="ConfigTestElement.password"></stringProp>
+                        </TCPSampler>
+                        <hashTree>
+                          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+                            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                            <stringProp name="RegexExtractor.refname">strengthenItemId</stringProp>
+                            <stringProp name="RegexExtractor.regex">playeritemid=(.+),</stringProp>
+                            <stringProp name="RegexExtractor.template">$1$</stringProp>
+                            <stringProp name="RegexExtractor.default">-1</stringProp>
+                            <stringProp name="RegexExtractor.match_number">1</stringProp>
+                          </RegexExtractor>
+                          <hashTree/>
+                        </hashTree>
+                        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_shop_fast_buy" enabled="true">
+                          <stringProp name="TestPlan.comments">购买增幅装置/强化增幅</stringProp>
+                          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                          <boolProp name="TCPSampler.nodelay">false</boolProp>
+                          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_shop_fast_buy&quot;,
+	&quot;paramMap&quot;:{
+		&quot;uid&quot;:&quot;0&quot;,
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;sid&quot;:&quot;126&quot;,
+		&quot;num&quot;:&quot;${safe_item_nums}&quot;
+	}
+}</stringProp>
+                          <stringProp name="ConfigTestElement.username"></stringProp>
+                          <stringProp name="ConfigTestElement.password"></stringProp>
+                        </TCPSampler>
+                        <hashTree>
+                          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+                            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                            <stringProp name="RegexExtractor.refname">safeItemId</stringProp>
+                            <stringProp name="RegexExtractor.regex">playeritemid=(.+),</stringProp>
+                            <stringProp name="RegexExtractor.template">$1$</stringProp>
+                            <stringProp name="RegexExtractor.default">-1</stringProp>
+                            <stringProp name="RegexExtractor.match_number">1</stringProp>
+                          </RegexExtractor>
+                          <hashTree/>
+                        </hashTree>
+                        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_shop_fast_buy" enabled="true">
+                          <stringProp name="TestPlan.comments">购买安定装置/保障装置</stringProp>
+                          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                          <boolProp name="TCPSampler.nodelay">false</boolProp>
+                          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_shop_fast_buy&quot;,
+	&quot;paramMap&quot;:{
+		&quot;uid&quot;:&quot;0&quot;,
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;sid&quot;:&quot;127&quot;,
+		&quot;num&quot;:&quot;${stable_item_nums}&quot;
+	}
+}</stringProp>
+                          <stringProp name="ConfigTestElement.username"></stringProp>
+                          <stringProp name="ConfigTestElement.password"></stringProp>
+                        </TCPSampler>
+                        <hashTree>
+                          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+                            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                            <stringProp name="RegexExtractor.refname">stableItemId</stringProp>
+                            <stringProp name="RegexExtractor.regex">playeritemid=(.+),</stringProp>
+                            <stringProp name="RegexExtractor.template">$1$</stringProp>
+                            <stringProp name="RegexExtractor.default">-1</stringProp>
+                            <stringProp name="RegexExtractor.match_number">1</stringProp>
+                          </RegexExtractor>
+                          <hashTree/>
+                        </hashTree>
+                        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_strengthen" enabled="true">
+                          <stringProp name="TestPlan.comments">获取模块状态列表</stringProp>
+                          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                          <boolProp name="TCPSampler.nodelay">false</boolProp>
+                          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_strengthen&quot;,
+	&quot;paramMap&quot;:{
+		&quot;uid&quot;:&quot;0&quot;,
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;playerItemId&quot;:&quot;${playerItemId}&quot;,
+		&quot;strengthenItemId&quot;:&quot;${strengthenItemId}&quot;,
+		&quot;safeItemId&quot;:&quot;${safeItemId}&quot;,
+		&quot;stableItemId&quot;:&quot;${stableItemId}&quot;
+	}
+}</stringProp>
+                          <stringProp name="ConfigTestElement.username"></stringProp>
+                          <stringProp name="ConfigTestElement.password"></stringProp>
+                        </TCPSampler>
+                        <hashTree/>
+                      </hashTree>
+                      <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+                        <boolProp name="LoopController.continue_forever">true</boolProp>
+                        <stringProp name="LoopController.loops">${slottingconvert_loops}</stringProp>
+                      </LoopController>
+                      <hashTree>
+                        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_shop_fast_buy" enabled="true">
+                          <stringProp name="TestPlan.comments">购买增幅装置/强化增幅</stringProp>
+                          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                          <boolProp name="TCPSampler.nodelay">false</boolProp>
+                          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_shop_fast_buy&quot;,
+	&quot;paramMap&quot;:{
+		&quot;uid&quot;:&quot;0&quot;,
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;sid&quot;:&quot;4505&quot;,
+		&quot;num&quot;:&quot;1&quot;
+	}
+}</stringProp>
+                          <stringProp name="ConfigTestElement.username"></stringProp>
+                          <stringProp name="ConfigTestElement.password"></stringProp>
+                        </TCPSampler>
+                        <hashTree>
+                          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+                            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                            <stringProp name="RegexExtractor.refname">slottingitemId</stringProp>
+                            <stringProp name="RegexExtractor.regex">playeritemid=(.+),</stringProp>
+                            <stringProp name="RegexExtractor.template">$1$</stringProp>
+                            <stringProp name="RegexExtractor.default">-1</stringProp>
+                            <stringProp name="RegexExtractor.match_number">1</stringProp>
+                          </RegexExtractor>
+                          <hashTree/>
+                        </hashTree>
+                        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_slotting" enabled="true">
+                          <stringProp name="TestPlan.comments">获取周期任务</stringProp>
+                          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                          <boolProp name="TCPSampler.nodelay">false</boolProp>
+                          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_slotting&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;playerItemId&quot;:&quot;${playerItemId}&quot;,
+		&quot;index&quot;:&quot;${__Random(1,3,index)}&quot;,
+		&quot;sloterItemId&quot;:&quot;${slottingitemId}&quot;
+	}
+}</stringProp>
+                          <stringProp name="ConfigTestElement.username"></stringProp>
+                          <stringProp name="ConfigTestElement.password"></stringProp>
+                        </TCPSampler>
+                        <hashTree/>
+                        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_shop_fast_buy" enabled="true">
+                          <stringProp name="TestPlan.comments">购买增幅装置/强化增幅</stringProp>
+                          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                          <boolProp name="TCPSampler.nodelay">false</boolProp>
+                          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_shop_fast_buy&quot;,
+	&quot;paramMap&quot;:{
+		&quot;uid&quot;:&quot;0&quot;,
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;sid&quot;:&quot;${propertyItemId}&quot;,
+		&quot;num&quot;:&quot;1&quot;
+	}
+}</stringProp>
+                          <stringProp name="ConfigTestElement.username"></stringProp>
+                          <stringProp name="ConfigTestElement.password"></stringProp>
+                        </TCPSampler>
+                        <hashTree>
+                          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+                            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                            <stringProp name="RegexExtractor.refname">propertyItem</stringProp>
+                            <stringProp name="RegexExtractor.regex">playeritemid=(.+),</stringProp>
+                            <stringProp name="RegexExtractor.template">$1$</stringProp>
+                            <stringProp name="RegexExtractor.default">-1</stringProp>
+                            <stringProp name="RegexExtractor.match_number">1</stringProp>
+                          </RegexExtractor>
+                          <hashTree/>
+                        </hashTree>
+                        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_insert" enabled="true">
+                          <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                          <boolProp name="TCPSampler.nodelay">false</boolProp>
+                          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_insert&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;playerItemId&quot;:&quot;${playerItemId}&quot;,
+		&quot;index&quot;:&quot;${index}&quot;,
+		&quot;propertyItemId&quot;:&quot;${propertyItem}&quot;
+	}
+}</stringProp>
+                          <stringProp name="ConfigTestElement.username"></stringProp>
+                          <stringProp name="ConfigTestElement.password"></stringProp>
+                        </TCPSampler>
+                        <hashTree/>
+                        <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="高斯随机定时器" enabled="true">
+                          <stringProp name="ConstantTimer.delay">300</stringProp>
+                          <stringProp name="RandomTimer.range">100.0</stringProp>
+                        </GaussianRandomTimer>
+                        <hashTree/>
+                        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_strength_item_list" enabled="true">
+                          <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                          <boolProp name="TCPSampler.nodelay">false</boolProp>
+                          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_strength_item_list&quot;,
+	&quot;paramMap&quot;:{
+		&quot;uid&quot;:&quot;0&quot;,
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;t&quot;:&quot;${__Random(1,2,t)}&quot;,
+		&quot;cid&quot;:&quot;${__Random(1,6,cid)}&quot;,
+		&quot;p&quot;:&quot;${__Random(1,2,)}&quot;,
+		&quot;st&quot;:&quot;0&quot;,
+		&quot;ct&quot;:&quot;1&quot;
+	}
+}</stringProp>
+                          <stringProp name="ConfigTestElement.username"></stringProp>
+                          <stringProp name="ConfigTestElement.password"></stringProp>
+                        </TCPSampler>
+                        <hashTree>
+                          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器" enabled="true">
+                            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                            <stringProp name="RegexExtractor.refname">fromItem,toItem</stringProp>
+                            <stringProp name="RegexExtractor.regex">playeritemid=(.+),.+playeritemid=(.+),</stringProp>
+                            <stringProp name="RegexExtractor.template">$1$$2$</stringProp>
+                            <stringProp name="RegexExtractor.default">-1</stringProp>
+                            <stringProp name="RegexExtractor.match_number">1</stringProp>
+                          </RegexExtractor>
+                          <hashTree/>
+                        </hashTree>
+                        <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="c_convert" enabled="true">
+                          <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                          <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestTextRPCClientImpl</stringProp>
+                          <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                          <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                          <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                          <boolProp name="TCPSampler.nodelay">false</boolProp>
+                          <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                          <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                          <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;c_convert&quot;,
+	&quot;paramMap&quot;:{
+		&quot;pid&quot;:&quot;${pid}&quot;,
+		&quot;fromItemId&quot;:&quot;${fromItem}&quot;,
+		&quot;toItemId&quot;:&quot;${toItem}&quot;
+	}
+}</stringProp>
+                          <stringProp name="ConfigTestElement.username"></stringProp>
+                          <stringProp name="ConfigTestElement.password"></stringProp>
+                        </TCPSampler>
+                        <hashTree/>
+                      </hashTree>
+                    </hashTree>
+                  </hashTree>
+                </hashTree>
+              </hashTree>
+            </hashTree>
+            <RandomController guiclass="RandomControlGui" testclass="RandomController" testname="CM_RequestBinaryRPC随机控制器" enabled="false">
+              <intProp name="InterleaveControl.style">1</intProp>
+              <stringProp name="TestPlan.comments">CM_RequestBinaryRPC</stringProp>
+            </RandomController>
+            <hashTree>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_character_offline_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_character_offline&quot;,
+	&quot;userId&quot;:&quot;&quot;,
+	&quot;playerId&quot;:&quot;&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_character_online_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_character_online&quot;,
+	&quot;uid&quot;:&quot;&quot;,
+	&quot;userName&quot;:&quot;&quot;,
+	&quot;ip&quot;:&quot;&quot;,
+	&quot;version&quot;:&quot;&quot;,
+	&quot;isXunleiVip&quot;:&quot;&quot;,
+	&quot;internetCafe&quot;:&quot;&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_end_new_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_end_new&quot;,
+	&quot;playerId&quot;:&quot;&quot;,
+	&quot;entertTime&quot;:&quot;&quot;,
+	&quot;quitTime&quot;:&quot;&quot;,
+	&quot;characterId&quot;:&quot;&quot;,
+	&quot;isClear&quot;:&quot;&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_get_character_info_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_get_character_info&quot;,
+	&quot;uId&quot;:&quot;&quot;,
+	&quot;playerId&quot;:&quot;&quot;,
+	&quot;levelId&quot;:&quot;&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_get_level_info_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_get_level_info&quot;,
+	&quot;lid&quot;:&quot;&quot;,
+	&quot;roomId&quot;:&quot;&quot;,
+	&quot;playerId&quot;:&quot;&quot;,
+	&quot;serverId&quot;:&quot;&quot;,
+	&quot;channelId&quot;:&quot;&quot;,
+	&quot;team0&quot;:[],
+	&quot;team1&quot;:[],
+	&quot;roomCreate&quot;:&quot;&quot;,
+	&quot;gameStart&quot;:&quot;&quot;,
+	&quot;type&quot;:&quot;&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_get_level_list_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_get_level_list&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_get_unspeaklist_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_get_unspeaklist&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_keywords_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_keywords&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_kill_info_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_kill_info&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_login_activity_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_login_activity&quot;,
+	&quot;activityId&quot;:&quot;&quot;,
+	&quot;playerIds&quot;:[]
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_notice_list_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_notice_list&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_player_online_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_player_online&quot;,
+	&quot;uid&quot;:&quot;&quot;,
+	&quot;userName&quot;:&quot;&quot;,
+	&quot;name&quot;:&quot;&quot;,
+	&quot;ip&quot;:&quot;&quot;,
+	&quot;isXunleiVip&quot;:&quot;&quot;,
+	&quot;internetCafe&quot;:&quot;&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_random_player_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_random_player&quot;,
+	&quot;playerIds&quot;:[]
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_server_list_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_server_list&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_stage_quit_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_stage_quit&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_stage_quit_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_stage_quit&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+              <TCPSampler guiclass="TCPSamplerGui" testclass="TCPSampler" testname="s_sys_config_sampler" enabled="true">
+                <stringProp name="TestPlan.comments">获取成长人列表</stringProp>
+                <stringProp name="TCPSampler.classname">com.pearl.o2o.jmeter.protocol.tcp.sampler.CM_RequestBinaryRPCClientImpl</stringProp>
+                <stringProp name="TCPSampler.server">${info_server_ip}</stringProp>
+                <boolProp name="TCPSampler.reUseConnection">true</boolProp>
+                <stringProp name="TCPSampler.port">${info_server_port}</stringProp>
+                <boolProp name="TCPSampler.nodelay">false</boolProp>
+                <stringProp name="TCPSampler.timeout">${timeout_response}</stringProp>
+                <stringProp name="TCPSampler.ctimeout">${timeout_connect}</stringProp>
+                <stringProp name="TCPSampler.request">{
+	&quot;url&quot;:&quot;s_sys_config&quot;,
+	&quot;playerId&quot;:&quot;&quot;,
+	&quot;entertTime&quot;:&quot;&quot;,
+	&quot;quitTime&quot;:&quot;&quot;,
+	&quot;characterId&quot;:&quot;&quot;,
+	&quot;isClear&quot;:&quot;&quot;
+}</stringProp>
+                <stringProp name="ConfigTestElement.username"></stringProp>
+                <stringProp name="ConfigTestElement.password"></stringProp>
+              </TCPSampler>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="察看结果树" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="聚合报告" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+            </value>
+          </objProp>
+          <stringProp name="filename">${resultsFile}</stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

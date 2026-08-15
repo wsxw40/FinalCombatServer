@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysBioCharacter">
+	<typeAlias alias="SysBioCharacter" type="com.pearl.o2o.pojo.SysBioCharacter"/>
+	<resultMap class="SysBioCharacter" id="selectResult">
+		<result property="id" column="ID"/>
+		<result property="cid" column="CID"/>
+		<result property="nameCN" column="NAME"/>
+		<result property="sid" column="SYSITEMID"/>
+		<result property="type" column="TYPE"/>
+		<result property="weapons" column="WEAPONS"/>
+		<result property="costumes" column="COSTUMES"/>
+		<result property="runSpeed" column="RUN_SPEED"/>
+		<result property="walkSpeed" column="WALK_SPEED"/>
+		<result property="crouchSpeed" column="CROUCH_SPEED"/>
+		<result property="accelSpeed" column="ACCEL_SPEED"/>
+		<result property="jumpSpeed" column="JUMP_SPEED"/>
+		<result property="throwSpeed" column="THROW_SPEED"/>
+		<result property="costumeResource" column="RESOURCE_P"/>
+		<result property="isDefault" column="IS_DEFAULT"/>
+		<result property="cost" column="COST"/>
+		<result property="maxHp" column="MAX_HP"/>
+		<result property="exHp" column="EX_HP"/>
+		<result property="defaultLevel" column="LEVEL"/>
+		<result property="isFired" column="IS_FIRED"/>
+		<result property="isEnable" column="IS_ENABLE"/>
+		<result property="controllerHeight" column="CONTROLLER_HEIGHT"/>
+		<result property="controllerRadius" column="CONTROLLER_RADIUS"/>
+		<result property="controllerCrouchHeight" column="CONTROLLER_CROUCH_HEIGHT"/>
+		<result property="scoreOffset" column="SCORE_OFFSET"/>
+		
+		<result property="resourceName" column="RESOURCE_NAME"/>
+	</resultMap>
+	
+	
+	<!--================================================== Select ==================================================-->
+	<select id="select" resultMap="selectResult" parameterClass="java.util.Map" >
+		select * from SYS_BIO_CHARACTER 
+	</select>
+	
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->	
+	<insert id="insert"  parameterClass="SysBioCharacter">
+		insert into SYS_BIO_CHARACTER(
+			CID, SYSITEMID, TYPE, WEAPONS, COSTUMES,
+			RUN_SPEED,
+			WALK_SPEED,
+			CROUCH_SPEED,
+			ACCEL_SPEED,
+			JUMP_SPEED,
+			THROW_SPEED,
+			RESOURCE_P,
+			IS_DEFAULT,COST,NAME,MAX_HP,EX_HP,LEVEL,IS_FIRED,RESOURCE_NAME,IS_ENABLE,
+			CONTROLLER_HEIGHT,CONTROLLER_RADIUS,CONTROLLER_CROUCH_HEIGHT,SCORE_OFFSET
+		) values(
+			#cid#,
+			#sid#,
+			#type#,
+			#weapons#,
+			#costumes#,
+			#runSpeed#,
+			#walkSpeed#,
+			#crouchSpeed#,
+			#accelSpeed#,
+			#jumpSpeed#,
+			#throwSpeed#,
+			#costumeResource#,
+			#isDefault#,#cost#,#nameCN#,#maxHp#,#exHp#,#defaultLevel#,#isFired#,#resourceName#,
+			#isEnable#,#controllerHeight#,#controllerRadius#,#controllerCrouchHeight#,#scoreOffset#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	
+	<update id="delete" parameterClass="SysBioCharacter">
+		DELETE FROM SYS_BIO_CHARACTER where ID=#id#;
+	</update>
+	
+	
+	<update id="update" parameterClass="SysBioCharacter">
+		update SYS_BIO_CHARACTER 
+		set
+			CID=#cid#,
+			SYSITEMID=#sid#,
+			TYPE=#type#,
+			WEAPONS=#weapons#,
+			COSTUMES=#costumes#,
+			RUN_SPEED=#runSpeed#,
+			WALK_SPEED=#walkSpeed#,
+			CROUCH_SPEED=#crouchSpeed#,
+			ACCEL_SPEED=#accelSpeed#,
+			JUMP_SPEED=#jumpSpeed#,
+			THROW_SPEED=#throwSpeed#,
+			RESOURCE_P=#costumeResource#,
+			IS_DEFAULT=#isDefault#,
+			COST=#cost#,
+			NAME=#nameCN#,MAX_HP=#maxHp#,EX_HP=#exHp#,LEVEL=#defaultLevel#,
+			IS_FIRED=#isFired#,
+			IS_ENABLE=#isEnable#,
+			CONTROLLER_HEIGHT=#controllerHeight#,
+			CONTROLLER_RADIUS=#controllerRadius#,
+			CONTROLLER_CROUCH_HEIGHT=#controllerCrouchHeight#,
+			SCORE_OFFSET=#scoreOffset#
+		where ID=#id#;	
+	</update>
+</sqlMap>

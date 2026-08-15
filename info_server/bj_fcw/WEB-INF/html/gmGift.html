@@ -1,0 +1,207 @@
+<html>
+	<head>
+		<title>This is a test web services</title>
+	</head>
+	<script type="text/javascript">
+		var bflag=0;	//
+		var timeId=0;
+		
+		$(document).ready(function(){
+			var elementCreate = function(msg){
+				bflag=0;
+						$("#content").html("");
+						var index=1;
+						var con = "<table class='table table-bordered table-striped with-check' >";
+						con = con + "<thead><tr><td align='center'><input type='checkbox' name='all' id='all'/></td><th align='center'>ID</th><th align='center'>DISPLAY_NAME</th><td align='center'><a href='javascript:void(0);' id='showOne'>aDown</a></td></tr></thead>";
+						for(var m in msg){
+							con = con + "<tr><td name='boxCheckBox' id='"+m+"T' width='1'><input type='checkbox' name='cSelect' id='"+m+"'/><td align='center'>" + m +"</td></td><td width='230px' align='right'>" + msg[m] +"</td><td  align='left'>~<input type='text' value='' style='width:30px;border:1px solid gray' name='Strength'/> <a href='javascript:void(0);' name='cDown' id='cDown-"+(index++)+"'>cDown</a></td></tr>";
+						}
+						con = con + "</table>";
+
+						$("#content").html(con);
+						$("#all").change(function(){
+							if($(this).attr("checked")){
+								$("[name='cSelect']").attr("checked","checked");
+							}else{
+								$("[name='cSelect']").removeAttr("checked");
+							}
+						});
+						
+						$("[name='cDown']").click(function(){
+							var id="#cDown-"+(parseInt($(this).attr("id").split("-")[1])+1);
+							$(id).prev().val($(this).prev().val());
+						});
+						
+						$("[name='Strength']").change(function(){
+							if($(this).val()>16){$(this).val(16)}
+							if(!/^\d+$/.test($(this).val())){$(this).val(0)}
+						});
+						
+						$("#showOne").click(function(){
+							var v = $("#cDown-1").prev().val();
+							$("[name='cDown']").prev().val(v);
+						});
+						bflag=1;
+			}
+			
+			$("#msgContent").click();
+			$("#MsgFont").fadeIn(1000);
+			
+			//默认搜索
+ 			$("[name='dataGet']").click(function(){
+ 				bflag=0;
+ 				$("#msgContent").click();
+ 				$("#actionR").val($(this).attr("id"));
+ 				$.ajax({
+					type:'get',
+					dataType:'json',
+					url:'cindex/gmGift',
+					data:'actionR='+$("#actionR").val(),
+					cache:false,
+					success:function(msg)
+					{ 
+						elementCreate(msg);
+					},error:function(XMLHttpRequest,textStatus,errorThrown){alert("service timeout! , status:"+XMLHttpRequest.status+" , readyState:"+XMLHttpRequest.readyState+" , textStatus:"+textStatus);}
+				});
+ 			});
+ 			
+ 		
+ 			bflag=0;
+ 			
+			$.ajax({
+					type:'post',
+					dataType:'json',
+					url:'cindex/gmGift',
+					data:'{}',
+					cache:false, 
+					success:function(msg)
+					{ 
+						elementCreate(msg);
+					},error:function(XMLHttpRequest,textStatus,errorThrown){alert("service timeout! , status:"+XMLHttpRequest.status+" , readyState:"+XMLHttpRequest.readyState+" , textStatus:"+textStatus);}
+				});
+				
+			
+			$("#msgContent").click(function(){
+				timeId=setInterval(function(){loadLog();},2000);
+			});	
+			 
+			function loadLog(){
+				if(bflag==0){
+					$("#msgContent").text("骚等，搞死服务器中...");
+					setTimeout(function(){$("#msgContent").text("骚等，搞死服务器中..");},1000);
+				}else{
+					$("#msgContent").html("&nbsp;");
+					window.clearInterval(timeId);
+				}
+			}
+			 
+			$("#sendItem").click(function(){
+				if($("#playerName").val().length<=0||$("#playerName").val()=="输入玩家名称..."||$("[name='cSelect']:checked").size()<=0){
+					alert("玩家不存在，或武器需要勾选!");
+					return;
+				}
+				bflag=0;
+				$("#msgContent").click();
+				$(this).val("请稍候...");
+				$(this).attr("disabled","true");
+				var itemIds="";
+				$("[name='cSelect']:checked").each(function(){
+					var sItem = $(this).attr("id")+":";
+					var sLevel = $(this).parent().next().next().next().next().children("input").val();
+					if(!$.browser.msie)
+						sLevel=$(this).parent().next().next().next().children("[name='Strength']").val();
+					itemIds=itemIds + "," + sItem + (sLevel.length<=0?0:sLevel);
+					//alert(itemIds);
+				});
+				//return;
+				$.ajax({
+					type:'post',
+					dataType:'json',
+					url:'cindex/gmGift',
+					data:'action=1&itemLevel='+itemIds+"&playerName="+$("#playerName").val(),
+					success:function(msg)
+					{ 
+						bflag=1;
+						$("#msgContent").text(msg["msg"]);
+						$("#sendItem").val("Send item");
+						setTimeout(function(){$("#sendItem").removeAttr("disabled");},1000);
+					},error:function(){ 
+						$("#sendItem").val("Send item");
+						alert("Exception~");
+					}
+				});
+			});
+			
+			$("#playerName").click(function(){
+				if($(this).val()=="输入玩家名称..."){
+					$(this).val("").css("color","black");
+				}
+			});
+			
+			$("#serachStr").click(function(){
+				if(/.*查找物品.*/.test($(this).val())){
+					$(this).val("").css("color","black");
+				}
+			}).blur(function(){
+					bflag=0;
+					$(this).attr("disabled","true");
+					$.ajax({
+						type:'post',
+						dataType:'json',
+						url:'cindex/gmGift',
+						data:'action=2&serachStr='+$("#serachStr").val(),
+						success:function(msg)
+						{ 
+							bflag=1;
+							elementCreate(msg);
+							setTimeout(function(){$("#serachStr").removeAttr("disabled");},1000);
+						},error:function(){ 
+							alert("Exception~");
+						}
+					});
+			});
+			$(document).bind("keydown",function(e){
+				e=window.event||e;
+				if(e.keyCode==116)
+				{
+					e.keyCode=0;
+					return false;
+				}
+			});
+			/**
+				$(window).bind("beforeunload",function(){
+				return "为了避免你幸苦敲进去的名称数据丢失";
+				});
+			*/
+			
+		});
+	</script>
+	<style type="text/css">
+		body{font-size:12px;color:black;}
+		a{text-decoration:none;font-size:12px;color:green;}.button{border:0px solid #CCC;background:black;color:white;font:bold;width:70px;line-height:20px;font-size:13px}
+		.text{border:1px solid #ccc;font-size:12px;height:15px;color:gray}
+	</style>
+	
+	<body style="background:white">
+		<h3 id="MsgFont" style="display:none;color:red;">This page send gift to player for test,oh... test!!</h3>
+		
+		<div style="width:100%;height:20px;" id="serach">
+				<input type="hidden" name='actionR' id='actionR' value="1"/>
+				<input type="button" id="1" name="dataGet" class="btn btn-info" value=" 主 武 " />
+				<input type="button" id="2" name="dataGet" class="btn btn-info" value=" 副 武 "/> 
+				<input type="button" id="3" name="dataGet" class="btn btn-info" value=" 近 武 "/>
+				<input type="button" id="4" name="dataGet" class="btn btn-info" value=" 服 装 "/>
+				<input type="button" id="5" name="dataGet" class="btn btn-info" value=" 帽 子 "/>
+				<input type="button" id="6" name="dataGet" class="btn btn-info" value=" 配 饰 "/>
+				<input type="button" name="" class="btn btn-danger" value="Send item" id="sendItem"/>
+		</div>
+		  
+			<h3 id="msgContent" style="display:block;color:crimson;">&nbsp;</h3>
+			
+		<input type="text" name='playerName' id='playerName' value="输入玩家名称..." style="width:110px;" class="text"/>
+		<input type="text" name='serachStr' id='serachStr' value="查找物品：输入物品ID或物品名称以,分割..." style="width:285px;" class="text"/>
+		
+		<br/>
+		<div style="width:100%;" id="content"></div>
+	</body>
+</html>

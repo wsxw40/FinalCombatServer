@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import vo.Supplies;
+			import popup.SuppliesView;
+			import popup.WeaponPointView;
+			import vo.WeaponPoint;
+			import vo.BlastPoint;
+			import popup.BlastPointView;
+			import mx.controls.DataGrid;
+			import utils.PointUtils;
+			import vo.GamePoint;
+			import popup.StartPointView;
+			import mx.managers.PopUpManager;
+			import view.CreateMapView;
+			import mx.utils.StringUtil;
+			import utils.DatagridValidateFactory;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import utils.ColumnFactory;
+			import mx.rpc.events.FaultEvent;
+			import vo.LevelWeapon;
+			import vo.LevelInfo;
+			
+			[Bindable]
+			private var levelList:ArrayCollection;
+			[Bindable]
+			private var levelWeapons:ArrayCollection;
+			[Bindable]
+			private var levelInfo:LevelInfo=null;
+			private var isCopy:Boolean=false;
+			private var  mapView:CreateMapView;
+			private function init():void{
+				initBtn();
+				levelDataGrid.columns=ColumnFactory.getLevelColumns(false);
+				getRo.getLevelList();
+			}
+			private function initBtn():void{
+				newBtn.enabled=true;
+				copyBtn.enabled=true;
+				saveBtn.enabled=false;
+		 		deleteBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		
+			}
+			private function onNewBtnClick():void{
+				mapView=CreateMapView(PopUpManager.createPopUp(this,CreateMapView,true));
+				if(isCopy){
+					mapView.levelInfo=this.levelInfo;
+				}else{
+					mapView.levelInfo=new LevelInfo();
+				}
+				mapView.cancel.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(mapView);});
+				mapView.save.addEventListener(MouseEvent.CLICK,saveLevelInfo);
+				PopUpManager.centerPopUp(mapView);
+				
+			}
+			private function saveLevelInfo(evt:MouseEvent):void{
+				createRo.createLevelInfo(mapView.levelInfo);
+				PopUpManager.removePopUp(mapView);
+				getRo.getLevelList();
+			}
+			private function onCopyBtnClick():void{
+				if(this.levelInfo==null){
+					Alert.show("请先选择一张地图。");
+				}else{
+					isCopy=true;
+				}
+				
+			}
+			private function onSaveBtnClick():void{
+				updateRo.updateLevelInfoList(this.levelList);
+				initBtn();
+				levelDataGrid.editable=false;
+				
+			}
+			private function onDeleteBtnClick():void{
+				if(this.levelInfo==null){
+					Alert.show("请先选择一张地图。");
+				}else
+				{
+				deleteRo.deleteLevelInfo(this.levelInfo.id);
+				getRo.getLevelList();
+				}
+				
+			}
+			private function onEditBtnClick():void{
+				levelDataGrid.editable=true;
+				newBtn.enabled=false;
+		 		deleteBtn.enabled=false;
+		 		editBtn.enabled=false;
+		 		copyBtn.enabled=false;
+		 		cancelBtn.enabled=true;
+		 		saveBtn.enabled=true;
+				
+			}
+			private function onCancelBtnClick():void{
+					initBtn();
+				levelDataGrid.editable=false;
+				getRo.getLevelList();
+				
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.message.toString());
+				
+			}
+			private function getLevelListHandler(evt:ResultEvent):void{
+			 this.levelList=evt.result as ArrayCollection;
+			}
+			private function getLevelWeaponsHandler(evt:ResultEvent):void{
+			 this.levelWeapons=evt.result as ArrayCollection;
+			 if(this.cell==6){
+			 	showWeaponPointPopup();
+			 }else if(this.cell==8){
+			 	showSuppiesPopup();
+			 }
+			}
+			
+			private function selectHandler():void{
+				this.levelInfo=levelDataGrid.selectedItem as LevelInfo;
+			}
+			private function createLevelHandler(evt:ResultEvent):void{
+				getRo.getLevelList();
+			}
+			private function checkIt(event:Event):void
+			{
+				levelDataGrid.invalidateList();
+			}
+			private var datagridValidate:Validator;
+			private function endEdit(event:DataGridEvent):void{
+		 		var dataField:String = event.dataField;
+				var fCell:Array=[event.columnIndex,event.rowIndex];
+				var source:Object=event.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(event.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = event.currentTarget.editedItemRenderer.data[event.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+//               		var validate:Validator=DatagridValidateFactory.getCharacterValidater(dataField,source);
+					var validate:Validator=null;
+               		if(validate!=null){//no validate
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.levelInfo.isChange=1;
+	               			callLater(maintainFocus);
+	               			
+	               		}else{
+	               			event.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		}
+               		}else{
+               			this.levelInfo.isChange=1;
+               			callLater(maintainFocus);
+               		}
+               	}else{
+               		callLater(maintainFocus);
+               	}
+               	
+		 	}
+		 	private function maintainEdit(colIndex:int,rowIndex:int,source:Object):void
+			{
+				
+				var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+				if(levelDataGrid.editedItemPosition==null)
+				{
+	   				levelDataGrid.editedItemPosition = editCell;
+					callLater(validateCurrentEditor);
+	   			}
+			}
+			private function validateCurrentEditor():void{
+				datagridValidate.source=levelDataGrid.itemEditorInstance;
+				datagridValidate.validate();
+			}
+			private function maintainFocus():void
+			{
+	   			levelDataGrid.editedItemPosition = null;
+			}
+			private var weapView:WeaponForMapManageWindow;
+			private function onToLevelWeaponClick():void
+			{
+				if(this.levelInfo==null){
+					Alert.show("请先选择一张地图。");
+				}else
+				{
+		   			weapView=WeaponForMapManageWindow(PopUpManager.createPopUp(this,WeaponForMapManageWindow,true));
+		   			weapView.levelId=this.levelInfo.id;
+	   			}
+			}
+			private var start:StartPointView;
+			private var blast:BlastPointView;
+			private var weapon:WeaponPointView;
+			private var suppiesView:SuppliesView;
+			private var currentPoint:String="";
+			private var cell:int;
+			private function startEdit(evt:DataGridEvent):void{
+				this.cell=evt.columnIndex;
+				if(evt.columnIndex==3){
+					this.currentPoint=this.levelInfo.startPoints;
+					showGamePointPopup();
+				}else if(evt.columnIndex==4){
+					this.currentPoint=this.levelInfo.blastPoints;
+					showBlastPointPopup();
+				
+				}else if(evt.columnIndex==5){
+					this.currentPoint=this.levelInfo.flagPoints;
+					showGamePointPopup();
+				
+				}else if(evt.columnIndex==6){
+					this.currentPoint=this.levelInfo.weaponPoints;
+					getRo.getLevelWeapons(this.levelInfo.id);
+					
+				}else if(evt.columnIndex==7){
+					this.currentPoint=this.levelInfo.supplyPoints;
+					showBlastPointPopup();
+				
+				}else if(evt.columnIndex==8){
+					this.currentPoint=this.levelInfo.supplies;
+					getRo.getLevelWeapons(this.levelInfo.id);
+				}
+				
+			}
+			private function showSuppiesPopup():void{
+				var suppiesList:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var suppies:Supplies=new Supplies();
+						suppies.type=a[0];
+						suppies.name=a[1];
+						suppies.teamId=a[2];
+						suppies.value=a[3];
+						suppies.random=a[4];
+						suppies.skillTime=a[5];
+						suppiesList.addItem(suppies);
+					}
+				}
+				suppiesView=SuppliesView(PopUpManager.createPopUp(this,SuppliesView,true));
+				suppiesView.suppiesDatagrid.columns=ColumnFactory.getSupplies(false);
+				suppiesView.suppliesList=suppiesList;
+				suppiesView.weapons=this.levelWeapons;
+				suppiesView.save.addEventListener(MouseEvent.CLICK,suppiesHandler);
+				PopUpManager.centerPopUp(suppiesView);
+			}
+			private function suppiesHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.suppiesToString(suppiesView.suppliesList);
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					this.levelInfo.supplies=str;
+				}
+				PopUpManager.removePopUp(suppiesView);
+			}
+			private function showWeaponPointPopup():void{
+				
+				var weaponPoints:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var weaponPoint:WeaponPoint=new WeaponPoint();
+						weaponPoint.weaponId=a[0];
+						weaponPoint.x=a[1];
+						weaponPoint.y=a[2];
+						weaponPoint.z=a[3];
+						weaponPoint.rotate=a[4];
+						weaponPoints.addItem(weaponPoint);
+					}
+				}
+				weapon=WeaponPointView(PopUpManager.createPopUp(this,WeaponPointView,true));
+				weapon.weaponPointDatagrid.columns=ColumnFactory.getWeaponPoint(false);
+				weapon.weaponPoints=weaponPoints;
+				weapon.weapons=this.levelWeapons;
+				weapon.save.addEventListener(MouseEvent.CLICK,weaponPointsHandler);
+				PopUpManager.centerPopUp(weapon);
+			}
+			private function weaponPointsHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.weaponPointToString(weapon.weaponPoints);
+				
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					this.levelInfo.weaponPoints=str;
+				}
+				PopUpManager.removePopUp(weapon);
+			}
+			
+			private function showBlastPointPopup():void{
+				var blastPoints:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var blastPoint:BlastPoint=new BlastPoint();
+						blastPoint.x=a[0];
+						blastPoint.y=a[1];
+						blastPoint.z=a[2];
+						blastPoints.addItem(blastPoint);
+					}
+				}	
+				blast=BlastPointView(PopUpManager.createPopUp(this,BlastPointView,true));
+				blast.blastPointDatagrid.columns=ColumnFactory.getBlastPoint(false);
+				blast.blastPoints=blastPoints;
+				blast.save.addEventListener(MouseEvent.CLICK,blastPointsHandler);
+				PopUpManager.centerPopUp(blast);
+				
+			}
+			private function blastPointsHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.blastPointToString(blast.blastPoints);
+				
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					if(cell==4){
+						this.levelInfo.blastPoints=str;
+					}else if(cell==7){
+						this.levelInfo.supplyPoints=str;
+					}
+				}
+				PopUpManager.removePopUp(blast);
+			}
+			private function showGamePointPopup():void{
+				
+				var gamePoints:ArrayCollection=new ArrayCollection();
+				var points:String=this.currentPoint;
+				if(points!=""){
+					var array:Array=points.split(";");
+					for(var i:int=0;i<array.length;i++){
+						var a:Array=array[i].split(",");
+						var gamePoint:GamePoint=new GamePoint();
+						gamePoint.teamId=a[0];
+						gamePoint.x=a[1];
+						gamePoint.y=a[2];
+						gamePoint.z=a[3];
+						gamePoint.rotate=a[4];
+						gamePoints.addItem(gamePoint);
+					}
+				}
+				start=StartPointView(PopUpManager.createPopUp(this,StartPointView,true));
+				start.gamePointDatagrid.columns=ColumnFactory.getGamePoint(false);
+				start.gamePoints=gamePoints;
+				start.save.addEventListener(MouseEvent.CLICK,gamePointsHandler);
+				PopUpManager.centerPopUp(start);
+			}
+			private function gamePointsHandler(evt:MouseEvent):void{
+				var str:String=PointUtils.gamePointToString(start.gamePoints);
+				
+				var startp:String=this.currentPoint;
+				if(startp!=str){
+					this.levelInfo.isChange=1;
+					if(cell==3){
+						this.levelInfo.startPoints=str;
+					}else if(cell==5){
+						this.levelInfo.flagPoints=str;
+					}
+				}
+				PopUpManager.removePopUp(start);
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getLevelList" result="getLevelListHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="getLevelWeapons" result="getLevelWeaponsHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createLevelInfo"  result="createLevelHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteLevelInfo" result="createLevelHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateLevelInfoList" result="createLevelHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox  height="100%" width="100%">
+	<mx:VBox  height="100%" width="100%">
+	<mx:HBox>
+		<mx:ControlBar width="100%" >				
+	        	<mx:Button id="newBtn"  label="新建" click="onNewBtnClick()"/>
+	        	<mx:Button id="copyBtn" label="复制到粘贴板" click="onCopyBtnClick()"/>
+	        	<mx:Button id="saveBtn"  label="保存"  click="onSaveBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="删除" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="editBtn"  label="编辑" click="onEditBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="取消"  click="onCancelBtnClick()"/>
+	        	<mx:Button id="toLevelWeapon"  label="编辑地图武器"  click="onToLevelWeaponClick()"/>
+	     </mx:ControlBar>
+	</mx:HBox>
+		<mx:ApplicationControlBar  height="100%" width="100%">	
+			<component:MyDataGrid id="levelDataGrid" dataProvider="{levelList}" itemClick="selectHandler()" 
+				width="100%" height="100%" editable="false" change="checkIt(event)" itemFocusIn="startEdit(event)">
+			</component:MyDataGrid>
+		</mx:ApplicationControlBar>
+		</mx:VBox>
+	</mx:HBox>	
+	
+</mx:VBox>

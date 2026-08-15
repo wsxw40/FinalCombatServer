@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings useStatementNamespaces="true" />
+	
+	<!-- 用户相关 -->
+	<sqlMap resource="META-INF/ibatis/ma/AbstractUser.xml" />
+	<sqlMap resource="META-INF/ibatis/ma/User.xml" />
+	
+	<!-- 安全问题 -->
+	<sqlMap resource="META-INF/ibatis/ma/AbstractQuestion.xml" />
+	<sqlMap resource="META-INF/ibatis/ma/Question.xml" />
+	
+	<!-- 合作商 -->
+	<sqlMap resource="META-INF/ibatis/partner/AbstractPartner.xml" />
+	<sqlMap resource="META-INF/ibatis/partner/Partner.xml" />
+	<sqlMap resource="META-INF/ibatis/partner/AbstractPartnerUser.xml" />
+	<sqlMap resource="META-INF/ibatis/partner/PartnerUser.xml" />
+	<sqlMap resource="META-INF/ibatis/webcafe/WebcafeIpList.xml" />
+    <!-- CDKey -->
+</sqlMapConfig>

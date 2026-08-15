@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerBuff">
+	<typeAlias alias="PlayerItem" type="com.pearl.o2o.pojo.PlayerItem"/> 	
+	<resultMap id="selectPlayerItemResult" class="PlayerItem">
+		<result property="id" column="ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="name" column="NAME" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="itemId" column="ITEM_ID"/>		
+		<result property="validDate" column="VALID_TIME"/>			
+		<result property="expireDate" column="EXPIRE_TIME"/>
+		<result property="modifiedDesc" column="MODIFIED_DESC"/>
+		<result property="pack" column="PACK_ID"/>
+		<result property="buff" column="BUFF"/>
+		<result property="iBuffId" column="I_BUFF_ID"/>
+		<result property="iId" column="I_ID"/>
+		<result property="iValue" column="I_VALUE"/>
+		<result property="seq" column="SEQ"/>
+		<result property="isBind" column="IS_BIND"/>
+		<result property="isDefault" column="IS_DEFAULT"/>
+		<result property="timeLeft" column="TIME_LEFT"/>
+						
+	</resultMap> 
+	<select id="select" parameterClass="java.lang.Integer" resultMap="selectPlayerItemResult">
+		select 
+			pi.ID,
+			pi.ITEM_ID,
+   	 		pi.USER_ID,
+   	 		pi.PLAYER_ID,
+   	 		pi.VALID_TIME,
+   	 		pi.EXPIRE_TIME,
+   	 		pi.MODIFIED_DESC,
+   	 		pi.IS_BIND,
+   	 		pi.IS_DEFAULT,
+   	 		pi.DURABLE,
+   	 		pi.CURRENCY as P_CURRENCY,
+   	 		pi.UNIT_TYPE as P_UNIT_TYPE,
+   	 		pi.QUANTITY,
+   	 		ifnull(pp.PACK_ID,0) as PACK_ID, <!-- PACK_ID is not used, remove later  -->
+          	ifnull(pp.SEQ,0) as SEQ,
+   	 		si.MODIFIED_DESC as S_MODIFIED_DESC,
+   	 		si.*,
+   	 		pb.ID as BUFF,
+   	 		((unix_timestamp(pi.EXPIRE_TIME)-unix_timestamp(now())) div 60) as TIME_LEFT
+		 from PLAYER_ITEM pi
+		left outer join PLAYER_BUFF pb on pb.PLAYER_ITEM_ID=pi.ID
+		left outer join SYS_ITEM si on si.ID=pi.ITEM_ID
+		left outer join PLAYER_PACK pp on 	pi.ID=pp.PLAYER_ITEM_ID
+			where pb.PLAYER_ID=#value#
+    		and pi.IS_GIFT="N"
+    		and pi.IS_DELETED="N"
+			and ((pi.UNIT_TYPE=1)
+		 or  (pi.UNIT_TYPE=2 and pi.DURABLE>0 )
+		or (pi.UNIT_TYPE=3 and  pi.QUANTITY > 0)
+		or (pi.UNIT_TYPE=4 and pi.EXPIRE_TIME >= now())
+		)
+		order by pb.BUFF_ID;
+		
+	</select>
+	<select id="fuzzySelect" parameterClass="com.pearl.o2o.pojo.PlayerItem" resultClass="java.lang.Integer">
+		select count(*) from PLAYER_BUFF 
+		where USER_ID=#userId# 
+			and PLAYER_ID=#playerId# 
+			and BUFF_ID=#iBuffId#
+	</select>
+	
+	<insert id="insert" parameterClass="com.pearl.o2o.pojo.PlayerItem">
+		insert into PLAYER_BUFF(
+			USER_ID,
+			PLAYER_ID,
+			PLAYER_ITEM_ID,
+			BUFF_ID
+		)  values(
+			#userId#,
+			#playerId#,
+			#id#,
+			#iBuffId#
+		)
+	</insert>
+	<update id="update" parameterClass="com.pearl.o2o.pojo.PlayerItem">
+		update PLAYER_BUFF 
+		set PLAYER_ITEM_ID=#id#
+		where USER_ID=#userId# 
+			and PLAYER_ID=#playerId# 
+			and BUFF_ID=#iBuffId#
+	</update>
+	 
+</sqlMap>

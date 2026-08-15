@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.73u.root</groupId>
+		<artifactId>u-root</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+	</parent>
+	<groupId>com.73u.web</groupId>
+	<artifactId>u-web</artifactId>
+	<packaging>war</packaging>
+
+    <properties>
+        <httpclient.version>4.2.1</httpclient.version>
+    </properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.73u.framework</groupId>
+			<artifactId>u-framework</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.73u.biz</groupId>
+			<artifactId>u-biz</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>fluent-hc</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+	</dependencies>
+	<build>
+		<finalName>u-web</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>wagon-maven-plugin</artifactId>
+				<version>1.0-beta-3</version>
+				<configuration>
+					<serverId>deploy</serverId>
+					<fromDir>target</fromDir>
+					<includes>u-web.war</includes>
+					<url>scp://222.73.114.74</url>
+					<toDir>home/huanggang/app</toDir>
+				</configuration>
+				<dependencies>
+							<dependency>
+									<groupId>org.apache.maven.wagon</groupId>
+									<artifactId>wagon-ssh</artifactId>
+									<version>1.0-beta-6</version>
+							</dependency>
+				</dependencies>
+				<executions>
+						<execution>
+								<id>upload-war</id>
+								<goals>
+										<goal>upload</goal>
+								</goals>
+						</execution>
+				</executions>
+			</plugin>
+			
+		</plugins>
+	</build>
+</project>

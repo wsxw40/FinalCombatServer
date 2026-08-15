@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ns:Pod xmlns:mx="http://www.adobe.com/2006/mxml"  xmlns:ns="com.esria.samples.dashboard.view.*" 
+		title="每月充值100000以上玩家购买[物品清单][次数]视图" 
+		width="100%" height="100%"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"	
+		creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.charts.HitData;
+			import mx.charts.series.items.PieSeriesItem;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			
+			import vo.PayType;
+			
+			import window.MonthPayDistribution;
+		    [Bindable]
+			private var  datas:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			private var  yearDatas:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public var  monthPayDistribution:MonthPayDistribution;
+			[Bindable]
+			public var  param:int;
+			[Bindable]
+			public var  yearValue:String;
+			[Bindable]
+			public var  monthValue:String;
+			private function init():void{
+				var nowYear:Number=new Date().fullYear;
+				yearDatas.addItem(nowYear);
+				for(var i:int=1;i<10;i++){
+					yearDatas.addItem(nowYear-i);
+				}
+				var nowMonth:Number=new Date().month;
+				month.selectedIndex=nowMonth-1;
+				getRo.getPayLogLevel6(yearValue,monthValue);
+				//trace("初始化成功");
+			}
+			private function getPlayerChargeHandler(e:ResultEvent):void{
+				trace("total="+total);
+				trace("datas.length="+datas.length);
+				datas=e.result as ArrayCollection;
+				//trace("datas="+datas.length);
+				var total:int=0;
+				for each(var f:PayType in datas ){
+					total+=f.paySum;
+				}
+				trace("total="+total);
+				trace("datas.length="+datas.length);
+			}
+			private function yearChange(e:Event):void{
+				yearValue = ComboBox(e.target).selectedItem.valueOf();
+			}
+			private function monthChanged(e:Event):void{
+				monthValue= ComboBox(e.target).selectedItem.data;
+			}
+			public function refresh():void{
+				//trace(">>>>>>>>>>>>>>>>> refresh前 <<<<<<<<<<<<<<<<<<<<");
+				getRo.getPayLogLevel6(yearValue,monthValue);
+				//trace(">>>>>>>>>>>>>>>>> refresh后<<<<<<<<<<<<<<<<<<<<");
+			}
+			private function refreshView():void{
+				//trace(">>>>>>>>>>>>>>>>> refreshView前 <<<<<<<<<<<<<<<<<<<<");
+				monthPayDistribution.monthPay1.refresh();
+				//trace(">>>>>>>>>>>>>>>>> 后 <<<<<<<<<<<<<<<<<<<<");
+			}
+			private function dataTipFunction(o:HitData):String
+			{
+				var psi:PieSeriesItem=PieSeriesItem(o.chartItem);
+				var s:String ="物品类型:"+psi.item.payType +"\n"+"购买次数:"+psi.item.paySum +"\n"+"次数占比："+ Math.round(psi.percentValue) + "%";
+				trace("dataTip"+s);
+				return s;
+			}
+			/**
+			 * 月份 
+			 **/
+			public var monthDatas:ArrayCollection = new ArrayCollection(
+				  [ {label:"1", data:1}, 
+					{label:"2", data:2}, 
+					{label:"3", data:3}, 
+					{label:"4", data:4},
+					{label:"5", data:5}, 
+					{label:"6", data:6}, 
+					{label:"7", data:7}, 
+					{label:"8", data:8},
+					{label:"9", data:9},
+					{label:"10", data:10},
+					{label:"11", data:11},
+					{label:"12", data:12} 
+				]);
+			private function closeHandler(event:Event):void {
+				//myLabel.text = "You selected: " +  ComboBox(event.target).selectedItem.label;
+				//myData.text = "Data: " +  ComboBox(event.target).selectedItem.data;
+			}     
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getPayLogLevel6" result="getPlayerChargeHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox>
+		<mx:Label color="0x323232" text="年份：" />
+			<mx:ComboBox id="year" dataProvider="{yearDatas}" change="yearChange(event);"  width="150" color="0x000000"/>
+		<mx:Label  color="0x323232" text="月份：" /> 
+			<mx:ComboBox id="month"  dataProvider="{monthDatas}"  close="monthChanged(event);" width="150" color="0x000000"/>
+		<mx:Button label="刷新视图" click="refreshView()"/>             
+	</mx:HBox>
+	
+	<mx:VBox  height="100%" width="100%">
+		<mx:PieChart verticalCenter="true" horizontalCenter="true" id="chart" height="100%" width="100%" paddingRight="5" paddingLeft="5" color="0x323232"  
+					 dataProvider="{datas}" showDataTips="true" dataTipFunction="dataTipFunction">
+			<mx:series>
+				<mx:PieSeries field="paySum"  id="pieSeries">
+					<mx:calloutStroke>
+						<mx:Stroke weight="0"  color="0x888888" alpha="1.0"/>
+					</mx:calloutStroke>
+					<mx:radialStroke>
+						<mx:Stroke weight="0" color="#FFFFFF" alpha="0.20"/>
+					</mx:radialStroke>
+					<mx:stroke>
+						<mx:Stroke  color="0" alpha="0.20" />
+					</mx:stroke>
+				</mx:PieSeries>
+			</mx:series>
+		</mx:PieChart>
+	</mx:VBox>
+</ns:Pod>

@@ -1,0 +1,44 @@
+DROP TABLE IF EXISTS `ohtwooh`.`TEAM`;
+CREATE TABLE  `ohtwooh`.`TEAM` (
+  `ID` int(11) NOT NULL auto_increment,
+  `NAME` varchar(10) NOT NULL,
+  `DECLARATION` varchar(20) default NULL,
+  `DESCRIPTION` varchar(50) default NULL,
+  `BOARD` varchar(50) default NULL,
+  `LOGO` varchar(40) default NULL,
+  `SIZE` tinyint(4) default '20',
+  `KILL` int(11) default '0',
+  `HEAD_SHOT` int(11) default '0',
+  `GAME_WIN` int(11) default '0',
+  `GAME_TOTAL` int(11) default '0',
+  `CHALLENGE_WIN` int(11) default '0',
+  `CHALLENGE_TOTAL` int(11) default '0',
+  `CREATED_TIME` datetime default NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `ohtwooh`.`ALLY`;
+CREATE TABLE  `ohtwooh`.`ALLY` (
+  `TEAM_ID` int(11) NOT NULL,
+  `ALLY_ID` int(11) NOT NULL,
+  PRIMARY KEY  (`TEAM_ID`,`ALLY_ID`),
+  KEY `fk_ALLY_TEAM1` (`TEAM_ID`),
+  KEY `fk_ALLY_TEAM2` (`ALLY_ID`),
+  CONSTRAINT `fk_ALLY_TEAM1` FOREIGN KEY (`TEAM_ID`) REFERENCES `TEAM` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ALLY_TEAM2` FOREIGN KEY (`ALLY_ID`) REFERENCES `TEAM` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `ohtwooh`.`PLAYER_TEAM`;
+CREATE TABLE  `ohtwooh`.`PLAYER_TEAM` (
+  `PLAYER_ID` int(11) NOT NULL,
+  `TEAM_ID` int(11) NOT NULL,
+  `JOB` tinyint(4) default '1',
+  `KILL` int(11) default '0',
+  `DEAD` int(11) default '0',
+  `CREATED_TIME` datetime default NULL,
+  PRIMARY KEY  (`PLAYER_ID`,`TEAM_ID`),
+  KEY `fk_PLAYER_TEAM_PLAYER1` (`PLAYER_ID`),
+  KEY `fk_PLAYER_TEAM_TEAM1` (`TEAM_ID`),
+  CONSTRAINT `fk_PLAYER_TEAM_PLAYER1` FOREIGN KEY (`PLAYER_ID`) REFERENCES `PLAYER` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PLAYER_TEAM_TEAM1` FOREIGN KEY (`TEAM_ID`) REFERENCES `TEAM` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.utils.StringUtil;
+			import vo.GmUser;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			private var model:O2oModel = O2oModel.getInstance();
+			private function onSaveBtnClick():void{
+				var loginUser:GmUser = model.gmUser;
+				var oldPswd:String = StringUtil.trim(oldPswdTI.text);
+				var newPswd:String = StringUtil.trim(newPswdTI.text);
+				var confirmPswd:String = StringUtil.trim(confirmPswdTI.text);
+				if(newPswd == confirmPswd){
+					getRo.getGmUserByNameAndPassword(loginUser.name, oldPswd, newPswd);
+				}else{
+					Alert.show("New Password is difference from Confirm Password!");
+				}				
+			}
+			
+			private function getGmUserByNameAndPasswordHandler(e:ResultEvent):void{
+				var result:ArrayCollection = e.result as ArrayCollection;
+				if(result.length > 0){
+					Alert.show("Succeed!");
+				}else{
+					Alert.show("Fail!");
+				}
+			}
+			
+			private function onCancelClick():void{
+				oldPswdTI.text = null;
+				newPswdTI.text = null;
+				confirmPswdTI.text = null;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getGmUserByNameAndPassword" result="getGmUserByNameAndPasswordHandler(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:ControlBar width="100%" height="100%" horizontalAlign="center" verticalAlign="top">
+		<mx:Panel title="{resourceManager.getString('Language','label.GmUpdatePassword')}" horizontalAlign="center" verticalAlign="top">
+		<mx:VBox width="100%" height="100%" horizontalAlign="center">
+			<mx:Form>
+				<mx:FormItem label="{resourceManager.getString('Language','label.OldPassword')}" required="true">
+					<mx:TextInput id="oldPswdTI" displayAsPassword="true"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.NewPassword')}" required="true">
+					<mx:TextInput id="newPswdTI" displayAsPassword="true"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('Language','label.NewPassWordAgain')}" required="true">
+					<mx:TextInput id="confirmPswdTI" displayAsPassword="true"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:HBox width="100%" horizontalAlign="center">
+				<mx:Button id="saveBtn" label="{resourceManager.getString('Language','button.Save')}" click="onSaveBtnClick()"/>
+				<mx:Button id="cancelBtn" label="{resourceManager.getString('Language','button.Cancel')}" click="onCancelClick()"/>
+			</mx:HBox>
+		</mx:VBox>		
+		</mx:Panel>	
+	</mx:ControlBar>
+</mx:VBox>

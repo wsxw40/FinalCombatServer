@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerAchievement5">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="PlayerAchievement5" type="com.pearl.manager.pojo.PlayerAchievement5"/> 	
+	<resultMap id="selectPlayerAchievementResult" class="PlayerAchievement5">
+		<result property="id" 				column="ID"/>
+		<result property="playerId"			column="PLAYER_ID"/>
+		<result property="sysAchievementIds" column="SYS_ACHIEVEMENT_IDS"/>
+		<result property="level" 			column="LEVEL"/>		
+		<result property="totalLevel" 		column="TOTAL_LEVEL"/>	
+		<result property="number" 			column="NUMBER"/>
+		<result property="status" 			column="STATUS"/>
+		<result property="group" 			column="GROUP"/>
+	</resultMap>  
+			
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	
+	<insert id="insert" parameterClass="PlayerAchievement5">
+		insert into PLAYER_ACHIEVEMENT_5_$tableSuffix$(
+   	 		PLAYER_ID,
+   	 		SYS_ACHIEVEMENT_IDS,
+   	 		LEVEL,
+   	 		NUMBER,
+   	 		STATUS,
+   	 		TOTAL_LEVEL,
+   	 		`GROUP`
+		) values (
+			#playerId#,
+			#sysAchievementIds#,
+			#level#,
+			#number#,
+			#status#,
+			#totalLevel#,
+			#group#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="PlayerAchievement5">
+		update PLAYER_ACHIEVEMENT_5_$tableSuffix$ 
+			set LEVEL  = #level#,
+				NUMBER  = #number#,
+				STATUS  = #status#
+		where  ID=#id#;
+	</update>
+	
+	<!--================================================== Select ==================================================-->	
+	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectPlayerAchievementResult">
+   	 		select 	*	
+    	from PLAYER_ACHIEVEMENT_5_$tableSuffix$ pi    	   
+    	where  pi.PLAYER_ID =  #fid# 
+	</select>		
+</sqlMap>

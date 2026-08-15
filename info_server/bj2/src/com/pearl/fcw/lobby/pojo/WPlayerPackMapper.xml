@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WPlayerPackMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WPlayerPack" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <id column="SYS_CHARACTER_ID" property="sysCharacterId" jdbcType="INTEGER" />
+    <result column="PLAYER_ID" property="playerId" jdbcType="INTEGER" />
+    <result column="PLAYER_ITEM_ID" property="playerItemId" jdbcType="INTEGER" />
+    <result column="TYPE" property="type" jdbcType="CHAR" />
+    <result column="PACK_ID" property="packId" jdbcType="SMALLINT" />
+    <result column="SEQ" property="seq" jdbcType="SMALLINT" />
+    <result column="EXPIRE_TIME" property="expireTime" jdbcType="TIMESTAMP" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, SYS_CHARACTER_ID, PLAYER_ID, PLAYER_ITEM_ID, TYPE, PACK_ID, SEQ, EXPIRE_TIME, 
+    BACK_UP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerPack" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_PACK${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+      and SYS_CHARACTER_ID = #{sysCharacterId,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WPlayerPack" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLAYER_PACK${tableSuffix}
+    where PLAYER_ID = #{playerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerPack" >
+    delete from PLAYER_PACK${tableSuffix}
+    where ID = #{id,jdbcType=INTEGER}
+      and SYS_CHARACTER_ID = #{sysCharacterId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WPlayerPack" >
+    insert into PLAYER_PACK${tableSuffix} (ID, SYS_CHARACTER_ID, PLAYER_ID, 
+      PLAYER_ITEM_ID, TYPE, PACK_ID, 
+      SEQ, EXPIRE_TIME, BACK_UP
+      )
+    values (#{id,jdbcType=INTEGER}, #{sysCharacterId,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, 
+      #{playerItemId,jdbcType=INTEGER}, #{type,jdbcType=CHAR}, #{packId,jdbcType=SMALLINT}, 
+      #{seq,jdbcType=SMALLINT}, #{expireTime,jdbcType=TIMESTAMP}, #{backUp,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerPack" >
+    insert into PLAYER_PACK${tableSuffix}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="sysCharacterId != null" >
+        SYS_CHARACTER_ID,
+      </if>
+      <if test="playerId != null" >
+        PLAYER_ID,
+      </if>
+      <if test="playerItemId != null" >
+        PLAYER_ITEM_ID,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="packId != null" >
+        PACK_ID,
+      </if>
+      <if test="seq != null" >
+        SEQ,
+      </if>
+      <if test="expireTime != null" >
+        EXPIRE_TIME,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysCharacterId != null" >
+        #{sysCharacterId,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="playerItemId != null" >
+        #{playerItemId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="packId != null" >
+        #{packId,jdbcType=SMALLINT},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=SMALLINT},
+      </if>
+      <if test="expireTime != null" >
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WPlayerPack" >
+    update PLAYER_PACK${tableSuffix}
+    <set >
+      <if test="playerId != null" >
+        PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="playerItemId != null" >
+        PLAYER_ITEM_ID = #{playerItemId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=CHAR},
+      </if>
+      <if test="packId != null" >
+        PACK_ID = #{packId,jdbcType=SMALLINT},
+      </if>
+      <if test="seq != null" >
+        SEQ = #{seq,jdbcType=SMALLINT},
+      </if>
+      <if test="expireTime != null" >
+        EXPIRE_TIME = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+      and SYS_CHARACTER_ID = #{sysCharacterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WPlayerPack" >
+    update PLAYER_PACK${tableSuffix}
+    set PLAYER_ID = #{playerId,jdbcType=INTEGER},
+      PLAYER_ITEM_ID = #{playerItemId,jdbcType=INTEGER},
+      TYPE = #{type,jdbcType=CHAR},
+      PACK_ID = #{packId,jdbcType=SMALLINT},
+      SEQ = #{seq,jdbcType=SMALLINT},
+      EXPIRE_TIME = #{expireTime,jdbcType=TIMESTAMP},
+      BACK_UP = #{backUp,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+      and SYS_CHARACTER_ID = #{sysCharacterId,jdbcType=INTEGER}
+  </update>
+</mapper>

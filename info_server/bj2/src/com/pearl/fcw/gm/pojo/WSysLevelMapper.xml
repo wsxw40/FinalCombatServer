@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysLevel" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DISPLAY_NAME" property="displayName" jdbcType="VARCHAR" />
+    <result column="INDEX" property="index" jdbcType="INTEGER" />
+    <result column="ISNEW" property="isnew" jdbcType="INTEGER" />
+    <result column="START_POINTS" property="startPoints" jdbcType="VARCHAR" />
+    <result column="BLAST_POINTS" property="blastPoints" jdbcType="VARCHAR" />
+    <result column="FLAG_POINTS" property="flagPoints" jdbcType="VARCHAR" />
+    <result column="WEAPON_POINTS" property="weaponPoints" jdbcType="VARCHAR" />
+    <result column="BOSS_ITEMS" property="bossItems" jdbcType="VARCHAR" />
+    <result column="BOSS" property="boss" jdbcType="LONGVARCHAR" />
+    <result column="BOSS_DROP" property="bossDrop" jdbcType="LONGVARCHAR" />
+    <result column="IS_SELF" property="isSelf" jdbcType="INTEGER" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="ZOMBIE_INFO" property="zombieInfo" jdbcType="VARCHAR" />
+    <result column="LEVEL_HORIZON" property="levelHorizon" jdbcType="REAL" />
+    <result column="VEHICLE_LINE_INFO" property="vehicleLineInfo" jdbcType="VARCHAR" />
+    <result column="VEHICLE_ADD_NUM" property="vehicleAddNum" jdbcType="INTEGER" />
+    <result column="VEHICLE_INFO" property="vehicleInfo" jdbcType="VARCHAR" />
+    <result column="TARGET_SPEED" property="targetSpeed" jdbcType="REAL" />
+    <result column="BLOOD_OFFSET" property="bloodOffset" jdbcType="INTEGER" />
+    <result column="IS_RUSH_GOLD" property="isRushGold" jdbcType="INTEGER" />
+    <result column="IS_MONEY_REWARD" property="isMoneyReward" jdbcType="INTEGER" />
+    <result column="RUSH_GOLD_POINT" property="rushGoldPoint" jdbcType="VARCHAR" />
+    <result column="IS_VIP" property="isVip" jdbcType="INTEGER" />
+    <result column="EXP_ADD" property="expAdd" jdbcType="REAL" />
+    <result column="GP_ADD" property="gpAdd" jdbcType="REAL" />
+    <result column="ACTIVITY_START" property="activityStart" jdbcType="TIMESTAMP" />
+    <result column="ACTIVITY_END" property="activityEnd" jdbcType="TIMESTAMP" />
+    <result column="NUM_FOR_TEAM" property="numForTeam" jdbcType="INTEGER" />
+    <result column="IS_GM" property="isGm" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.pearl.fcw.gm.pojo.WSysLevel" extends="BaseResultMap" >
+    <result column="SUPPLIES" property="supplies" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, TYPE, NAME, DISPLAY_NAME, `INDEX`, ISNEW, START_POINTS, BLAST_POINTS, FLAG_POINTS, 
+    WEAPON_POINTS, BOSS_ITEMS, IS_SELF, DESCRIPTION, ZOMBIE_INFO, LEVEL_HORIZON, VEHICLE_LINE_INFO, 
+    VEHICLE_ADD_NUM, VEHICLE_INFO, TARGET_SPEED, BLOOD_OFFSET, IS_RUSH_GOLD, IS_MONEY_REWARD, 
+    RUSH_GOLD_POINT, IS_VIP, EXP_ADD, GP_ADD, ACTIVITY_START, ACTIVITY_END, NUM_FOR_TEAM, 
+    IS_GM
+  </sql>
+  <sql id="Blob_Column_List" >
+    SUPPLIES, BOSS, BOSS_DROP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SYS_LEVEL
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="ResultMapWithBLOBs" parameterType="com.pearl.fcw.gm.pojo.WSysLevel" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SYS_LEVEL where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SYS_LEVEL where 1 = 1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or DISPLAY_NAME like '${searchValue}%' or `NAME` like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_LEVEL where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or DISPLAY_NAME like '${searchValue}%' or `NAME` like '${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_LEVEL
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysLevel" >
+    insert into SYS_LEVEL (ID, TYPE, NAME, 
+      DISPLAY_NAME, `INDEX`, ISNEW, 
+      START_POINTS, BLAST_POINTS, FLAG_POINTS, 
+      WEAPON_POINTS, BOSS_ITEMS, IS_SELF, 
+      DESCRIPTION, ZOMBIE_INFO, LEVEL_HORIZON, 
+      VEHICLE_LINE_INFO, VEHICLE_ADD_NUM, VEHICLE_INFO, 
+      TARGET_SPEED, BLOOD_OFFSET, IS_RUSH_GOLD, 
+      IS_MONEY_REWARD, RUSH_GOLD_POINT, IS_VIP, 
+      EXP_ADD, GP_ADD, ACTIVITY_START, 
+      ACTIVITY_END, NUM_FOR_TEAM, IS_GM, 
+      SUPPLIES, BOSS, BOSS_DROP)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{displayName,jdbcType=VARCHAR}, #{index,jdbcType=INTEGER}, #{isnew,jdbcType=INTEGER}, 
+      #{startPoints,jdbcType=VARCHAR}, #{blastPoints,jdbcType=VARCHAR}, #{flagPoints,jdbcType=VARCHAR}, 
+      #{weaponPoints,jdbcType=VARCHAR}, #{bossItems,jdbcType=VARCHAR}, #{isSelf,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{zombieInfo,jdbcType=VARCHAR}, #{levelHorizon,jdbcType=REAL}, 
+      #{vehicleLineInfo,jdbcType=VARCHAR}, #{vehicleAddNum,jdbcType=INTEGER}, #{vehicleInfo,jdbcType=VARCHAR}, 
+      #{targetSpeed,jdbcType=REAL}, #{bloodOffset,jdbcType=INTEGER}, #{isRushGold,jdbcType=INTEGER}, 
+      #{isMoneyReward,jdbcType=INTEGER}, #{rushGoldPoint,jdbcType=VARCHAR}, #{isVip,jdbcType=INTEGER}, 
+      #{expAdd,jdbcType=REAL}, #{gpAdd,jdbcType=REAL}, #{activityStart,jdbcType=TIMESTAMP}, 
+      #{activityEnd,jdbcType=TIMESTAMP}, #{numForTeam,jdbcType=INTEGER}, #{isGm,jdbcType=INTEGER}, 
+      #{supplies,jdbcType=LONGVARCHAR}, #{boss,jdbcType=LONGVARCHAR}, #{bossDrop,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_LEVEL (ID, TYPE, NAME, 
+      DISPLAY_NAME, `INDEX`, ISNEW, 
+      START_POINTS, BLAST_POINTS, FLAG_POINTS, 
+      WEAPON_POINTS, BOSS_ITEMS, IS_SELF, 
+      DESCRIPTION, ZOMBIE_INFO, LEVEL_HORIZON, 
+      VEHICLE_LINE_INFO, VEHICLE_ADD_NUM, VEHICLE_INFO, 
+      TARGET_SPEED, BLOOD_OFFSET, IS_RUSH_GOLD, 
+      IS_MONEY_REWARD, RUSH_GOLD_POINT, IS_VIP, 
+      EXP_ADD, GP_ADD, ACTIVITY_START, 
+      ACTIVITY_END, NUM_FOR_TEAM, IS_GM, 
+      SUPPLIES, BOSS, BOSS_DROP)
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+	    (#{item.id,jdbcType=INTEGER}, #{item.type,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, 
+	      #{item.displayName,jdbcType=VARCHAR}, #{item.index,jdbcType=INTEGER}, #{item.isnew,jdbcType=INTEGER}, 
+	      #{item.startPoints,jdbcType=VARCHAR}, #{item.blastPoints,jdbcType=VARCHAR}, #{item.flagPoints,jdbcType=VARCHAR}, 
+	      #{item.weaponPoints,jdbcType=VARCHAR}, #{item.bossItems,jdbcType=VARCHAR}, #{item.isSelf,jdbcType=INTEGER}, 
+	      #{item.description,jdbcType=VARCHAR}, #{item.zombieInfo,jdbcType=VARCHAR}, #{item.levelHorizon,jdbcType=REAL}, 
+	      #{item.vehicleLineInfo,jdbcType=VARCHAR}, #{item.vehicleAddNum,jdbcType=INTEGER}, #{item.vehicleInfo,jdbcType=VARCHAR}, 
+	      #{item.targetSpeed,jdbcType=REAL}, #{item.bloodOffset,jdbcType=INTEGER}, #{item.isRushGold,jdbcType=INTEGER}, 
+	      #{item.isMoneyReward,jdbcType=INTEGER}, #{item.rushGoldPoint,jdbcType=VARCHAR}, #{item.isVip,jdbcType=INTEGER}, 
+	      #{item.expAdd,jdbcType=REAL}, #{item.gpAdd,jdbcType=REAL}, #{item.activityStart,jdbcType=TIMESTAMP}, 
+	      #{item.activityEnd,jdbcType=TIMESTAMP}, #{item.numForTeam,jdbcType=INTEGER}, #{item.isGm,jdbcType=INTEGER}, 
+	      #{item.supplies,jdbcType=LONGVARCHAR}, #{item.boss,jdbcType=LONGVARCHAR}, #{item.bossDrop,jdbcType=LONGVARCHAR})
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysLevel" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_LEVEL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="displayName != null" >
+        DISPLAY_NAME,
+      </if>
+      <if test="index != null" >
+        `INDEX`,
+      </if>
+      <if test="isnew != null" >
+        ISNEW,
+      </if>
+      <if test="startPoints != null" >
+        START_POINTS,
+      </if>
+      <if test="blastPoints != null" >
+        BLAST_POINTS,
+      </if>
+      <if test="flagPoints != null" >
+        FLAG_POINTS,
+      </if>
+      <if test="weaponPoints != null" >
+        WEAPON_POINTS,
+      </if>
+      <if test="bossItems != null" >
+        BOSS_ITEMS,
+      </if>
+      <if test="isSelf != null" >
+        IS_SELF,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="zombieInfo != null" >
+        ZOMBIE_INFO,
+      </if>
+      <if test="levelHorizon != null" >
+        LEVEL_HORIZON,
+      </if>
+      <if test="vehicleLineInfo != null" >
+        VEHICLE_LINE_INFO,
+      </if>
+      <if test="vehicleAddNum != null" >
+        VEHICLE_ADD_NUM,
+      </if>
+      <if test="vehicleInfo != null" >
+        VEHICLE_INFO,
+      </if>
+      <if test="targetSpeed != null" >
+        TARGET_SPEED,
+      </if>
+      <if test="bloodOffset != null" >
+        BLOOD_OFFSET,
+      </if>
+      <if test="isRushGold != null" >
+        IS_RUSH_GOLD,
+      </if>
+      <if test="isMoneyReward != null" >
+        IS_MONEY_REWARD,
+      </if>
+      <if test="rushGoldPoint != null" >
+        RUSH_GOLD_POINT,
+      </if>
+      <if test="isVip != null" >
+        IS_VIP,
+      </if>
+      <if test="expAdd != null" >
+        EXP_ADD,
+      </if>
+      <if test="gpAdd != null" >
+        GP_ADD,
+      </if>
+      <if test="activityStart != null" >
+        ACTIVITY_START,
+      </if>
+      <if test="activityEnd != null" >
+        ACTIVITY_END,
+      </if>
+      <if test="numForTeam != null" >
+        NUM_FOR_TEAM,
+      </if>
+      <if test="isGm != null" >
+        IS_GM,
+      </if>
+      <if test="supplies != null" >
+        SUPPLIES,
+      </if>
+      <if test="boss != null" >
+        BOSS,
+      </if>
+      <if test="bossDrop != null" >
+        BOSS_DROP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="displayName != null" >
+        #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="index != null" >
+        #{index,jdbcType=INTEGER},
+      </if>
+      <if test="isnew != null" >
+        #{isnew,jdbcType=INTEGER},
+      </if>
+      <if test="startPoints != null" >
+        #{startPoints,jdbcType=VARCHAR},
+      </if>
+      <if test="blastPoints != null" >
+        #{blastPoints,jdbcType=VARCHAR},
+      </if>
+      <if test="flagPoints != null" >
+        #{flagPoints,jdbcType=VARCHAR},
+      </if>
+      <if test="weaponPoints != null" >
+        #{weaponPoints,jdbcType=VARCHAR},
+      </if>
+      <if test="bossItems != null" >
+        #{bossItems,jdbcType=VARCHAR},
+      </if>
+      <if test="isSelf != null" >
+        #{isSelf,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="zombieInfo != null" >
+        #{zombieInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="levelHorizon != null" >
+        #{levelHorizon,jdbcType=REAL},
+      </if>
+      <if test="vehicleLineInfo != null" >
+        #{vehicleLineInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleAddNum != null" >
+        #{vehicleAddNum,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleInfo != null" >
+        #{vehicleInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="targetSpeed != null" >
+        #{targetSpeed,jdbcType=REAL},
+      </if>
+      <if test="bloodOffset != null" >
+        #{bloodOffset,jdbcType=INTEGER},
+      </if>
+      <if test="isRushGold != null" >
+        #{isRushGold,jdbcType=INTEGER},
+      </if>
+      <if test="isMoneyReward != null" >
+        #{isMoneyReward,jdbcType=INTEGER},
+      </if>
+      <if test="rushGoldPoint != null" >
+        #{rushGoldPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="isVip != null" >
+        #{isVip,jdbcType=INTEGER},
+      </if>
+      <if test="expAdd != null" >
+        #{expAdd,jdbcType=REAL},
+      </if>
+      <if test="gpAdd != null" >
+        #{gpAdd,jdbcType=REAL},
+      </if>
+      <if test="activityStart != null" >
+        #{activityStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityEnd != null" >
+        #{activityEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="numForTeam != null" >
+        #{numForTeam,jdbcType=INTEGER},
+      </if>
+      <if test="isGm != null" >
+        #{isGm,jdbcType=INTEGER},
+      </if>
+      <if test="supplies != null" >
+        #{supplies,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="boss != null" >
+        #{boss,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bossDrop != null" >
+        #{bossDrop,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysLevel" >
+    update SYS_LEVEL
+    <set >
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="displayName != null" >
+        DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="index != null" >
+        `INDEX` = #{index,jdbcType=INTEGER},
+      </if>
+      <if test="isnew != null" >
+        ISNEW = #{isnew,jdbcType=INTEGER},
+      </if>
+      <if test="startPoints != null" >
+        START_POINTS = #{startPoints,jdbcType=VARCHAR},
+      </if>
+      <if test="blastPoints != null" >
+        BLAST_POINTS = #{blastPoints,jdbcType=VARCHAR},
+      </if>
+      <if test="flagPoints != null" >
+        FLAG_POINTS = #{flagPoints,jdbcType=VARCHAR},
+      </if>
+      <if test="weaponPoints != null" >
+        WEAPON_POINTS = #{weaponPoints,jdbcType=VARCHAR},
+      </if>
+      <if test="bossItems != null" >
+        BOSS_ITEMS = #{bossItems,jdbcType=VARCHAR},
+      </if>
+      <if test="isSelf != null" >
+        IS_SELF = #{isSelf,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="zombieInfo != null" >
+        ZOMBIE_INFO = #{zombieInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="levelHorizon != null" >
+        LEVEL_HORIZON = #{levelHorizon,jdbcType=REAL},
+      </if>
+      <if test="vehicleLineInfo != null" >
+        VEHICLE_LINE_INFO = #{vehicleLineInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleAddNum != null" >
+        VEHICLE_ADD_NUM = #{vehicleAddNum,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleInfo != null" >
+        VEHICLE_INFO = #{vehicleInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="targetSpeed != null" >
+        TARGET_SPEED = #{targetSpeed,jdbcType=REAL},
+      </if>
+      <if test="bloodOffset != null" >
+        BLOOD_OFFSET = #{bloodOffset,jdbcType=INTEGER},
+      </if>
+      <if test="isRushGold != null" >
+        IS_RUSH_GOLD = #{isRushGold,jdbcType=INTEGER},
+      </if>
+      <if test="isMoneyReward != null" >
+        IS_MONEY_REWARD = #{isMoneyReward,jdbcType=INTEGER},
+      </if>
+      <if test="rushGoldPoint != null" >
+        RUSH_GOLD_POINT = #{rushGoldPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="isVip != null" >
+        IS_VIP = #{isVip,jdbcType=INTEGER},
+      </if>
+      <if test="expAdd != null" >
+        EXP_ADD = #{expAdd,jdbcType=REAL},
+      </if>
+      <if test="gpAdd != null" >
+        GP_ADD = #{gpAdd,jdbcType=REAL},
+      </if>
+      <if test="activityStart != null" >
+        ACTIVITY_START = #{activityStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityEnd != null" >
+        ACTIVITY_END = #{activityEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="numForTeam != null" >
+        NUM_FOR_TEAM = #{numForTeam,jdbcType=INTEGER},
+      </if>
+      <if test="isGm != null" >
+        IS_GM = #{isGm,jdbcType=INTEGER},
+      </if>
+      <if test="supplies != null" >
+        SUPPLIES = #{supplies,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="boss != null" >
+        BOSS = #{boss,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bossDrop != null" >
+        BOSS_DROP = #{bossDrop,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.pearl.fcw.gm.pojo.WSysLevel" >
+    update SYS_LEVEL
+    set TYPE = #{type,jdbcType=INTEGER},
+      NAME = #{name,jdbcType=VARCHAR},
+      DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+      `INDEX` = #{index,jdbcType=INTEGER},
+      ISNEW = #{isnew,jdbcType=INTEGER},
+      START_POINTS = #{startPoints,jdbcType=VARCHAR},
+      BLAST_POINTS = #{blastPoints,jdbcType=VARCHAR},
+      FLAG_POINTS = #{flagPoints,jdbcType=VARCHAR},
+      WEAPON_POINTS = #{weaponPoints,jdbcType=VARCHAR},
+      BOSS_ITEMS = #{bossItems,jdbcType=VARCHAR},
+      IS_SELF = #{isSelf,jdbcType=INTEGER},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      ZOMBIE_INFO = #{zombieInfo,jdbcType=VARCHAR},
+      LEVEL_HORIZON = #{levelHorizon,jdbcType=REAL},
+      VEHICLE_LINE_INFO = #{vehicleLineInfo,jdbcType=VARCHAR},
+      VEHICLE_ADD_NUM = #{vehicleAddNum,jdbcType=INTEGER},
+      VEHICLE_INFO = #{vehicleInfo,jdbcType=VARCHAR},
+      TARGET_SPEED = #{targetSpeed,jdbcType=REAL},
+      BLOOD_OFFSET = #{bloodOffset,jdbcType=INTEGER},
+      IS_RUSH_GOLD = #{isRushGold,jdbcType=INTEGER},
+      IS_MONEY_REWARD = #{isMoneyReward,jdbcType=INTEGER},
+      RUSH_GOLD_POINT = #{rushGoldPoint,jdbcType=VARCHAR},
+      IS_VIP = #{isVip,jdbcType=INTEGER},
+      EXP_ADD = #{expAdd,jdbcType=REAL},
+      GP_ADD = #{gpAdd,jdbcType=REAL},
+      ACTIVITY_START = #{activityStart,jdbcType=TIMESTAMP},
+      ACTIVITY_END = #{activityEnd,jdbcType=TIMESTAMP},
+      NUM_FOR_TEAM = #{numForTeam,jdbcType=INTEGER},
+      IS_GM = #{isGm,jdbcType=INTEGER},
+      SUPPLIES = #{supplies,jdbcType=LONGVARCHAR},
+      BOSS = #{boss,jdbcType=LONGVARCHAR},
+      BOSS_DROP = #{bossDrop,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysLevel" >
+    update SYS_LEVEL
+    set TYPE = #{type,jdbcType=INTEGER},
+      NAME = #{name,jdbcType=VARCHAR},
+      DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+      `INDEX` = #{index,jdbcType=INTEGER},
+      ISNEW = #{isnew,jdbcType=INTEGER},
+      START_POINTS = #{startPoints,jdbcType=VARCHAR},
+      BLAST_POINTS = #{blastPoints,jdbcType=VARCHAR},
+      FLAG_POINTS = #{flagPoints,jdbcType=VARCHAR},
+      WEAPON_POINTS = #{weaponPoints,jdbcType=VARCHAR},
+      BOSS_ITEMS = #{bossItems,jdbcType=VARCHAR},
+      IS_SELF = #{isSelf,jdbcType=INTEGER},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      ZOMBIE_INFO = #{zombieInfo,jdbcType=VARCHAR},
+      LEVEL_HORIZON = #{levelHorizon,jdbcType=REAL},
+      VEHICLE_LINE_INFO = #{vehicleLineInfo,jdbcType=VARCHAR},
+      VEHICLE_ADD_NUM = #{vehicleAddNum,jdbcType=INTEGER},
+      VEHICLE_INFO = #{vehicleInfo,jdbcType=VARCHAR},
+      TARGET_SPEED = #{targetSpeed,jdbcType=REAL},
+      BLOOD_OFFSET = #{bloodOffset,jdbcType=INTEGER},
+      IS_RUSH_GOLD = #{isRushGold,jdbcType=INTEGER},
+      IS_MONEY_REWARD = #{isMoneyReward,jdbcType=INTEGER},
+      RUSH_GOLD_POINT = #{rushGoldPoint,jdbcType=VARCHAR},
+      IS_VIP = #{isVip,jdbcType=INTEGER},
+      EXP_ADD = #{expAdd,jdbcType=REAL},
+      GP_ADD = #{gpAdd,jdbcType=REAL},
+      ACTIVITY_START = #{activityStart,jdbcType=TIMESTAMP},
+      ACTIVITY_END = #{activityEnd,jdbcType=TIMESTAMP},
+      NUM_FOR_TEAM = #{numForTeam,jdbcType=INTEGER},
+      IS_GM = #{isGm,jdbcType=INTEGER},
+      SUPPLIES = #{supplies,jdbcType=LONGVARCHAR},
+      BOSS = #{boss,jdbcType=LONGVARCHAR},
+      BOSS_DROP = #{bossDrop,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

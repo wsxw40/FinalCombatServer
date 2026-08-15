@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:view="view.*">
+	<mx:TabBar dataProvider="subScreenVS"/> 
+		<mx:ViewStack id="subScreenVS" width="100%" height="100%">
+			<view:BlackWhiteListView label="{resourceManager.getString('Language','label.BlackAndWhite')}" width="100%" height="100%"/>
+			<view:UnSpeakerListView  label="{resourceManager.getString('Language','label.UnSpeakerManage')}" width="100%" height="100%"/>
+		</mx:ViewStack>
+</mx:VBox>

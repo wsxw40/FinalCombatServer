@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TeamTechnology">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="TeamTechnology" type="com.pearl.o2o.pojo.TeamTechnology"/> 	
+	<resultMap id="selectResult" class="TeamTechnology">
+		<result property="id" column="ID"/>
+		<result property="place" column="PLACE"/>
+		<result property="curNode" column="CUR_NODE"/>
+		<result property="nextNode" column="NEXT_NODE"/>	
+		<result property="treeType" column="TREE_TYPE"/>	
+		<result property="openTower" column="OPEN_TOWER"/>	
+		
+	</resultMap>
+
+
+	<!--================================================== Select ==================================================-->
+	<select id="selectAll" parameterClass="java.util.Map" resultMap="selectResult">
+		select tt.* from TEAM_TECHNOLOGY tt;
+	</select>
+	
+	<select id="selectById" parameterClass="java.util.Map" resultMap="selectResult">
+		select tt.* 
+		from 
+			TEAM_TECHNOLOGY tt 
+		where 
+			 tt.ID=#id#;
+	</select>
+	
+	<select id="selectByCurNode" parameterClass="java.util.Map" resultMap="selectResult">
+		select tt.* 
+		from 
+			TEAM_TECHNOLOGY tt 
+		where 
+			 tt.CUR_NODE=#curNode#;
+	</select>	
+	<select id="selectByTreeType" parameterClass="java.util.Map" resultMap="selectResult">
+		select tt.* 
+		from 
+			TEAM_TECHNOLOGY tt 
+		where 
+			 tt.TREE_TYPE=#treeType#;
+	</select>	
+  	  	
+
+</sqlMap>

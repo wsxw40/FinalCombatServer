@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:Script source="../common/CommonScript.as"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.ListEvent;
+			import mx.rpc.events.ResultEvent;
+			import vo.GmGroup;
+			import mx.collections.ArrayCollection;
+			import vo.GmUser;
+			
+			private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+			[Bindable]
+			private var allUsers:ArrayCollection = new ArrayCollection();
+			[Bindable]
+			private var existUsers:ArrayCollection = new ArrayCollection();	
+			
+			private var _selectedGroup:GmGroup;	
+			
+			public function get selectedGroup():GmGroup{
+				return this._selectedGroup;
+			}	
+			[Bindable]
+			public function set selectedGroup(group:GmGroup):void{
+				this._selectedGroup = group;
+				if(selectedGroup){
+					getRo.getGmUsersByGroupId(selectedGroup);
+					addBtn.enabled = true;
+					deleteBtn.enabled = true;
+				}else{
+					allUsers = new ArrayCollection();
+					existUsers = new ArrayCollection();
+					addBtn.enabled = false;
+					deleteBtn.enabled = false;
+				}				
+			}
+			
+			private function getGmUsersByGroupIdHandler(e:ResultEvent):void{
+				getRo.getAllGmUsers()
+				existUsers = e.result as ArrayCollection;
+			}
+			
+			private function labelFunc(item:Object):String{
+				var u:GmUser = item as GmUser;
+				return u.userName.concat("(", u.name, ")");
+			}
+			
+			private function getAllGmUsersHandler(e:ResultEvent):void{
+				var result:ArrayCollection = e.result as ArrayCollection;
+				if(result.length > 0 && existUsers.length > 0){
+					for each(var u:GmUser in existUsers){
+						for(var i:int = 0; i < result.length; i++){
+							var gu:GmUser = result.getItemAt(i) as GmUser;
+							if(u.id == gu.id){
+								result.removeItemAt(i);
+								break;
+							}
+						}						
+					}					
+				}
+				allUsers = result;					
+			}
+			
+			private var addUser:GmUser;
+			
+			private var deleteUser:GmUser;
+			
+			private function onAllUsersItemClick(e:ListEvent):void{
+				addUser = e.itemRenderer.data as GmUser;
+			}
+			
+			private function onExistUsersItemClick(e:ListEvent):void{
+				deleteUser = e.itemRenderer.data as  GmUser;
+			}
+			
+			private function addGmUserGroup():void{
+				if(selectedGroup){
+					if(addUser){
+						createRo.createGmUserGroup(gmUser, addUser.id, selectedGroup.id);
+					}else{
+						Alert.show("请在左侧栏目中选择需要添加的用户！");
+					}
+				}
+			}
+			
+			private function deleteGmUserGroup():void{
+				if(selectedGroup){
+					if(deleteUser){
+						deleteRo.deleteGmUserGroup(gmUser, deleteUser.id, selectedGroup.id);
+					}else{
+						Alert.show("请在右侧栏目中选择需要移除的用户！");
+					}
+				}
+			}
+			
+			private function createGmUserGroupHandler(e:ResultEvent):void{
+				allUsers.removeItemAt(allUsers.getItemIndex(addUser));
+				existUsers.addItem(addUser);
+			}
+			
+			private function deleteGmUserGroupHandler(e:ResultEvent):void{
+				existUsers.removeItemAt(existUsers.getItemIndex(deleteUser));
+				allUsers.addItem(deleteUser);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getAllGmUsers" result="getAllGmUsersHandler(event)" fault="defaultFaultHandler(event)"/>
+		<mx:method name="getGmUsersByGroupId" result="getGmUsersByGroupIdHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create" showBusyCursor="true">
+		<mx:method name="createGmUserGroup" result="createGmUserGroupHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete" showBusyCursor="true">
+		<mx:method name="deleteGmUserGroup" result="deleteGmUserGroupHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:HBox height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:AdvancedDataGrid id="allUsersList" dataProvider="{allUsers}" itemClick="onAllUsersItemClick(event)" width="300" height="100%">
+			<mx:groupedColumns>
+				<mx:AdvancedDataGridColumnGroup headerText="所有用户">
+					<mx:AdvancedDataGridColumn dataField="userName"/>
+					<mx:AdvancedDataGridColumn dataField="name"/>
+				</mx:AdvancedDataGridColumnGroup>				
+			</mx:groupedColumns>
+		</mx:AdvancedDataGrid>
+		<mx:VBox horizontalAlign="center" verticalAlign="middle">
+			<mx:Button id="addBtn" label="&gt;&gt;" click="addGmUserGroup()" height="48"/>
+			<mx:Button id="deleteBtn" label="&lt;&lt;" click="deleteGmUserGroup()" height="48"/>
+		</mx:VBox>
+		<mx:AdvancedDataGrid id="existUsersList" dataProvider="{existUsers}" itemClick="onExistUsersItemClick(event)" width="300" height="100%">
+			<mx:groupedColumns>
+				<mx:AdvancedDataGridColumnGroup headerText="该组成员">
+					<mx:AdvancedDataGridColumn dataField="userName"/>
+					<mx:AdvancedDataGridColumn dataField="name"/>
+				</mx:AdvancedDataGridColumnGroup>					
+			</mx:groupedColumns>
+		</mx:AdvancedDataGrid>
+	</mx:HBox>
+</mx:Canvas>

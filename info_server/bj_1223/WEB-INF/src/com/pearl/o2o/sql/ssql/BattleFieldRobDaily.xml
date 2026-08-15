@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BattleFieldRobDaily">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="BattleFieldRobDaily" type="com.pearl.o2o.pojo.BattleFieldRobDaily"/> 	
+
+	<resultMap id="selectResult" class="BattleFieldRobDaily">
+		<result property="id" column="ID"/>
+		<result property="teamId" column="TEAM_ID"/>
+		<result property="robAmount" column="ROB_AMOUNT"/>
+		<result property="beRobAmount" column="BE_ROB_AMOUNT"/>
+		<result property="robDate" column="ROB_DATE"/>
+	</resultMap>
+	
+	<!--================================================== Select ==================================================-->
+	<select id="selectBattleFieldRobDailyByTeamId" parameterClass="java.util.Map" resultMap="selectResult">
+		select *
+		from BATTLEFIELD_ROB_DAILY b
+		where b.TEAM_ID = #TEAM_ID#
+	</select>	
+	
+  	<select id="selectBattleFieldRobDailyForTop" parameterClass="java.util.Map" resultClass="BattleFieldRobDaily">
+  		select TEAM_ID as teamId,sum(ROB_AMOUNT) as robsum ,b.*
+  		from 
+  			BATTLEFIELD_ROB_DAILY b
+  		where 
+  			b.ROB_DATE &gt;= #preTime# 
+  		AND 
+  			b.ROB_DATE &lt; #nowTime# 
+  		group by b.TEAM_ID order by  sum(ROB_AMOUNT) desc
+  	</select>
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+  	<insert id="insert" parameterClass="BattleFieldRobDaily">
+  		insert into BATTLEFIELD_ROB_DAILY
+  			(TEAM_ID,ROB_AMOUNT,BE_ROB_AMOUNT,ROB_DATE)
+  		values
+  			(#teamId#,#robAmount#,#beRobAmount#,#robDate#)
+  	</insert>
+  	
+  	
+</sqlMap>

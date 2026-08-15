@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	fontSize="12" width="400" height="500" xmlns:vo="vo.*" label="Resources Change" title="Resources Change"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import vo.ResourceChangeable;
+			[Bindable]
+			public function set resourceChangeable(rc:ResourceChangeable):void{
+				 this._resourceChangeable=rc;
+			}
+			public function get resourceChangeable():ResourceChangeable{
+				 return this._resourceChangeable;
+			}
+		]]>
+	</mx:Script>
+	<vo:ResourceChangeable id="_resourceChangeable"
+		gs="{gs.text}"  si="{si.text}"
+		tg="{tg.text}" mz="{mz.text}" rs="{rs.text}" 
+		 fh="{fh.text}"  fl="{fl.text}"
+		gsCk="{gsCk.selected?1:0}" siCk="{siCk.selected?1:0}"
+		tgCk="{tgCk.selected?1:0}" mzCk="{mzCk.selected?1:0}" rsCk="{rsCk.selected?1:0}" 
+		 fhCk="{fhCk.selected?1:0}"  flCk="{flCk.selected?1:0}"
+		
+		/>
+<mx:HBox >
+	<mx:Form>
+		<mx:FormItem label="gs">
+			<mx:HBox>
+				<mx:TextInput id="gs" text="{resourceChangeable.gs}"/>
+				<mx:CheckBox id="gsCk" selected="{resourceChangeable.gsCk==1?true:false}"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="si/sp">
+			<mx:HBox>
+				<mx:TextInput id="si" text="{resourceChangeable.si}"/>
+				<mx:CheckBox id="siCk" selected="{resourceChangeable.siCk==1?true:false}"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="tg">
+			<mx:HBox>
+				<mx:TextInput id="tg" text="{resourceChangeable.tg}"/>
+				<mx:CheckBox id="tgCk" selected="{resourceChangeable.tgCk==1?true:false}"/>
+			</mx:HBox>	
+		</mx:FormItem>
+		<mx:FormItem label="mz">
+			<mx:HBox>
+				<mx:TextInput id="mz" text="{resourceChangeable.mz}"/>
+				<mx:CheckBox id="mzCk" selected="{resourceChangeable.mzCk==1?true:false}"/>
+			</mx:HBox>	
+		</mx:FormItem>
+		<mx:FormItem label="rs/bl">
+			<mx:HBox>
+				<mx:TextInput id="rs" text="{resourceChangeable.rs}"/>
+				<mx:CheckBox id="rsCk" selected="{resourceChangeable.rsCk==1?true:false}"/>
+			</mx:HBox>	
+		</mx:FormItem>
+		
+		<mx:FormItem label="fh/sl">
+			<mx:HBox>
+				<mx:TextInput id="fh" text="{resourceChangeable.fh}"/>
+				<mx:CheckBox id="fhCk" selected="{resourceChangeable.fhCk==1?true:false}"/>
+			</mx:HBox>	
+		</mx:FormItem>
+	
+		<mx:FormItem label="fl/gp">
+			<mx:HBox>
+				<mx:TextInput id="fl" text="{resourceChangeable.fl}"/>
+				<mx:CheckBox id="flCk" selected="{resourceChangeable.flCk==1?true:false}"/>
+			</mx:HBox>
+		</mx:FormItem>
+				
+		<mx:FormItem>
+		<mx:ControlBar>
+			<mx:Button id="save" label="保存"/>
+			<mx:Button id="cancel" label="取消"/>
+		</mx:ControlBar>	
+		</mx:FormItem>
+	</mx:Form>
+			
+</mx:HBox>		
+</mx:TitleWindow>

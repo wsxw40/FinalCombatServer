@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import vo.XunleiOrderLog;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import view.TopUpView;
+			public var fatherView:TopUpView = null;
+			[Bindable]
+			public var now:Date=new Date();
+			[Bindable]
+			public var playerId:int=0;
+			[Bindable]
+			public var payLogList:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			private var selectedPayType:int = -1;
+			[Bindable]
+			private var selectedUseType:int = -1;
+			[Bindable]
+			private var startYear:int = now.getFullYear();
+			[Bindable]
+			private var startMonth:int = now.getMonth();
+			[Bindable]
+			private var startDay:int = now.getDate();
+			[Bindable]
+			private var endYear:int = now.getFullYear();
+			[Bindable]
+			private var endMonth:int = now.getMonth();
+			[Bindable]
+			private var endDay:int = now.getDate();
+			public function init():void{
+				initButtons();
+				if(playerId != 0){
+					getRo.getTopUplogListByPlayerId(playerId);
+				} else {
+					fatherView.topUpListPanel.title = "充值列表(共0项)";
+				}
+			}
+			private function initButtons():void{
+				topUpLogDatagrid.editable=false;
+			}
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.fault.faultString);
+			}
+			private function onSaveBtnClick():void{
+				initButtons();
+			}
+			private function onCanelBtnClick():void{
+				initButtons();
+			}
+			private function getPayLogListHandler(evt:ResultEvent):void{
+				payLogList = evt.result as ArrayCollection;
+				payLogList.filterFunction=typeFilter;
+				payLogList.refresh();
+				var sum:int=0;
+				for each(var log:XunleiOrderLog in payLogList){
+					sum+=log.rmb;
+				}
+				if(null != fatherView){
+					fatherView.topUpListPanel.title = "充值列表(共" + payLogList.length + "项，共充值"+sum+"元)";
+				}
+			}
+		private function typeFilter(item:Object):Boolean{
+				var log:XunleiOrderLog = item as XunleiOrderLog;
+				var createMonthStr:String = (log.createTime.getMonth() + 1) < 10 ? ("0" + (log.createTime.getMonth() + 1)) : (log.createTime.getMonth() + 1).toString();
+				var createDayStr:String = (log.createTime.getDate()) < 10 ? ("0" + log.createTime.getDate()) : (log.createTime.getDate()).toString();
+				var logCreateDateStr:String = log.createTime.getFullYear().toString() + createMonthStr + createDayStr;
+				
+				var startMonthStr:String = (this.startMonth + 1) < 10 ? ("0" + (this.startMonth + 1)) : (this.startMonth + 1).toString();
+				var startDayStr:String = (this.startDay) < 10 ? ("0" + this.startDay) : (this.startDay).toString();
+				var startDateStr:String = this.startYear.toString() + startMonthStr + startDayStr;
+				
+				var endMonthStr:String = (this.endMonth + 1) < 10 ? ("0" + (this.endMonth + 1)) : ((this.endMonth + 1).toString());
+				var endDayStr:String = (this.endDay) < 10 ? ("0" + this.endDay) : (this.endDay).toString();
+				var endDateStr:String = this.endYear.toString() + endMonthStr + endDayStr;
+				
+				var logCreateDateInteger:int = parseInt(logCreateDateStr);
+				var startDateInteger:int = parseInt(startDateStr);
+				var endDateInteger:int = parseInt(endDateStr);
+				
+				if(logCreateDateInteger > endDateInteger || logCreateDateInteger < startDateInteger){
+					return false;
+				}
+				return true;
+				/* if(this.selectedPayType == -1 && this.selectedUseType==-1 )
+					return true;
+				if((log.payType==this.selectedPayType||this.selectedPayType==-1) && (log.itemType==this.selectedUseType||this.selectedUseType==-1))			
+					return true;
+				else 
+					return false; */
+			}
+	/* 	private function doPayTypeFilter(evt:Event):void{
+			this.selectedPayType  = evt.target.selectedItem.data;
+	    	payLogList.filterFunction=typeFilter;
+	    	payLogList.refresh();
+		}
+		private function doUseTypeFilter(evt:Event):void{
+			this.selectedUseType  = evt.target.selectedItem.data;
+        	payLogList.filterFunction=typeFilter;
+        	payLogList.refresh();
+		} */
+		private function doDateFilter():void{
+			this.startYear = start.selectedDate.getFullYear();
+			this.startMonth = start.selectedDate.getMonth();
+			this.startDay = start.selectedDate.getDate();
+			
+			this.endYear = end.selectedDate.getFullYear();
+			this.endMonth = end.selectedDate.getMonth();
+			this.endDay = end.selectedDate.getDate();
+        	payLogList.filterFunction=typeFilter;
+        	payLogList.refresh();
+        	if(null != fatherView){
+				fatherView.topUpListPanel.title = "充值列表(共" + payLogList.length + "项)";
+			}
+		}
+		import mx.rpc.events.FaultEvent;
+		[Bindable]
+        private function defaultFaultHandler(evt:FaultEvent):void{
+        	Alert.show(evt.fault.faultString);
+        }
+        [Bindable]
+        public var useTypes:ArrayCollection = new ArrayCollection(
+        		[
+        		{label:"------所有------", data:-1},
+            	{label:"武器", data:1},
+                {label:"服装", data:2},
+                {label:"配饰", data:3},
+                {label:"道具", data:4},
+                {label:"素材", data:5},
+                {label:"蓝图", data:6},
+                {label:"大礼包", data:7}
+            ]);
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getTopUplogListByPlayerId" result="getPayLogListHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:VBox width="80%">
+	<mx:HBox width="80%">
+		<mx:ControlBar width="100%" >	
+			<!--<mx:Label text="付款方式：" />
+			<mx:ComboBox  dataProvider="{payTypes}" close="doPayTypeFilter(event)"/>
+			<mx:Label text="物品类型：" />
+			<mx:ComboBox  dataProvider="{useTypes}" close="doUseTypeFilter(event)"/>-->
+			<mx:Label text="{resourceManager.getString('Language','label.StartTime')}" />
+			<mx:DateField id="start" formatString="YYYY年MM月DD日" selectedDate="{now}" change="doDateFilter()"/>
+			<mx:Label text="{resourceManager.getString('Language','label.EndTime')}" />
+			<mx:DateField id="end" formatString="YYYY年MM月DD日" selectedDate="{now}" change="doDateFilter()"/>
+		</mx:ControlBar>
+	</mx:HBox>
+	<mx:DataGrid id="topUpLogDatagrid" dataProvider="{payLogList}" width="100%">
+		<mx:columns>
+						<mx:DataGridColumn dataField="id" headerText="ID" editable="false" width="100"/>
+						<mx:DataGridColumn dataField="playerId" headerText="{resourceManager.getString('Language','label.PlayerId')}"/>
+						<mx:DataGridColumn dataField="userId" headerText="{resourceManager.getString('Language','label.UserName')}"/>
+						<mx:DataGridColumn dataField="orderId" headerText="{resourceManager.getString('Language','label.OrderId')}"/>
+						<mx:DataGridColumn dataField="rmb" headerText="{resourceManager.getString('Language','label.ChargeAmount')}"/>
+						<mx:DataGridColumn dataField="amount" headerText="{resourceManager.getString('Language','label.FCPoint')}"/>
+						<mx:DataGridColumn dataField="discount" headerText="{resourceManager.getString('Language','label.DisCount')}"/>
+						<mx:DataGridColumn dataField="createTimeStr" headerText="{resourceManager.getString('Language','label.ChargeTime')}"/>
+		</mx:columns>
+	</mx:DataGrid>
+	</mx:VBox>
+</mx:HBox>

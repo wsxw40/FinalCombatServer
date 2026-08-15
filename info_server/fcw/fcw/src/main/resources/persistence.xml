@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <!-- data source -->
+    <bean id="dsSys" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://${db.sys.host}/${db.sys.schema}?characterEncoding=utf8&amp;"/>
+        <property name="username" value="${db.sys.userName}"/>
+        <property name="password" value="${db.sys.password}"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="defaultAutoCommit" value="true"/>
+        <property name="validationQuery" value="select 1 + 1"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="maxTotal" value="10"/>
+        <property name="maxIdle" value="10"/>
+        <property name="timeBetweenEvictionRunsMillis" value="25200000"/> <!-- 每隔7小时对线程池中的链接进行validationQuery校验 -->
+    </bean>
+
+    <bean id="dsMain" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://${db.main.host}/${db.main.schema}?characterEncoding=utf8&amp;"/>
+        <property name="username" value="${db.main.userName}"/>
+        <property name="password" value="${db.main.password}"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="defaultAutoCommit" value="true"/>
+        <property name="validationQuery" value="select 1 + 1"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="maxTotal" value="10"/>
+        <property name="maxIdle" value="10"/>
+        <property name="timeBetweenEvictionRunsMillis" value="25200000"/> <!-- 每隔7小时对线程池中的链接进行validationQuery校验 -->
+    </bean>
+
+    <bean id="dsAh" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://${db.ah.host}/${db.ah.schema}?characterEncoding=utf8&amp;"/>
+        <property name="username" value="${db.ah.userName}"/>
+        <property name="password" value="${db.ah.password}"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="defaultAutoCommit" value="true"/>
+        <property name="validationQuery" value="select 1 + 1"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="timeBetweenEvictionRunsMillis" value="25200000"/> <!-- 每隔7小时对线程池中的链接进行validationQuery校验 -->
+    </bean>
+
+    <bean id="dsGm" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://${db.gm.host}/${db.gm.schema}?characterEncoding=utf8&amp;"/>
+        <property name="username" value="${db.gm.userName}"/>
+        <property name="password" value="${db.gm.password}"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="defaultAutoCommit" value="true"/>
+        <property name="validationQuery" value="select 1 + 1"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="timeBetweenEvictionRunsMillis" value="25200000"/> <!-- 每隔7小时对线程池中的链接进行validationQuery校验 -->
+    </bean>
+
+    <bean id="multiSourceFactory" class="com.pearl.fcw.info.lobby.service.AsShardService">
+        <property name="dataSourceProperties">
+            <map>
+                <entry key="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <entry key="url" value="jdbc:mysql://{{db.host}}/{{db.schema}}?characterEncoding=utf8&amp;"/>
+                <entry key="initialSize" value="10"/>
+                <entry key="maxActive" value="20"/>
+                <entry key="maxIdle" value="20"/>
+                <!-- <entry key="maxWait" value="10000"/> -->
+                <entry key="validationQuery" value="SELECT NOW()"/>
+                <entry key="testWhileIdle" value="true"/>
+                <entry key="maxTotal" value="10"/>
+                <entry key="maxIdle" value="10"/>
+                <entry key="timeBetweenEvictionRunsMillis" value="25200000"/> <!-- 每隔7小时对线程池中的链接进行validationQuery校验 -->
+            </map>
+        </property>
+    </bean>
+
+    <!-- route role -->
+
+    <bean id="routeRule" class="com.pearl.fcw.info.core.persistence.route.ShardRouteRule" p:capacity="100000"/>
+
+    <!-- schema -->
+
+    <bean id="schemaSys" class="com.pearl.fcw.info.core.persistence.route.SingleSourceRouterImpl" p:schema="sys">
+        <property name="dataSource" ref="dsSys"/>
+    </bean>
+
+    <bean id="schemaMain" class="com.pearl.fcw.info.core.persistence.route.SingleSourceRouterImpl" p:schema="main">
+        <property name="dataSource" ref="dsMain"/>
+    </bean>
+
+    <bean id="schemaAh" class="com.pearl.fcw.info.core.persistence.route.SingleSourceRouterImpl" p:schema="ah">
+        <property name="dataSource" ref="dsAh"/>
+    </bean>
+
+    <bean id="schemaGm" class="com.pearl.fcw.info.core.persistence.route.SingleSourceRouterImpl" p:schema="gm">
+        <property name="dataSource" ref="dsGm"/>
+    </bean>
+
+    <bean id="schemaExt" class="com.pearl.fcw.info.core.persistence.route.MultiSourceRouterImpl" p:schema="ext">
+        <property name="routeRule" ref="routeRule"/>
+        <property name="factory" ref="multiSourceFactory"/>
+    </bean>
+
+    <!-- generate table -->
+    <bean id="tableGenerator" class="com.pearl.fcw.info.lobby.manager.TableGenerator" init-method="generate">
+        <property name="zoneId" value="${zone.id}"/>
+        <property name="singleSourceRouterList">
+            <list>
+                <ref bean="schemaSys"/>
+                <ref bean="schemaMain"/>
+                <ref bean="schemaAh"/>
+                <ref bean="schemaGm"/>
+            </list>
+        </property>
+        <property name="multiSourceRouterList">
+            <list>
+                <ref bean="schemaExt"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

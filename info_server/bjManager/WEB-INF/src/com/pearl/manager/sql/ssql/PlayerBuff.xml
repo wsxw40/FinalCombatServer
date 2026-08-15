@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PlayerBuff">
+	<resultMap class="com.pearl.manager.pojo.PlayerBuff" id="selectResultNew">
+		<result property="id" column="ID"/>
+		<result property="playerId" column="PLAYER_ID"/>
+		<result property="playerItemId" column="PLAYER_ITEM_ID"/>		
+		<result property="buffId" column="BUFF_ID"/>			
+	</resultMap>
+	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResultNew">
+		select pb.*
+   	 	from PLAYER_BUFF$tableSuffix$ pb 
+   	 	where  pb.PLAYER_ID=#fid#
+   	 	<dynamic >
+   	 		<isNotNull prepend="and" property="playerItemId">
+   	 			pb.PLAYER_ITEM_ID=#playerItemId#
+   	 		</isNotNull>
+   	 		<isNotNull prepend="and" property="playerItemId">
+   	 			pb.BUFF_ID=#buffId#
+   	 		</isNotNull>
+   	 	</dynamic>
+	</select>
+	
+	<insert id="insert" parameterClass="com.pearl.manager.pojo.PlayerBuff">
+		insert into PLAYER_BUFF$tableSuffix$(
+			PLAYER_ID,
+			PLAYER_ITEM_ID,
+			BUFF_ID
+		)  values(
+			#playerId#,
+			#playerItemId#,
+			#buffId#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterClass="com.pearl.manager.pojo.PlayerBuff">
+		update PLAYER_BUFF$tableSuffix$ 
+		set PLAYER_ITEM_ID=#playerItemId#
+		where  PLAYER_ID=#playerId# 
+			and BUFF_ID=#buffId#
+	</update>
+	
+</sqlMap>

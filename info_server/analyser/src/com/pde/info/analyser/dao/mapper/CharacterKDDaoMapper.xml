@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pde.info.analyser.dao.CharacterKDDao">
+
+	<resultMap id="StatisticResultMap" type="com.pde.info.analyser.pojo.CharacterKDStatistic">
+		<result column="STATISTIC_DATE" property="statisticDate" jdbcType="VARCHAR" />
+		<result column="CHARACTERA_KILL" property="characterAKill" jdbcType="INTEGER" />
+		<result column="CHARACTERB_KILL" property="characterBKill" jdbcType="INTEGER" />
+		<result column="CHARACTERC_KILL" property="characterCKill" jdbcType="INTEGER" />
+		<result column="CHARACTERD_KILL" property="characterDKill" jdbcType="INTEGER" />
+		<result column="CHARACTERE_KILL" property="characterEKill" jdbcType="INTEGER" />
+		<result column="CHARACTERF_KILL" property="characterFKill" jdbcType="INTEGER" />
+		<result column="CHARACTERG_KILL" property="characterGKill" jdbcType="INTEGER" />
+		<result column="CHARACTERA_DEAD" property="characterADead" jdbcType="INTEGER" />
+		<result column="CHARACTERB_DEAD" property="characterBDead" jdbcType="INTEGER" />
+		<result column="CHARACTERC_DEAD" property="characterCDead" jdbcType="INTEGER" />
+		<result column="CHARACTERD_DEAD" property="characterDDead" jdbcType="INTEGER" />
+		<result column="CHARACTERE_DEAD" property="characterEDead" jdbcType="INTEGER" />
+		<result column="CHARACTERF_DEAD" property="characterFDead" jdbcType="INTEGER" />
+		<result column="CHARACTERG_DEAD" property="characterGDead" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="addCharacterKD" parameterType="com.pde.info.analyser.pojo.CharacterKD" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `INFO_CHARACTER_KD` (`CHARACTER_ID`,`CHARACTER_KILL`, `CHARACTER_DEAD`,`LEVEL_ID`,`STATISTIC_DATE`,`CREATE_DATE`)
+		VALUES ( #{characterId}, #{characterKill}, #{characterDead}, #{levelId}, DATE_FORMAT(NOW(), '%Y-%m-%d'), NOW());
+	</insert>
+
+	<select id="getStatistic" statementType="CALLABLE" resultMap="StatisticResultMap" parameterType="java.util.Map" >
+    	{
+	    	CALL P_CHARACTER_KD_SHOW (
+				#{levelId, mode=IN, jdbcType=VARCHAR},
+				#{startDate, mode=IN, jdbcType=VARCHAR},
+				#{endDate, mode=IN, jdbcType=VARCHAR}
+			)
+		}
+  	</select>
+
+</mapper>

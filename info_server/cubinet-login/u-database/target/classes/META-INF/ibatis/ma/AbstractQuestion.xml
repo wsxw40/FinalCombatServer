@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="AbstractQuestion">
+	<typeAlias alias="QuestionObject" type="com.pde.uweb.database.ma.security.QuestionPojo" />
+	<resultMap id="questionResult" class="QuestionObject">
+			<result property="questionId" column="QUESTION_ID_B" jdbcType="NUMBER" />
+			<result property="questionInfo" column="QUESTION_INFO_V" jdbcType="VARCHAR" />
+			<result property="orderById" column="ORDER_BY_ID_T" jdbcType="NUMBER" />
+			<result property="status" column="STATUS_T" jdbcType="NUMBER" />
+			<result property="createDate" column="CREATE_DATE_D" jdbcType="DATETIME" />
+			<result property="lastModifyDate" column="LAST_MODIFY_DATE_D" jdbcType="DATETIME" />
+			<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+		</resultMap>
+	<resultMap id="questionVersion" class="java.lang.Long">
+		<result property="version" column="VERSION_B" jdbcType="NUMBER" />
+	</resultMap>
+
+	<!-- insert -->
+	<insert id="insert" parameterClass="QuestionObject">
+	insert into QUESTION (QUESTION_ID_B, CREATE_DATE_D, VERSION_B
+	<dynamic>
+		<isNotNull prepend="," property="questionInfo">QUESTION_INFO_V</isNotNull>
+
+		<isNotNull prepend="," property="orderById">ORDER_BY_ID_T</isNotNull>
+
+		<isNotNull prepend="," property="status">STATUS_T</isNotNull>
+	</dynamic>
+	) values (#questionId#, NOW(), 1
+	<dynamic>
+		<isNotNull prepend="," property="questionInfo">#questionInfo#</isNotNull>
+
+		<isNotNull prepend="," property="orderById">#orderById#</isNotNull>
+
+		<isNotNull prepend="," property="status">#status#</isNotNull>
+	</dynamic>
+	)
+	</insert>
+
+	<!-- select -->
+	<select id="select" resultMap="questionResult" parameterClass="java.lang.Long">
+	SELECT
+		QUESTION_ID_B,
+		QUESTION_INFO_V,
+		ORDER_BY_ID_T,
+		STATUS_T,
+		CREATE_DATE_D,
+		LAST_MODIFY_DATE_D,
+		VERSION_B
+	FROM QUESTION
+	WHERE QUESTION_ID_B = #id#
+	</select>
+
+	<!-- only update "not null" columns -->
+	<update id="updateForField" parameterClass="QuestionObject">
+	UPDATE QUESTION SET
+		VERSION_B = VERSION_B + 1,
+		LAST_MODIFY_DATE_D = NOW()
+		<dynamic>
+			<isNotNull prepend="," property="questionInfo">QUESTION_INFO_V = #questionInfo#</isNotNull>
+
+			<isNotNull prepend="," property="orderById">ORDER_BY_ID_T = #orderById#</isNotNull>
+
+			<isNotNull prepend="," property="status">STATUS_T = #status#</isNotNull>
+		</dynamic>
+	WHERE QUESTION_ID_B = #questionId# 
+		AND VERSION_B = #version#
+	</update>
+
+	<!-- get version -->
+	<select id="getVersion" resultMap="questionVersion" parameterClass="java.lang.Long">
+		SELECT VERSION_B
+		FROM QUESTION
+		WHERE QUESTION_ID_B = #id#
+	</select>
+
+</sqlMap>

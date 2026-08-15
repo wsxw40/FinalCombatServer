@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="GmUser">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="GmUser" type="com.pearl.o2o.pojo.GmUser"/> 
+	
+	<select id="select" parameterClass="java.util.Map" resultClass="GmUser">
+		SELECT  u.ID                                    AS id,
+		        u.USER_NAME                             AS userName,
+		        u.PASSWORD                              AS password,
+		        u.NAME                                  AS name,
+		        u.CREATOR_ID                            AS creatorId,
+				gu.NAME                                 AS creatorName,
+		        u.DELETED                               AS deleted,
+		        GROUP_CONCAT(g.NAME ORDER BY g.ID ASC)  AS groups,
+		         GROUP_CONCAT(g.ID ORDER BY g.ID ASC)AS groupIds
+		FROM GM_USER u 
+				LEFT JOIN GM_USER_GROUP ug ON u.ID = ug.USER_ID
+		    	LEFT JOIN GM_GROUP g ON ug.GROUP_ID = g.ID
+				LEFT JOIN GM_USER gu ON u.CREATOR_ID = gu.ID
+		WHERE u.DELETED = 'N' AND u.ID != 1
+		GROUP BY u.ID;
+	</select>
+	
+	<select id="selectAllGmUsers" parameterClass="java.util.Map" resultClass="GmUser">
+		SELECT u.ID                                    AS id,
+		       u.USER_NAME                             AS userName,
+		       u.PASSWORD                              AS password,
+		       u.NAME                                  AS name,
+		       u.CREATOR_ID                            AS creatorId,
+		       gu.NAME                                 AS creatorName,
+		       u.DELETED                               AS deleted
+		FROM GM_USER u, GM_USER gu
+		WHERE u.DELETED = 'N' 
+			AND u.CREATOR_ID = gu.ID
+			AND u.ID != 1
+	</select>
+	
+	<select id="selectGmUserByGroupId" parameterClass="java.util.Map" resultClass="GmUser">
+		SELECT u.ID                                    AS id,
+		       u.USER_NAME                             AS userName,
+		       u.PASSWORD                              AS password,
+		       u.NAME                                  AS name,
+		       u.CREATOR_ID                            AS creatorId,
+		       gu.NAME                                 AS creatorName,
+		       u.DELETED                               AS deleted,
+		       GROUP_CONCAT(ug.ID ORDER BY ug.ID ASC)AS groupIds
+		FROM GM_USER u, GM_USER_GROUP ug, GM_USER gu
+		WHERE u.DELETED = 'N'
+		    AND u.ID = ug.USER_ID
+		    AND u.CREATOR_ID = gu.ID
+		    AND ug.GROUP_ID = #groupId#;
+	</select>
+	
+	<select id="selectLoginUser" parameterClass="java.util.Map" resultClass="GmUser">
+		SELECT  u.ID                                    AS id,
+		        u.USER_NAME                             AS userName,
+		        u.PASSWORD                              AS password,
+		        u.NAME                                  AS name,
+		        u.CREATOR_ID                            AS creatorId,
+				gu.NAME                                 AS creatorName,
+		        u.DELETED                               AS deleted,
+		        GROUP_CONCAT(g.NAME ORDER BY g.ID ASC)  AS groups,
+		        GROUP_CONCAT(g.ID ORDER BY g.ID ASC) AS groupIds
+		FROM GM_USER u 
+				LEFT JOIN GM_USER_GROUP ug ON u.ID = ug.USER_ID
+		    	LEFT JOIN GM_GROUP g ON ug.GROUP_ID = g.ID
+				LEFT JOIN GM_USER gu ON u.ID = gu.ID
+		WHERE u.DELETED = 'N'
+			<dynamic>
+				<isNotNull prepend="AND" property="gmUserName">
+					u.USER_NAME = #gmUserName#			
+				</isNotNull>
+				<isNotNull prepend="AND" property="passWord">
+					u.PASSWORD = #passWord#			
+				</isNotNull>		
+			</dynamic>
+		GROUP BY u.ID;
+	</select>
+	
+	
+	<select id="selectGmUserByGroupIds" parameterClass="java.util.Map" resultClass="GmUser">
+		SELECT u.ID                                    AS id,
+		       u.USER_NAME                             AS userName,
+		       u.PASSWORD                              AS password,
+		       u.NAME                                  AS name,
+		       u.CREATOR_ID                            AS creatorId,
+		       gu.NAME                                 AS creatorName,
+		       u.DELETED                               AS deleted
+		from GM_USER u,GM_USER_GROUP ug,GM_USER gu
+		WHERE u.ID = ug.USER_ID 
+			  and gu.ID = u.ID 
+			  and ug.ID IN ($groupIds$);
+	</select>
+	
+	
+	<insert id="insert" parameterClass="GmUser">
+		insert into GM_USER
+			(ID,
+			USER_NAME,
+			PASSWORD,
+			NAME,
+			CREATOR_ID)
+		values
+			(#id#,
+			#userName#,
+			#password#,
+			#name#,
+			#creatorId#)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>	
+	</insert>
+	
+	<update id="update" parameterClass="GmUser">
+		update GM_USER gu 
+		set gu.USER_NAME = #userName# ,
+			gu.PASSWORD = #password#,	
+			gu.NAME = #name# 			
+		where gu.ID = #id#
+	</update>
+	
+	<update id="delete" parameterClass="GmUser">
+		update GM_USER gu 
+		set gu.DELETED = 'Y'			
+		where gu.ID = #id#
+	</update>
+</sqlMap>

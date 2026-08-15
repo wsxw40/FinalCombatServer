@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WServerMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WServer" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="MAX_LEVEL" property="maxLevel" jdbcType="INTEGER" />
+    <result column="MIN_LEVEL" property="minLevel" jdbcType="INTEGER" />
+    <result column="MAX_ONLINE" property="maxOnline" jdbcType="INTEGER" />
+    <result column="IS_NEW" property="isNew" jdbcType="INTEGER" />
+    <result column="MIN_FIGHTNUM" property="minFightnum" jdbcType="INTEGER" />
+    <result column="GAME_TYPE" property="gameType" jdbcType="VARCHAR" />
+    <result column="MAX_TEAM_LEVEL" property="maxTeamLevel" jdbcType="INTEGER" />
+    <result column="MIN_TEAM_LEVEL" property="minTeamLevel" jdbcType="INTEGER" />
+    <result column="SERVER_TYPE" property="serverType" jdbcType="INTEGER" />
+    <result column="INDEX" property="index" jdbcType="INTEGER" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="PICTURE" property="picture" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, `NAME`, MAX_LEVEL, MIN_LEVEL, MAX_ONLINE, IS_NEW, MIN_FIGHTNUM, GAME_TYPE, MAX_TEAM_LEVEL, 
+    MIN_TEAM_LEVEL, SERVER_TYPE, `INDEX`, REMARK, PICTURE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SERVER
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WServer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SERVER where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SERVER where 1 = 1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SERVER where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or `NAME` like '${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SERVER
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WServer" >
+    insert into SERVER (ID, `NAME`, MAX_LEVEL, 
+      MIN_LEVEL, MAX_ONLINE, IS_NEW, 
+      MIN_FIGHTNUM, GAME_TYPE, MAX_TEAM_LEVEL, 
+      MIN_TEAM_LEVEL, SERVER_TYPE, `INDEX`, 
+      REMARK, PICTURE)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{maxLevel,jdbcType=INTEGER}, 
+      #{minLevel,jdbcType=INTEGER}, #{maxOnline,jdbcType=INTEGER}, #{isNew,jdbcType=INTEGER}, 
+      #{minFightnum,jdbcType=INTEGER}, #{gameType,jdbcType=VARCHAR}, #{maxTeamLevel,jdbcType=INTEGER}, 
+      #{minTeamLevel,jdbcType=INTEGER}, #{serverType,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SERVER (ID, `NAME`, MAX_LEVEL, 
+      MIN_LEVEL, MAX_ONLINE, IS_NEW, 
+      MIN_FIGHTNUM, GAME_TYPE, MAX_TEAM_LEVEL, 
+      MIN_TEAM_LEVEL, SERVER_TYPE, `INDEX`, 
+      REMARK, PICTURE)
+    values     
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+		(#{item.id,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, #{item.maxLevel,jdbcType=INTEGER}, 
+      #{item.minLevel,jdbcType=INTEGER}, #{item.maxOnline,jdbcType=INTEGER}, #{item.isNew,jdbcType=INTEGER}, 
+      #{item.minFightnum,jdbcType=INTEGER}, #{item.gameType,jdbcType=VARCHAR}, #{item.maxTeamLevel,jdbcType=INTEGER}, 
+      #{item.minTeamLevel,jdbcType=INTEGER}, #{item.serverType,jdbcType=INTEGER}, #{item.index,jdbcType=INTEGER}, 
+      #{item.remark,jdbcType=VARCHAR}, #{item.picture,jdbcType=VARCHAR})
+		</foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WServer" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SERVER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        `NAME`,
+      </if>
+      <if test="maxLevel != null" >
+        MAX_LEVEL,
+      </if>
+      <if test="minLevel != null" >
+        MIN_LEVEL,
+      </if>
+      <if test="maxOnline != null" >
+        MAX_ONLINE,
+      </if>
+      <if test="isNew != null" >
+        IS_NEW,
+      </if>
+      <if test="minFightnum != null" >
+        MIN_FIGHTNUM,
+      </if>
+      <if test="gameType != null" >
+        GAME_TYPE,
+      </if>
+      <if test="maxTeamLevel != null" >
+        MAX_TEAM_LEVEL,
+      </if>
+      <if test="minTeamLevel != null" >
+        MIN_TEAM_LEVEL,
+      </if>
+      <if test="serverType != null" >
+        SERVER_TYPE,
+      </if>
+      <if test="index != null" >
+        `INDEX`,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="picture != null" >
+        PICTURE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="maxLevel != null" >
+        #{maxLevel,jdbcType=INTEGER},
+      </if>
+      <if test="minLevel != null" >
+        #{minLevel,jdbcType=INTEGER},
+      </if>
+      <if test="maxOnline != null" >
+        #{maxOnline,jdbcType=INTEGER},
+      </if>
+      <if test="isNew != null" >
+        #{isNew,jdbcType=INTEGER},
+      </if>
+      <if test="minFightnum != null" >
+        #{minFightnum,jdbcType=INTEGER},
+      </if>
+      <if test="gameType != null" >
+        #{gameType,jdbcType=VARCHAR},
+      </if>
+      <if test="maxTeamLevel != null" >
+        #{maxTeamLevel,jdbcType=INTEGER},
+      </if>
+      <if test="minTeamLevel != null" >
+        #{minTeamLevel,jdbcType=INTEGER},
+      </if>
+      <if test="serverType != null" >
+        #{serverType,jdbcType=INTEGER},
+      </if>
+      <if test="index != null" >
+        #{index,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        #{picture,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WServer" >
+    update SERVER
+    <set >
+      <if test="name != null" >
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="maxLevel != null" >
+        MAX_LEVEL = #{maxLevel,jdbcType=INTEGER},
+      </if>
+      <if test="minLevel != null" >
+        MIN_LEVEL = #{minLevel,jdbcType=INTEGER},
+      </if>
+      <if test="maxOnline != null" >
+        MAX_ONLINE = #{maxOnline,jdbcType=INTEGER},
+      </if>
+      <if test="isNew != null" >
+        IS_NEW = #{isNew,jdbcType=INTEGER},
+      </if>
+      <if test="minFightnum != null" >
+        MIN_FIGHTNUM = #{minFightnum,jdbcType=INTEGER},
+      </if>
+      <if test="gameType != null" >
+        GAME_TYPE = #{gameType,jdbcType=VARCHAR},
+      </if>
+      <if test="maxTeamLevel != null" >
+        MAX_TEAM_LEVEL = #{maxTeamLevel,jdbcType=INTEGER},
+      </if>
+      <if test="minTeamLevel != null" >
+        MIN_TEAM_LEVEL = #{minTeamLevel,jdbcType=INTEGER},
+      </if>
+      <if test="serverType != null" >
+        SERVER_TYPE = #{serverType,jdbcType=INTEGER},
+      </if>
+      <if test="index != null" >
+        `INDEX` = #{index,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        PICTURE = #{picture,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WServer" >
+    update SERVER
+    set `NAME` = #{name,jdbcType=VARCHAR},
+      MAX_LEVEL = #{maxLevel,jdbcType=INTEGER},
+      MIN_LEVEL = #{minLevel,jdbcType=INTEGER},
+      MAX_ONLINE = #{maxOnline,jdbcType=INTEGER},
+      IS_NEW = #{isNew,jdbcType=INTEGER},
+      MIN_FIGHTNUM = #{minFightnum,jdbcType=INTEGER},
+      GAME_TYPE = #{gameType,jdbcType=VARCHAR},
+      MAX_TEAM_LEVEL = #{maxTeamLevel,jdbcType=INTEGER},
+      MIN_TEAM_LEVEL = #{minTeamLevel,jdbcType=INTEGER},
+      SERVER_TYPE = #{serverType,jdbcType=INTEGER},
+      `INDEX` = #{index,jdbcType=INTEGER},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      PICTURE = #{picture,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

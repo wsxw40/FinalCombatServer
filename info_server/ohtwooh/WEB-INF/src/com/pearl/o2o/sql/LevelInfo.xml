@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="LevelInfo">
+	<typeAlias alias="LevelInfo" type="com.pearl.o2o.pojo.LevelInfoPojo"/>
+	
+	<resultMap id="selectLevelInfoResult" class="LevelInfo">
+		<result property="id" column="ID"/>
+		<result property="type" column="TYPE"/>
+		<result property="name" column="NAME"/>	
+		<result property="startPoints" column="START_POINTS"/>
+		<result property="blastPoints" column="BLAST_POINTS"/>
+		<result property="flagPoints" column="FLAG_POINTS"/>
+		<result property="weaponPoints" column="WEAPON_POINTS"/>	
+		<result property="supplyPoints" column="SUPPLY_POINTS"/>	
+		<result property="supplies" column="SUPPLIES"/>	
+	</resultMap>
+	<resultMap id="selectLevelResult" class="LevelInfo">
+		<result property="id" column="ID"/>
+		<result property="type" column="TYPE"/>
+		<result property="name" column="NAME"/>	
+		<result property="startPoints" column="START_POINTS"/>
+		<result property="blastPoints" column="BLAST_POINTS"/>
+		<result property="flagPoints" column="FLAG_POINTS"/>
+		<result property="weaponPoints" column="WEAPON_POINTS"/>	
+		<result property="supplyPoints" column="SUPPLY_POINTS"/>	
+		<result property="supplies" column="SUPPLIES"/>	
+	</resultMap>
+
+	<select id="selectById" parameterClass="java.lang.Integer" resultMap="selectLevelInfoResult">
+		select *
+    	from SYS_LEVEL 
+		where ID=#value#
+	</select>
+	<select id="selectAll" resultMap="selectLevelInfoResult">
+		select * 
+		from SYS_LEVEL
+	</select>
+	<update id="update" parameterClass="com.pearl.o2o.pojo.LevelInfoPojo">
+		update SYS_LEVEL 
+		set TYPE=#type#,
+				NAME=#name#,
+				START_POINTS=#startPoints#,
+				BLAST_POINTS=#blastPoints#,
+				FLAG_POINTS=#flagPoints#,
+				WEAPON_POINTS=#weaponPoints#,
+				SUPPLY_POINTS=#supplyPoints#,
+				SUPPLIES=#supplies#
+		where ID=#id#;		
+	</update>
+	<delete id="delete" parameterClass="java.lang.Integer">
+	delete from SYS_LEVEL where ID=#value#;
+	</delete>
+	<insert id="insert"  parameterClass="LevelInfo">
+		insert into SYS_LEVEL(
+			ID,
+			TYPE,
+			NAME,
+			START_POINTS,
+			BLAST_POINTS,
+			FLAG_POINTS,
+			WEAPON_POINTS,
+			SUPPLY_POINTS,
+			SUPPLIES
+		) values(
+			#id#,
+			#type#,
+			#name#,
+			#startPoints#,
+			#blastPoints#,
+			#flagPoints#,
+			#weaponPoints#,
+			#supplyPoints#,
+			#supplies#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	
+</sqlMap>

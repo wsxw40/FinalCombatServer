@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	 height="800" width="2000"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*"
+	showCloseButton="true" close="PopUpManager.removePopUp(this)"
+	>
+	<mx:Script>
+		<![CDATA[
+			import utils.DatagridValidateFactory;
+			import mx.utils.StringUtil;
+			import mx.controls.TextInput;
+			import mx.validators.Validator;
+			import mx.events.DataGridEvent;
+			import utils.SysItemToSysLevelWeapon;
+			import view.SysItemNameList;
+			import mx.managers.PopUpManager;
+			import view.CreateLevelWeaponView;
+			import utils.ColumnFactory;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import vo.LevelWeapon;
+			[Bindable]
+			public  var levelId:int;
+			[Bindable]
+			private var weapons:ArrayCollection;
+			[Bindable]
+			private var weapon:LevelWeapon;
+			
+			[Bindable]
+			private var allWeapons:ArrayCollection=new ArrayCollection();
+			private function init():void{
+				initBtn();
+				weaponDataGrid.columns=ColumnFactory.getWeaponColumns(false);
+				getRo.getLevelWeapons(levelId);
+			}
+			private function initBtn():void{
+				newBtn.enabled=true;
+				copyBtn.enabled=true;
+				fromBtn.enabled=true;
+				saveBtn.enabled=false;
+		 		deleteBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		
+			}
+			private var createLevelWeaponView:CreateLevelWeaponView;
+			private var isCopy:Boolean=false;
+			
+			private function onNewBtnClick():void{
+
+				
+				createLevelWeaponView=CreateLevelWeaponView(PopUpManager.createPopUp(this,CreateLevelWeaponView,true));
+				if(isCopy){
+					createLevelWeaponView.weapon=this.weapon;
+				}else{
+					createLevelWeaponView.weapon=new LevelWeapon();
+				}
+				createLevelWeaponView.levelId=this.levelId;
+				createLevelWeaponView.close.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(createLevelWeaponView);});
+				createLevelWeaponView.save.addEventListener(MouseEvent.CLICK,saveLevelWeapon);
+				PopUpManager.centerPopUp(createLevelWeaponView);
+				
+			}
+			private function saveLevelWeapon(evt:MouseEvent):void{
+				createRo.createLevelWeapon(createLevelWeaponView.weapon);
+				PopUpManager.removePopUp(createLevelWeaponView);
+				getRo.getLevelWeapons(levelId);
+			}
+			private function onCopyFromBtnClick():void{
+				getRo.getSysItemList(1);
+				
+			}
+			private function onCopyBtnClick():void{
+				if(this.weapon==null){
+					Alert.show("请先选择一个武器。");
+				}else{
+					isCopy=true;
+				}
+				
+			}
+			private function onSaveBtnClick():void{
+				updateRo.updateLevelWeapons(this.weapons);
+				initBtn();
+				weaponDataGrid.editable=false;
+			}
+			private function onDeleteBtnClick():void{
+				if(this.weapon==null){
+					Alert.show("请先选择一个武器。");
+				}else
+				{
+				deleteRo.deleteLevelWeapon(this.weapon.id);
+				getRo.getLevelWeapons(levelId);
+				}
+			}
+			private function onEditBtnClick():void{
+				weaponDataGrid.editable=true;
+				newBtn.enabled=false;
+		 		deleteBtn.enabled=false;
+		 		editBtn.enabled=false;
+		 		copyBtn.enabled=false;
+		 		fromBtn.enabled=false;
+		 		cancelBtn.enabled=true;
+		 		saveBtn.enabled=true;
+				
+			}
+			private function onCancelBtnClick():void{
+				initBtn();
+				weaponDataGrid.editable=false;
+					getRo.getLevelWeapons(levelId);
+			}
+
+			private function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.message.toString());
+				
+			}
+			private function getWeaponsHandler(evt:ResultEvent):void{
+			 this.weapons=evt.result as ArrayCollection;
+			}
+			private var sysItemNameView:SysItemNameList;
+			private function getSysItemListHandler(evt:ResultEvent):void{
+			 this.allWeapons=evt.result as ArrayCollection;
+			 sysItemNameView=SysItemNameList(PopUpManager.createPopUp(this,SysItemNameList,true));
+			 PopUpManager.centerPopUp(sysItemNameView);
+			 sysItemNameView.sysItemNameDatagrid.columns=ColumnFactory.getSysItemName(false);
+			 sysItemNameView.sysItemNameDatagrid.dataProvider=this.allWeapons;
+			 sysItemNameView.save.addEventListener(MouseEvent.CLICK,selectSysItem);
+			 sysItemNameView.cancel.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(sysItemNameView);});
+			}
+			private function selectSysItem(evt:MouseEvent):void{
+				this.weapon=new LevelWeapon()
+				SysItemToSysLevelWeapon.change(sysItemNameView.sysItem,this.weapon);
+				isCopy=true;
+				PopUpManager.removePopUp(sysItemNameView);
+			}
+			private function selectHandler():void{
+				this.weapon=weaponDataGrid.selectedItem as LevelWeapon;
+			}
+			private function CreateWeaponHandler(evt:ResultEvent):void{
+				getRo.getLevelWeapons(levelId);
+			}
+			private var datagridValidate:Validator;
+		 	public function endEdit(evt:DataGridEvent):void{
+		 		var dataField:String = evt.dataField;
+				var fCell:Array=[evt.columnIndex,evt.rowIndex];
+				var source:Object=evt.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(evt.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = evt.currentTarget.editedItemRenderer.data[evt.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+               		var validate:Validator=DatagridValidateFactory.getValidator(dataField,source);
+               		validate=null;
+               		if(validate!=null){
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.weapon.isChange=1;
+	               			callLater(maintainFocus);
+	               			
+	               		}else{
+	               			evt.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		}
+               		}else{
+               			this.weapon.isChange=1;
+               			callLater(maintainFocus);
+               		}
+               	}else{
+               		callLater(maintainFocus);
+               	}
+               	
+		 	}
+		 	private function maintainEdit(colIndex:int,rowIndex:int,source:Object):void
+			{
+				
+				var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+				if(weaponDataGrid.editedItemPosition==null)
+				{
+	   				weaponDataGrid.editedItemPosition = editCell;
+					callLater(validateCurrentEditor);
+	   			}
+			}
+			private function validateCurrentEditor():void{
+				datagridValidate.source=weaponDataGrid.itemEditorInstance;
+				datagridValidate.validate();
+			}
+			private function maintainFocus():void
+			{
+	   			weaponDataGrid.editedItemPosition = null;
+			}
+			private function checkIt(evt:Event):void
+			{
+				weaponDataGrid.invalidateList();
+			}
+			
+			private function onCloseBtnClick():void{
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getLevelWeapons" result="getWeaponsHandler(event)" />
+		<mx:method name="getSysItemList" result="getSysItemListHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createLevelWeapon" result="CreateWeaponHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteLevelWeapon" result="CreateWeaponHandler(event)"/>
+	</mx:RemoteObject>
+		<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateLevelWeapons" result="CreateWeaponHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>	
+	
+	
+	<mx:HBox>
+		
+		<mx:Spacer width="200"/>
+		<mx:ControlBar width="100%" >				
+	        	<mx:Button id="newBtn"  label="新建" click="onNewBtnClick()"/>
+	        	<mx:Button id="fromBtn"  label="从商场中复制" click="onCopyFromBtnClick()"/>
+	        	<mx:Button id="copyBtn" label="复制到粘贴板" click="onCopyBtnClick()"/>
+	        	<mx:Button id="saveBtn"  label="保存"  click="onSaveBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="删除" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="editBtn"  label="编辑" click="onEditBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="取消"  click="onCancelBtnClick()"/>
+	        		<mx:Button id="closeBtn"  label="关闭"  click="onCloseBtnClick()"/>
+	        </mx:ControlBar>
+	</mx:HBox>
+	<mx:HBox  height="100%" width="100%">
+	<mx:VBox  height="100%" width="100%">
+		<mx:ApplicationControlBar  height="100%" width="100%">	
+			<component:MyDataGrid id="weaponDataGrid" dataProvider="{weapons}" itemClick="selectHandler()" 
+				change="checkIt(event)"
+				itemEditEnd="endEdit(event)"
+				width="100%" height="100%" editable="false">
+			</component:MyDataGrid>
+		</mx:ApplicationControlBar>
+		</mx:VBox>
+	</mx:HBox>
+	
+</mx:TitleWindow>

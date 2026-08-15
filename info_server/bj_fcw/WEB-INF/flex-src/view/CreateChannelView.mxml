@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="412" height="300" xmlns:vo="vo.*">
+	<mx:Script>
+		<![CDATA[
+			import vo.Channel;
+			[Bindable]
+			public function set channel(channel:Channel):void{
+			    this._channel=channel;
+			}
+			public function get channel():Channel{
+			    return this._channel;
+			}
+		]]>
+	</mx:Script>
+	
+	<vo:Channel id="_channel"  serverId="{parseInt(serverId.text)}" max="{parseInt(max.text)}"  channelId="{parseInt(channelId.text)}"
+		min="{parseInt(min.text)} " name="{sname.text}" maxOnline="{parseInt(maxOnline.text)}"/>
+	<mx:VBox width="389" height="260">
+		<mx:Form width="100%" height="209">
+			<mx:FormHeading label="Please Add A Channel" textAlign="left"/>
+			<mx:FormItem label="serverId" width="340">
+				<mx:TextInput  width="100%" id="serverId"  text="{channel.serverId}"/>
+			</mx:FormItem>
+			<mx:FormItem label="channelId" width="340">
+				<mx:TextInput  width="100%" id="channelId"  text="{channel.channelId}"/>
+			</mx:FormItem>
+			<mx:FormItem label="name" width="340">
+				<mx:TextInput  width="100%" id="sname"  text="{channel.name}"/>
+			</mx:FormItem>
+			<mx:FormItem label="max" width="340">
+				<mx:TextInput  width="100%" id="max" text="{channel.max}"/>
+			</mx:FormItem>
+			<mx:FormItem label="min" width="340">
+				<mx:TextInput  width="100%" id="min" text="{channel.min}"/>
+			</mx:FormItem>
+			<mx:FormItem label="maxOnline" width="340">
+				<mx:TextInput  width="100%" text="{channel.maxOnline}" id="maxOnline"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ApplicationControlBar width="376">
+			<mx:Button label="退出" id="close"/>
+			<mx:Button label="保存" id="save"/>
+			<mx:Button label="清空" id="clear" click="{this.channel=new Channel();}"/>
+		</mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:TitleWindow>

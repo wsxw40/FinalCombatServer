@@ -1,0 +1,1 @@
+<C447^1^#foreach from=$list item=item# #if($item.durable<=0)#<C445^1^#$item.sysItem.displayName#>#else#<C446^1^#$item.sysItem.displayName#>#/if##/foreach#>

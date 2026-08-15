@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysAchievementMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysAchievement" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="NUMBER" property="number" jdbcType="INTEGER" />
+    <result column="COLOR" property="color" jdbcType="INTEGER" />
+    <result column="CHARACTER_ID" property="characterId" jdbcType="INTEGER" />
+    <result column="ACTION" property="action" jdbcType="INTEGER" />
+    <result column="STAT_TYPE" property="statType" jdbcType="INTEGER" />
+    <result column="GIFT" property="gift" jdbcType="VARCHAR" />
+    <result column="PARENT" property="parent" jdbcType="VARCHAR" />
+    <result column="GROUP" property="group" jdbcType="INTEGER" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, NAME, DESCRIPTION, TITLE, TYPE, NUMBER, COLOR, CHARACTER_ID, ACTION, STAT_TYPE, 
+    GIFT, PARENT, `GROUP`, BACK_UP, IS_DELETED
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysAchievement" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ACHIEVEMENT
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysAchievement" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ACHIEVEMENT
+    where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ACHIEVEMENT where 1=1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or TITLE like '${searchValue}%' or `NAME` like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_ITEM where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or TITLE like '${searchValue}%' or `NAME` like '${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_ACHIEVEMENT
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysAchievement" >
+    insert into SYS_ACHIEVEMENT (ID, NAME, DESCRIPTION, 
+      TITLE, TYPE, NUMBER, 
+      COLOR, CHARACTER_ID, ACTION, 
+      STAT_TYPE, GIFT, PARENT, 
+      `GROUP`, BACK_UP, IS_DELETED)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, 
+      #{color,jdbcType=INTEGER}, #{characterId,jdbcType=INTEGER}, #{action,jdbcType=INTEGER}, 
+      #{statType,jdbcType=INTEGER}, #{gift,jdbcType=VARCHAR}, #{parent,jdbcType=VARCHAR}, 
+      #{group,jdbcType=INTEGER}, #{backUp,jdbcType=VARCHAR}, #{isDeleted,jdbcType=CHAR})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_ACHIEVEMENT (ID, NAME, DESCRIPTION, 
+      TITLE, TYPE, NUMBER, 
+      COLOR, CHARACTER_ID, ACTION, 
+      STAT_TYPE, GIFT, PARENT, 
+      `GROUP`, BACK_UP, IS_DELETED)
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+		(#{item.id,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, #{item.description,jdbcType=VARCHAR}, 
+      #{item.title,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, #{item.number,jdbcType=INTEGER}, 
+      #{item.color,jdbcType=INTEGER}, #{item.characterId,jdbcType=INTEGER}, #{item.action,jdbcType=INTEGER}, 
+      #{item.statType,jdbcType=INTEGER}, #{item.gift,jdbcType=VARCHAR}, #{item.parent,jdbcType=VARCHAR}, 
+      #{item.group,jdbcType=INTEGER}, #{item.backUp,jdbcType=VARCHAR}, #{item.isDeleted,jdbcType=CHAR})
+		</foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysAchievement" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_ACHIEVEMENT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="title != null" >
+        TITLE,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="number != null" >
+        NUMBER,
+      </if>
+      <if test="color != null" >
+        COLOR,
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID,
+      </if>
+      <if test="action != null" >
+        ACTION,
+      </if>
+      <if test="statType != null" >
+        STAT_TYPE,
+      </if>
+      <if test="gift != null" >
+        GIFT,
+      </if>
+      <if test="parent != null" >
+        PARENT,
+      </if>
+      <if test="group != null" >
+        `GROUP`,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="color != null" >
+        #{color,jdbcType=INTEGER},
+      </if>
+      <if test="characterId != null" >
+        #{characterId,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=INTEGER},
+      </if>
+      <if test="statType != null" >
+        #{statType,jdbcType=INTEGER},
+      </if>
+      <if test="gift != null" >
+        #{gift,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null" >
+        #{parent,jdbcType=VARCHAR},
+      </if>
+      <if test="group != null" >
+        #{group,jdbcType=INTEGER},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysAchievement" >
+    update SYS_ACHIEVEMENT
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        NUMBER = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="color != null" >
+        COLOR = #{color,jdbcType=INTEGER},
+      </if>
+      <if test="characterId != null" >
+        CHARACTER_ID = #{characterId,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        ACTION = #{action,jdbcType=INTEGER},
+      </if>
+      <if test="statType != null" >
+        STAT_TYPE = #{statType,jdbcType=INTEGER},
+      </if>
+      <if test="gift != null" >
+        GIFT = #{gift,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null" >
+        PARENT = #{parent,jdbcType=VARCHAR},
+      </if>
+      <if test="group != null" >
+        `GROUP` = #{group,jdbcType=INTEGER},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysAchievement" >
+    update SYS_ACHIEVEMENT
+    set NAME = #{name,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      TITLE = #{title,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=INTEGER},
+      NUMBER = #{number,jdbcType=INTEGER},
+      COLOR = #{color,jdbcType=INTEGER},
+      CHARACTER_ID = #{characterId,jdbcType=INTEGER},
+      ACTION = #{action,jdbcType=INTEGER},
+      STAT_TYPE = #{statType,jdbcType=INTEGER},
+      GIFT = #{gift,jdbcType=VARCHAR},
+      PARENT = #{parent,jdbcType=VARCHAR},
+      `GROUP` = #{group,jdbcType=INTEGER},
+      BACK_UP = #{backUp,jdbcType=VARCHAR},
+      IS_DELETED = #{isDeleted,jdbcType=CHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="PartnerUser">
+
+	<typeAlias alias="PartnerUserObject" type="com.pde.uweb.database.partner.partneruser.PartnerUserPojo" />
+	<resultMap id="partneruserResult" class="PartnerUserObject">
+		<result property="userId" column="USER_ID_B" jdbcType="NUMBER" />
+		<result property="partnerId" column="PARTNER_ID_V" jdbcType="VARCHAR" />
+		<result property="gameAccount" column="GAME_ACCOUNT_V" jdbcType="VARCHAR" />
+		<result property="password" column="PASSWORD_V" jdbcType="VARCHAR" />
+		<result property="email" column="EMAIL_V" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectUidByGameAccount" resultClass="java.lang.Long" parameterClass="java.util.Map">
+		SELECT USER_ID_B FROM PARTNER_USER
+		WHERE PARTNER_ID_V = #partnerId# AND GAME_ACCOUNT_V = #gameAccount#
+	</select>
+	
+	<select id="selectUidByEm" resultClass="java.lang.Long" parameterClass="java.util.Map">
+		SELECT USER_ID_B FROM PARTNER_USER
+		WHERE PARTNER_ID_V = #partnerId# AND EMAIL_V = #email#
+	</select>
+
+</sqlMap>

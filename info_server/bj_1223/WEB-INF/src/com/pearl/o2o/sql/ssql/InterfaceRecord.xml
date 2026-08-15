@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="InterfaceRecord">
+
+ 	<typeAlias alias="InterfaceRecord" type="com.pearl.o2o.pojo.InterfaceRecord"/> 	
+	<resultMap id="selectResult" class="InterfaceRecord">
+		<result property="id" column="ID"/>
+		<result property="account" column="ACCOUNT"/>
+		<result property="roleId" column="ROLE_ID"/>	
+		<result property="regionId" column="REGION_ID"/>
+		<result property="timestamp" column="TIMESTAMP"/>
+		<result property="sysItemId" column="SYS_ITEM_ID"/>
+		<result property="type" column="TYPE"/>
+		<result property="eventId" column="EVENT_ID"/>
+		<result property="orderId" column="ORDER_ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>	
+		<result property="itemnum" column="ITEME_NUM"/>
+	</resultMap>
+
+	
+	<insert id="insert" parameterClass="InterfaceRecord">
+		insert into INTERFACE_RECORD (
+			ACCOUNT,
+			ROLE_ID,
+			REGION_ID,
+			TIMESTAMP,
+			SYS_ITEM_ID,
+			TYPE,
+			EVENT_ID,
+			ORDER_ID,
+			TITLE,
+			CONTENT,
+			ITEME_NUM
+		) values (
+			#account#,
+			#roleId#,
+			#regionId#,
+			#timestamp#,
+			#sysItemId#,
+			#type#,
+			#eventId#,
+			#orderId#,
+			#title#,
+			#content#,
+			#itemnum#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<update id="update" parameterClass="InterfaceRecord">
+		update INTERFACE_RECORD set ITEME_NUM=#itemnum#,SYS_ITEM_ID=#sysItemId#;
+	</update>
+	<delete id="delete" parameterClass="InterfaceRecord">
+		delete from INTERFACE_RECORD where ORDER_ID=#orderId#;
+	</delete>
+	<!--================================================== Select ==================================================-->
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+  		select * from INTERFACE_RECORD 
+  	</select>
+  	
+  	<select id="getByOrderId" parameterClass="java.lang.String" resultMap="selectResult">
+  		select * from INTERFACE_RECORD 
+  		where ORDER_ID =#value#
+  	</select>
+</sqlMap>

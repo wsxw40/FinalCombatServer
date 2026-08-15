@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SysGrowthMission">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="SysGrowthMission" type="com.pearl.manager.pojo.SysGrowthMission"/> 	
+	<resultMap id="selectSysGrowthMissionResult" class="SysGrowthMission">
+		<result property="id" 				column="ID"/>
+		<result property="icon" 			column="ICON"/>
+		<result property="title" 			column="TITLE"/>
+		<result property="description" 		column="DESCRIPTION"/>
+		<result property="number" 			column="NUMBER"/>
+		<result property="rank" 			column="RANK"/>
+		<result property="parent" 			column="PARENT"/>
+		<result property="experience" 		column="EXPERIENCE"/>
+		<result property="money" 			column="MONEY"/>
+		<result property="strengthen" 		column="STRENGTHEN"/>
+		<result property="honor" 			column="HONOR"/>
+		<result property="addSucess" 		column="ADDSUCESS"/>
+		<result property="defaultopen" 		column="DEFAULTOPEN"/>
+		<result property="openmodule" 		column="OPENMODULE"/>
+		<result property="gift" 			column="GIFT"/>
+		<result property="unit" 			column="UNIT"/>
+		<result property="unitType" 		column="UNIT_TYPE"/>
+		<result property="amount" 			column="AMOUNT"/>
+		<result property="status" 			column="STATUS"/>
+	</resultMap>  		
+	
+	<!--================================================== Select ==================================================-->	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectSysGrowthMissionResult">
+   	 	select 
+   	 		ID,
+   	 		ICON,
+   	 		TITLE,
+   	 		DESCRIPTION,
+   	 		NUMBER,
+   	 		RANK,
+   	 		PARENT,
+   	 		EXPERIENCE,
+   	 		MONEY,
+   	 		STRENGTHEN,
+   	 		HONOR,
+   	 		ADDSUCESS,
+   	 		DEFAULTOPEN,
+   	 		OPENMODULE,
+   	 		GIFT,
+   	 		UNIT,
+   	 		UNIT_TYPE,
+   	 		AMOUNT,
+   	 		STATUS
+    	from SYS_GROWTH_MISSION
+	</select>		
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="sysGrowthMission">
+		insert into SYS_GROWTH_MISSION(
+			ICON,
+			TITLE,
+   	 		DESCRIPTION,
+   	 		NUMBER,
+   	 		RANK,
+   	 		PARENT,
+   	 		EXPERIENCE,
+   	 		MONEY,
+   	 		STRENGTHEN,
+   	 		HONOR,
+   	 		ADDSUCESS,
+   	 		DEFAULTOPEN,
+   	 		OPENMODULE,
+   	 		GIFT,
+   	 		UNIT,
+   	 		UNIT_TYPE,
+   	 		AMOUNT,
+   	 		STATUS
+		) values (
+			#icon#,
+			#description#,
+			#number#,
+			#rank#,
+			#parent#,
+			#experience#,
+			#money#,
+			#strengthen#,
+			#honor#,
+			#addSucess#,
+			#defaultopen#,
+			#openmodule#,
+			#gift#,
+			#unit#,
+			#unitType#,
+			#amount#,
+			#status#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<update id="update" parameterClass="sysGrowthMission">
+		update SYS_GROWTH_MISSION
+		set ICON = #icon#,
+			TITLE = #title#,
+			DESCRIPTION = #description#,
+   	 		NUMBER = #number#,
+   	 		RANK = #rank#,
+   	 		PARENT = #parent#,
+   	 		EXPERIENCE = #experience#,
+   	 		MONEY = #money#,
+   	 		STRENGTHEN = #strengthen#,
+   	 		HONOR = #honor#,
+   	 		ADDSUCESS = #addSucess#,
+   	 		DEFAULTOPEN = #defaultopen#,
+   	 		OPENMODULE = #openmodule#,
+   	 		GIFT = #gift#,
+   	 		UNIT = #unit#,
+   	 		UNIT_TYPE = #unitType#,
+   	 		AMOUNT = #amount#,
+   	 		STATUS = #status#
+		where ID = #id#
+	</update>
+	
+</sqlMap>

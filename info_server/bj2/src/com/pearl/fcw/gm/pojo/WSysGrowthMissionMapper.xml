@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysGrowthMissionMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysGrowthMission" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ICON" property="icon" jdbcType="VARCHAR" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="NUMBER" property="number" jdbcType="INTEGER" />
+    <result column="RANK" property="rank" jdbcType="INTEGER" />
+    <result column="PARENT" property="parent" jdbcType="INTEGER" />
+    <result column="EXPERIENCE" property="experience" jdbcType="INTEGER" />
+    <result column="MONEY" property="money" jdbcType="INTEGER" />
+    <result column="STRENGTHEN" property="strengthen" jdbcType="INTEGER" />
+    <result column="HONOR" property="honor" jdbcType="INTEGER" />
+    <result column="ADDSUCESS" property="addsucess" jdbcType="INTEGER" />
+    <result column="GIFT" property="gift" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="INTEGER" />
+    <result column="UNIT" property="unit" jdbcType="INTEGER" />
+    <result column="UNIT_TYPE" property="unitType" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="BIT" />
+    <result column="DEFAULTOPEN" property="defaultopen" jdbcType="BIT" />
+    <result column="OPENMODULE" property="openmodule" jdbcType="INTEGER" />
+    <result column="BACK_UP" property="backUp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ICON, TITLE, DESCRIPTION, NUMBER, RANK, PARENT, EXPERIENCE, MONEY, STRENGTHEN, 
+    HONOR, ADDSUCESS, GIFT, AMOUNT, UNIT, UNIT_TYPE, STATUS, DEFAULTOPEN, OPENMODULE, 
+    BACK_UP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_GROWTH_MISSION
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_GROWTH_MISSION
+    where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_GROWTH_MISSION where 1=1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%'  or TITLE like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_GROWTH_MISSION where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%'  or TITLE like '${searchValue}%' )
+ 	 </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_GROWTH_MISSION
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysGrowthMission" >
+    insert into SYS_GROWTH_MISSION (ID, ICON, TITLE, 
+      DESCRIPTION, NUMBER, RANK, 
+      PARENT, EXPERIENCE, MONEY, 
+      STRENGTHEN, HONOR, ADDSUCESS, 
+      GIFT, AMOUNT, UNIT, 
+      UNIT_TYPE, STATUS, DEFAULTOPEN, 
+      OPENMODULE, BACK_UP)
+    values (#{id,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{rank,jdbcType=INTEGER}, 
+      #{parent,jdbcType=INTEGER}, #{experience,jdbcType=INTEGER}, #{money,jdbcType=INTEGER}, 
+      #{strengthen,jdbcType=INTEGER}, #{honor,jdbcType=INTEGER}, #{addsucess,jdbcType=INTEGER}, 
+      #{gift,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, #{unit,jdbcType=INTEGER}, 
+      #{unitType,jdbcType=INTEGER}, #{status,jdbcType=BIT}, #{defaultopen,jdbcType=BIT}, 
+      #{openmodule,jdbcType=INTEGER}, #{backUp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_GROWTH_MISSION (ID, ICON, TITLE, 
+      DESCRIPTION, NUMBER, RANK, 
+      PARENT, EXPERIENCE, MONEY, 
+      STRENGTHEN, HONOR, ADDSUCESS, 
+      GIFT, AMOUNT, UNIT, 
+      UNIT_TYPE, STATUS, DEFAULTOPEN, 
+      OPENMODULE, BACK_UP)
+    values     
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+    (#{item.id,jdbcType=INTEGER}, #{item.icon,jdbcType=VARCHAR}, #{item.title,jdbcType=VARCHAR}, 
+      #{item.description,jdbcType=VARCHAR}, #{item.number,jdbcType=INTEGER}, #{item.rank,jdbcType=INTEGER}, 
+      #{item.parent,jdbcType=INTEGER}, #{item.experience,jdbcType=INTEGER}, #{item.money,jdbcType=INTEGER}, 
+      #{item.strengthen,jdbcType=INTEGER}, #{item.honor,jdbcType=INTEGER}, #{item.addsucess,jdbcType=INTEGER}, 
+      #{item.gift,jdbcType=VARCHAR}, #{item.amount,jdbcType=INTEGER}, #{item.unit,jdbcType=INTEGER}, 
+      #{item.unitType,jdbcType=INTEGER}, #{item.status,jdbcType=BIT}, #{item.defaultopen,jdbcType=BIT}, 
+      #{item.openmodule,jdbcType=INTEGER}, #{item.backUp,jdbcType=VARCHAR})
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysGrowthMission" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_GROWTH_MISSION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="icon != null" >
+        ICON,
+      </if>
+      <if test="title != null" >
+        TITLE,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="number != null" >
+        NUMBER,
+      </if>
+      <if test="rank != null" >
+        RANK,
+      </if>
+      <if test="parent != null" >
+        PARENT,
+      </if>
+      <if test="experience != null" >
+        EXPERIENCE,
+      </if>
+      <if test="money != null" >
+        MONEY,
+      </if>
+      <if test="strengthen != null" >
+        STRENGTHEN,
+      </if>
+      <if test="honor != null" >
+        HONOR,
+      </if>
+      <if test="addsucess != null" >
+        ADDSUCESS,
+      </if>
+      <if test="gift != null" >
+        GIFT,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+      <if test="unit != null" >
+        UNIT,
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="defaultopen != null" >
+        DEFAULTOPEN,
+      </if>
+      <if test="openmodule != null" >
+        OPENMODULE,
+      </if>
+      <if test="backUp != null" >
+        BACK_UP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="parent != null" >
+        #{parent,jdbcType=INTEGER},
+      </if>
+      <if test="experience != null" >
+        #{experience,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=INTEGER},
+      </if>
+      <if test="strengthen != null" >
+        #{strengthen,jdbcType=INTEGER},
+      </if>
+      <if test="honor != null" >
+        #{honor,jdbcType=INTEGER},
+      </if>
+      <if test="addsucess != null" >
+        #{addsucess,jdbcType=INTEGER},
+      </if>
+      <if test="gift != null" >
+        #{gift,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="unitType != null" >
+        #{unitType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="defaultopen != null" >
+        #{defaultopen,jdbcType=BIT},
+      </if>
+      <if test="openmodule != null" >
+        #{openmodule,jdbcType=INTEGER},
+      </if>
+      <if test="backUp != null" >
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysGrowthMission" >
+    update SYS_GROWTH_MISSION
+    <set >
+      <if test="icon != null" >
+        ICON = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        NUMBER = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="rank != null" >
+        RANK = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="parent != null" >
+        PARENT = #{parent,jdbcType=INTEGER},
+      </if>
+      <if test="experience != null" >
+        EXPERIENCE = #{experience,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        MONEY = #{money,jdbcType=INTEGER},
+      </if>
+      <if test="strengthen != null" >
+        STRENGTHEN = #{strengthen,jdbcType=INTEGER},
+      </if>
+      <if test="honor != null" >
+        HONOR = #{honor,jdbcType=INTEGER},
+      </if>
+      <if test="addsucess != null" >
+        ADDSUCESS = #{addsucess,jdbcType=INTEGER},
+      </if>
+      <if test="gift != null" >
+        GIFT = #{gift,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        UNIT = #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE = #{unitType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=BIT},
+      </if>
+      <if test="defaultopen != null" >
+        DEFAULTOPEN = #{defaultopen,jdbcType=BIT},
+      </if>
+      <if test="openmodule != null" >
+        OPENMODULE = #{openmodule,jdbcType=INTEGER},
+      </if>
+      <if test="backUp != null" >
+        BACK_UP = #{backUp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysGrowthMission" >
+    update SYS_GROWTH_MISSION
+    set ICON = #{icon,jdbcType=VARCHAR},
+      TITLE = #{title,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      NUMBER = #{number,jdbcType=INTEGER},
+      RANK = #{rank,jdbcType=INTEGER},
+      PARENT = #{parent,jdbcType=INTEGER},
+      EXPERIENCE = #{experience,jdbcType=INTEGER},
+      MONEY = #{money,jdbcType=INTEGER},
+      STRENGTHEN = #{strengthen,jdbcType=INTEGER},
+      HONOR = #{honor,jdbcType=INTEGER},
+      ADDSUCESS = #{addsucess,jdbcType=INTEGER},
+      GIFT = #{gift,jdbcType=VARCHAR},
+      AMOUNT = #{amount,jdbcType=INTEGER},
+      UNIT = #{unit,jdbcType=INTEGER},
+      UNIT_TYPE = #{unitType,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=BIT},
+      DEFAULTOPEN = #{defaultopen,jdbcType=BIT},
+      OPENMODULE = #{openmodule,jdbcType=INTEGER},
+      BACK_UP = #{backUp,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

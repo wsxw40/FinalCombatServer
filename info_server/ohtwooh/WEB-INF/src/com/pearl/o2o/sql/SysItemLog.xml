@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysItemLog">
+
+	<!-- Use type aliases to avoid typing the full classname every time. -->
+	<typeAlias alias="SysItemLog" type="com.pearl.o2o.pojo.SysItem" />
+	<resultMap id="selectSysItemLogResult" class="SysItemLog">
+		<result property="logId" column="ID" />
+		<result property="id" column="ITEM_ID" />
+		<result property="name" column="NAME" />
+		<result property="resourceStable" column="RESOURCE_STABLE" />
+		<result property="resourceChangeable" column="RESOURCE_CHANGEABLE" />
+		<result property="type" column="TYPE" />
+		<result property="subType" column="SUB_TYPE" />
+			<result property="currency" column="CURRENCY" />
+		<result property="unitType" column="UNIT_TYPE" />
+		<result property="cost1" column="COST1" />
+		<result property="unit1" column="unit1" />
+		<result property="cost2" column="COST2" />
+		<result property="unit2" column="unit2" />
+		<result property="cost3" column="COST3" />
+		<result property="unit3" column="unit3" />
+		<result property="modifiedDesc" column="MODIFIED_DESC" />
+		
+		<result property="wId" column="W_ID" />
+		<result property="wChangeInTime" column="W_CHANGE_IN_TIME" />
+		<result property="wMoveSpeedOffset" column="W_MOVE_SPEED_OFFSET" />
+		<result property="wCrossOffset" column="W_CROSS_OFFSET" />
+		<result property="wAccuracyDivisor" column="W_ACCURACY_DIVISOR" />
+		<result property="wAccuracyOffset" column="W_ACCURACY_OFFSET" />
+		<result property="wMaxInaccuracy" column="W_MAX_INACCURACY" />
+		<result property="wPenetration" column="W_PENETRATION" />
+		<result property="wDamage" column="W_DAMAGE" />
+		<result property="wRangeModifier" column="W_RANGE_MODIFIER" />
+		<result property="wFireTime" column="W_FIRE_TIME" />
+		<result property="wReloadTime" column="W_RELOAD_TIME" />
+		<result property="wZoomTime" column="W_ZOOM_TIME" />
+		<result property="wZoomValue" column="W_ZOOM_VALUE" />
+		<result property="wAmmoOneClip" column="W_AMMO_ONE_CLIP" />
+		<result property="wAmmoCount" column="W_AMMO_COUNT" />
+		<result property="wAutoFire" column="W_AUTO_FIRE" />
+		<result property="wTimeToIdle" column="W_TIME_TO_IDLE" />
+		<result property="wNormalOffset" column="W_NORMAL_OFFSET" />
+		<result property="wNormalFactor" column="W_NORMAL_FACTOR" />
+		<result property="wOnairOffset" column="W_ONAIR_OFFSET" />
+		<result property="wOnairFactor" column="W_ONAIR_FACTOR" />
+		<result property="wMoveOffset" column="W_MOVE_OFFSET" />
+		<result property="wMoveFactor" column="W_MOVE_FACTOR" />
+		<result property="wNormalUpBase" column="W_NORMAL_UP_BASE" />
+		<result property="wNormalLateralBase" column="W_NORMAL_LATERAL_BASE" />
+		<result property="wNormalUpModifier" column="W_NORMAL_UP_MODIFIER" />
+		<result property="wNormalLateralModifier" column="W_NORMAL_LATERAL_MODIFIER" />
+		<result property="wNormalUpMax" column="W_NORMAL_UP_MAX" />
+		<result property="wNormalLateralMax" column="W_NORMAL_LATERAL_MAX" />
+		<result property="wNormalDirChange" column="W_NORMAL_DIR_CHANGE" />
+		<result property="wMoveUpBase" column="W_MOVE_UP_BASE" />
+		<result property="wMoveLateralBase" column="W_MOVE_LATERAL_BASE" />
+		<result property="wMoveUpModifier" column="W_MOVE_UP_MODIFIER" />
+		<result property="wMoveLateralModifier" column="W_MOVE_LATERAL_MODIFIER" />
+		<result property="wMoveUpMax" column="W_MOVE_UP_MAX" />
+		<result property="wMoveLateralMax" column="W_MOVE_LATERAL_MAX" />
+		<result property="wMoveDirChange" column="W_MOVE_DIR_CHANGE" />
+		<result property="wOnairUpBase" column="W_ONAIR_UP_BASE" />
+		<result property="wOnairLateralBase" column="W_ONAIR_LATERAL_BASE" />
+		<result property="wOnairUpModifier" column="W_ONAIR_UP_MODIFIER" />
+		<result property="wOnairLateralModifier" column="W_ONAIR_LATERAL_MODIFIER" />
+		<result property="wOnairUpMax" column="W_ONAIR_UP_MAX" />
+		<result property="wOnairLateralMax" column="W_ONAIR_LATERAL_MAX" />
+		<result property="wOnairDirChange" column="W_ONAIR_DIR_CHANGE" />
+		<result property="wCrouchUpBase" column="W_CROUCH_UP_BASE" />
+		<result property="wCrouchLateralBase" column="W_CROUCH_LATERAL_BASE" />
+		<result property="wCrouchUpModifier" column="W_CROUCH_UP_MODIFIER" />
+		<result property="wCrouchLateralModifier" column="W_CROUCH_LATERAL_MODIFIER" />
+		<result property="wCrouchUpMax" column="W_CROUCH_UP_MAX" />
+		<result property="wCrouchLateralMax" column="W_CROUCH_LATERAL_MAX" />
+		<result property="wCrouchDirChange" column="W_CROUCH_DIR_CHANGE" />
+		<result property="wUpModifier" column="W_UP_MODIFIER" />
+		<result property="wShootBulletCount" column="W_SHOOT_BULLET_COUNT" />
+		<result property="wSpread" column="W_SPREAD" />
+		<result property="wFireMaxSpeed" column="W_FIRE_MAX_SPEED" />
+		<result property="wFireStartSpeed" column="W_FIRE_START_SPEED" />
+		<result property="wFireAceleration" column="W_FIRE_ACELERATION" />
+		<result property="wFireResistance" column="W_FIRE_RESISTANCE" />
+		<result property="wStabTime" column="W_STAB_TIME" />
+		<result property="wStabLightTime" column="W_STAB_LIGHT_TIME" />
+		<result property="wStabHurt" column="W_STAB_HURT" />
+		<result property="wStabLightHurt" column="W_STAB_LIGHT_HURT" />
+		<result property="wExplodeTime" column="W_EXPLODE_TIME" />
+		<result property="wReadyTime" column="W_READY_TIME" />
+		<result property="wThrowOutTime" column="W_THROW_OUT_TIME" />
+		<result property="wHurtRange" column="W_HURT_RANGE" />
+		<result property="wHurt" column="W_HURT" />
+		<result property="cSide" column="C_SIDE" />
+		<result property="cId" column="C_ID" />
+		<result property="cGender" column="C_GENDER" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="level" column="LEVEL" />
+		<result property="pSuitable" column="P_SUITABLE" />
+		<result property="logVersion" column="VERSION" />
+		<result property="logTime" column="CREATED_TIME" />
+		<result property="description" column="DESCRIPTION" />
+		<result property="iBuffId" column="I_BUFF_ID" />
+		<result property="iId" column="I_ID" />
+			<result property="wMaxLength" column="W_MAX_LENGTH" />
+		<result property="iValue" column="I_VALUE" />
+		<result property="wRangeStart" column="W_RANGE_START" />
+		<result property="wRangeEnd" column="W_RANGE_END" />
+		<result property="wAccuracyTime" column="W_ACCURACY_TIME" />
+		<result property="wAccuracyTimeModefier" column="W_ACCURACY_TIME_MODIFIER" />
+		<result property="wMaxAccuracy" column="W_MAX_ACCURACY" />
+		<result property="wMinAccuracy" column="W_MIN_ACCURACY" />
+		<result property="wCrossLengthBase" column="W_CROSS_LENGTH_BASE" />
+		<result property="wCrossLengthFactor" column="W_CROSS_LENGTH_FACTOR" />
+		<result property="wCrossDistanceBase" column="W_CROSS_DISTANCE_BASE" />
+		<result property="wCrossDistanceFactor" column="W_CROSS_DISTANCE_FACTOR" />
+		
+		<result property="wXOffset" column="W_X_OFFSET" />
+		<result property="wSightNormalOffset" column="W_SIGHT_NORMAL_OFFSET" />
+		<result property="wSightOnairOffset" column="W_SIGHT_ONAIR_OFFSET" />
+		<result property="wSightMoveOffset" column="W_SIGHT_MOVE_OFFSET" />
+		<result property="wStabDistance" column="W_STAB_DISTANCE" />
+		<result property="wStabLightDistance" column="W_STAB_LIGHT_DISTANCE" />
+		<result property="wStabWidth" column="W_STAB_WIDTH" />
+		<result property="wBackFactor" column="W_BACK_FACTOR" />
+		<result property="wFlashRangeStart" column="W_FLASH_RANGE_START" />
+		<result property="wFlashRangeEnd" column="W_FLASH_RANGE_END" />
+		<result property="wFlashBackFactor" column="W_FLASH_BACK_FACTOR" />
+		<result property="wTimeMax" column="W_TIME_MAX" />
+		<result property="wTimeFade" column="W_TIME_FADE" />
+		<result property="wTime" column="W_TIME" />
+	</resultMap>
+	
+	<select id="getSysItemLogVersion" parameterClass="java.lang.Integer" resultClass="java.lang.Integer">
+		select ifnull(max(VERSION),0) from SYS_ITEM_LOG sil where sil.ITEM_ID=#id#;
+	</select>
+	<select id="select" parameterClass="java.lang.Integer" resultMap="selectSysItemLogResult">
+		select * from SYS_ITEM_LOG sil where sil.ITEM_ID=#value# order by sil.VERSION desc; 
+	</select>
+	<insert id="insert" parameterClass="com.pearl.o2o.pojo.SysItemLog">
+		insert into SYS_ITEM_LOG(
+		  ID ,
+		  ITEM_ID,
+		  NAME,
+		  DISPLAY_NAME,
+		  RESOURCE_STABLE,
+		  RESOURCE_CHANGEABLE,
+		  TYPE,
+		  SUB_TYPE,
+		  CURRENCY,
+		  UNIT_TYPE,
+		  COST1,
+		  UNIT1,
+		  COST2,
+		  UNIT2,
+		  COST3,
+		  UNIT3,
+		  LEVEL,
+		  MODIFIED_DESC,
+		  W_ID,
+		  W_CHANGE_IN_TIME ,
+		  W_MOVE_SPEED_OFFSET,
+		  W_CROSS_OFFSET,
+		  W_ACCURACY_DIVISOR,
+		  W_ACCURACY_OFFSET,
+		  W_MAX_INACCURACY,
+		  W_PENETRATION,
+		  W_DAMAGE,
+		  W_RANGE_MODIFIER,
+		  W_FIRE_TIME,
+		  W_RELOAD_TIME,
+		  W_ZOOM_TIME,
+		  W_ZOOM_VALUE,
+		  W_AMMO_ONE_CLIP,
+		  W_AMMO_COUNT ,
+		  W_AUTO_FIRE ,
+		  W_TIME_TO_IDLE ,
+		  W_NORMAL_OFFSET ,
+		  W_NORMAL_FACTOR ,
+		  W_ONAIR_OFFSET ,
+		  W_ONAIR_FACTOR ,
+		  W_MOVE_OFFSET ,
+		  W_MOVE_FACTOR ,
+		  W_NORMAL_UP_BASE ,
+		  W_NORMAL_LATERAL_BASE ,
+		  W_NORMAL_UP_MODIFIER ,
+		  W_NORMAL_LATERAL_MODIFIER ,
+		  W_NORMAL_UP_MAX ,
+		  W_NORMAL_LATERAL_MAX ,
+		  W_NORMAL_DIR_CHANGE ,
+		  W_MOVE_UP_BASE ,
+		  W_MOVE_LATERAL_BASE ,
+		  W_MOVE_UP_MODIFIER ,
+		  W_MOVE_LATERAL_MODIFIER ,
+		  W_MOVE_UP_MAX ,
+		  W_MOVE_LATERAL_MAX ,
+		  W_MOVE_DIR_CHANGE ,
+		  W_ONAIR_UP_BASE ,
+		  W_ONAIR_LATERAL_BASE ,
+		  W_ONAIR_UP_MODIFIER ,
+		  W_ONAIR_LATERAL_MODIFIER ,
+		  W_ONAIR_UP_MAX,
+		  W_ONAIR_LATERAL_MAX ,
+		  W_ONAIR_DIR_CHANGE ,
+		  W_CROUCH_UP_BASE,
+		  W_CROUCH_LATERAL_BASE ,
+		  W_CROUCH_UP_MODIFIER ,
+		  W_CROUCH_LATERAL_MODIFIER ,
+		  W_CROUCH_UP_MAX ,
+		  W_CROUCH_LATERAL_MAX ,
+		  W_CROUCH_DIR_CHANGE ,
+		  W_UP_MODIFIER ,
+		  W_SHOOT_BULLET_COUNT,W_SPREAD,W_FIRE_MAX_SPEED,W_FIRE_START_SPEED,W_FIRE_ACELERATION,W_FIRE_RESISTANCE,
+		  W_STAB_TIME ,
+		  W_STAB_LIGHT_TIME ,
+		  W_STAB_HURT ,
+		  W_STAB_LIGHT_HURT,
+		  W_EXPLODE_TIME ,
+		  W_READY_TIME ,
+		  W_THROW_OUT_TIME ,
+		  W_HURT_RANGE ,
+		  W_HURT ,
+		  C_SIDE ,
+		  C_GENDER ,
+		   C_ID,
+		  P_SUITABLE,
+		   DESCRIPTION,
+		  I_BUFF_ID,
+		  I_ID,
+		  W_RANGE_START,
+W_RANGE_END,
+W_ACCURACY_TIME,
+W_ACCURACY_TIME_MODIFIER,
+W_MAX_ACCURACY,
+W_MIN_ACCURACY,
+W_CROSS_LENGTH_BASE,
+W_CROSS_LENGTH_FACTOR,
+W_CROSS_DISTANCE_BASE,
+W_CROSS_DISTANCE_FACTOR,
+W_MAX_LENGTH,
+I_VALUE,
+
+W_X_OFFSET,
+W_SIGHT_NORMAL_OFFSET,W_SIGHT_ONAIR_OFFSET,W_SIGHT_MOVE_OFFSET,
+W_STAB_DISTANCE,W_STAB_LIGHT_DISTANCE,W_STAB_WIDTH,W_BACK_FACTOR,
+W_FLASH_RANGE_START,W_FLASH_RANGE_END,W_FLASH_BACK_FACTOR,W_TIME_MAX,W_TIME_FADE,W_TIME,
+		  VERSION,
+		  CREATED_TIME
+		)
+		values(
+			#id#,
+			#sysItem.id#,
+			#sysItem.name#,
+			#sysItem.displayName#,
+			#sysItem.resourceStable#,
+			#sysItem.resourceChangeable#,
+			#sysItem.type#,
+			#sysItem.subType#,
+			#sysItem.currency#,
+			#sysItem.unitType#,
+			#sysItem.cost1#,
+			#sysItem.unit1#,
+			#sysItem.cost2#,
+			#sysItem.unit2#,
+			#sysItem.cost3#,
+			#sysItem.unit3#,
+			#sysItem.level#,
+			#sysItem.modifiedDesc#,
+			#sysItem.wId#,
+			#sysItem.wChangeInTime#,
+			#sysItem.wMoveSpeedOffset#,
+			#sysItem.wCrossOffset#,
+			#sysItem.wAccuracyDivisor#,
+			#sysItem.wAccuracyOffset#,
+			#sysItem.wMaxInaccuracy#,
+			#sysItem.wPenetration#,
+			#sysItem.wDamage#,
+			#sysItem.wRangeModifier#,
+			#sysItem.wFireTime#,
+			#sysItem.wReloadTime#,
+			#sysItem.wZoomTime#,
+			#sysItem.wZoomValue#,
+			#sysItem.wAmmoOneClip#,
+			#sysItem.wAmmoCount#,
+			#sysItem.wAutoFire#,
+			#sysItem.wTimeToIdle#,
+			#sysItem.wNormalOffset#,
+			#sysItem.wNormalFactor#,
+			#sysItem.wOnairOffset#,
+			#sysItem.wOnairFactor#,
+			#sysItem.wMoveOffset#,
+			#sysItem.wMoveFactor#,
+			#sysItem.wNormalUpBase#,
+			#sysItem.wNormalLateralBase#,
+			#sysItem.wNormalUpModifier#,
+			#sysItem.wNormalLateralModifier#,
+			#sysItem.wNormalUpMax#,
+			#sysItem.wNormalLateralMax#,
+			#sysItem.wNormalDirChange#,
+			#sysItem.wMoveUpBase#,
+			#sysItem.wMoveLateralBase#,
+			#sysItem.wMoveUpModifier#,
+		
+			#sysItem.wMoveLateralModifier#,
+			#sysItem.wMoveUpMax#,
+			#sysItem.wMoveLateralMax#,
+			#sysItem.wMoveDirChange#,
+			#sysItem.wOnairUpBase#,
+			#sysItem.wOnairLateralBase#,
+			#sysItem.wOnairUpModifier#,
+			#sysItem.wOnairLateralModifier#,
+			#sysItem.wOnairUpMax#,
+			#sysItem.wOnairLateralMax#,
+			#sysItem.wOnairDirChange#,
+			#sysItem.wCrouchUpBase#,
+			#sysItem.wCrouchLateralBase#,
+			#sysItem.wCrouchUpModifier#,
+			#sysItem.wCrouchLateralModifier#,
+			#sysItem.wCrouchUpMax#,
+			#sysItem.wCrouchLateralMax#,
+			#sysItem.wCrouchDirChange#,
+			#sysItem.wUpModifier#,
+			#sysItem.wShootBulletCount#,#sysItem.wSpread#,#sysItem.wFireMaxSpeed#,#sysItem.wFireStartSpeed#,#sysItem.wFireAceleration#,#sysItem.wFireResistance#,
+			#sysItem.wStabTime#,
+			#sysItem.wStabLightTime#,
+			#sysItem.wStabHurt#,
+			#sysItem.wStabLightHurt#,
+			#sysItem.wExplodeTime#,
+			#sysItem.wReadyTime#,
+			#sysItem.wThrowOutTime#,
+			#sysItem.wHurtRange#,
+			#sysItem.wHurt#,
+			#sysItem.cSide#,
+			#sysItem.cGender#,
+			#sysItem.cId#,
+			#sysItem.pSuitable#,
+			#sysItem.description#,#sysItem.iBuffId#,#sysItem.iId#,
+			#sysItem.wRangeStart#,
+#sysItem.wRangeEnd#,
+#sysItem.wAccuracyTime#,
+#sysItem.wAccuracyTimeModefier#,
+#sysItem.wMaxAccuracy#,
+#sysItem.wMinAccuracy#,
+#sysItem.wCrossLengthBase#,
+#sysItem.wCrossLengthFactor#,
+#sysItem.wCrossDistanceBase#,
+#sysItem.wCrossDistanceFactor#,
+#sysItem.wMaxLength#,
+#sysItem.iValue#,
+#sysItem.wXOffset#,
+#sysItem.wSightNormalOffset#,
+#sysItem.wSightOnairOffset#,
+#sysItem.wSightMoveOffset#,
+#sysItem.wStabDistance#,
+#sysItem.wStabLightDistance#,
+#sysItem.wStabWidth#,
+#sysItem.wBackFactor#,
+#sysItem.wFlashRangeStart#,
+#sysItem.wFlashRangeEnd#,
+#sysItem.wFlashBackFactor#,
+#sysItem.wTimeMax#,
+#sysItem.wTimeFade#,
+#sysItem.wTime#,
+			#logVersion#,
+			now()
+			
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>	
+</sqlMap>

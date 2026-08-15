@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Character">
+	<typeAlias alias="Character" type="com.pearl.o2o.pojo.Character"/>
+	<resultMap class="Character" id="selectResult">
+		<result property="id" column="ID"/>
+		<result property="runSpeed" column="RUN_SPEED"/>
+		<result property="walkSpeed" column="WALK_SPEED"/>
+		<result property="crouchSpeed" column="CROUCH_SPEED"/>
+		<result property="accelSpeed" column="ACCEL_SPEED"/>
+		<result property="jumpSpeed" column="JUMP_SPEED"/>
+		<result property="throwSpeed" column="THROW_SPEED"/>
+		<result property="resourceP" column="RESOURCE_P"/>
+		<result property="resourceT" column="RESOURCE_T"/>
+		<result property="gender" column="GENDER"/>
+		<result property="isDefault" column="IS_DEFAULT"/>
+		<result property="cost" column="COST"/>
+	</resultMap>
+	<select id="select" resultMap="selectResult" parameterClass="java.util.Map" >
+		select * from SYS_CHARACTER 
+		where IS_DELETED="N" 
+		<dynamic>
+    		<isNotNull prepend="and" property="isDefault">
+				IS_DEFAULT =  #isDefault#
+			</isNotNull>
+		</dynamic>
+		order by ID;
+	</select>
+	<insert id="insert"  parameterClass="com.pearl.o2o.pojo.Character">
+		insert into SYS_CHARACTER(
+			RUN_SPEED,
+			WALK_SPEED,
+			CROUCH_SPEED,
+			ACCEL_SPEED,
+			JUMP_SPEED,
+			THROW_SPEED,
+			RESOURCE_P,
+			RESOURCE_T,
+			GENDER,
+			IS_DEFAULT,COST
+		) values(
+			#runSpeed#,
+			#walkSpeed#,
+			#crouchSpeed#,
+			#accelSpeed#,
+			#jumpSpeed#,
+			#throwSpeed#,
+			#resourceP#,
+			#resourceT#,
+			#gender#,
+			#isDefault#,#cost#
+		);
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<update id="delete" parameterClass="java.lang.Integer">
+		update SYS_CHARACTER set IS_DELETED="Y" where ID=#id#;
+	</update>
+	<update id="update" parameterClass="Character">
+		update SYS_CHARACTER set
+			RUN_SPEED=#runSpeed#,
+			WALK_SPEED=#walkSpeed#,
+			CROUCH_SPEED=#crouchSpeed#,
+			ACCEL_SPEED=#accelSpeed#,
+			JUMP_SPEED=#jumpSpeed#,
+			THROW_SPEED=#throwSpeed#,
+			RESOURCE_P=#resourceP#,
+			RESOURCE_T=#resourceT#,
+			GENDER=#gender#,
+			IS_DEFAULT=#isDefault#,
+			COST=#cost#
+		where ID=#id#;	
+	</update>
+</sqlMap>

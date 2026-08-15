@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*"
+	xmlns:boost="boost.charts.*"
+	 height="100%" width="100%"
+	creationComplete="init()" xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*">
+	<mx:Script>
+		<![CDATA[
+			import popup.EditDescription;
+			import utils.ValidateUtils;
+			import view.WeaponForm;
+			import mx.events.ListEvent;
+			import vo.GunProperty;
+			import popup.GunPropertyView;
+			import event.DataRefreshEvent;
+			import utils.ColumnFactory;
+			import mx.containers.Box;
+			import mx.controls.Label;
+			import common.Calculator;
+			import event.RadarChartItemChangeEvent;
+			import event.ItemDeleteEvent;
+			import mx.utils.StringUtil;
+			import utils.DatagridValidateFactory;
+			import mx.rpc.events.FaultEvent;
+			import mx.messaging.AbstractConsumer;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.NumberValidator;
+			import mx.validators.Validator;
+			import popup.ViewSysItemLog;
+			import mx.controls.TextInput;
+			import mx.events.CollectionEventKind;
+			import mx.events.CollectionEvent;
+			import mx.events.DataGridEvent;
+			import mx.managers.PopUpManager;
+			import view.CreateSysItemView;
+			import component.MyDataGridColumn;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.events.CloseEvent;
+			import mx.core.UIComponent;
+			import mx.messaging.config.ConfigMap;
+			import vo.SysItem;
+			import common.Constants;
+			import mx.controls.Alert;
+			import mx.controls.TabBar;
+			import mx.events.ItemClickEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import vo.GmUser;
+			private var model:O2oModel = O2oModel.getInstance();
+			[Bindable]
+			private var allSysItem:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			private var undeletedSysItems:ArrayCollection = new ArrayCollection();
+			[Bindable]
+			private var typeIndex:int=0;
+			[Bindable]
+			private var subTypeIndex:int=0;
+			[Bindable]
+			private var typeArray:Array;
+			[Bindable]
+			private var subTypeArray:Array;
+			[Bindable]
+			private var characterList:ArrayCollection;
+			
+			private var gunIndex1:int=19;
+			private var gunIndex2:int=20;
+			private var gunIndex3:int=21;
+			private var gunIndex4:int=22;
+			private var gunIndex5:int=23;
+			
+			private var desIndexByType:Array=new Array(-1,30,30,18,15,-1,15,20);
+	
+			private var isCopy:Boolean=false;
+			[Bindable]
+			private var sysItem:SysItem=null;
+			private var allSysItemLog:ArrayCollection=new ArrayCollection();
+			private var type:int=1;
+			private var subType:int=1;
+			public var sysItemView:CreateSysItemView;
+			public var viewSysItemLog:ViewSysItemLog;
+			private function init():void{
+				typeArray=Constants.typeArray;
+				subTypeArray=Constants.subTypeArray2;
+				typeTab.selectedIndex=typeIndex;
+				subTypeTab.selectedIndex=subTypeIndex;
+				var columns:Array = ColumnFactory.getColumnWeapon(false) as Array;
+				sysItemDataGrid.columns = columns;
+				getRo.getSysItemList(1,1);
+				getRo.getSysCharacterList();
+				this.addEventListener(ItemDeleteEvent.ITEM_DELETE,deleteHandler);
+		  	}
+		  	private function getSysItemHandler(evt:ResultEvent):void{
+		  	 	allSysItem=evt.result as ArrayCollection;
+		  	 	filterSysItem();
+//		  	 	this.sysItemDataGrid.selectedIndex=0;
+		  	}
+		  	private function getSysItemLogHandler(evt:ResultEvent):void{
+		  	 	allSysItemLog=evt.result as ArrayCollection;
+		  	 	viewSysItemLog=ViewSysItemLog(PopUpManager.createPopUp(this,ViewSysItemLog,true));
+		  	 	if(this.type!=1){
+		  	 		viewSysItemLog.width=1200;
+		  	 	}
+		  	 	viewSysItemLog.sysItemLogDG.columns=ColumnFactory.getLogColumnArray(this.typeIndex,false);
+		  	 	viewSysItemLog.type=this.type;
+		  	 	viewSysItemLog.sysItemLogs=allSysItemLog;
+		  	 	viewSysItemLog.close.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(viewSysItemLog);});
+		  	 	viewSysItemLog.addEventListener(DataRefreshEvent.REFREASH_DATA,clickRefreshBtn);
+		  	 	PopUpManager.centerPopUp(viewSysItemLog);
+		  	}
+		  	private function initBtns():void{
+		  		newBtn.enabled=true;
+		 		editBtn.enabled=true;
+		 		copyBtn.enabled=true;
+		 		cancelBtn.enabled=false;
+		 		saveBtn.enabled=false;
+		 		sysItemDataGrid.editable=false;
+		 		refreshBtn.enabled=true;
+		 		showPaymentView.enabled=true;
+		  	}
+		  	private function typeClick(evt:ItemClickEvent):void{
+		  		allSysItem=new ArrayCollection();
+		  		this.sysItem=null;
+		  		this.isCopy=false;
+		  		if(weaponForm!=null && vdArea.contains(weaponForm)){
+		  			vdArea.removeChild(weaponForm);
+		  		}
+		  		initBtns();
+		  		characterCb.selectedIndex=0;
+		  		sid.text="";
+		  		sname.text="";
+		  		displayName.text="";
+		  		if(typeTab.selectedIndex==0 || typeTab.selectedIndex==1 || typeTab.selectedIndex==2){
+		  			searchBtn.enabled=true;
+		  			clearBtn.enabled=true;
+		  			
+		  		}else{
+		  			searchBtn.enabled=false;
+		  			clearBtn.enabled=false;
+		  		}
+		  		var targetComp:TabBar = TabBar(evt.currentTarget);
+		  		var typeData:int = targetComp.dataProvider[evt.index].data;
+		  		this.type=typeData;
+		  		this.typeIndex=evt.index;
+		  		sysItemDataGrid.columns=ColumnFactory.getColumnArray(this.typeIndex,false);
+		  		subTypeArray=Constants.getSubTypeArray(this.typeIndex);
+		  		subTypeTab.selectedIndex=0;
+		  		this.subTypeIndex=0;
+		  		this.subType=1;
+		  		//init paymentlist
+		  		paymentView.paymentList=new ArrayCollection();
+		  		
+		  		getRo.getSysItemList(this.type,this.subType);
+		  	}
+		  	private function subTypeClick(evt:ItemClickEvent):void{
+		  		this.sysItem=null;
+		  		this.isCopy=false;
+		  		if(weaponForm!=null && vdArea.contains(weaponForm)){
+		  			vdArea.removeChild(weaponForm);
+		  		}
+		  		initBtns();
+		  		characterCb.selectedIndex=0;
+		  		sid.text="";
+		  		sname.text="";
+		  		displayName.text="";
+		  		var targetComp:TabBar = TabBar(evt.currentTarget);
+		  		var subTypeData:int = targetComp.dataProvider[evt.index].data;
+		  		this.subType=subTypeData;
+		  		this.subTypeIndex=evt.index;
+		  		paymentView.paymentList=new ArrayCollection();
+		  		getRo.getSysItemList(this.type,this.subType);
+		  	}
+		  	
+		 	public function selectHandler(e:ListEvent):void{
+		 		sysItem=sysItemDataGrid.selectedItem as SysItem;
+		 		paymentView.itemId=sysItem.id;
+		 		paymentView.init();
+				if(type==1){
+		 			if(weaponForm!=null){
+		 				weaponForm.weapon=sysItem;
+		 			}
+				}else if(sysItemDataGrid.editable==true){
+					startEdit(e);
+				}
+		 	}
+		 	
+		 	public function clickRefreshBtn(evt:DataRefreshEvent):void{
+		 		getRo.getSysItemList(this.type,this.subType);
+		 	}
+		 	public function clickNewBtn():void{
+		 		sysItemView=CreateSysItemView(PopUpManager.createPopUp(this,CreateSysItemView,true));
+		 		if(isCopy){
+		 			this.sysItem.type=this.type;
+		 			sysItemView.sysItem=this.sysItem;
+		 		}else{
+		 			sysItemView.sysItem=new SysItem();
+		 			sysItemView.sysItem.type=this.type;
+		 			sysItemView.sysItem.subType=this.subType;
+		 		}
+		 		sysItemView.type=this.type;
+		 		sysItemView.close.addEventListener(MouseEvent.CLICK,closePanel);
+		 		sysItemView.save.addEventListener(MouseEvent.CLICK,validate);
+				PopUpManager.centerPopUp(sysItemView);
+		 	}
+		 	private function deleteHandler(evt:ItemDeleteEvent):void{
+		 		evt._data.isChange=1;
+				this.sysItemDataGrid.selectedItem=evt._data;
+		 	}
+		 	
+			private var weaponForm:WeaponForm;
+		 	public function clickEditBtn():void{
+				if(type == 1){//武器
+			 		if(sysItemDataGrid.selectedItem==null){
+			 			Alert.show("Choose one item!");
+			 			return ;
+			 		}
+			 		weaponForm=new WeaponForm();
+			 		weaponForm.weapon=this.sysItem;
+			 		vdArea.addChildAt(weaponForm,1);
+			 		if(paymentView.visible){
+						paymentView.visible = false;
+						paymentView.height  = 0;
+						showPaymentView.label 	= resourceManager.getString('Language','label.button.ClosePrice');
+					}
+			 		refreshBtn.enabled=false;
+					showPaymentView.enabled=false;
+				}else if(type == 9){//资源争夺战，目前先按照weaponForm的方式来展现，后期可能需要调整  time:20131029 by leo.zhang
+			 		if(sysItemDataGrid.selectedItem==null){
+			 			Alert.show("Choose one item!");
+			 			return ;
+			 		}
+			 		weaponForm=new WeaponForm();
+			 		weaponForm.weapon=this.sysItem;
+			 		vdArea.addChildAt(weaponForm,1);
+			 		if(paymentView.visible){
+						paymentView.visible = false;
+						paymentView.height  = 0;
+						showPaymentView.label 	= resourceManager.getString('Language','label.button.ClosePrice');
+					}
+			 		refreshBtn.enabled=false;
+					showPaymentView.enabled=false;
+				}else{
+						this.sysItemDataGrid.editable=true;
+				}
+				newBtn.enabled=false;
+				
+		 		editBtn.enabled=false;
+		 		copyBtn.enabled=false;
+		 		cancelBtn.enabled=true;
+		 		saveBtn.enabled=true;
+		 	}
+		 	public function clickCancelBtn():void{
+				if(type==1||type==9){
+		 			vdArea.removeChildAt(1);
+				}
+		 		initBtns();
+		 		getRo.getSysItemList(this.type,this.subType);
+		 	}
+		 	public function clickSaveBtn():void{				
+				if(type == 1){
+					var v1:Array=Validator.validateAll(weaponForm.w1.validateArray);
+					if(v1.length>0){
+						weaponForm.tb.selectedIndex=0;
+						return;
+					}
+					if(weaponForm.w4!=null){
+						var v4:Array=Validator.validateAll(weaponForm.w4.validateArray);
+						if(v4.length>0){
+							weaponForm.tb.selectedIndex=1;
+							return ;
+						}
+					}
+					if(weaponForm.w2!=null){
+						var v2:Array=Validator.validateAll(weaponForm.w2.validateArray);
+						if(v2.length>0){
+							weaponForm.tb.selectedIndex=2;
+							return;
+						}
+					}
+					if(weaponForm.w3!=null){
+						var v3:Array=Validator.validateAll(weaponForm.w3.validateArray);
+						if(v3.length>0){
+							weaponForm.tb.selectedIndex=3;
+							return;
+						}
+					}
+					vdArea.removeChildAt(1);
+				}
+				
+			if(type == 9){
+					var v1:Array=Validator.validateAll(weaponForm.w1.validateArray);
+					if(v1.length>0){
+						weaponForm.tb.selectedIndex=0;
+						return;
+					}
+					if(weaponForm.w4!=null){
+						var v4:Array=Validator.validateAll(weaponForm.w4.validateArray);
+						if(v4.length>0){
+							weaponForm.tb.selectedIndex=1;
+							return ;
+						}
+					}
+					if(weaponForm.w2!=null){
+						var v2:Array=Validator.validateAll(weaponForm.w2.validateArray);
+						if(v2.length>0){
+							weaponForm.tb.selectedIndex=2;
+							return;
+						}
+					}
+					if(weaponForm.w3!=null){
+						var v3:Array=Validator.validateAll(weaponForm.w3.validateArray);
+						if(v3.length>0){
+							weaponForm.tb.selectedIndex=3;
+							return;
+						}
+					}
+					vdArea.removeChildAt(1);
+				}				
+				updateRo.updateSysItem(model.gmUser, this.allSysItem);
+				initBtns();	 		
+			}
+			public function clickCopyBtn():void{
+				if(this.sysItem==null){
+					Alert.show("Choose one item!");
+				}else{
+					isCopy=true;
+				}
+			}
+		 	private function closePanel(evt:MouseEvent):void{
+		 		PopUpManager.removePopUp(sysItemView);
+		 	}
+			public function onBtnClick():void{
+				if(this.sysItem==null){
+					Alert.show("Choose one item!");
+				}else
+				{
+					getRo.getSysItemLog(this.sysItem.id);
+				}
+			}
+			public function validate(evt:MouseEvent):void{
+		 		
+		 		var validators:Array=DatagridValidateFactory.getSysitemValidatorArray(this.type,this.sysItemView);
+		 		var validateResult:Array=Validator.validateAll(validators);
+		 		if(validateResult.length > 0){
+ 		   			 return;
+		   		}else{
+		   			createSysItem();
+		   		} 
+		 	}
+		 	public function createSysItem():void{
+		 		createRo.createSysItem(model.gmUser, sysItemView.sysItem);
+		 		PopUpManager.removePopUp(sysItemView);
+		 	}
+		 	public function createSysItemHandler(evt:ResultEvent):void{
+		 		getRo.getSysItemList(this.type,this.subType);
+		 		Alert.show("Don't forget add the payment~Click the 'ShowPrice' button to check.","Warning");
+		 	}
+		 	public function defaultFaultHandle(evt:FaultEvent):void{
+				Alert.show(evt.message.toString());
+		 		getRo.getSysItemList(this.type,this.subType);
+		 	}
+		 	private var datagridValidate:Validator;
+		 	public function endEdit(evt:DataGridEvent):void{
+		 		if(type==2 || type==3){
+		 			if(evt.columnIndex==gunIndex1 || evt.columnIndex==gunIndex2 || evt.columnIndex==gunIndex3|| evt.columnIndex==gunIndex4
+		 			|| evt.columnIndex==gunIndex5){
+		 				return ;
+		 			}
+		 		}
+		 		if(evt.columnIndex==getdesIndexByType()){
+		 			return;
+		 		}
+		 		var dataField:String = evt.dataField;
+				var fCell:Array=[evt.columnIndex,evt.rowIndex];
+				var source:Object=evt.currentTarget.itemEditorInstance;
+                var myEditor:TextInput = TextInput(evt.currentTarget.itemEditorInstance);
+                var newVal:String = myEditor.text;
+                var oldVal:String = evt.currentTarget.editedItemRenderer.data[evt.dataField]; 
+               	newVal=StringUtil.trim(newVal);
+               	myEditor.text=newVal;
+                oldVal=StringUtil.trim(oldVal);
+               	if(newVal!=oldVal){
+               		var validate:Validator=DatagridValidateFactory.getSysitemValidator(dataField,source);
+               		if(validate!=null){
+               			datagridValidate=validate;
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.sysItem.isChange=1;
+	               			callLater(maintainFocus);
+	               			
+	               		}else{
+	               			evt.preventDefault();
+	               			fCell.push(source);
+	               			callLater(maintainEdit,fCell);
+	               		}
+               		}else{
+               			callLater(maintainFocus);
+               		}
+               	}else{
+               		callLater(maintainFocus);
+               	}
+               	
+		 	}
+		 	private function maintainEdit(colIndex:int,rowIndex:int,source:Object):void
+			{
+				
+				var editCell:Object = {columnIndex:colIndex, rowIndex: rowIndex};
+				if(sysItemDataGrid.editedItemPosition==null)
+				{
+	   				sysItemDataGrid.editedItemPosition = editCell;
+					callLater(validateCurrentEditor);
+	   			}
+			}
+			private function validateCurrentEditor():void{
+				datagridValidate.source=sysItemDataGrid.itemEditorInstance;
+				datagridValidate.validate();
+			}
+			private function maintainFocus():void
+			{
+	   			sysItemDataGrid.editedItemPosition = null;
+			}
+			private function checkIt(evt:Event):void
+			{
+				sysItemDataGrid.invalidateList();
+			}
+			
+			private function onShowRadarChart(e:Event):void{
+//				var btn:Button = e.currentTarget as Button;
+//				if(radarChart.visible){
+//					radarChart.visible = false;
+//					radarChart.height  = 0;
+//					btn.label 		= "查看图表";
+//				}else{
+//					if((radarChart.sysItems == null) || (radarChart.sysItems.length == 0)){
+//						getRo.getUndeletedSysItemList(1, Constants.BOOLEAN_NO);
+//					}					
+//					radarChart.visible = true;
+//					radarChart.height = 600;
+//					btn.label 		= "关闭图表";
+//				}
+			}
+			
+			private function getUndeletedSysItemListHandler(e:ResultEvent):void{
+				undeletedSysItems = e.result as ArrayCollection;
+			}
+			private function onResetCached(e:Event):void{
+				updateRo.resetSysItem(model.gmUser);
+			}
+			private function resetSysItemHandler(e:ResultEvent):void{
+				Alert.show("reset success");
+			}
+			private function onShowPaymentView(e:Event):void{
+				var btn:Button = e.currentTarget as Button;
+				if(paymentView.visible){
+					paymentView.visible = false;
+					paymentView.height  = 0;
+					btn.label= resourceManager.getString('Language','button.ShowPrice');
+				}else{
+					paymentView.visible = true;
+					paymentView.height = 300;
+					btn.label= resourceManager.getString('Language','button.ClosePrice');;
+				}
+			}
+			
+			private var currentPoint:String="";
+			private var cell:int;
+			private var gunPropertyView:GunPropertyView;
+			private var desView:EditDescription;
+			private function startEdit(evt:ListEvent):void{
+				if(this.type==2||this.type==3){
+					this.cell=evt.columnIndex;
+					if(evt.columnIndex==gunIndex1){
+						this.currentPoint=this.sysItem.gunProperty1;
+						showGunProperty();
+					}else if(evt.columnIndex==gunIndex2){
+						this.currentPoint=this.sysItem.gunProperty2;
+						showGunProperty();
+					}else if(evt.columnIndex==gunIndex3){
+						this.currentPoint=this.sysItem.gunProperty3;
+						showGunProperty();
+					}else if(evt.columnIndex==gunIndex4){
+						this.currentPoint=this.sysItem.gunProperty4;
+						showGunProperty();
+					}else if(evt.columnIndex==gunIndex5){
+						this.currentPoint=this.sysItem.gunProperty5;
+						showGunProperty();
+					}
+				}
+				if(evt.columnIndex==getdesIndexByType()){
+					desView=EditDescription(PopUpManager.createPopUp(this,EditDescription,true));
+					desView.des=this.sysItem.descriptionCN;
+					desView.saveBtn.addEventListener(MouseEvent.CLICK,saveDesHandler);
+					PopUpManager.centerPopUp(desView);
+				}
+			}
+			
+			private function getdesIndexByType():int{
+				return desIndexByType[type-1];
+			}
+			
+			private function saveDesHandler(e:Event):void{
+				var newVal:String=StringUtil.trim(desView.description.text);
+				var oldVal:String=this.sysItem.descriptionCN;
+				if(newVal!=oldVal){
+					var validate:Validator=DatagridValidateFactory.getSysitemValidator("description",desView.description);
+               		if(validate!=null){
+	               		var val:*=validate.validate();
+	               		if(val.type=="valid"){
+	               			this.sysItem.isChange=1;
+	               			this.sysItem.descriptionCN=newVal;
+	               			PopUpManager.removePopUp(desView);
+	               		}
+	               	}
+				}
+			}
+			
+			private function showGunProperty():void{
+				var gunPropertys:ArrayCollection=new ArrayCollection();
+				var values:String=this.currentPoint;
+				if(values!=null&&values!=""){
+					var array:Array=values.split(",");
+					for(var i:int=0;i<array.length;i=i+4){
+						var gunProperty:GunProperty=new GunProperty();
+						gunProperty.id=array[i];
+						gunProperty.value1=array[i+1];
+						gunProperty.value2=array[i+2];
+						gunProperty.time=array[i+3];
+						gunPropertys.addItem(gunProperty);
+					}
+				}
+				gunPropertyView=GunPropertyView(PopUpManager.createPopUp(this,GunPropertyView,true));
+				gunPropertyView.gunPropertys=gunPropertys;
+				gunPropertyView.save.addEventListener(MouseEvent.CLICK,onEndEdit);
+				PopUpManager.centerPopUp(gunPropertyView);
+			
+			}
+			private function onEndEdit(evt:MouseEvent):void{
+				var gunPropertylist:ArrayCollection=gunPropertyView.gunPropertys;
+				var value:String="";
+				for(var i:int=0;i<gunPropertylist.length;i++){
+					var gunProperty:GunProperty=gunPropertylist.getItemAt(i) as GunProperty;
+					value+=gunProperty.id+","+gunProperty.value1+","+gunProperty.value2+","+gunProperty.time+",";
+				}
+				value=value.substr(0,value.length-1);
+			
+				var startp:String=this.currentPoint;
+				if(startp!=value){
+					this.sysItem.isChange=1;
+					if(cell==gunIndex1){
+						this.sysItem.gunProperty1=value;
+					}else if(cell==gunIndex2){
+						this.sysItem.gunProperty2=value;
+					}else if(cell==gunIndex3){
+						this.sysItem.gunProperty3=value;
+					}else if(cell==gunIndex4){
+						this.sysItem.gunProperty4=value;
+					}else if(cell==gunIndex5){
+						this.sysItem.gunProperty5=value;
+					}
+				}
+				PopUpManager.removePopUp(gunPropertyView);
+			}
+			
+			/* private function initColor():void{
+				for(var i:int = 0;i<this.allSysItem.length;i++){
+					var item:SysItem = this.allSysItem.getItemAt(i) as SysItem;
+					var temp : MyDataGridColumn = sysItemDataGrid.getChildAt(i) as MyDataGridColumn;
+					temp.setStyle("background", Constants.w_onair_color);
+				}
+			} */
+			private function filterSysItem():void{
+				if(allSysItem==null)return ;
+				if(allSysItem.filterFunction==null){
+					allSysItem.filterFunction=sysItemFilterFun;
+				}
+				allSysItem.refresh();
+			}
+			
+			private function sysItemFilterFun(item:Object):Boolean{
+				var characterId:String="0";
+				var idInput:String=StringUtil.trim(sid.text);
+				var nameInput:String=StringUtil.trim(sname.text);
+				var displayInput:String=StringUtil.trim(displayName.text);
+				if(characterList!=null && characterList.length!=0){
+					characterId=characterCb.selectedItem.id.toString();
+				}
+				var s:SysItem=item as SysItem;
+				if(characterId!="0"){
+					var idList:Array=s.characterId.split(",");
+					if(!isInList(characterId,idList))return false;
+				}
+				if(idInput!="" && idInput!=s.id.toString())return false;
+				if(nameInput!="" && s.name.indexOf(nameInput)<0)return false;
+				if(displayInput!="" && s.displayNameCN.indexOf(displayInput)<0)return false;
+				return true;
+			}
+			
+			private function isInList(item:String,list:Array):Boolean{
+				for each(var ii:String in list){
+					if(item==ii)return true;
+				}
+				return false;
+			}
+			
+			private function clearFilter():void{
+				characterCb.selectedIndex=0;
+				sid.text="";
+				sname.text="";
+				displayName.text="";
+			}
+			
+			private function getSysCharacterListHandler(e:ResultEvent):void{
+				characterList=e.result as ArrayCollection;
+				var newObj:Object=new Object();
+				newObj.nameCN="--ALL--";
+				newObj.id=0;
+				characterList.addItemAt(newObj,0);
+				characterCb.selectedIndex=0;
+			}
+			
+			private function characterLableFun(item:Object):String{
+				return item.nameCN+" "+item.id;
+			}
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get" showBusyCursor="true">
+		<mx:method name="getSysItemList" result="getSysItemHandler(event)" />
+		<mx:method name="getUndeletedSysItemList" result="getUndeletedSysItemListHandler(event)"/>
+		<mx:method name="getSysItemLog" result="getSysItemLogHandler(event)" />
+		<mx:method name="getSysCharacterList" result="getSysCharacterListHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createSysItem" result="createSysItemHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteSysItemSoft" result="createSysItemHandler(event)"/>
+		<mx:method name="deleteSysItemHard" result="createSysItemHandler(event)"/>
+	</mx:RemoteObject>
+		<mx:RemoteObject id="updateRo" destination="ro.update" showBusyCursor="true">
+		<mx:method name="updateSysItem" result="createSysItemHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="resetSysItem" result="resetSysItemHandler(event)" fault="defaultFaultHandle(event)"/>
+		<mx:method name="updateSingleSysItem" result="createSysItemHandler(event)" fault="defaultFaultHandle(event)"/>
+	</mx:RemoteObject>	
+	
+	<mx:TabBar id="typeTab" dataProvider="{typeArray}" itemClick="typeClick(event)" />
+	<mx:VBox>
+		<mx:TabBar id="subTypeTab" dataProvider="{subTypeArray}" itemClick="subTypeClick(event)" />
+		<!--<mx:Spacer width="200"/>-->
+		<mx:ControlBar width="100%" >	
+			<mx:VBox>
+				<mx:HBox>
+					<mx:Button id="refreshBtn" click="{getRo.getSysItemList(this.type,this.subType);}" label="{resourceManager.getString('Language','button.Refresh')}"/>			
+		        	<mx:Button id="newBtn" click="clickNewBtn()" label="{resourceManager.getString('Language','button.New')}"/>
+		        	<mx:Button id="editBtn" click="clickEditBtn()" label="{resourceManager.getString('Language','button.Edit')}"/>
+		        	<mx:Button id="saveBtn" click="clickSaveBtn()" label="{resourceManager.getString('Language','button.Save')}" enabled="false"/>
+		        	<mx:Button id="cancelBtn" click="clickCancelBtn()" label="{resourceManager.getString('Language','button.Cancel')}" enabled="false"/>
+		        	<mx:Button id="copyBtn" click="clickCopyBtn()" label="{resourceManager.getString('Language','button.Paste')}"/>
+		        	<mx:Button id="showLog" click="onBtnClick()" label="{resourceManager.getString('Language','button.ShowLog')}" enabled="true"/>
+		        	<!--<mx:Button id="showRadarChart" click="onShowRadarChart(event)" label="查看图表"/>-->
+		        	<mx:Button id="showPaymentView" click="onShowPaymentView(event)" label="{resourceManager.getString('Language','button.ShowPrice')}"/>
+		        	<mx:Button id="resetCached" click="onResetCached(event)" label="{resourceManager.getString('Language','button.ResetCache')}"/>
+				</mx:HBox>
+				<mx:HBox >
+	        		<mx:Label text="CharacterID"/>
+		        	<mx:ComboBox id="characterCb" dataProvider="{characterList}" labelFunction="characterLableFun" labelField="name"/>
+		        	<mx:Label text="{resourceManager.getString('Language','label.ItemId')}"/>
+		        	<mx:TextInput id="sid" width="100"/>
+		        	<mx:Label text="{resourceManager.getString('Language','label.ResourceName')}"/>
+		        	<mx:TextInput id="sname" width="150"/>
+		        	<mx:Label text="{resourceManager.getString('Language','label.ItemName')}"/>
+		        	<mx:TextInput id="displayName" width="150"/>
+	        		<mx:Button id="searchBtn" label="{resourceManager.getString('Language','button.Query')}" click="filterSysItem()"/>
+	        		<mx:Button id="clearBtn" label="{resourceManager.getString('Language','button.Reset')}" click="clearFilter()"/>
+	        	</mx:HBox>
+			</mx:VBox>
+	     </mx:ControlBar>
+	</mx:VBox>
+	<mx:HBox  height="100%" width="100%">
+	<mx:Panel title="{resourceManager.getString('Language','label.SystemItemList')}" width="100%" height="100%">
+	<mx:VBox  height="100%" width="100%">
+		<mx:ApplicationControlBar  height="100%" width="100%">
+			<mx:VDividedBox id="vdArea" width="100%" height="100%">
+				<component:MyDataGrid id="sysItemDataGrid" dataProvider="{allSysItem}" itemClick="selectHandler(event)" lockedColumnCount="4" 
+					width="100%" height="100%" editable="false" change="checkIt(event)" paddingBottom="0" itemEditEnd="endEdit(event)"
+				    />
+				<!--<component:CustomRadarChart id="radarChart" sysItems="{undeletedSysItems}" width="100%" height="0" visible="false"/>-->	
+				<view:PaymentView id="paymentView" width="100%" height="0" visible="false"/>
+			</mx:VDividedBox>			
+		</mx:ApplicationControlBar>
+		</mx:VBox>
+	</mx:Panel>
+	</mx:HBox>	
+</mx:VBox>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BuyItemRecord">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="BuyItemRecord" type="com.pearl.o2o.pojo.BuyItemRecord"/> 	
+
+	<resultMap id="selectResult" class="BuyItemRecord">
+		<result property="id" column="ID" />
+		<result property="playerId" column="PLAYER_ID" />
+		<result property="itemId" column="ITEM_ID" />
+		<result property="costId" column="COST_ID" />
+		<result property="record" column="RECORD" />
+		<result property="payType" column="PAY_TYPE" />
+		<result property="payAmount" column="PAY_AMOUNT" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="lastBuyDate" column="LAST_BUY_DATE" />
+	</resultMap>
+
+	<!--==========
+	pi.PLAYER_ID,
+   	 		pi.ITEM_ID,
+   	 		pi.VALID_TIME,
+   	 		pi.EXPIRE_TIME,
+   	 		pi.MODIFIED_DESC,
+   	 		pi.IS_BIND,
+   	 		pi.IS_DEFAULT,
+   	 		pi.IS_GIFT,
+   	 		pi.DURABLE,	pi.QUANTITY,
+	
+	======================================== Select ==================================================-->	
+	
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+   	 	select 	*
+    	from BUYITEM_RECORD$tableSuffix$ bir    	   
+    	where  bir.PLAYER_ID =  #fid# 
+	</select>	
+	
+	<!--================================================== Insert/Update/Delete ==================================================-->
+	<insert id="insert" parameterClass="BuyItemRecord">
+		insert into BUYITEM_RECORD$tableSuffix$(
+   	 		PLAYER_ID,
+   	 		ITEM_ID,
+   	 		COST_ID,
+   	 		RECORD,
+   	 		PAY_TYPE,
+   	 		PAY_AMOUNT,
+   	 		CREATE_TIME,
+   	 		LAST_BUY_DATE
+		) values (
+			#playerId#,
+			#itemId#,
+			#costId#,
+			#record#,
+			#payType#,
+			#payAmount#,
+			#createTime#,
+			#lastBuyDate#
+		)
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<update id="update" parameterClass="BuyItemRecord">
+		update BUYITEM_RECORD$tableSuffix$  
+		set PLAYER_ID=#playerId#,
+   	 		ITEM_ID=#itemId#,
+   	 		COST_ID=#costId#,
+   	 		RECORD=#record#,
+   	 		PAY_TYPE=#payType#,
+   	 		PAY_AMOUNT=#payAmount#,
+   	 		CREATE_TIME=#createTime#,
+   	 		LAST_BUY_DATE=#lastBuyDate#
+		where   ID=#id#;
+	</update>
+	<update id="delete" parameterClass="BuyItemRecord">
+		update BUYITEM_RECORD$tableSuffix$  
+		set IS_DELETED="Y"
+		where   ID=#id#;
+	</update>
+			
+</sqlMap>

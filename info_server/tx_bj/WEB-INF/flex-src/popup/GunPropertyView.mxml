@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300"
+	label="blast Point" title="gun property"
+	showCloseButton="true" close="{PopUpManager.removePopUp(this)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import vo.GunProperty;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			[Bindable]
+			public  var gunPropertys:ArrayCollection=new ArrayCollection();
+			[Bindable]
+			public  var gunProperty:GunProperty;
+			private function onNewBtnClick():void{
+				var gunProperty:GunProperty=new GunProperty();
+				gunPropertys.addItem(gunProperty);
+			}
+			private function onDeleteBtnClick():void{
+				if(this.gunProperty==null){
+					Alert.show("请选择一条记录。");
+				}else{
+					var index:int=gunPropertyDatagrid.selectedIndex;
+					gunPropertys.removeItemAt(index);
+				}
+			}
+			
+			private function onCancelBtnClick():void{
+				PopUpManager.removePopUp(this);
+			}
+			private function selectHandler():void{
+				this.gunProperty=gunPropertyDatagrid.selectedItem as GunProperty;
+			}
+			
+		]]>
+	</mx:Script>
+<mx:VBox>
+	<mx:VBox>
+		<mx:DataGrid id="gunPropertyDatagrid" dataProvider="{gunPropertys}" editable="true" width="378" height="194" itemClick="selectHandler()">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="id"/>
+				<mx:DataGridColumn dataField="value1" headerText="value1"/>
+				<mx:DataGridColumn dataField="value2" headerText="value2"/>
+				<mx:DataGridColumn dataField="time" headerText="time/count"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:VBox>
+	<mx:VBox>
+		<mx:ControlBar width="100%" >
+				<mx:Button id="save"  label="保存"/>		
+	        	<mx:Button id="newBtn"  label="新建" click="onNewBtnClick()"/>
+	        	<mx:Button id="deleteBtn" label="删除" click="onDeleteBtnClick()"/>
+	        	<mx:Button id="cancelBtn"  label="退出"  click="onCancelBtnClick()"/>
+	        
+	     </mx:ControlBar>
+	</mx:VBox>
+</mx:VBox>
+</mx:TitleWindow>

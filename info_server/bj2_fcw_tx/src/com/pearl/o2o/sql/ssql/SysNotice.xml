@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SysNotice">
+
+ 	<!-- Use type aliases to avoid typing the full classname every time. -->
+ 	<typeAlias alias="SysNotice" type="com.pearl.o2o.pojo.SysNotice"/> 	
+	<resultMap id="selectResult" class="SysNotice">
+		<result property="id" column="ID"/>
+		<result property="type" column="TYPE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="startTime" column="START_TIME"/>
+		<result property="endTime" column="END_TIME"/>
+		<result property="noticeTime" column="NOTICE_TIME"/>
+	</resultMap>
+	
+	
+	<!--================================================== Select ==================================================-->
+	<select id="select" parameterClass="java.util.Map" resultMap="selectResult">
+  		select s.ID,
+  			   s.TYPE,
+			   s.CONTENT,
+			   UNIX_TIMESTAMP(s.START_TIME) as START_TIME,
+			   UNIX_TIMESTAMP(s.END_TIME) as END_TIME,
+			   s.NOTICE_TIME
+	    from SYS_NOTICE s
+  		where s.ID = #id# 
+  	</select>
+  	
+  	
+  	<select id="selectAll" resultMap="selectResult">
+  		select s.ID,
+  			   s.TYPE,
+			   s.CONTENT,
+			   UNIX_TIMESTAMP(s.START_TIME) as START_TIME,
+			   UNIX_TIMESTAMP(s.END_TIME) as END_TIME,
+			   s.NOTICE_TIME
+	    from SYS_NOTICE s
+  	</select>	
+  	  	
+  	  	
+  	<!--================================================== Insert/Update/Delete ==================================================-->
+  	<insert id="insert" parameterClass="SysNotice">
+	  	insert into SYS_NOTICE(
+  			TYPE, 
+  			CONTENT, 
+  			START_TIME, 
+  			END_TIME, 
+  			NOTICE_TIME
+  		) values(
+  			#type#,
+  			#content#,
+  			FROM_UNIXTIME(#startTime#),
+  			FROM_UNIXTIME(#endTime#),
+  			#noticeTime#)
+  		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterClass="SysNotice">
+		update SYS_NOTICE
+		set TYPE = #type# ,
+	        CONTENT = #content#,
+	        START_TIME = FROM_UNIXTIME(#startTime#),
+  			END_TIME = FROM_UNIXTIME(#endTime#),
+	       	NOTICE_TIME =#noticeTime#
+		where ID = #id#
+	</update>
+  	
+  	<delete id="delete" parameterClass="SysNotice">
+	  	delete from  SYS_NOTICE 
+  		where ID = #id#;
+  	</delete>
+</sqlMap>

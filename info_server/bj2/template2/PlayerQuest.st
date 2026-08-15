@@ -1,0 +1,5 @@
+id = #$playerQuest.id#,
+sysQuestId = #$playerQuest.sysQuestId#,
+number = #$playerQuest.number#,
+completeCount = #$playerQuest.completeCount#,
+status = #$playerQuest.status.number#,

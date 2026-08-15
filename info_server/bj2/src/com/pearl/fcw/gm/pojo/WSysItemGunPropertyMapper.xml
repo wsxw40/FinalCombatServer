@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.gm.pojo.WSysItemGunPropertyMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.gm.pojo.WSysItemGunProperty" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="INDEX" property="index" jdbcType="INTEGER" />
+    <result column="VALUE" property="value" jdbcType="INTEGER" />
+    <result column="VALUE2" property="value2" jdbcType="INTEGER" />
+    <result column="TIME" property="time" jdbcType="INTEGER" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="VARCHAR" />
+    <result column="MULTI_TYPE" property="multiType" jdbcType="LONGVARCHAR" />
+    <result column="DESC_I18N" property="descI18n" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, `INDEX`, VALUE, VALUE2, TIME, 
+    IS_DELETED, MULTI_TYPE, DESC_I18N, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ITEM_GUN_PROPERTY
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.gm.pojo.WSysItemGunProperty" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ITEM_GUN_PROPERTY where IS_DELETED = 'N'
+  </select>  
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ITEM_GUN_PROPERTY where IS_DELETED = 'N'
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from SYS_ITEM_GUN_PROPERTY where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from SYS_ITEM_GUN_PROPERTY
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.gm.pojo.WSysItemGunProperty" >
+    insert into SYS_ITEM_GUN_PROPERTY (ID, `INDEX`, VALUE, 
+      VALUE2, TIME, IS_DELETED, MULTI_TYPE, DESC_I18N, REMARK
+      )
+    values (#{id,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, #{value,jdbcType=INTEGER}, 
+      #{value2,jdbcType=INTEGER}, #{time,jdbcType=INTEGER}, #{isDeleted,jdbcType=VARCHAR}
+      , #{multiType,jdbcType=LONGVARCHAR}, #{descI18n,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into SYS_ITEM_GUN_PROPERTY (ID, `INDEX`, VALUE, 
+      VALUE2, TIME, IS_DELETED, MULTI_TYPE, DESC_I18N, REMARK
+      )
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+	    (#{item.id,jdbcType=INTEGER}, #{item.index,jdbcType=INTEGER}, #{item.value,jdbcType=INTEGER}, 
+	      #{item.value2,jdbcType=INTEGER}, #{item.time,jdbcType=INTEGER}, #{item.isDeleted,jdbcType=VARCHAR}, 
+	      #{item.multiType,jdbcType=LONGVARCHAR}, #{item.descI18n,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}
+	    )
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.gm.pojo.WSysItemGunProperty" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into SYS_ITEM_GUN_PROPERTY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="index != null" >
+        `INDEX`,
+      </if>
+      <if test="value != null" >
+        VALUE,
+      </if>
+      <if test="value2 != null" >
+        VALUE2,
+      </if>
+      <if test="time != null" >
+        TIME,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="multiType != null" >
+        MULTI_TYPE,
+      </if>
+      <if test="descI18n != null" >
+        DESC_I18N,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="index != null" >
+        #{index,jdbcType=INTEGER},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=INTEGER},
+      </if>
+      <if test="value2 != null" >
+        #{value2,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=VARCHAR},
+      </if>
+      <if test="multiType != null" >
+        #{multiType,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="descI18n != null" >
+        #{descI18n,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.gm.pojo.WSysItemGunProperty" >
+    update SYS_ITEM_GUN_PROPERTY
+    <set >
+      <if test="sysItemType != null" >
+        SYS_ITEM_TYPE = #{sysItemType,jdbcType=INTEGER},
+      </if>
+      <if test="sysItemSubType != null" >
+        SYS_ITEM_SUB_TYPE = #{sysItemSubType,jdbcType=INTEGER},
+      </if>
+      <if test="sysItemMValue != null" >
+        SYS_ITEM_M_VALUE = #{sysItemMValue,jdbcType=INTEGER},
+      </if>
+      <if test="index != null" >
+        `INDEX` = #{index,jdbcType=INTEGER},
+      </if>
+      <if test="value != null" >
+        VALUE = #{value,jdbcType=INTEGER},
+      </if>
+      <if test="value2 != null" >
+        VALUE2 = #{value2,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        TIME = #{time,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=VARCHAR},
+      </if>
+      <if test="multiType != null" >
+        MULTI_TYPE = #{multiType,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="descI18n != null" >
+        DESC_I18N = #{descI18n,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.gm.pojo.WSysItemGunProperty" >
+    update SYS_ITEM_GUN_PROPERTY
+    set SYS_ITEM_TYPE = #{sysItemType,jdbcType=INTEGER},
+      SYS_ITEM_SUB_TYPE = #{sysItemSubType,jdbcType=INTEGER},
+      SYS_ITEM_M_VALUE = #{sysItemMValue,jdbcType=INTEGER},
+      `INDEX` = #{index,jdbcType=INTEGER},
+      VALUE = #{value,jdbcType=INTEGER},
+      VALUE2 = #{value2,jdbcType=INTEGER},
+      TIME = #{time,jdbcType=INTEGER},
+      IS_DELETED = #{isDeleted,jdbcType=VARCHAR},
+      MULTI_TYPE = #{multiType,jdbcType=LONGVARCHAR},
+      DESC_I18N = #{descI18n,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

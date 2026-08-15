@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"	
+	xmlns:view="view.*" creationComplete="init()"
+	 height="100%" width="100%"
+	 xmlns:vo="vo.*" fontSize="12" xmlns:component="component.*" horizontalAlign="center">
+<mx:Script>
+	<![CDATA[
+		import mx.managers.PopUpManager;
+		import popup.AddSysConfig;
+		import mx.controls.TextInput;
+		import mx.containers.HBox;
+		import mx.events.*;
+		import component.ConfigItem;
+		import component.ConfigComboBox;
+		import vo.SysConfig;
+		import mx.collections.ArrayCollection;
+		import mx.controls.Alert;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import vo.GmUser;
+		private var gmUser:GmUser = O2oModel.getInstance().gmUser;
+		private var sysConfigList:ArrayCollection=new ArrayCollection();
+		private function init():void{
+			
+			getRo.getSysConfigList();
+		}
+		private function getSysConfigListHandler(e:ResultEvent):void{
+			sysConfigList=e.result as ArrayCollection;
+			configs.removeAllChildren();
+			if(sysConfigList.length>0){
+				for each (var sysConfig:SysConfig in sysConfigList){
+					if(sysConfig.key.indexOf(".button") > -1){
+						var c:ConfigComboBox=new ConfigComboBox();
+						c.key=sysConfig.key;
+						var v:int = parseInt(sysConfig.value);
+						c.value=v;
+						c.confName = sysConfig.confName;
+						c.buttons = wallows;
+						configs.addChild(c);
+						continue;
+					}
+					var child:ConfigItem=new ConfigItem();
+					child.key=sysConfig.key;
+					child.value=sysConfig.value;
+					child.confName = sysConfig.confName;
+					
+					configs.addChild(child);
+				}
+			}
+		}
+		private function defaultFaultHandler(evt:FaultEvent):void{
+			Alert.show(evt.fault.faultString);
+		}
+		private var addSysConfig:AddSysConfig;
+		[Bindable]
+		private var sysConfig:SysConfig=new SysConfig();
+		private function addButtonClick(e:MouseEvent):void{
+			addSysConfig=AddSysConfig(PopUpManager.createPopUp(this,AddSysConfig,true));
+			addSysConfig.sysConfig=sysConfig;
+			addSysConfig.close.addEventListener(MouseEvent.CLICK,function():void{PopUpManager.removePopUp(addSysConfig);});
+	 		addSysConfig.save.addEventListener(MouseEvent.CLICK,addNewSysConfig);
+			PopUpManager.centerPopUp(addSysConfig);
+		}
+		private function addNewSysConfig(e:MouseEvent):void{
+			if(sysConfig.key!=null&&sysConfig.value!=null){
+				createRo.createSysConfig(gmUser, sysConfig.key,sysConfig.value);
+			}
+			PopUpManager.removePopUp(addSysConfig);
+		}
+		private function saveButtonClick(e:MouseEvent):void{
+			var array:Array=configs.getChildren();
+			var params : ArrayCollection = new ArrayCollection();
+			for(var i:int =0 ;i<array.length;i++){
+				if(array[i].key == "randomplayer.playernum"){
+					if(parseInt(array[i].valueId.text) > 10){
+						Alert.show("随机抽奖人数不能超过10人");
+						continue;
+					}
+				}
+				var conf:SysConfig = new SysConfig();
+				conf.key = array[i].key;
+				conf.confName = array[i].nameId.text;
+				if(array[i].key.indexOf(".button") > -1){
+					conf.value = array[i].valueId.selectedItem.data;
+				} else {
+					conf.value = array[i].valueId.text;
+				}
+				params.addItem(conf);
+			}
+			updateRo.updateSysConfig(gmUser,params);
+		}
+		private function addDeleteClick(e:MouseEvent):void{
+			var array:Array=configs.getChildren();
+			for(var i:int =0 ;i<array.length;i++){
+				var ci:ConfigItem=  (array[i] as ConfigItem);
+//				if(ci.isSelected.selected){
+//					deleteRo.deleteSysConfig(gmUser, ci.key,ci.value);
+//				}
+			}
+			getRo.getSysConfigList();
+		}
+		private function updateSysConfigHandler(e:ResultEvent):void{
+			getRo.getSysConfigList();
+		}
+		private function createSysConfigHandler(e:ResultEvent):void{
+			getRo.getSysConfigList();
+		}
+		[Bindable]
+		private var wallows:ArrayCollection = new ArrayCollection([
+			{label:"关", data:0},
+			{label:"开", data:1}
+		]);
+		private function clearLoginInfo(flag:int):void{
+			updateRo.clearLoginInfo(gmUser, flag);
+		}
+		private function clearLoginInfoHandler(e:ResultEvent):void{
+			var result : int = e.result as int;
+			if(0 == result){
+				Alert.show("已清空");
+			}
+		}
+	]]>
+</mx:Script>
+	<mx:RemoteObject id="getRo" destination="ro.get">
+		<mx:method name="getSysConfigList" result="getSysConfigListHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="updateRo" destination="ro.update">
+		<mx:method name="updateSysConfig" result="updateSysConfigHandler(event)" fault="defaultFaultHandler(event)"/>
+		<mx:method name="clearLoginInfo" result="clearLoginInfoHandler(event)" fault="defaultFaultHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:RemoteObject id="createRo" destination="ro.create">
+		<mx:method name="createSysConfig" result="createSysConfigHandler(event)" />
+	</mx:RemoteObject>
+	<mx:RemoteObject id="deleteRo" destination="ro.delete">
+		<mx:method name="deleteSysConfig" result="updateSysConfigHandler(event)"/>
+	</mx:RemoteObject>
+	<mx:HBox>
+	<mx:ApplicationControlBar width="100%" >
+		<mx:Button label="{resourceManager.getString('Language','button.Save')}" id="save" click="saveButtonClick(event)"/>
+		<!--<mx:Button label="重置每日登陆标志" click="clearLoginInfo(1)"/>
+		<mx:Button label="重置每周登陆标志" click="clearLoginInfo(2)"/>
+		<mx:Button label="新增" id="add" click="addButtonClick(event)"/>
+		<mx:Button label="删除" id="del" click="addDeleteClick(event)"/>-->
+	</mx:ApplicationControlBar>
+	</mx:HBox>
+	<mx:VBox>
+		<mx:VBox id="configs">
+		</mx:VBox>
+	</mx:VBox>
+</mx:VBox>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pearl.fcw.lobby.pojo.WMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.pearl.fcw.lobby.pojo.WMessage" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="RECEIVER_ID" property="receiverId" jdbcType="INTEGER" />
+    <result column="SENDER_NAME" property="senderName" jdbcType="VARCHAR" />
+    <result column="SUBJECT" property="subject" jdbcType="VARCHAR" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="OPEN" property="open" jdbcType="CHAR" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="CHAR" />
+    <result column="SYS_ITEMS" property="sysItems" jdbcType="VARCHAR" />
+    <result column="SENDER_ID" property="senderId" jdbcType="INTEGER" />
+    <result column="IS_ATTACHED" property="isAttached" jdbcType="BIT" />
+    <result column="ITEM_UNITS" property="itemUnits" jdbcType="VARCHAR" />
+    <result column="ITEM_UNITTYPES" property="itemUnittypes" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, RECEIVER_ID, SENDER_NAME, SUBJECT, CONTENT, CREATED_TIME, OPEN, IS_DELETED, SYS_ITEMS, 
+    SENDER_ID, IS_ATTACHED, ITEM_UNITS, ITEM_UNITTYPES
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from MESSAGE
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="select" resultMap="BaseResultMap" parameterType="com.pearl.fcw.lobby.pojo.WMessage" >
+    select 
+    <include refid="Base_Column_List" />
+    from MESSAGE where 1=1
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="com.pearl.fcw.utils.DataTablesParameter" >
+    select 
+    <include refid="Base_Column_List" />
+    from MESSAGE where 1 = 1
+    <if test="searchValue != null">
+    and ( ID like '${searchValue}%' or RECEIVER_ID like '${searchValue}%' or SENDER_NAME like '${searchValue}%' or SENDER_ID like '${searchValue}%' )
+    </if>
+    <if test="orderColumn != null">
+    order by ${orderColumn}
+    	<if test="orderDir != null">${orderDir}</if>
+    </if>
+    <if test="start >=0 and length >0">
+    limit ${start},${length}
+    </if>
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.pearl.fcw.utils.DataTablesParameter">
+  	select count(*) from MESSAGE where 1=1
+  	<if test="searchValue != null">
+    and ( ID like '${searchValue}%' or RECEIVER_ID like '${searchValue}%' or SENDER_NAME like '${searchValue}%' or SENDER_ID like '${searchValue}%' )
+ 	 </if>
+ 	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from MESSAGE
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pearl.fcw.lobby.pojo.WMessage" >
+    insert into MESSAGE (ID, RECEIVER_ID, SENDER_NAME, 
+      SUBJECT, CONTENT, CREATED_TIME, 
+      OPEN, IS_DELETED, SYS_ITEMS, 
+      SENDER_ID, IS_ATTACHED, ITEM_UNITS, 
+      ITEM_UNITTYPES)
+    values (#{id,jdbcType=INTEGER}, #{receiverId,jdbcType=INTEGER}, #{senderName,jdbcType=VARCHAR}, 
+      #{subject,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{open,jdbcType=CHAR}, #{isDeleted,jdbcType=CHAR}, #{sysItems,jdbcType=VARCHAR}, 
+      #{senderId,jdbcType=INTEGER}, #{isAttached,jdbcType=BIT}, #{itemUnits,jdbcType=VARCHAR}, 
+      #{itemUnittypes,jdbcType=VARCHAR})
+  </insert>
+  <insert id="replace" parameterType="java.util.List" >
+    replace into MESSAGE (ID, RECEIVER_ID, SENDER_NAME, 
+      SUBJECT, CONTENT, CREATED_TIME, 
+      OPEN, IS_DELETED, SYS_ITEMS, 
+      SENDER_ID, IS_ATTACHED, ITEM_UNITS, 
+      ITEM_UNITTYPES)
+    values 
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+    (#{item.id,jdbcType=INTEGER}, #{item.receiverId,jdbcType=INTEGER}, #{item.senderName,jdbcType=VARCHAR}, 
+      #{item.subject,jdbcType=VARCHAR}, #{item.content,jdbcType=VARCHAR}, #{item.createdTime,jdbcType=TIMESTAMP}, 
+      #{item.open,jdbcType=CHAR}, #{item.isDeleted,jdbcType=CHAR}, #{item.sysItems,jdbcType=VARCHAR}, 
+      #{item.senderId,jdbcType=INTEGER}, #{item.isAttached,jdbcType=BIT}, #{item.itemUnits,jdbcType=VARCHAR}, 
+      #{item.itemUnittypes,jdbcType=VARCHAR})
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.pearl.fcw.lobby.pojo.WMessage" >
+  	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+  	SELECT @@IDENTITY AS ID
+  	</selectKey>
+    insert into MESSAGE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="receiverId != null" >
+        RECEIVER_ID,
+      </if>
+      <if test="senderName != null" >
+        SENDER_NAME,
+      </if>
+      <if test="subject != null" >
+        SUBJECT,
+      </if>
+      <if test="content != null" >
+        CONTENT,
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME,
+      </if>
+      <if test="open != null" >
+        OPEN,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="sysItems != null" >
+        SYS_ITEMS,
+      </if>
+      <if test="senderId != null" >
+        SENDER_ID,
+      </if>
+      <if test="isAttached != null" >
+        IS_ATTACHED,
+      </if>
+      <if test="itemUnits != null" >
+        ITEM_UNITS,
+      </if>
+      <if test="itemUnittypes != null" >
+        ITEM_UNITTYPES,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="receiverId != null" >
+        #{receiverId,jdbcType=INTEGER},
+      </if>
+      <if test="senderName != null" >
+        #{senderName,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="open != null" >
+        #{open,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="sysItems != null" >
+        #{sysItems,jdbcType=VARCHAR},
+      </if>
+      <if test="senderId != null" >
+        #{senderId,jdbcType=INTEGER},
+      </if>
+      <if test="isAttached != null" >
+        #{isAttached,jdbcType=BIT},
+      </if>
+      <if test="itemUnits != null" >
+        #{itemUnits,jdbcType=VARCHAR},
+      </if>
+      <if test="itemUnittypes != null" >
+        #{itemUnittypes,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pearl.fcw.lobby.pojo.WMessage" >
+    update MESSAGE
+    <set >
+      <if test="receiverId != null" >
+        RECEIVER_ID = #{receiverId,jdbcType=INTEGER},
+      </if>
+      <if test="senderName != null" >
+        SENDER_NAME = #{senderName,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        SUBJECT = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        CONTENT = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="open != null" >
+        OPEN = #{open,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      </if>
+      <if test="sysItems != null" >
+        SYS_ITEMS = #{sysItems,jdbcType=VARCHAR},
+      </if>
+      <if test="senderId != null" >
+        SENDER_ID = #{senderId,jdbcType=INTEGER},
+      </if>
+      <if test="isAttached != null" >
+        IS_ATTACHED = #{isAttached,jdbcType=BIT},
+      </if>
+      <if test="itemUnits != null" >
+        ITEM_UNITS = #{itemUnits,jdbcType=VARCHAR},
+      </if>
+      <if test="itemUnittypes != null" >
+        ITEM_UNITTYPES = #{itemUnittypes,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pearl.fcw.lobby.pojo.WMessage" >
+    update MESSAGE
+    set RECEIVER_ID = #{receiverId,jdbcType=INTEGER},
+      SENDER_NAME = #{senderName,jdbcType=VARCHAR},
+      SUBJECT = #{subject,jdbcType=VARCHAR},
+      CONTENT = #{content,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      OPEN = #{open,jdbcType=CHAR},
+      IS_DELETED = #{isDeleted,jdbcType=CHAR},
+      SYS_ITEMS = #{sysItems,jdbcType=VARCHAR},
+      SENDER_ID = #{senderId,jdbcType=INTEGER},
+      IS_ATTACHED = #{isAttached,jdbcType=BIT},
+      ITEM_UNITS = #{itemUnits,jdbcType=VARCHAR},
+      ITEM_UNITTYPES = #{itemUnittypes,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
