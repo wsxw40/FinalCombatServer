@@ -12,3 +12,15 @@ logs/
 # 临时
 *.tmp
 backup_*.sql
+# 二进制/资源
+*.jar
+*.png
+*.gif
+*.jpg
+*.ico
+*.swf
+*.dll
+*.exe
+*.so
+*.a
+*.dat
