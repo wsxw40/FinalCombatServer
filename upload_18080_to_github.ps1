@@ -38,7 +38,7 @@ function Invoke-Git {
 
 if (-not $Branch) {
   $Branch = (Invoke-Git branch --show-current).Trim()
-  if (-not $Branch) { $Branch = "main" }
+  if (-not $Branch) { $Branch = "master" }
 }
 
 $files = @(
