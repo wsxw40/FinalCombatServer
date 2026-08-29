@@ -1,4 +1,7 @@
 import socket, threading
+import os
+
+_ports = os.environ.get("LOGSERVER_DUMMY_PORTS", "28085,28086,28222")
 def handle(c):
     try:
         while True:
@@ -7,7 +10,7 @@ def handle(c):
     except Exception: pass
     finally:
         c.close()
-for port in (8085, 8086, 2222):
+for port in map(int, _ports.split(",")):
     s = socket.socket(); s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind(('127.0.0.1', port)); s.listen(200)
     threading.Thread(target=lambda: [handle(c) for c in iter(lambda: None, None)], daemon=True).start()
