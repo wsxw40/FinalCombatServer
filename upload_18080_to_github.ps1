@@ -5,6 +5,8 @@ param(
 )
 
 Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Path)
+$script:GitExitCode = 0
+$script:GitLastOutput = ""
 
 function Invoke-Git {
   param([Parameter(ValueFromRemainingArguments)] [string[]]$GitArgs)
@@ -23,17 +25,38 @@ function Invoke-Git {
   $gitRoot = Split-Path (Split-Path $gitExe -Parent) -Parent
   $binPath = Join-Path $gitRoot "mingw64\bin"
   $corePath = Join-Path $gitRoot "mingw64\libexec\git-core"
+
   $execPaths = @()
   if (Test-Path $binPath) { $execPaths += $binPath }
   if (Test-Path $corePath) { $execPaths += $corePath }
 
+  $gitCommand = @()
   if ($execPaths.Count -gt 0) {
     $gitExecPath = $execPaths -join ";"
-    & git "--exec-path=$gitExecPath" @GitArgs
+    $gitCommand += "--exec-path=$gitExecPath"
   }
-  else {
-    & git @GitArgs
+  $gitCommand += $GitArgs
+
+  $script:GitLastOutput = & git @gitCommand 2>&1 | Out-String
+  $script:GitExitCode = $LASTEXITCODE
+  if ($script:GitExitCode -ne 0) {
+    Write-Warning "Git command failed: $($script:GitLastOutput.Trim())"
   }
+  return $script:GitLastOutput
+}
+
+function Push-Git {
+  param([string]$Remote, [string]$Branch)
+
+  $null = Invoke-Git push -u $Remote $Branch
+  if ($script:GitExitCode -ne 0 -and $script:GitLastOutput -match "AcquireCredentialsHandle|SEC_E_NO_CREDENTIALS|remote-https|remote helper 'https'|SSL") {
+    Write-Host "[3/3] Retry with SSL fallback..."
+    $null = Invoke-Git -c "http.sslVerify=false" push -u $Remote $Branch
+    if ($script:GitExitCode -ne 0 -and $script:GitLastOutput -match "AcquireCredentialsHandle|SEC_E_NO_CREDENTIALS|remote-https|remote helper 'https'") {
+      $null = Invoke-Git -c "http.sslBackend=openssl" push -u $Remote $Branch
+    }
+  }
+  return $script:GitExitCode -eq 0
 }
 
 if (-not $Branch) {
@@ -61,36 +84,32 @@ $files = @(
   "logserver_dummy.py"
 )
 
-Invoke-Git remote get-url $Remote *> $null
-if ($LASTEXITCODE -ne 0) {
+Invoke-Git remote get-url $Remote | Out-Null
+if ($script:GitExitCode -ne 0) {
   Write-Error "Remote '$Remote' not found. Set it first: git remote add $Remote https://github.com/<user>/<repo>.git"
   exit 1
 }
 
-Invoke-Git config user.email "2929363313@qq.com" | Out-Null
-
 Write-Host "[1/3] Staging files..."
 Invoke-Git add -- @files
-if ($LASTEXITCODE -ne 0) {
-  Write-Warning "Some files were not staged or path contains issues."
+if ($script:GitExitCode -ne 0) {
+  Write-Warning "Some paths could not be staged, check file list."
 }
 
 $staged = (Invoke-Git diff --cached --name-only | Out-String)
 if (-not [string]::IsNullOrWhiteSpace($staged)) {
   Write-Host "[2/3] Committing..."
   Invoke-Git commit -m $Message
-  if ($LASTEXITCODE -ne 0) {
-    Write-Warning "No new changes to commit."
+  if ($script:GitExitCode -ne 0) {
+    Write-Output "No new changes to commit."
   }
-}
-else {
+} else {
   Write-Host "[WARN] No staged files changed, skip commit."
 }
 
 Write-Host "[3/3] Push to $Remote / $Branch ..."
-Invoke-Git push -u $Remote $Branch
-if ($LASTEXITCODE -ne 0) {
-  Write-Error "Push failed. Common causes: git SSL/network issue (try again), or credential problem. Re-login to GitHub and retry."
+if (-not (Push-Git $Remote $Branch)) {
+  Write-Error "Push failed. Possible causes: Git HTTPS helper/SSL issue or missing credentials. Login to GitHub and try again."
   exit 1
 }
 
