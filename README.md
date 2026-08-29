@@ -104,6 +104,9 @@ cd /d C:\Users\Administrator\Desktop\大冲锋源码\FinalCombatServer
 :: 2) 只上传脚本负责的固定文件（README + 启停脚本）
 git add README.md start_all.sh stop_all.sh check_status.sh stop_server_18080.bat start_server_18080.bat check_server_18080.bat start_client_18080.bat start_test01_18080.bat start_test02_18080.bat start_test03_18080.bat start_test04_18080.bat start_test05_18080.bat quick_start_18080.bat fc_clean.sh migrate_test_accounts.sh logserver_dummy.py
 
+:: 如果你希望一次性上传当前全部本地源码变更（含大规模改动），用这个开关
+:: powershell -ExecutionPolicy Bypass -File .\upload_18080_to_github.ps1 -Branch master -Message "feat: full source snapshot" -UploadAll
+
 :: 3) 记得先提交
 git commit -m "chore: update 18080 scripts"
 

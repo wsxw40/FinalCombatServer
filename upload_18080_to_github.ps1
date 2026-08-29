@@ -1,7 +1,8 @@
 param(
   [string]$Branch = "",
   [string]$Message = "chore: add 18080 workflow scripts and notes",
-  [string]$Remote = "origin"
+  [string]$Remote = "origin",
+  [switch]$UploadAll = $false
 )
 
 Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Path)
@@ -90,7 +91,13 @@ if ($script:GitExitCode -ne 0) {
 }
 
 Write-Host "[1/3] Staging files..."
-Invoke-Git add -- @files
+if ($UploadAll) {
+  Invoke-Git add -A
+  Write-Host "  - Enabled UploadAll: staging all tracked/untracked changes."
+} else {
+  Invoke-Git add -- @files
+  Write-Host "  - Default mode: staging fixed script/docs file list only."
+}
 if ($script:GitExitCode -ne 0) {
   Write-Warning "Some paths could not be staged, check file list."
 }
