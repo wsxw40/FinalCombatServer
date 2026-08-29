@@ -95,6 +95,29 @@ powershell -ExecutionPolicy Bypass -File .\upload_18080_to_github.ps1 -Branch ma
 2. 凭据可用（推荐在浏览器登录 GitHub 后再次执行脚本）
 3. 先手动测试：`powershell -File .\upload_18080_to_github.ps1 -Branch master -Message "test"`
 
+### 新机器/新成员快速上传口令（可直接复制）
+
+```bat
+:: 1) 切到仓库根目录
+cd /d C:\Users\Administrator\Desktop\大冲锋源码\FinalCombatServer
+
+:: 2) 只上传脚本负责的固定文件（README + 启停脚本）
+git add README.md start_all.sh stop_all.sh check_status.sh stop_server_18080.bat start_server_18080.bat check_server_18080.bat start_client_18080.bat start_test01_18080.bat start_test02_18080.bat start_test03_18080.bat start_test04_18080.bat start_test05_18080.bat quick_start_18080.bat fc_clean.sh migrate_test_accounts.sh logserver_dummy.py
+
+:: 3) 记得先提交
+git commit -m "chore: update 18080 scripts"
+
+:: 4) 按固定参数推送（避免旧 git-helper 和 SSL 凭据问题）
+::    - 如果你本机有 token，可直接内嵌到 URL
+::    - 没 token 可用你当前 GitHub 登录态，但可能仍受环境影响
+git -c credential.helper= -c http.sslBackend=openssl -c http.sslVerify=false push -u origin master
+```
+
+说明：
+
+- 上面脚本会把常见 `AcquireCredentialsHandle / remote-https` 问题降到最低；实测仓库为 `wsxw40/FinalCombatServer`。
+- 若仍失败，优先到仓库配置页确认远程与 token 有效性，或用管理员手工重新设置 `origin` 远程地址后再执行。
+
 **服务端口**：
 | 服务 | 端口 |
 |------|------|
