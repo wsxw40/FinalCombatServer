@@ -31,6 +31,8 @@ function Invoke-Git {
   if (Test-Path $corePath) { $execPaths += $corePath }
 
   $gitCommand = @()
+  $gitCommand += "-c"
+  $gitCommand += "credential.helper="
   if ($execPaths.Count -gt 0) {
     $gitExecPath = $execPaths -join ";"
     $gitCommand += "--exec-path=$gitExecPath"
@@ -50,11 +52,8 @@ function Push-Git {
 
   $null = Invoke-Git push -u $Remote $Branch
   if ($script:GitExitCode -ne 0 -and $script:GitLastOutput -match "AcquireCredentialsHandle|SEC_E_NO_CREDENTIALS|remote-https|remote helper 'https'|SSL") {
-    Write-Host "[3/3] Retry with SSL fallback..."
-    $null = Invoke-Git -c "http.sslVerify=false" push -u $Remote $Branch
-    if ($script:GitExitCode -ne 0 -and $script:GitLastOutput -match "AcquireCredentialsHandle|SEC_E_NO_CREDENTIALS|remote-https|remote helper 'https'") {
-      $null = Invoke-Git -c "http.sslBackend=openssl" push -u $Remote $Branch
-    }
+    Write-Host "[3/3] Retry with OpenSSL + no SSL verify..."
+    $null = Invoke-Git -c "http.sslVerify=false" -c "http.sslBackend=openssl" push -u $Remote $Branch
   }
   return $script:GitExitCode -eq 0
 }
