@@ -8,24 +8,32 @@ Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Path)
 
 function Invoke-Git {
   param([Parameter(ValueFromRemainingArguments)] [string[]]$GitArgs)
+
+  if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+    Write-Error "Git not found in PATH."
+    exit 1
+  }
+
+  if (-not (Test-Path ".git")) {
+    Write-Error "This directory is not a git repository."
+    exit 1
+  }
+
   $gitExe = (Get-Command git).Source
   $gitRoot = Split-Path (Split-Path $gitExe -Parent) -Parent
-  $gitExecPath = Join-Path $gitRoot "mingw64\bin"
-  if (Test-Path $gitExecPath) {
+  $binPath = Join-Path $gitRoot "mingw64\bin"
+  $corePath = Join-Path $gitRoot "mingw64\libexec\git-core"
+  $execPaths = @()
+  if (Test-Path $binPath) { $execPaths += $binPath }
+  if (Test-Path $corePath) { $execPaths += $corePath }
+
+  if ($execPaths.Count -gt 0) {
+    $gitExecPath = $execPaths -join ";"
     & git "--exec-path=$gitExecPath" @GitArgs
-  } else {
+  }
+  else {
     & git @GitArgs
   }
-}
-
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-  Write-Error "Git not found in PATH."
-  exit 1
-}
-
-if (-not (Test-Path ".git")) {
-  Write-Error "This directory is not a git repository."
-  exit 1
 }
 
 if (-not $Branch) {
@@ -59,7 +67,6 @@ if ($LASTEXITCODE -ne 0) {
   exit 1
 }
 
-# Required author binding
 Invoke-Git config user.email "2929363313@qq.com" | Out-Null
 
 Write-Host "[1/3] Staging files..."
@@ -75,14 +82,15 @@ if (-not [string]::IsNullOrWhiteSpace($staged)) {
   if ($LASTEXITCODE -ne 0) {
     Write-Warning "No new changes to commit."
   }
-} else {
+}
+else {
   Write-Host "[WARN] No staged files changed, skip commit."
 }
 
 Write-Host "[3/3] Push to $Remote / $Branch ..."
 Invoke-Git push -u $Remote $Branch
 if ($LASTEXITCODE -ne 0) {
-  Write-Error "Push failed. Check token/network/permission."
+  Write-Error "Push failed. Common causes: git SSL/network issue (try again), or credential problem. Re-login to GitHub and retry."
   exit 1
 }
 
