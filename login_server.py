@@ -4,10 +4,13 @@
 import json
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import os
 
 SERVER_IP = "192.168.31.5"
 SERVER_PORT = 15000
-LISTEN = ("0.0.0.0", 8080)
+LISTEN = ("0.0.0.0", int(os.environ.get("AUTH_LISTEN_PORT", "8080")))
+SERVER_IP = os.environ.get("SERVER_IP", SERVER_IP)
+SERVER_PORT = int(os.environ.get("SERVER_PORT", str(SERVER_PORT)))
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *a):
