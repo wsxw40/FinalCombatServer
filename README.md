@@ -80,14 +80,20 @@ stop_server_18080.bat
 如需直接把当前工作版本上传到 GitHub，可直接执行：
 
 ```bat
-upload_18080_to_github.ps1 -Branch main -Message "chore: add 18080 workflow scripts"
+upload_18080_to_github.ps1 -Branch master -Message "chore: add 18080 workflow scripts"
 ```
 
 示例：
 
 ```bat
-powershell -ExecutionPolicy Bypass -File .\upload_18080_to_github.ps1 -Branch main -Message "chore: add 18080 workflow scripts"
+powershell -ExecutionPolicy Bypass -File .\upload_18080_to_github.ps1 -Branch master -Message "chore: add 18080 workflow scripts"
 ```
+
+如果你的环境仍提示 `AcquireCredentialsHandle` / `remote-https`，先确认：
+
+1. Git 工具能正常访问 HTTPS（更新到带远端二进制的版本）
+2. 凭据可用（推荐在浏览器登录 GitHub 后再次执行脚本）
+3. 先手动测试：`powershell -File .\upload_18080_to_github.ps1 -Branch master -Message "test"`
 
 **服务端口**：
 | 服务 | 端口 |
